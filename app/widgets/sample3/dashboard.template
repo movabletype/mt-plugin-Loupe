@@ -1,0 +1,3 @@
+<section class="widget">
+ウィジェット的なやつのダッシュボードその3（<strong><%= title %></strong>）
+</section>

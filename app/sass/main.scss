@@ -1,0 +1,77 @@
+@import "compass/css3/transform";
+@import "compass/css3/transition";
+@import "compass/css3/box-shadow";
+
+$default-transition-property: all;
+$default-transition-duration: 0.3s;
+$default-transition-function: ease;
+$default-transition-delay: 0s;
+
+@mixin hardware-accelerate-hack {
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+body {
+  margin: 10px;
+  background-color: #000;
+}
+
+#container {
+  position: absolute;
+  top: 0;
+  // bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  z-index: 10;
+  background-color: #fefae5;
+  // border-radius: 5px;
+  height: 100%;
+  // padding: 10px;
+  @include single-box-shadow(rgba(0, 0, 0, 0.2), 0, 1px, 3px);
+  overflow: hidden;
+}
+
+#sidemenu {
+  display: none;
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  background-color: #666;
+  z-index: 9;
+  height: 100%;
+  color: white;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  font-size: 12px;
+  font-weigth: bold;
+  padding: 10px;
+  @include single-transition($property: left, $duration: 0.3s);
+  @include hardware-accelerate-hack;
+}
+
+#blogname {
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.5em;
+}
+
+#header {
+  background-color: #000;
+  height: 44px;
+}
+
+#main {
+  padding: 0;
+}
+
+.main section {
+  margin: 10px;
+}

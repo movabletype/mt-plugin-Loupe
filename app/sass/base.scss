@@ -1,0 +1,23 @@
+@import "compass/css3/box-sizing";
+@import "compass/css3/user-interface";
+
+* {
+  @include box-sizing(border-box);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  @include user-select(none);
+  outline: none;
+}
+
+body {
+  font-family: 'Helvetica Neue',sans-serif;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
+  //overflow: hidden;
+}
+
+textarea, input {
+  font-size: 1em;
+  @include user-select(text);
+}

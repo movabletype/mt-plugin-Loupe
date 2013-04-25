@@ -1,0 +1,22 @@
+#widget-stats {
+  background-color: #16878a;
+  header {
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    p {
+      font-size: 4em;
+      margin: 0;
+      font-weight: bold;
+    }
+    h1 {
+      font-size: 1em;
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+}
+
+#canvas {
+  display: block;
+}

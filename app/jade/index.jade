@@ -1,0 +1,20 @@
+doctype 5
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes')
+    meta(name='format-detection', content='telephone=no,email=no,address=no')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    title user mode application
+    link(rel='stylesheet', href='css/style.css')
+    if dev
+      script(data-main='js/main', src='lib/require.js')
+    else
+      script(src='js/vendor.js')
+      script(src='js/template.js')
+      script(src='js/widget.js')
+      script(src='js/app.js')
+  body
+    #container
+      #app
+      #sidemenu

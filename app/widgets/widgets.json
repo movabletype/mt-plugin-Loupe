@@ -1,0 +1,17 @@
+[
+{
+  "name": "stats",
+  "id": "stats",
+  "dashboardView": "dashboard",
+  "viewView": "view"
+}, {
+  "name": "acception",
+  "id": "acception",
+  "dashboardView": "dashboard",
+  "viewView": "view"
+}, {
+  "name": "feedbacks",
+  "id": "feedbacks",
+  "dashboardView": "dashboard",
+  "viewView": "view"
+}]

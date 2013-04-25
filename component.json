@@ -1,0 +1,25 @@
+{
+  "name": "userModeApp",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "underscore": "~1.4.4",
+    "backbone": "~1.0.0",
+    "backbone.localStorage": "~1.1.0",
+    "backbone.marionette": "~1.0.2",
+    "backbone.marionette.handlebars": "~0.2.0",
+    "backbone.wreqr": "~0.2.0",
+    "backbone.babysitter": "0.0.5",
+    "require-handlebars-plugin": "~0.4.0",
+    "hammerjs": "~1.0.5",
+    "jquery-smartresize": "git://github.com/louisremi/jquery-smartresize.git",
+    "morris.js": "~0.4.2",
+    "requirejs-text": "~2.0.5",
+    "requirejs-plugins": "latest",
+    "EaselJS": "0.6.0"
+  }
+}

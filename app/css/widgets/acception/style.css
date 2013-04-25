@@ -1,0 +1,59 @@
+/* line 1, ../../../widgets/acception/style.scss */
+#widget-acception {
+  min-height: 320px;
+  padding: 30px 0;
+  background-color: #1e2142;
+  color: #ffffff;
+  text-align: center;
+}
+/* line 7, ../../../widgets/acception/style.scss */
+#widget-acception h1 {
+  margin: 0;
+  font-weight: normal;
+  font-size: 1em;
+}
+/* line 12, ../../../widgets/acception/style.scss */
+#widget-acception ul {
+  list-style: none;
+  margin: 30px 0 0 0;
+  padding: 0;
+}
+/* line 17, ../../../widgets/acception/style.scss */
+#widget-acception li {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 100%;
+  border: 6px solid white;
+  background-color: #fff;
+  display: inline-block;
+}
+/* line 28, ../../../widgets/acception/style.scss */
+#widget-acception li img {
+  height: 100%;
+}
+/* line 31, ../../../widgets/acception/style.scss */
+#widget-acception li:nth-of-type(3n+2) {
+  margin: 0 10px;
+}
+/* line 36, ../../../widgets/acception/style.scss */
+#widget-acception:before, #widget-acception:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+/* line 42, ../../../widgets/acception/style.scss */
+#widget-acception:after {
+  clear: both;
+}
+
+/* line 47, ../../../widgets/acception/style.scss */
+#acception-count {
+  font-size: 4em;
+  line-height: 1em;
+  margin: 0;
+}

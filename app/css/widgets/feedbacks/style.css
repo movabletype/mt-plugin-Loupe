@@ -1,0 +1,59 @@
+/* line 1, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks {
+  min-height: 320px;
+  padding: 30px 0;
+  background-color: #562632;
+  color: #ffffff;
+  text-align: center;
+}
+/* line 7, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks h1 {
+  margin: 0;
+  font-weight: normal;
+  font-size: 1em;
+}
+/* line 12, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks ul {
+  list-style: none;
+  margin: 30px 0 0 0;
+  padding: 0;
+}
+/* line 17, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks li {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 100%;
+  border: 6px solid white;
+  background-color: #fff;
+  display: inline-block;
+}
+/* line 28, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks li img {
+  height: 100%;
+}
+/* line 31, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks li:nth-of-type(3n+2) {
+  margin: 0 10px;
+}
+/* line 36, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks:before, #widget-feedbacks:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+/* line 42, ../../../widgets/feedbacks/style.scss */
+#widget-feedbacks:after {
+  clear: both;
+}
+
+/* line 47, ../../../widgets/feedbacks/style.scss */
+#feedbacks-count {
+  font-size: 4em;
+  line-height: 1em;
+  margin: 0;
+}

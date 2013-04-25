@@ -1,0 +1,25 @@
+*.DS_Store
+
+# ignore auto copied/generated files
+app/index.html
+app/css/lib/*.css
+app/css/sass/*.css
+app/css/widgets/*.css
+app/template
+build/*
+
+# bower directory which configured in .bowerc
+app/components
+
+# node modules
+node_modules
+
+# test coverage data
+test/coverage
+
+# grunt user directory
+.grunt
+
+# sass cache
+.sass-cache
+
