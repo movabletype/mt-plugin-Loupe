@@ -20,8 +20,15 @@ Then, you can install bower and grunt-cli with npm like the following. When you 
   bower install
 ```
 
-# Building
-You want to use optimized version, run the grunt build task. after that, you can see build directory which optimized scritps are in
+# Building for develop
+grunt dev task generate index.html in app directory and run the dependant tasks
+
+```
+  grunt dev
+```
+
+# Building for production
+grunt build task generate optimized scrips in build directory
 
 ```
   grunt build
