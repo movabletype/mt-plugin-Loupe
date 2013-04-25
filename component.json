@@ -20,6 +20,6 @@
     "morris.js": "~0.4.2",
     "requirejs-text": "~2.0.5",
     "requirejs-plugins": "latest",
-    "EaselJS": "0.6.0"
+    "EaselJS": "latest"
   }
 }
