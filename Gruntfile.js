@@ -9,8 +9,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-sass-convert');
-
   var requireConfig = (function () {
     var require = {
       config: function (obj) {
@@ -58,7 +56,7 @@ module.exports = function (grunt) {
   }, 'app/widgets/**/*.js');
 
   var specs = [];
-  var helpers = [];
+  var helpers = ['test/template.js', 'test/helper.js'];
   grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/widgets/*/spec/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
@@ -67,35 +65,12 @@ module.exports = function (grunt) {
     }
   });
 
+  var testTarget = ['app/js/app.js', 'app/js/vent.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(widgetLibsForJasmine);
+
   // Project configuration.
   grunt.initConfig({
     jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        plusplus: false,
-        sub: true,
-        undef: true,
-        unused: true,
-        trailing: true,
-        maxcomplexity: 10,
-        asi: false,
-        evil: false,
-        boss: true,
-        eqnull: false,
-        browser: true,
-        jquery: true,
-        globals: {
-          "console": false,
-          "define": false,
-          "require": false,
-          "_": false
-        }
-      },
+      options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
           evil: true
@@ -108,6 +83,15 @@ module.exports = function (grunt) {
         files: {
           src: ['app/js/app.js', 'app/js/main.js', 'app/js/*/**/*.js']
         }
+      }
+    },
+    plato: {
+      options: {
+        jshint: grunt.file.readJSON('.jshintrc')
+      },
+      files: {
+        dest: 'test/reports',
+        src: testTarget
       }
     },
     compass: {
@@ -242,10 +226,10 @@ module.exports = function (grunt) {
     },
     jasmine: {
       test: {
-        src: ['app/js/app.js', 'app/js/vent.js', 'app/js/*/**/*.js'].concat(widgetLibsForJasmine),
+        src: testTarget,
         options: {
           specs: specs,
-          helpers: ['test/template.js', 'test/helper.js'].concat(helpers),
+          helpers: helpers,
           host: 'http://localhost:9002/',
           outfile: '_SpecRunner.html',
           template: require('grunt-template-jasmine-requirejs'),
@@ -262,10 +246,10 @@ module.exports = function (grunt) {
         }
       },
       coverage: {
-        src: ['app/js/app.js', 'app/js/vent.js', 'app/js/*/**/*.js'].concat(widgetLibsForJasmine),
+        src: testTarget,
         options: {
           specs: specs,
-          helpers: ['test/template.js', 'test/helper.js'].concat(helpers),
+          helpers: helpers,
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {
             coverage: 'test/coverage/coverage.json',
