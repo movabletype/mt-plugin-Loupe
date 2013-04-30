@@ -6,6 +6,7 @@ app/css/lib/*.css
 app/css/sass/*.css
 app/css/widgets/*.css
 app/css/style.css
+app/lib/api
 app/template
 build/*
 
