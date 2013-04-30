@@ -7,6 +7,7 @@ require.config({
     "backbone.localStorage": "components/backbone.localStorage/backbone.localStorage",
     "jquery": "components/jquery/jquery",
     "jquery.hammer": "components/hammerjs/dist/jquery.hammer",
+    "jquery.cookie": "components/jquery.cookie/jquery.cookie",
     "jquery-smartresize": "components/jquery-smartresize/jquery.debouncedresize",
     "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr",
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter",
@@ -23,7 +24,9 @@ require.config({
     "app": "js/app",
     "text": "components/requirejs-text/text",
     "json": "components/requirejs-plugins/src/json",
-    "easeljs": "components/EaselJS/lib/easeljs-0.6.0.min"
+    "easeljs": "components/EaselJS/lib/easeljs-0.6.0.min",
+    "mtapi": "lib/api/v1/js/app",
+    "mtendpoints": "lib/api/v1/js/endpoints"
   },
   shim: {
     underscore: {
@@ -35,6 +38,7 @@ require.config({
     },
     'jquery.hammer': ['jquery'],
     'jquery-smartresize': ['jquery'],
+    'jquery.cookie': ['jquery'],
     'modernizr': {
       exports: 'Modernizr'
     },
@@ -44,9 +48,15 @@ require.config({
     },
     'easeljs': {
       exports: 'createjs'
+    },
+    'mtapi': {
+      exports: 'MT.API'
+    },
+    'mtendpoints': {
+      deps: ['mtapi']
     }
   },
-  deps: ['jquery', 'jquery.hammer', 'jquery-smartresize', 'underscore', 'backbone', 'easeljs'],
+  deps: ['mtapi', 'mtendpoints', 'jquery', 'jquery.hammer', 'jquery.cookie', 'jquery-smartresize', 'underscore', 'backbone', 'easeljs'],
   locale: 'ja_jp',
   hbs: {
     disableI18n: false,
@@ -56,4 +66,5 @@ require.config({
   }
 });
 
+window.DEBUG = true;
 require(['js/boot'], function () {});

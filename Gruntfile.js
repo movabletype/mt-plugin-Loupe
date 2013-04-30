@@ -10,6 +10,7 @@ module.exports = function (grunt) {
   });
 
   var requireConfig = (function () {
+    var window = {};
     var require = {
       config: function (obj) {
         require = function () {
@@ -67,13 +68,18 @@ module.exports = function (grunt) {
 
   var testTarget = ['app/js/app.js', 'app/js/vent.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(widgetLibsForJasmine);
 
+  var settings = grunt.file.readJSON('settings.json');
+
   // Project configuration.
   grunt.initConfig({
     jshint: {
       options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
-          evil: true
+          evil: true,
+          define: {
+            'window': false
+          }
         },
         files: {
           src: ['Gruntfile.js']
@@ -150,6 +156,12 @@ module.exports = function (grunt) {
           src: ['app/components/morris.js/morris.css', 'app/lib/mtchart/mtchart.css'],
           dest: 'app/css/lib/',
           flatten: true
+        },
+        {
+          expand: true,
+          src: ['**/api.js', '**/endpoints.js'],
+          cwd: settings.mtApiPath,
+          dest: 'app/lib/api'
         }
         ]
       },
@@ -337,7 +349,8 @@ module.exports = function (grunt) {
         options: {
           pretty: true,
           data: {
-            dev: true
+            dev: true,
+            mtApiCGIPath: settings.mtApiCGIPath
           }
         },
         files: {
@@ -348,7 +361,8 @@ module.exports = function (grunt) {
         options: {
           pretty: true,
           data: {
-            dev: false
+            dev: false,
+            mtApiCGIPath: settings.mtApiCGIPath
           }
         },
         files: {
@@ -384,6 +398,7 @@ module.exports = function (grunt) {
             "backbone.localStorage": "components/backbone.localStorage/backbone.localStorage-min",
             "jquery": "components/jquery/jquery.min",
             "jquery.hammer": "components/hammerjs/dist/jquery.hammer.min",
+            "jquery.cookie": "components/jquery.cookie/jquery.cookie",
             "jquery-smartresize": "components/jquery-smartresize/jquery.debouncedresize",
             "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr.min",
             "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
@@ -430,6 +445,7 @@ module.exports = function (grunt) {
                 "raphael",
                 "morris",
                 "jquery.hammer",
+                "jquery.cookie",
                 "jquery-smartresize",
                 "easeljs"
               ]

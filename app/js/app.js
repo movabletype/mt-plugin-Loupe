@@ -8,6 +8,7 @@ function (Backbone, Marionette, vent, AppRouter, Controller, SidemenuView, Dashb
   app.addInitializer(function (options) {
     this.widgets = options.widgets;
     Backbone.history.start();
+
     app.sidemenu.show(new SidemenuView());
 
     var left = parseInt($(app.sidemenu.el).css('left'), 10);

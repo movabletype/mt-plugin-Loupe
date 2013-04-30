@@ -16,7 +16,7 @@ function ($, Marionette, MarionetteHandlebars, vent, template, createjs) {
 
     initialize: function () {
       this.$el.hammer().on('tap', function () {
-        vent.trigger('navigate', 'stats');
+        vent.trigger('router:navigate', 'stats');
       });
     },
 

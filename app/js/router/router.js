@@ -4,7 +4,8 @@ function (Marionette, vent) {
   'use strict';
 
   var appRoutes = {
-    '': 'moveDashboard'
+    '': 'moveDashboard',
+    '_login': 'authorizationCallback'
   };
 
   return Marionette.AppRouter.extend({
@@ -19,8 +20,8 @@ function (Marionette, vent) {
         }
       }, this);
 
-      vent.on('navigate', function (dest) {
-        if (dest) {
+      vent.on('router:navigate', function (dest) {
+        if (dest !== null && dest !== undefined) {
           this.navigate(dest, true);
         }
       }, this);

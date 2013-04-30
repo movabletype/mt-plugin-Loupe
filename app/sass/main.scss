@@ -16,6 +16,18 @@ body {
   background-color: #000;
 }
 
+#app-building {
+  background-image: url("../assets/images/indicator-white.gif");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: center center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
 #container {
   position: absolute;
   top: 0;

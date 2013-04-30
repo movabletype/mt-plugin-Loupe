@@ -1,0 +1,5 @@
+{
+  "mtApiPath": "../movabletype-internal/mt-static/api",
+  "mtApiCGIPath": "../../../../../cgi-bin/mt/movabletype-internal/mt-api.cgi",
+  "appId": "20130426"
+}
