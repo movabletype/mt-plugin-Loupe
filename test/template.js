@@ -41,19 +41,19 @@ define("lib/require", function(){});
 define("js/template", function(){});
 
 /**
- * @license RequireJS text 2.0.5 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS text 2.0.6 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/requirejs/text for details
  */
 /*jslint regexp: true */
-/*global require: false, XMLHttpRequest: false, ActiveXObject: false,
-  define: false, window: false, process: false, Packages: false,
-  java: false, location: false */
+/*global require, XMLHttpRequest, ActiveXObject,
+  define, window, process, Packages,
+  java, location, Components, FileUtils */
 
 define('text',['module'], function (module) {
     
 
-    var text, fs,
+    var text, fs, Cc, Ci,
         progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
         xmlRegExp = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,
         bodyRegExp = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,
@@ -65,7 +65,7 @@ define('text',['module'], function (module) {
         masterConfig = (module.config && module.config()) || {};
 
     text = {
-        version: '2.0.5',
+        version: '2.0.6',
 
         strip: function (content) {
             //Strips <?xml ...?> declarations so that external SVG and XML
@@ -325,6 +325,10 @@ define('text',['module'], function (module) {
                     } else {
                         callback(xhr.responseText);
                     }
+
+                    if (masterConfig.onXhrComplete) {
+                        masterConfig.onXhrComplete(xhr, url);
+                    }
                 }
             };
             xhr.send(null);
@@ -368,8 +372,39 @@ define('text',['module'], function (module) {
             }
             callback(content);
         };
-    }
+    } else if (masterConfig.env === 'xpconnect' || (!masterConfig.env &&
+            typeof Components !== 'undefined' && Components.classes &&
+            Components.interfaces)) {
+        //Avert your gaze!
+        Cc = Components.classes,
+        Ci = Components.interfaces;
+        Components.utils['import']('resource://gre/modules/FileUtils.jsm');
 
+        text.get = function (url, callback) {
+            var inStream, convertStream,
+                readData = {},
+                fileObj = new FileUtils.File(url);
+
+            //XPCOM, you so crazy
+            try {
+                inStream = Cc['@mozilla.org/network/file-input-stream;1']
+                           .createInstance(Ci.nsIFileInputStream);
+                inStream.init(fileObj, 1, 0, false);
+
+                convertStream = Cc['@mozilla.org/intl/converter-input-stream;1']
+                                .createInstance(Ci.nsIConverterInputStream);
+                convertStream.init(inStream, "utf-8", inStream.available(),
+                Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+
+                convertStream.readString(inStream.available(), readData);
+                convertStream.close();
+                inStream.close();
+                callback(readData.value);
+            } catch (e) {
+                throw new Error((fileObj && fileObj.path || '') + ': ' + e);
+            }
+        };
+    }
     return text;
 });
 
@@ -474,6 +509,7 @@ define("json!widgets/widgets.json", function(){ return [
   "name": "acception",
   "id": "acception",
   "dashboardView": "dashboard",
+  "viewRoute": ":id",
   "viewView": "view"
 }, {
   "name": "feedbacks",
@@ -569,14 +605,87 @@ return t;
 });
 /* END_TEMPLATE */
 ;
+define('template/helpers/eachOnly',['handlebars'], function (Handlebars) {
+  function eachOnly(array, index, options) {
+    var ret = '';
+    var item;
+    if (index < 0) {
+      item = array[(array.length - index)];
+    } else {
+      item = array[index];
+    }
+    if (item) {
+      ret = options.fn ? options.fn(item) : item;
+    }
+    return ret;
+  }
+  Handlebars.registerHelper('eachOnly', eachOnly);
+  return eachOnly;
+});
 /* START_TEMPLATE */
-define('hbs!widgets/acception/templates/dashboard',['hbs','handlebars'], function( hbs, Handlebars ){ 
+define('hbs!widgets/acception/templates/dashboard',['hbs','handlebars','template/helpers/eachOnly'], function( hbs, Handlebars ){ 
 var t = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
   
+  
+  return "\n<div class=\"loading\"></div>\n";}
 
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n<header>\n<p id=\"acception-count\">";
+  stack1 = depth0.items;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.length;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</p>\n<h1 id=\"acception-label\">承認待ちの記事</h1>\n</header>\n<ul>\n";
+  stack1 = depth0.items;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</ul>\n";
+  return buffer;}
+function program4(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n";
+  stack1 = depth0.assets;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.length;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(8, program8, data),fn:self.program(5, program5, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;}
+function program5(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n  ";
+  stack1 = depth0.assets;
+  foundHelper = helpers.eachOnly;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, 0, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)}) : helperMissing.call(depth0, "eachOnly", stack1, 0, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;}
+function program6(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n  <li><img src=\"";
+  foundHelper = helpers.url;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.url; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\" /></li>\n  ";
+  return buffer;}
 
-  return "<header>\n<p id=\"acception-count\">3</p>\n<h1 id=\"acception-label\">承認待ちの記事</h1>\n</header>\n<ul>\n<li><img src=\"widgets/acception/assets/a.jpg\"></li>\n<li><img src=\"widgets/acception/assets/b.jpg\"></li>\n<li><img src=\"widgets/acception/assets/c.jpg\"></li>\n</ul>\n\n";});
+function program8(depth0,data) {
+  
+  
+  return "\n  <li class=\"no-image\"></li>\n";}
+
+  stack1 = depth0.loading;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;});
 Handlebars.registerPartial('widgets_acception_templates_dashboard', t);
 return t;
 });

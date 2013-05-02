@@ -17,7 +17,6 @@
     "require-handlebars-plugin": "~0.4.0",
     "hammerjs": "~1.0.5",
     "jquery-smartresize": "git://github.com/louisremi/jquery-smartresize.git",
-    "jquery.cookie": "1.3.1",
     "morris.js": "~0.4.2",
     "requirejs-text": "~2.0.5",
     "requirejs-plugins": "latest",

@@ -8,6 +8,7 @@
   "name": "acception",
   "id": "acception",
   "dashboardView": "dashboard",
+  "viewRoute": ":blog_id/:id",
   "viewView": "view"
 }, {
   "name": "feedbacks",

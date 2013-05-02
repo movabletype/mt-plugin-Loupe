@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/vent'],
+define(['backbone.marionette', 'js/commands'],
 
-function (Marionette, vent) {
+function (Marionette, commands) {
   'use strict';
 
   var appRoutes = {
@@ -13,14 +13,19 @@ function (Marionette, vent) {
     initialize: function (options, widgets) {
       _.forEach(widgets, function (widget) {
         if (widget.id && (widget.viewTemplate || widget.viewView)) {
-          var name = widget.id;
-          var methodName = 'moveWidgetPage_' + name;
+          var name;
+          if (widget.viewRoute) {
+            name = widget.id + '/' + widget.viewRoute;
+          } else {
+            name = widget.id;
+          }
+          var methodName = 'moveWidgetPage_' + widget.id;
           var controller = options.controller;
           this.route(name, methodName, _.bind(controller[methodName], controller));
         }
       }, this);
 
-      vent.on('router:navigate', function (dest) {
+      commands.setHandler('router:navigate', function (dest) {
         if (dest !== null && dest !== undefined) {
           this.navigate(dest, true);
         }

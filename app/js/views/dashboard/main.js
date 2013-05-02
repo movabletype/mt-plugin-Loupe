@@ -16,6 +16,7 @@ function (_, Backbone, Marionette, MarionetteHandlebars, template) {
 
     initialize: function (options) {
       this.widgets = options.widgets;
+      this.params = options.params;
     },
 
     onRender: function () {
@@ -28,7 +29,9 @@ function (_, Backbone, Marionette, MarionetteHandlebars, template) {
 
         if (widget.dashboardView) {
           require([path + widget.dashboardView.replace(/\.js$/, '')], function (View) {
-            that[id].show(new View());
+            that[id].show(new View({
+              params: that.params
+            }));
           });
         } else {
           var match = widget.dashboardTemplate.match(/^(.*)\.(.*)$/);
@@ -54,7 +57,9 @@ function (_, Backbone, Marionette, MarionetteHandlebars, template) {
               template: template
             });
 
-            that[id].show(new View());
+            that[id].show(new View({
+              params: that.params
+            }));
           });
         }
       }, this);

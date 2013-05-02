@@ -1,57 +1,150 @@
-/* line 1, ../../../widgets/acception/style.scss */
+/* line 25, ../../../widgets/acception/style.scss */
 #widget-acception {
   min-height: 320px;
   padding: 30px 0;
   background-color: #1e2142;
   color: #ffffff;
   text-align: center;
+  position: relative;
 }
-/* line 7, ../../../widgets/acception/style.scss */
+/* line 32, ../../../widgets/acception/style.scss */
+#widget-acception .loading {
+  background-image: url("../assets/images/indicator-white.gif");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: center center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+/* line 43, ../../../widgets/acception/style.scss */
 #widget-acception h1 {
   margin: 0;
   font-weight: normal;
   font-size: 1em;
 }
-/* line 12, ../../../widgets/acception/style.scss */
-#widget-acception ul {
-  list-style: none;
-  margin: 30px 0 0 0;
-  padding: 0;
-}
-/* line 17, ../../../widgets/acception/style.scss */
-#widget-acception li {
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0;
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  border-radius: 100%;
-  border: 6px solid white;
-  background-color: #fff;
-  display: inline-block;
-}
-/* line 28, ../../../widgets/acception/style.scss */
-#widget-acception li img {
-  height: 100%;
-}
-/* line 31, ../../../widgets/acception/style.scss */
-#widget-acception li:nth-of-type(3n+2) {
-  margin: 0 10px;
-}
-/* line 36, ../../../widgets/acception/style.scss */
+/* line 49, ../../../widgets/acception/style.scss */
 #widget-acception:before, #widget-acception:after {
   content: " ";
   /* 1 */
   display: table;
   /* 2 */
 }
-/* line 42, ../../../widgets/acception/style.scss */
+/* line 55, ../../../widgets/acception/style.scss */
 #widget-acception:after {
   clear: both;
 }
+/* line 58, ../../../widgets/acception/style.scss */
+#widget-acception ul {
+  list-style: none;
+  margin: 30px auto 0;
+  padding: 0;
+  width: 300px;
+  text-align: left;
+}
+/* line 2, ../../../widgets/acception/style.scss */
+#widget-acception li {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 90px;
+  height: 90px;
+  overflow: hidden;
+  border-radius: 100%;
+  border: 6px solid white;
+  background-color: #fff;
+  display: inline-block;
+}
+/* line 13, ../../../widgets/acception/style.scss */
+#widget-acception li img {
+  height: 100%;
+}
+/* line 16, ../../../widgets/acception/style.scss */
+#widget-acception li:nth-of-type(3n+2) {
+  margin: 0 10px;
+}
+/* line 19, ../../../widgets/acception/style.scss */
+#widget-acception li.no-image {
+  background-color: #f0f0f0;
+}
 
-/* line 47, ../../../widgets/acception/style.scss */
+/* line 69, ../../../widgets/acception/style.scss */
+#acception-view header {
+  margin-bottom: 8px;
+  background-color: #1e2142;
+  padding: 10px;
+}
+/* line 73, ../../../widgets/acception/style.scss */
+#acception-view header h1 {
+  margin: 0;
+  padding: 20px 10px 20px;
+  color: #fff;
+  text-align: center;
+  font-weight: normal;
+}
+/* line 81, ../../../widgets/acception/style.scss */
+#acception-view .inner {
+  padding: 8px 10px;
+}
+/* line 84, ../../../widgets/acception/style.scss */
+#acception-view .content {
+  background-color: #1e2142;
+  padding: 10px 20px 30px;
+}
+/* line 88, ../../../widgets/acception/style.scss */
+#acception-view ul {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+}
+/* line 94, ../../../widgets/acception/style.scss */
+#acception-view .title {
+  color: #fff;
+  text-align: left;
+  padding: 10px 0 20px;
+}
+/* line 99, ../../../widgets/acception/style.scss */
+#acception-view .accept-button {
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-color: #547dd7;
+  cursor: pointer;
+  border: transparent 0;
+  padding: 10px;
+}
+/* line 2, ../../../widgets/acception/style.scss */
+#acception-view li {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 90px;
+  height: 90px;
+  overflow: hidden;
+  border-radius: 100%;
+  border: 6px solid white;
+  background-color: #fff;
+  display: inline-block;
+}
+/* line 13, ../../../widgets/acception/style.scss */
+#acception-view li img {
+  height: 100%;
+}
+/* line 16, ../../../widgets/acception/style.scss */
+#acception-view li:nth-of-type(3n+2) {
+  margin: 0 10px;
+}
+/* line 19, ../../../widgets/acception/style.scss */
+#acception-view li.no-image {
+  background-color: #f0f0f0;
+}
+
+/* line 113, ../../../widgets/acception/style.scss */
 #acception-count {
   font-size: 4em;
   line-height: 1em;

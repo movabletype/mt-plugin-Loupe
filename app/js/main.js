@@ -60,7 +60,7 @@ require.config({
   locale: 'ja_jp',
   hbs: {
     disableI18n: false,
-    disableHelpers: true,
+    disableHelpers: false,
     templateExtension: "hbs",
     compileOptions: {}
   }

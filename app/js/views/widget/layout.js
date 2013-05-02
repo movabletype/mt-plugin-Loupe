@@ -1,11 +1,12 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/widget/templates/layout'],
+define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/widget/templates/layout', 'js/views/common/header'],
 
-function (Marionette, MarionetteHandlebars, template) {
+function (Marionette, MarionetteHandlebars, template, HeaderView) {
   "use strict";
 
   return Marionette.Layout.extend({
     initialize: function (options) {
       this.widget = options.widget;
+      this.params = options.params;
     },
 
     template: {
@@ -23,13 +24,16 @@ function (Marionette, MarionetteHandlebars, template) {
       this.$el.addClass('container');
       var that = this;
       var id = this.widget.id;
+      var params = this.params;
       var path = 'widgets/' + id + '/';
+
+      this.header.show(new HeaderView());
 
       if (this.widget.viewView) {
         require([path + that.widget.viewView.replace(/\.js$/, '')], function (View) {
-          console.log('foobar');
-          console.log(that.main);
-          that.main.show(new View());
+          that.main.show(new View({
+            params: params
+          }));
         });
       } else {
         var match = this.widget.viewTemplate.match(/^(.*)\.(.*)$/);
@@ -53,7 +57,9 @@ function (Marionette, MarionetteHandlebars, template) {
           var View = Marionette.ItemView.extend({
             template: template
           });
-          that.main.show(new View());
+          that.main.show(new View({
+            params: params
+          }));
         });
       }
     }

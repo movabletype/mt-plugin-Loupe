@@ -76,10 +76,8 @@ module.exports = function (grunt) {
       options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
-          evil: true,
-          define: {
-            'window': false
-          }
+          unused: false,
+          evil: true
         },
         files: {
           src: ['Gruntfile.js']
@@ -144,7 +142,10 @@ module.exports = function (grunt) {
         'build/sass',
         'build/template',
         'build/templates',
-        'build/widgets'
+        'build/widgets',
+        'build/assets/icons/index.html',
+        'build/assets/icons/license.txt',
+        'build/assets/icons/Read Me.txt',
       ],
       afterTest: ['template.js']
     },
@@ -159,7 +160,7 @@ module.exports = function (grunt) {
         },
         {
           expand: true,
-          src: ['**/api.js', '**/endpoints.js'],
+          src: ['**/app.js', '**/endpoints.js'],
           cwd: settings.mtApiPath,
           dest: 'app/lib/api'
         }
@@ -223,7 +224,7 @@ module.exports = function (grunt) {
     connect: {
       server: {
         options: {
-          hostname: '172.17.0.1',
+          hostname: grunt.option('host'),
           port: 9001,
           keepalive: true
         }
@@ -539,7 +540,6 @@ module.exports = function (grunt) {
     'symlink:prep',
     'copy:prep',
     'jade:dev',
-    'sass-convert',
     'compass:dev',
     'copy:beforeConcat',
     'concat:dev'

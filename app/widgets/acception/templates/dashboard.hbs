@@ -1,10 +1,21 @@
+{{#if loading}}
+<div class="loading"></div>
+{{else}}
 <header>
-<p id="acception-count">3</p>
+<p id="acception-count">{{items.length}}</p>
 <h1 id="acception-label">承認待ちの記事</h1>
 </header>
 <ul>
-<li><img src="widgets/acception/assets/a.jpg"></li>
-<li><img src="widgets/acception/assets/b.jpg"></li>
-<li><img src="widgets/acception/assets/c.jpg"></li>
+{{#each items}}
+<a href="#acception/{{blog.id}}/{{this.id}}">
+  {{#if this.assets.length}}
+  {{#eachOnly this.assets 0}}
+  <li><img src="{{url}}" /></li>
+  {{/eachOnly}}
+{{else}}
+  <li class="no-image"></li>
+{{/if}}
+</a>
+{{/each}}
 </ul>
-
+{{/if}}

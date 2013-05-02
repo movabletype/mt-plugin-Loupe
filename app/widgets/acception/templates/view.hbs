@@ -1,3 +1,18 @@
-<section id="accept">
-俺は承認するページ
+<section id="acception-view">
+  <div class="inner">
+    <header><h1>承認待ちの記事</h1></header>
+    <div class="content">
+      <ul>
+    {{#if this.assets.length}}
+      {{#eachOnly this.assets 0}}
+      <li><img src="{{url}}" /></li>
+      {{/eachOnly}}
+    {{else}}
+      <li class="no-image"></li>
+    {{/if}}
+  </ul>
+    <div class="title">{{title}}</div>
+    <input type="button" value="承認する" class="accept-button">
+    </div>
+  </div>
 </section>

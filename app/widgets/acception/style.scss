@@ -1,25 +1,10 @@
-#widget-acception {
-  min-height: 320px;
-  padding: 30px 0;
-  background-color: #1e2142;
-  color: #ffffff;
-  text-align: center;
-  h1 {
-    margin: 0;
-    font-weight: normal;
-    font-size: 1em;
-  }
-  ul {
-    list-style: none;
-    margin: 30px 0 0 0;
-    padding: 0;
-  }
+@mixin round-asset {
   li {
     margin-left: 0;
     margin-right: 0;
     padding: 0;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     overflow: hidden;
     border-radius: 100%;
     border: 6px solid white;
@@ -31,6 +16,34 @@
     &:nth-of-type(3n+2) {
       margin: 0 10px;
     }
+    &.no-image {
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+#widget-acception {
+  min-height: 320px;
+  padding: 30px 0;
+  background-color: #1e2142;
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+  .loading {
+    background-image: url("../assets/images/indicator-white.gif");
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  h1 {
+    margin: 0;
+    font-weight: normal;
+    font-size: 1em;
   }
   &:before,
   &:after {
@@ -42,6 +55,59 @@
   &:after {
     clear: both;
   }
+  ul {
+    list-style: none;
+    margin: 30px auto 0;
+    padding: 0;
+    width: 300px;
+    text-align: left;
+  }
+  @include round-asset;
+}
+
+#acception-view {
+  header {
+    margin-bottom: 8px;
+    background-color: #1e2142;
+    padding: 10px;
+    h1 {
+      margin: 0;
+      padding: 20px 10px 20px;
+      color: #fff;
+      text-align: center;
+      font-weight: normal;
+    }
+  }
+  .inner {
+    padding: 8px 10px;
+  }
+  .content {
+    background-color: #1e2142;
+    padding: 10px 20px 30px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 20px 0;
+    text-align: center;
+  }
+  .title {
+    color: #fff;
+    text-align: left;
+    padding: 10px 0 20px;
+  }
+  .accept-button {
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-color: #547dd7;
+    cursor: pointer;
+    border: transparent 0;
+    padding: 10px;
+  }
+  @include round-asset;
 }
 
 #acception-count {

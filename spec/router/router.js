@@ -1,12 +1,13 @@
   describe("router", function () {
     'use strict';
 
-    var AppRouter, Controller, router, controller, vent, widgets;
+    var AppRouter, Controller, router, controller, commands, widgets;
 
     var app = require('js/app');
+    var mtapi = require('js/mtapi');
     AppRouter = require('js/router/router');
     Controller = require('js/router/controller');
-    vent = require('js/vent');
+    commands = require('js/commands');
 
     widgets = [{
       "name": "test",
@@ -70,26 +71,26 @@
       expect(controller.moveDashboard).toHaveBeenCalled();
     });
 
-    it("router should listen navigate event and navigate it", function () {
+    it("router should listen navigate command and navigate it", function () {
       spyOn(controller, "moveWidgetPage_test");
       router = new AppRouter({
         controller: controller
       }, widgets);
       runs(function () {
-        vent.trigger('navigate', 'test');
+        commands.execute('router:navigate', 'test');
       });
       runs(function () {
         expect(controller.moveWidgetPage_test).toHaveBeenCalled();
       });
     });
 
-    it("do nothing if navigate event have no params", function () {
+    it("do nothing if navigate command have no params", function () {
       spyOn(controller, "moveDashboard").andCallThrough();
       router = new AppRouter({
         controller: controller
       }, widgets);
       runs(function () {
-        vent.trigger('navigate');
+        commands.execute('router:navigate');
       });
       runs(function () {
         expect(controller.moveDashboard).not.toHaveBeenCalled();

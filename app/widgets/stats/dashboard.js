@@ -1,6 +1,6 @@
-define(['jquery', 'backbone.marionette', 'backbone.marionette.handlebars', 'js/vent', 'hbs!widgets/stats/templates/dashboard', 'easeljs'],
+define(['jquery', 'backbone.marionette', 'backbone.marionette.handlebars', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'easeljs'],
 
-function ($, Marionette, MarionetteHandlebars, vent, template, createjs) {
+function ($, Marionette, MarionetteHandlebars, commands, template, createjs) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -16,7 +16,7 @@ function ($, Marionette, MarionetteHandlebars, vent, template, createjs) {
 
     initialize: function () {
       this.$el.hammer().on('tap', function () {
-        vent.trigger('router:navigate', 'stats');
+        commands.execute('router:navigate', 'stats');
       });
     },
 
