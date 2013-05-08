@@ -2,17 +2,23 @@
   <div class="inner">
     <header><h1>承認待ちの記事</h1></header>
     <div class="content">
-      <ul>
-    {{#if this.assets.length}}
-      {{#eachOnly this.assets 0}}
-      <li><img src="{{url}}" /></li>
-      {{/eachOnly}}
+    {{#if loading}}
+      <div class="loading"></div>
     {{else}}
-      <li class="no-image"></li>
+      <ul id="acception-item">
+        <li>
+          {{#if assets.length}}
+            {{#eachOnly assets 0}}
+              <img src="{{url}}" />
+            {{/eachOnly}}
+          {{else}}
+              <span class="no-image"></span>
+          {{/if}}
+        </li>
+      </ul>
+      <div class="title">{{title}}</div>
+      <input type="button" value="承認する" class="accept-button">
     {{/if}}
-  </ul>
-    <div class="title">{{title}}</div>
-    <input type="button" value="承認する" class="accept-button">
     </div>
   </div>
 </section>

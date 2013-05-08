@@ -4,7 +4,7 @@
 app/index.html
 app/css/lib/*.css
 app/css/sass/*.css
-app/css/widgets/*.css
+app/css/widgets/*
 app/css/style.css
 app/lib/api
 app/template

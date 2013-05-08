@@ -7,9 +7,9 @@
 }, {
   "name": "acception",
   "id": "acception",
-  "dashboardView": "dashboard",
+  "dashboardView": "dashboard/dashboard",
   "viewRoute": ":blog_id/:id",
-  "viewView": "view"
+  "viewView": "view/view"
 }, {
   "name": "feedbacks",
   "id": "feedbacks",
