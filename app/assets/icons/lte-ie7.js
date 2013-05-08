@@ -7,7 +7,9 @@ window.onload = function() {
 	}
 	var icons = {
 			'icon-arrow-left' : '&#x3c;',
-			'icon-menu' : '&#x3d;'
+			'icon-menu' : '&#x3d;',
+			'icon-checkmark' : '&#x76;',
+			'icon-pen' : '&#x23;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
@@ -26,4 +28,4 @@ window.onload = function() {
 			addIcon(el, icons[c[0]]);
 		}
 	}
-};
+};};
