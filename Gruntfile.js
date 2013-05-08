@@ -537,7 +537,9 @@ module.exports = function (grunt) {
     'cssmin:build',
     'copy:build',
     'jade:build',
-    'htmlmin'
+    'htmlmin',
+    'copy:beforeConcat',
+    'concat:dev'
   ]);
 
   grunt.registerTask('dev', [
