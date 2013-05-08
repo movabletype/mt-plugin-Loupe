@@ -130,6 +130,9 @@ module.exports = function (grunt) {
         'build/index.html',
         'build/jade',
         'build/js/boot.js',
+        'build/js/commands.js',
+        'build/js/mtapi',
+        'build/js/mtapi.js',
         'build/js/router',
         'build/js/main.js',
         'build/js/lib',
@@ -145,7 +148,7 @@ module.exports = function (grunt) {
         'build/widgets',
         'build/assets/icons/index.html',
         'build/assets/icons/license.txt',
-        'build/assets/icons/Read Me.txt',
+        'build/assets/icons/Read Me.txt'
       ],
       afterTest: ['template.js']
     },
@@ -400,7 +403,7 @@ module.exports = function (grunt) {
             "jquery": "components/jquery/jquery.min",
             "jquery.hammer": "components/hammerjs/dist/jquery.hammer.min",
             "jquery.cookie": "components/jquery.cookie/jquery.cookie",
-            "jquery-smartresize": "components/jquery-smartresize/jquery.debouncedresize",
+            "jquery.smartresize": "components/jquery-smartresize/jquery.debouncedresize",
             "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr.min",
             "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
             "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette.min",
@@ -447,7 +450,8 @@ module.exports = function (grunt) {
                 "morris",
                 "jquery.hammer",
                 "jquery.cookie",
-                "jquery-smartresize",
+                "jquery.smartresize",
+                "jquery.smartscroll",
                 "easeljs"
               ]
           },
@@ -457,14 +461,14 @@ module.exports = function (grunt) {
             exclude: ['vendor']
           },
           {
-            name: 'widget',
-            include: widgetLibs.concat(widgetTemplates),
+            name: 'app',
+            include: ['boot'],
             exclude: ['vendor', 'template']
           },
           {
-            name: 'app',
-            include: ['boot'],
-            exclude: ['vendor', 'template', 'widget']
+            name: 'widget',
+            include: widgetLibs.concat(widgetTemplates),
+            exclude: ['vendor', 'template', 'app']
           }
           ],
 
