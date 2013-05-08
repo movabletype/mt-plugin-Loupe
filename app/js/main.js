@@ -8,7 +8,8 @@ require.config({
     "jquery": "components/jquery/jquery",
     "jquery.hammer": "components/hammerjs/dist/jquery.hammer",
     "jquery.cookie": "components/jquery.cookie/jquery.cookie",
-    "jquery-smartresize": "components/jquery-smartresize/jquery.debouncedresize",
+    "jquery.smartresize": "components/jquery-smartresize/jquery.debouncedresize",
+    "jquery.smartscroll": "lib/smartscroll/smartscroll",
     "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr",
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter",
     "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette",
@@ -37,7 +38,8 @@ require.config({
       deps: ['jquery', 'underscore']
     },
     'jquery.hammer': ['jquery'],
-    'jquery-smartresize': ['jquery'],
+    'jquery.smartresize': ['jquery'],
+    'jquery.smartscroll': ['jquery', 'jquery.smartresize'],
     'jquery.cookie': ['jquery'],
     'modernizr': {
       exports: 'Modernizr'
@@ -56,7 +58,7 @@ require.config({
       deps: ['mtapi']
     }
   },
-  deps: ['mtapi', 'mtendpoints', 'jquery', 'jquery.hammer', 'jquery.cookie', 'jquery-smartresize', 'underscore', 'backbone', 'easeljs'],
+  deps: ['mtapi', 'mtendpoints', 'jquery', 'jquery.hammer', 'jquery.cookie', 'jquery.smartresize', 'jquery.smartscroll', 'underscore', 'backbone', 'backbone.localStorage', 'easeljs'],
   locale: 'ja_jp',
   hbs: {
     disableI18n: false,
