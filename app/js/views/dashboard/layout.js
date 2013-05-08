@@ -22,11 +22,27 @@ function (Marionette, MarionetteHandlebars, template, HeaderView, MainLayout) {
 
     onRender: function () {
       this.$el.addClass('container');
-      this.header.show(new HeaderView());
       this.main.show(new MainLayout({
         widgets: this.widgets,
         params: this.params
       }));
+    },
+
+    onShow: function () {
+      this.header.show(new HeaderView());
+
+      var handleShadow = function () {
+        var $this = $(this);
+        if ($this.scrollTop() > 0) {
+          $('#header').addClass('shadow');
+        } else {
+          $('#header').removeClass('shadow');
+          $('.main-container').one('scroll', handleShadow);
+        }
+      };
+
+      $('.main-container').one('scroll', handleShadow);
+      $('.main-container').on('smartscroll', handleShadow);
     }
   });
 });

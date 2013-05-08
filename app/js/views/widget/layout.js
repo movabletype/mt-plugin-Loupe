@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/widget/templates/layout', 'js/views/common/header'],
+define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/widget/templates/layout', 'js/views/common/view_header'],
 
 function (Marionette, MarionetteHandlebars, template, HeaderView) {
   "use strict";

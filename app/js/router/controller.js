@@ -1,60 +1,50 @@
-define(['jquery', 'backbone.marionette', 'js/mtapi', 'js/commands'],
+define(['jquery', 'backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/mtapi/user', 'js/mtapi/blogs'],
 
-function ($, Marionette, mtapi, commands) {
+function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
   "use strict";
   return Marionette.Controller.extend({
-    auth: function (callback, route) {
-      var that = this;
-      var accessTokenCookie = $.cookie('mt_api_access_token_default') || $.cookie('mt_api_access_token');
-      if (accessTokenCookie && this.token && this.token.expire && this.token.expire > Date.now()) {
-        if (DEBUG) {
-          console.log(accessTokenCookie);
-          console.log(this.token);
-        }
-        mtapi.api.getUser('me', function (resp) {
-          console.log(resp)
-          that.userId = resp.id;
-          mtapi.api.listBlogs(that.userId, function (resp) {
-            console.log(resp)
-            that.blogId = resp.items[0].id;
+    auth: function (callback) {
+      var getUserAndBlogs = _.bind(function (callback) {
+        this.user = this.user || userApi();
+        this.user.done(function (user) {
+          this.blogs = this.blogs || blogsApi(user.id);
+          this.blogs.done(function (blogs) {
             $('#app-building').remove();
             callback({
-              userId: that.userId,
-              blogId: that.blogId
+              userId: user.id,
+              blogId: blogs.items[0].id
             });
-          })
-        })
+          });
+        });
+      }, this);
+
+      if (this.token && this.token.expire && this.token.expire > Date.now()) {
+        if (DEBUG) {
+          console.log('user already has token, so skip request token');
+          console.log(this.token);
+        }
+        getUserAndBlogs(callback);
       } else {
-        mtapi.api.token(function (res) {
+        mtapi.api.token(_.bind(function (res) {
           if (!res.error) {
             if (DEBUG) {
+              console.log('got token successfully');
               console.log(res);
             }
             res.expire = Date.now() + res.expires_in * 1000;
-            that.token = res;
-            mtapi.api.getUser('me', function (resp) {
-              console.log(resp)
-              that.userId = resp.id;
-              mtapi.api.listBlogs(that.userId, function (resp) {
-                console.log(resp)
-                that.blogId = resp.items[0].id;
-                $('#app-building').remove();
-                callback({
-                  userId: that.userId,
-                  blogId: that.blogId
-                });
-              })
-            })
+            this.token = res;
+            getUserAndBlogs(callback);
           } else {
             if (DEBUG) {
               console.log(res.error);
-              console.log('move to Signin screen');
+              console.log('Requesting token is failed. Move to Signin screen');
             }
-            route = route || '';
-            window.sessionStorage.setItem('currentRoute', route);
+            var hash = location.href.indexOf(/#/);
+            var route = hash !== -1 ? location.href.slice(hash + 1) : '';
+            window.sessionStorage.setItem('routeCache', route);
             location.replace(mtapi.baseUrl + '/v' + mtapi.api.getVersion() + '/authorization?redirect_uri=' + location.href);
           }
-        });
+        }, this));
       }
     },
     initialize: function (options) {
@@ -71,21 +61,21 @@ function ($, Marionette, mtapi, commands) {
               widget: widget,
               params: params
             });
-          }, widget.id);
+          });
         };
       }, this);
     },
     moveDashboard: function () {
       this.auth(function (data) {
-        var params = {}
+        var params = {};
         params.userId = data.userId;
         params.blogId = data.blogId;
         commands.execute('move:dashboard', params);
-      }, null);
+      });
     },
     authorizationCallback: function () {
-      var route = window.sessionStorage.getItem('currentRoute') || '';
-      window.sessionStorage.removeItem('currentRoute');
+      var route = window.sessionStorage.getItem('routeCache') || '';
+      window.sessionStorage.removeItem('routeCache');
       commands.execute('router:navigate', route);
     }
   });
