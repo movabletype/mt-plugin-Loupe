@@ -4,7 +4,12 @@
     <div class="content">
     {{#if loading}}
       <div class="loading"></div>
-    {{else}}
+    {{/if}}
+    {{#if accepted}}
+      <div class="accepted"><span class="icon-checkmark"></span><span class="message">承認しました！</span></div>
+    {{/if}}
+    {{#if id}}
+    {{#ifIs status eq="Review"}}    
       <ul id="acception-item">
         <li>
           {{#if assets.length}}
@@ -12,12 +17,17 @@
               <img src="{{url}}" />
             {{/eachOnly}}
           {{else}}
-              <span class="no-image"></span>
+              <span class="icon-pen no-image"></span>
           {{/if}}
         </li>
       </ul>
       <div class="title">{{title}}</div>
-      <input type="button" value="承認する" class="accept-button">
+      <div id="accept-button">承認する</div>
+    {{else}}
+      <div id="no-acceptance-needed-for-this-entry">      
+      この記事は承認待ちではありません
+      </div>
+    {{/ifIs}}
     {{/if}}
     </div>
   </div>

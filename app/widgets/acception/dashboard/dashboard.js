@@ -15,6 +15,7 @@ function (Marionette, MarionetteHandlebars, app, commands, Collection, ItemView,
     initialize: function (options) {
       this.blogId = options.params.blogId;
       this.collection = app.widgetAcceptionCollection;
+      console.log(this.collection);
       if (this.collection) {
         this.collection.fetch({
           blogId: this.blogId,
@@ -28,14 +29,24 @@ function (Marionette, MarionetteHandlebars, app, commands, Collection, ItemView,
         });
       }
 
-      this.listenTo(this.collection, 'add', function (item, collection, options) {
+      this.listenTo(this.collection, 'add', function (item, collection) {
+        if (DEBUG) {
+          console.log(item.id + ' added to collection');
+        }
         item.save();
-      })
+        this.collection.push(item);
+      });
+
+      this.listenTo(this.collection, 'remove', function (item, collection) {
+        if (DEBUG) {
+          console.log(item.id + ' remove from collection');
+        }
+      });
 
       this.listenTo(this.collection, 'reset', function () {
         this.collection.each(function (model) {
           model.save();
-        })
+        });
       });
 
       this.listenTo(this.collection, 'sync', function () {
@@ -48,8 +59,8 @@ function (Marionette, MarionetteHandlebars, app, commands, Collection, ItemView,
         e.stopPropagation();
         var route = $(this).data('route') || '';
         commands.execute('router:navigate', route);
-        false;
-      })
+        return false;
+      });
     },
 
     serializeData: function () {
@@ -59,11 +70,11 @@ function (Marionette, MarionetteHandlebars, app, commands, Collection, ItemView,
           totalResults: this.collection.totalResults,
           items: this.collection.toJSON()
         };
+        this.loading = false;
       } else {
-        data = {
-          loading: true
-        };
+        this.loading = true;
       }
+      data.loading = this.loading ? true : false;
       return data;
     }
   });
