@@ -415,7 +415,7 @@ module.exports = function (grunt) {
             "eve": "lib/raphael/eve",
             "raphael": "lib/raphael/raphael",
             "morris": "components/morris.js/morris.min",
-            "mtchart": "lib/mtchart/mtchart",
+            "mtchart.all": "lib/mtchart/mtchart_all",
             "main": "js/main",
             "boot": "js/boot",
             "app": "js/app",
