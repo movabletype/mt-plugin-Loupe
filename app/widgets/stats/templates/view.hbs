@@ -1,5 +1,11 @@
-<section id="main-stats">
-  工事中
+<section id="stats-view">
+  <div class="inner">
+    <header><h1>過去一週間のアクセス</h1></header>
+    <div class="content">
+    {{#if loading}}
+      <div class="loading"></div>
+    {{/if}}
+      <div id="my-graph"></div>
+    </div>
+  </div>
 </section>
-
-<div id="my-graph"></div>

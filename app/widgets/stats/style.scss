@@ -1,5 +1,9 @@
+@import "compass/css3/transform";
+
+$background-color: #16878a;
+
 #widget-stats {
-  background-color: #16878a;
+  background-color: $background-color;
   header {
     padding: 10px;
     text-align: center;
@@ -19,4 +23,43 @@
 
 #canvas {
   display: block;
+}
+
+#stats-view {
+  header {
+    margin-bottom: 8px;
+    background-color: $background-color;
+    padding: 10px;
+    h1 {
+      margin: 0;
+      padding: 20px 10px 20px;
+      color: #fff;
+      text-align: center;
+      font-weight: normal;
+    }
+  }
+  .inner {
+    padding: 8px 10px;
+  }
+  svg {
+    @include transform(rotate(90deg));
+  }
+  .loading {
+    background-color: rgba($background-color, 0.8);
+    background-image: url("../assets/images/indicator-white.gif");
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  .content {
+    background-color: $background-color;
+    padding: 10px 20px 30px;
+    min-height: 300px;
+    position: relative;
+  }
 }

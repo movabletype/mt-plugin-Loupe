@@ -165,7 +165,7 @@ module.exports = function (grunt) {
           expand: true,
           src: ['**/app.js', '**/endpoints.js'],
           cwd: settings.mtApiPath,
-          dest: 'app/lib/api'
+          dest: 'app/lib/data-api'
         }
         ]
       },

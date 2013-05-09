@@ -1,6 +1,6 @@
-define(['jquery', 'mtapi', 'mtendpoints'], function ($, API) {
+define(['jquery', 'mtapi', 'mtendpoints'], function ($, DataAPI) {
   var mtApiCGIPath = $('#main-script').data('mtapi');
-  var api = new API({
+  var api = new DataAPI({
     baseUrl: mtApiCGIPath
   });
   return {

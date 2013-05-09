@@ -62,6 +62,21 @@ function (Marionette, MarionetteHandlebars, template, HeaderView) {
           }));
         });
       }
+    },
+    
+    onShow: function(){
+      var handleShadow = function () {
+        var $this = $(this);
+        if ($this.scrollTop() > 0) {
+          $('#header').addClass('shadow');
+        } else {
+          $('#header').removeClass('shadow');
+          $('.main-container').one('scroll', handleShadow);
+        }
+      };
+
+      $('.main-container').one('scroll', handleShadow);
+      $('.main-container').on('smartscroll', handleShadow);
     }
   });
 });

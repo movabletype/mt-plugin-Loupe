@@ -22,6 +22,7 @@
     "morris.js": "~0.4.1",
     "requirejs-text": "~2.0.5",
     "requirejs-plugins": "~1.0.1",
-    "EaselJS": "latest"
+    "EaselJS": "latest",
+    "conditionizr": "git://github.com/conditionizr/conditionizr.git"
   }
 }

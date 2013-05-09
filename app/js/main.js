@@ -33,8 +33,8 @@ require.config({
     "text": "components/requirejs-text/text",
     "json": "components/requirejs-plugins/src/json",
     "easeljs": "components/EaselJS/lib/easeljs-0.6.0.min",
-    "mtapi": "lib/api/v1/js/app",
-    "mtendpoints": "lib/api/v1/js/endpoints"
+    "mtapi": "lib/data-api/v1/js/app",
+    "mtendpoints": "lib/data-api/v1/js/endpoints"
   },
   shim: {
     underscore: {
@@ -59,7 +59,7 @@ require.config({
       exports: 'createjs'
     },
     'mtapi': {
-      exports: 'MT.API'
+      exports: 'MT.DataAPI'
     },
     'mtendpoints': {
       deps: ['mtapi']

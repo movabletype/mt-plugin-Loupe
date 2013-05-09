@@ -285,8 +285,8 @@ function (Modernizr, Morris, MTChartData, MTChartDate, MTChartRange) {
 
     // this magical value 0.6741573 is caliculated below
     // 240 / 356 (jQuery(window).height() of iPhone 4S)
-    height = Math.max(Math.ceil(jQuery(window).height() * 0.6741573), 200);
-    this.$graphEl = jQuery('<div id="' + this.id + '" style="height:' + height + 'px">').prependTo(this.$graphContainer);
+    height = 280; //Math.max(Math.ceil(jQuery(window).height() * 0.6741573), 200);
+    this.$graphEl = jQuery('<div id="' + this.id + '" style="height:' + height + 'px; width: 280px">').prependTo(this.$graphContainer);
 
     if (this.config['labelTemplate']) {
       var that = this;
@@ -323,14 +323,16 @@ function (Modernizr, Morris, MTChartData, MTChartDate, MTChartRange) {
       'labels': this.getYLabels_(yLength, this.config['yLabels']),
       'ymax': maxY,
       'ymin': 0,
-      'numLines': this.getNumLines_(maxY),
+      'numLines': 1, //this.getNumLines_(maxY),
       'lineWidth': lineWidth,
       'pointSize': pointSize,
       'labelColor': '#444444',
       'barColors': this.chartColors,
       'lineColors': this.chartColors,
       'colors': this.chartColors,
-      'pointStrokeColors': pointStrokeColors
+      'pointStrokeColors': pointStrokeColors,
+      'gridTextSize': 0,
+      'gridLineColor': '#16878a'
     };
 
     // IE8 (might be VML) occured error setting smooth false
@@ -345,6 +347,10 @@ function (Modernizr, Morris, MTChartData, MTChartDate, MTChartRange) {
       graphConfig['formatter'] = function (y) {
         return y + '(' + Math.ceil((y / totalCount * 10000)) / 100 + '%)';
       };
+    }
+
+    if (this.config['hideHover'] !== undefined) {
+      graphConfig['hideHover'] = this.config['hideHover']
     }
 
     ({
