@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'app', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
+define(['backbone.marionette', 'backbone.marionette.handlebars', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
 
-function (Marionette, MarionetteHandlebars, app, Collection, Model, template) {
+function (Marionette, MarionetteHandlebars, commands, collection, Model, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -15,28 +15,29 @@ function (Marionette, MarionetteHandlebars, app, Collection, Model, template) {
     initialize: function (params) {
       this.blogId = params.params[0];
       this.entryId = params.params[1];
-      if (app.widgetAcceptionCollection) {
-        this.collection = app.widgetAcceptionCollection;
-      } else {
-        this.collection = app.widgetAcceptionCollection = new Collection();
-      }
-
+      this.collection = collection;
       this.model = this.collection.get(this.entryId);
-      if (!this.model) {
+      this.loading = true;
+
+      if (this.model) {
+        this.loading = false;
+      } else {
         this.model = new Model();
         this.model.fetch({
           blogId: this.blogId,
-          entryId: this.entryId
+          entryId: this.entryId,
+          success: _.bind(function () {
+            this.collection.add(this.model);
+            this.loading = false;
+            this.render();
+          }, this),
+          error: _.bind(function () {
+            this.error = true;
+            this.loading = false;
+            this.render();
+          })
         });
       }
-
-      this.listenTo(this.model, 'sync', _.bind(function () {
-        this.loading = false;
-        this.render();
-        console.log(this.collection)
-        this.collection.push(this.model);
-        console.log(this.collection)
-      }, this));
 
       this.$el.hammer().on('touch', '#accept-button', _.bind(function () {
         this.ui.button.addClass('tapped');
@@ -46,21 +47,34 @@ function (Marionette, MarionetteHandlebars, app, Collection, Model, template) {
         this.ui.button.removeClass('tapped');
       }, this));
 
+      this.$el.hammer().on('tap', '.acception-failed .close-me', function () {
+        $(this).parent().remove();
+      });
+
       this.$el.hammer().on('tap', '#accept-button', _.bind(function () {
         this.loading = true;
         this.render();
         var options = {
           success: _.bind(function () {
             if (DEBUG) {
-              console.log('manipulating acception sccuessfully')
+              console.log('acception sccuess')
             }
-            this.model.save();
             this.loading = false;
             this.accepted = true;
+            this.collection.remove(this.model);
+            this.collection.totalResults = this.collection.totalResults - 1;
+            this.render();
+          }, this),
+          error: _.bind(function () {
+            if (DEBUG) {
+              console.log('failed acception')
+            }
+            this.loading = false;
+            this.acceptionFailed = true;
             this.render();
           }, this)
         }
-        this.model.publish(options)
+        this.model.sync('update', this.model, options);
       }, this));
 
     },
@@ -68,12 +82,9 @@ function (Marionette, MarionetteHandlebars, app, Collection, Model, template) {
     serializeData: function () {
       var data = {};
       data = this.model.toJSON();
-      if (!data.id || data.id !== this.entryId) {
-        data = {};
-        this.loading = true;
-      }
       data.loading = this.loading ? true : false;
       data.accepted = this.accepted ? true : false;
+      data.acceptionFailed = this.acceptionFailed ? true : false;
       return data;
     }
   });

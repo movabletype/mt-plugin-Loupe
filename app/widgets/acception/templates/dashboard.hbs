@@ -3,10 +3,13 @@
 <h1 id="acception-label">承認待ちの記事</h1>
 </header>
 {{#if loading}}
-<div class="loading">
+<div class="loading"></div>
+{{/if}}
+{{#if error}}
+<div class="error">
+  <div class="message">記事の取得に失敗しました</div>
+  <div class="refetch">記事の再取得</div>
+</div>
 {{/if}}
 <ul id="acceptions-list">
 </ul>
-{{#if loading}}
-</div>
-{{/if}}

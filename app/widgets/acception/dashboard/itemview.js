@@ -2,11 +2,10 @@ define(['backbone.marionette', 'backbone.marionette.handlebars', 'widgets/accept
 
 function (Marionette, MarionetteHandlebars, Model, template) {
   "use strict";
-
   return Marionette.ItemView.extend({
     tagName: 'li',
-    template: function (model) {
-      return template(model);
+    template: function (data) {
+      return template(data);
     }
   });
 });

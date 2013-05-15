@@ -8,6 +8,9 @@
     {{#if accepted}}
       <div class="accepted"><span class="icon-checkmark"></span><span class="message">承認しました！</span></div>
     {{/if}}
+    {{#if acceptionFailed}}
+      <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>  
+    {{/if}}
     {{#if id}}
     {{#ifIs status eq="Review"}}    
       <ul id="acception-item">
@@ -28,6 +31,12 @@
       この記事は承認待ちではありません
       </div>
     {{/ifIs}}
+    {{else}}
+      {{#if error}}
+        <div class="error-message">
+          記事の情報を取得できませんでした。
+        </div>
+      {{/if}}
     {{/if}}
     </div>
   </div>

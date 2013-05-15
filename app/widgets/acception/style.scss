@@ -58,6 +58,32 @@
       display: none;
     }
   }
+  .error {
+    background-color: rgba(30, 33, 66, 0.95);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    .message {
+      margin-top: 100px;
+    }
+    .refetch {
+      color: #fff;
+      text-align: center;
+      background-color: #547ed7;
+      cursor: pointer;
+      border: transparent 0;
+      padding: 10px;
+      margin: 20px 50px;
+      &:hover {
+        background-color: #FFC452;
+      }
+      &.tapped {
+        background-color: #FFC452;
+      }
+    }
+  }
   h1 {
     margin: 0;
     font-weight: normal;
@@ -111,7 +137,7 @@
     right: 0;
     left: 0;
   }
-  .accepted {
+  .accepted,.acception-failed {
     background-color: rgba(30, 33, 66, 0.8);
     position: absolute;
     top: 0;
@@ -120,11 +146,31 @@
     left: 0;
     color: #fff;
     font-weight: bold;
-    font-size: 1.2em;
     text-align: center;
     padding-top: 30%;
     .message {
+      font-size: 1.2em;
       padding-left: 10px;
+    }
+  }
+  .acception-failed {
+    background-color: rgba(30, 33, 66, 0.95);
+    font-weight: normal;
+    padding-top: 20%;
+    .close-me {
+      color: #fff;
+      text-align: center;
+      background-color: #547ed7;
+      cursor: pointer;
+      border: transparent 0;
+      padding: 10px;
+      margin: 20px;
+      &:hover {
+        background-color: #FFC452;
+      }
+      &.tapped {
+        background-color: #FFC452;
+      }
     }
   }
   .content {
@@ -168,6 +214,11 @@
     padding: 10px;
   }
   #no-acceptance-needed-for-this-entry {
+    color: #fff;
+    text-align: center;
+    margin-top: 115px;
+  }
+  .error-message {
     color: #fff;
     text-align: center;
     margin-top: 115px;
