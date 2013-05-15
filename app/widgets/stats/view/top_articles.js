@@ -1,13 +1,13 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
+define(['backbone.marionette', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
 
-function (Marionette, MarionetteHandlebars, statsProvider, model, collection, ItemViewModel, ItemView, template) {
+function (Marionette, statsProvider, model, collection, ItemViewModel, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
     numberOfArticles: 3,
 
-    template: function (items) {
-      return template(items);
+    template: function (data) {
+      return template(data);
     },
 
     itemView: ItemView,

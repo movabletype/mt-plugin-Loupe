@@ -1,11 +1,11 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart.graph'],
+define(['backbone.marionette', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart.graph'],
 
-function (Marionette, MarionetteHandlebars, statsProvider, model, template, Graph) {
+function (Marionette, statsProvider, model, template, Graph) {
   "use strict";
 
   return Marionette.ItemView.extend({
-    template: function (items) {
-      return template(items);
+    template: function (data) {
+      return template(data);
     },
 
     serializeData: function () {

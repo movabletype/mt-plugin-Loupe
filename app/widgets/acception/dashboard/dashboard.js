@@ -1,13 +1,12 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'app', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/dashboard/itemview', 'hbs!widgets/acception/templates/dashboard'],
+define(['backbone.marionette', 'app', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/dashboard/itemview', 'hbs!widgets/acception/templates/dashboard'],
 
-function (Marionette, MarionetteHandlebars, app, commands, collection, ItemView, template) {
+function (Marionette, app, commands, collection, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
-    template: function (items) {
-      return template(items);
+    template: function (data) {
+      return template(data);
     },
-
     itemView: ItemView,
     itemViewContainer: '#acceptions-list',
 

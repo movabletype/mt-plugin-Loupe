@@ -13,7 +13,6 @@ require.config({
     "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr",
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter",
     "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette",
-    "backbone.marionette.handlebars": "components/backbone.marionette.handlebars/backbone.marionette.handlebars",
     "hbs": "components/require-handlebars-plugin/hbs",
     "handlebars": "components/require-handlebars-plugin/Handlebars",
     "i18nprecompile": "components/require-handlebars-plugin/hbs/i18nprecompile",

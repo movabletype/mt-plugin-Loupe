@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/widget/templates/layout', 'js/views/common/view_header'],
+define(['backbone.marionette', 'hbs!js/views/widget/templates/layout', 'js/views/common/view_header'],
 
-function (Marionette, MarionetteHandlebars, template, HeaderView) {
+function (Marionette, template, HeaderView) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -9,9 +9,8 @@ function (Marionette, MarionetteHandlebars, template, HeaderView) {
       this.params = options.params;
     },
 
-    template: {
-      type: 'handlebars',
-      template: template
+    template: function (data) {
+      return template(data);
     },
 
     regions: {
@@ -63,8 +62,8 @@ function (Marionette, MarionetteHandlebars, template, HeaderView) {
         });
       }
     },
-    
-    onShow: function(){
+
+    onShow: function () {
       var handleShadow = function () {
         var $this = $(this);
         if ($this.scrollTop() > 0) {

@@ -1,12 +1,11 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!widgets/stats/templates/layout', 'widgets/stats/view/recent_access', 'widgets/stats/view/top_articles'],
+define(['backbone.marionette', 'hbs!widgets/stats/templates/layout', 'widgets/stats/view/recent_access', 'widgets/stats/view/top_articles'],
 
-function (Marionette, MarionetteHandlebars, template, RecentAccessView, TopArticlesView) {
+function (Marionette, template, RecentAccessView, TopArticlesView) {
   "use strict";
 
   return Marionette.Layout.extend({
-    template: {
-      type: 'handlebars',
-      template: template
+    template: function (data) {
+      return template(data);
     },
 
     regions: {

@@ -1,6 +1,6 @@
-define(['underscore', 'backbone', 'backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/dashboard/templates/main'],
+define(['underscore', 'backbone', 'backbone.marionette', 'hbs!js/views/dashboard/templates/main'],
 
-function (_, Backbone, Marionette, MarionetteHandlebars, template) {
+function (_, Backbone, Marionette, template) {
   "use strict";
 
   return Marionette.Layout.extend({

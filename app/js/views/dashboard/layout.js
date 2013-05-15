@@ -1,12 +1,11 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/dashboard/templates/layout', 'js/views/common/header', 'js/views/dashboard/main'],
+define(['backbone.marionette', 'hbs!js/views/dashboard/templates/layout', 'js/views/common/header', 'js/views/dashboard/main'],
 
-function (Marionette, MarionetteHandlebars, template, HeaderView, MainLayout) {
+function (Marionette, template, HeaderView, MainLayout) {
   "use strict";
 
   return Marionette.Layout.extend({
-    template: {
-      type: 'handlebars',
-      template: template
+    template: function (data) {
+      return template(data);
     },
 
     regions: {

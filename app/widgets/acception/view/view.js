@@ -1,11 +1,11 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
+define(['backbone.marionette', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
 
-function (Marionette, MarionetteHandlebars, commands, collection, Model, template) {
+function (Marionette, commands, collection, Model, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
-    template: function (model) {
-      return template(model);
+    template: function (data) {
+      return template(data);
     },
 
     ui: {

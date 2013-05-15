@@ -1,10 +1,9 @@
-define(['backbone.marionette','backbone.marionette.handlebars','hbs!js/views/sidemenu/templates/main'], function (Marionette,MarionetteHandlebars,template) {
+define(['backbone.marionette', 'hbs!js/views/sidemenu/templates/main'], function (Marionette, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
-    template : {
-      type: 'handlebars',
-      template: template
+    template: function (data) {
+      return template(data);
     }
   });
 });

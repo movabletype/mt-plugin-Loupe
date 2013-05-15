@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'hbs!js/views/common/template/view_header', 'js/commands'],
+define(['backbone.marionette', 'hbs!js/views/common/template/view_header', 'js/commands'],
 
-function (Marionette, MarionetteHandlebars, template, commands) {
+function (Marionette, template, commands) {
   "use strict";
 
   return Marionette.ItemView.extend({

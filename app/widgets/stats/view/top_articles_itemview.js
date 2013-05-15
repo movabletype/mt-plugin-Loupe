@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'widgets/stats/models/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles_itemview'],
+define(['backbone.marionette', 'widgets/stats/models/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles_itemview'],
 
-function (Marionette, MarionetteHandlebars, Model, template) {
+function (Marionette, Model, template) {
   "use strict";
   return Marionette.ItemView.extend({
     template: function (data) {

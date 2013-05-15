@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'backbone.marionette.handlebars', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/dashboard_itemview'],
+define(['backbone.marionette', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/dashboard_itemview'],
 
-function (Marionette, MarionetteHandlebars, Model, template) {
+function (Marionette, Model, template) {
   "use strict";
   return Marionette.ItemView.extend({
     tagName: 'li',
