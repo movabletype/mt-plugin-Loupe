@@ -9,6 +9,8 @@ module.exports = function (grunt) {
     }
   });
 
+  //grunt.loadNpmTasks('grunt-bulk-symlink');
+
   var requireConfig = (function () {
     var window = {};
     var require = {
@@ -21,6 +23,26 @@ module.exports = function (grunt) {
     };
     return eval(grunt.file.read('./app/js/main.js').toString());
   }());
+
+  var requireJSPaths = {
+    "requireLib": "lib/require",
+    "underscore": "components/underscore/underscore-min",
+    "backbone": "components/backbone/backbone-min",
+    "backbone.localStorage": "components/backbone.localStorage/backbone.localStorage-min",
+    "jquery": "components/jquery/jquery.min",
+    "jquery.hammer": "components/hammerjs/dist/jquery.hammer.min",
+    "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr.min",
+    "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
+    "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette.min",
+    "morris": "components/morris.js/morris.min",
+    "main": "js/main",
+    "boot": "js/boot",
+    "app": "js/app",
+    "vendor": "js/vendor",
+    "template": "js/template",
+    "widget": "js/widget"
+  };
+
 
   var jasminPathsCoverage = grunt.util._.clone(requireConfig.paths);
   grunt.util._.forIn(jasminPathsCoverage, function (v, k) {
@@ -35,6 +57,10 @@ module.exports = function (grunt) {
     hbsTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
   });
 
+  grunt.util._.forEach(grunt.file.expand('app/js/template/helpers/*.js'), function (v) {
+    hbsTemplates.push(v.replace(/app\/(.*).js/, '$1'));
+  });
+
   var widgetLibs = [];
   var widgetTemplates = [];
 
@@ -43,7 +69,9 @@ module.exports = function (grunt) {
       if (/\.hbs$/.test(v)) {
         widgetTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
       } else if (/\.js$/.test(v)) {
-        widgetLibs.push(v.replace(/app\/(.*).js/, '$1'));
+        if (!/templates\/helpers/.test(v)) {
+          widgetLibs.push(v.replace(/app\/(.*).js/, '$1'));
+        }
       } else if (/\.(txt|text|tmpl|template|html|htm)/.test(v)) {
         widgetTemplates.push(v.replace(/app\/(.*)/, 'text!$1'));
       }
@@ -69,6 +97,10 @@ module.exports = function (grunt) {
   var testTarget = ['app/js/app.js', 'app/js/vent.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(widgetLibsForJasmine);
 
   var settings = grunt.file.readJSON('settings.json');
+
+  //var bulkSymlinkLinks = grunt.file.expand('app/widgets/*/templates/helpers/*.js').map(function (filename) {
+  //  return '../../../' + filename.replace('app/', '');
+  //})
 
   // Project configuration.
   grunt.initConfig({
@@ -148,48 +180,40 @@ module.exports = function (grunt) {
         'build/widgets',
         'build/assets/icons/index.html',
         'build/assets/icons/license.txt',
-        'build/assets/icons/Read Me.txt'
-      ],
+        'build/assets/icons/Read Me.txt'],
       afterTest: ['template.js']
     },
     copy: {
       prep: {
-        files: [
-        {
+        files: [{
           expand: true,
           src: ['app/components/morris.js/morris.css', 'app/lib/mtchart/mtchart.css'],
           dest: 'app/css/lib/',
           flatten: true
-        },
-        {
+        }, {
           expand: true,
           src: ['**/app.js', '**/endpoints.js'],
           cwd: settings.mtApiPath,
           dest: 'app/lib/data-api'
-        }
-        ]
+        }]
       },
       build: {
-        files: [
-        {
+        files: [{
           expand: true,
           cwd: 'app/',
           src: ['widgets/**/assets/**'],
           dest: 'build',
           filter: 'isFile'
-        }
-        ]
+        }]
       },
       beforeConcat: {
-        files: [
-        {
+        files: [{
           expand: true,
           cwd: 'app/',
           src: ['widgets/**/*.css'],
           dest: 'app/css',
           filter: 'isFile'
-        }
-        ]
+        }]
       }
     },
     symlink: {
@@ -201,6 +225,15 @@ module.exports = function (grunt) {
         }
       }
     },
+    //bulkSymlink: {
+    //  prep: {
+    //    targets: bulkSymlinkLinks,
+    //    dir: 'app/js/template/helpers/',
+    //    options: {
+    //      overwrite: true
+    //    }
+    //  }
+    //},
     imagemin: {
       build: {
         files: [{
@@ -219,8 +252,7 @@ module.exports = function (grunt) {
       css: {
         files: [
           'app/sass/*.scss',
-          'app/widgets/*/**.scss'
-        ],
+          'app/widgets/*/**.scss'],
         tasks: ['clean:beforeCompass', 'compass', 'copy:beforeConcat', 'concat', 'cssmin']
       }
     },
@@ -318,20 +350,16 @@ module.exports = function (grunt) {
     'string-replace': {
       build: {
         options: {
-          replacements: [
-          {
-            pattern: /([,;])define\(/g,
+          replacements: [{
+            pattern: /([,;])define\(/ig,
             replacement: '$1\ndefine('
-          },
-          {
-            pattern: /define\("[\-\.\w]*",function\(\)\{\}\);[\n]?/g,
+          }, {
+            pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
             replacement: ''
-          },
-          {
+          }, {
             pattern: /;(require\(\["app"\])/,
             replacement: ';\n$1'
-          }
-          ]
+          }]
         },
         files: {
           'build/js/app.js': 'build/js/app.js',
@@ -392,85 +420,58 @@ module.exports = function (grunt) {
           appDir: "app",
           baseUrl: ".",
           mainConfigFile: 'app/js/main.js',
-          paths: {
-            "requireLib": "lib/require",
-            "text": "components/requirejs-text/text",
-            "json": "components/requirejs-plugins/src/json",
-            "modernizr": "lib/modernizr/modernizr",
-            "underscore": "components/underscore/underscore-min",
-            "backbone": "components/backbone/backbone-min",
-            "backbone.localStorage": "components/backbone.localStorage/backbone.localStorage-min",
-            "jquery": "components/jquery/jquery.min",
-            "jquery.hammer": "components/hammerjs/dist/jquery.hammer.min",
-            "jquery.cookie": "components/jquery.cookie/jquery.cookie",
-            "jquery.smartresize": "components/jquery-smartresize/jquery.debouncedresize",
-            "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr.min",
-            "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
-            "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette.min",
-            "backbone.marionette.handlebars": "components/backbone.marionette.handlebars/backbone.marionette.handlebars",
-            "hbs": "components/require-handlebars-plugin/hbs",
-            "handlebars": "components/require-handlebars-plugin/Handlebars",
-            "i18nprecompile": "components/require-handlebars-plugin/hbs/i18nprecompile",
-            "json2": "components/require-handlebars-plugin/hbs/json2",
-            "eve": "lib/raphael/eve",
-            "raphael": "lib/raphael/raphael",
-            "morris": "components/morris.js/morris.min",
-            "mtchart.all": "lib/mtchart/mtchart_all",
-            "main": "js/main",
-            "boot": "js/boot",
-            "app": "js/app",
-            "vendor": "js/vendor",
-            "template": "js/template",
-            "widget": "js/widget",
-            "easeljs": "components/EaselJS/lib/easeljs-0.6.0.min"
-          },
+          paths: requireJSPaths,
           dir: "build",
-          modules: [
-            {
+          modules: [{
             name: 'vendor',
             include: [
-                "jquery",
-                "modernizr",
-                "requireLib",
-                "text",
-                "json",
-                "underscore",
-                "backbone",
-                "backbone.localStorage",
-                "backbone.wreqr",
-                "backbone.babysitter",
-                "backbone.marionette",
-                "backbone.marionette.handlebars",
-                "hbs",
-                "handlebars",
-                "i18nprecompile",
-                "json2",
-                "eve",
-                "raphael",
-                "morris",
-                "jquery.hammer",
-                "jquery.cookie",
-                "jquery.smartresize",
-                "jquery.smartscroll",
-                "easeljs"
-              ]
-          },
-            {
+              "jquery",
+              "modernizr",
+              "requireLib",
+              "text",
+              "json",
+              "underscore",
+              "backbone",
+              "backbone.localStorage",
+              "backbone.wreqr",
+              "backbone.babysitter",
+              "backbone.marionette",
+              "backbone.marionette.handlebars",
+              "hbs",
+              "handlebars",
+              "i18nprecompile",
+              "json2",
+              "eve",
+              "raphael",
+              "morris",
+              "jquery.hammer",
+              "jquery.cookie",
+              "jquery.smartresize",
+              "jquery.smartscroll",
+              "mtchart",
+              "mtchart.data",
+              "mtchart.date",
+              "mtchart.range",
+              "mtchart.graph",
+              "mtchart.graph.cssgraph",
+              "mtchart.graph.easel",
+              "mtchart.graph.morris",
+              "mtchart.list",
+              "mtchart.slider",
+              "easeljs"]
+          }, {
             name: 'template',
             include: hbsTemplates,
             exclude: ['vendor']
-          },
-          {
+          }, {
             name: 'app',
             include: ['boot'],
             exclude: ['vendor', 'template']
-          },
-          {
+          }, {
             name: 'widget',
             include: widgetLibs.concat(widgetTemplates),
             exclude: ['vendor', 'template', 'app']
-          }
-          ],
+          }],
 
           skipDirOptimize: true,
           removeCombined: false,
@@ -539,8 +540,7 @@ module.exports = function (grunt) {
     'jade:build',
     'htmlmin',
     'copy:beforeConcat',
-    'concat:dev'
-  ]);
+    'concat:dev']);
 
   grunt.registerTask('dev', [
     'symlink:prep',
@@ -548,16 +548,14 @@ module.exports = function (grunt) {
     'jade:dev',
     'compass:dev',
     'copy:beforeConcat',
-    'concat:dev'
-  ]);
+    'concat:dev']);
 
   grunt.registerTask('test', [
     'requirejs:test',
     'jshint',
     'jasmine',
     'clean:afterTest',
-    'open:test'
-  ]);
+    'open:test']);
 
   grunt.registerTask('none', []);
 };
