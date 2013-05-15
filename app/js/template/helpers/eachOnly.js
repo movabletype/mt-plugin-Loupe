@@ -1,4 +1,4 @@
-define(['handlebars'], function (Handlebars) {
+define('template/helpers/eachOnly', ['handlebars'], function(Handlebars) {
   function eachOnly(array, index, options) {
     var ret = '';
     var item;

@@ -1,0 +1,11 @@
+<div class="item-num">{{num}}</div>
+{{#if this.assets.length}}
+  <div class="item-asset">
+    {{#eachOnly this.assets 0}}
+      <img src="{{url}}" />
+    {{/eachOnly}}
+  </div>
+{{else}}
+  <div class="item-asset no-image icon-pen"></div>
+{{/if}}
+<div class="item-title">{{title}}</div>

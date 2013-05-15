@@ -1,0 +1,24 @@
+@mixin loading-base {
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: center center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+@mixin loading-white {
+  .loading {
+    background-image: url("../assets/images/indicator-white.gif");
+    @include loading-base;
+  }
+}
+
+@mixin loading {
+  .loading {
+    background-image: url("../assets/images/indicator.gif");
+    @include loading-base;
+  }
+}

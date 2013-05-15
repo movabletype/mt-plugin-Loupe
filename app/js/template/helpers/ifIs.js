@@ -1,4 +1,4 @@
-define(['handlebars'], function (Handlebars) {
+define('template/helpers/ifIs', ['handlebars'], function(Handlebars) {
   function ifIs(target, options) {
     var hash = options.hash;
 

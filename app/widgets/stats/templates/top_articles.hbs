@@ -1,0 +1,32 @@
+<div class="inner">
+  <header><h1>今月のトップ記事</h1></header>
+  <div class="content">
+    {{#if loading}}
+    <div class="loading"></div>
+    {{/if}}
+    {{#if error}}
+    <div class="error">
+      <div class="message">データの取得に失敗しました</div>
+      <div class="refetch">データの再取得</div>
+    </div>
+    {{/if}}
+    {{#if providerIsNotAvailable}}
+    <div class="error">
+      <div class="message provider-is-not-available">アクセス解析サービスが有効になっていません</div>
+    </div>
+    {{/if}}
+    <ul id="top-articles-list">
+    {{#each items}}
+      <li id="eid-{{this.entry.id}}" data-pageviews="{{this.pageviews}}">
+        <div class="content-loading"></div>
+        <div class="item-num">{{this.num}}</div>
+        <div class="item-asset no-image icon-pen"></div>
+        <div class="item-title">{{this.title}}</div>
+      </li>
+    {{/each}}
+    </ul>
+    {{#if itemLoading}}
+    <div class="item-loading"></div>
+    {{/if}}
+  </div>
+</div>

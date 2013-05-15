@@ -1,0 +1,19 @@
+<div class="inner">
+  <header><h1>過去 1 週間のアクセス</h1></header>
+  <div class="content">
+    {{#if loading}}
+    <div class="loading"></div>
+    {{/if}}
+    {{#if error}}
+    <div class="error">
+      <div class="message">データの取得に失敗しました</div>
+      <div class="refetch">データの再取得</div>
+    </div>
+    {{/if}}
+    {{#if providerIsNotAvailable}}
+    <div class="error">
+      <div class="message provider-is-not-available">アクセス解析サービスが有効になっていません</div>
+    </div>
+    {{/if}}
+  </div>
+</div>

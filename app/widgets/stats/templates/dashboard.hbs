@@ -1,4 +1,19 @@
+{{#if loading}}
+<div class="loading"></div>
+{{/if}}
 <header>
-<p>{{count}}</p>
+<p>{{todaysPageViews items}}</p>
 <h1>今日のページビュー</h1>
 </header>
+{{#if error}}
+<div class="error">
+  <div class="message">データの取得に失敗しました</div>
+  <div class="refetch">データの再取得</div>
+</div>
+{{/if}}
+{{#if providerIsNotAvailable}}
+<div class="error">
+  <div class="message provider-is-not-available">アクセス解析サービスが有効になっていません</div>
+</div>
+{{/if}}
+<div id="stats-dashboard-graph"></div>

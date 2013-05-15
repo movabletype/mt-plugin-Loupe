@@ -17,7 +17,7 @@ require.config({
     "hbs": "components/require-handlebars-plugin/hbs",
     "handlebars": "components/require-handlebars-plugin/Handlebars",
     "i18nprecompile": "components/require-handlebars-plugin/hbs/i18nprecompile",
-    "json2": "components/require-handlebars-plugin/hbs/json2",
+    "json2": "lib/json2/json2",
     "eve": "lib/raphael/eve",
     "raphael": "lib/raphael/raphael",
     "morris": "components/morris.js/morris",
@@ -27,12 +27,15 @@ require.config({
     "mtchart.date": "lib/mtchart/date",
     "mtchart.range": "lib/mtchart/range",
     "mtchart.graph": "lib/mtchart/graph",
+    "mtchart.graph.cssgraph": "lib/mtchart/graph_cssgraph",
+    "mtchart.graph.easel": "lib/mtchart/graph_easel",
+    "mtchart.graph.morris": "lib/mtchart/graph_morris",
     "mtchart.list": "lib/mtchart/list",
     "mtchart.slider": "lib/mtchart/slider",
     "app": "js/app",
     "text": "components/requirejs-text/text",
     "json": "components/requirejs-plugins/src/json",
-    "easeljs": "components/EaselJS/lib/easeljs-0.6.0.min",
+    "easeljs": "lib/EaselJS/easeljs-0.6.1.min",
     "mtapi": "lib/data-api/v1/js/app",
     "mtendpoints": "lib/data-api/v1/js/endpoints"
   },
@@ -63,9 +66,12 @@ require.config({
     },
     'mtendpoints': {
       deps: ['mtapi']
+    },
+    'json2': {
+      exports: 'JSON'
     }
   },
-  deps: ['mtapi', 'mtendpoints', 'jquery', 'jquery.hammer', 'jquery.cookie', 'jquery.smartresize', 'jquery.smartscroll', 'underscore', 'backbone', 'backbone.localStorage', 'easeljs'],
+  deps: ['mtapi', 'mtendpoints', 'json2', 'jquery', 'jquery.hammer', 'jquery.cookie', 'jquery.smartresize', 'jquery.smartscroll', 'underscore', 'backbone', 'easeljs'],
   locale: 'ja_jp',
   hbs: {
     disableI18n: false,

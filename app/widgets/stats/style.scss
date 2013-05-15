@@ -1,15 +1,55 @@
 @import "compass/css3/transform";
+@import "compass/css3/text-shadow";
+@import "compass/utilities/general/clearfix";
+@import "../../sass/_mixins";
 
 $background-color: #16878a;
 
+@mixin error {
+  .error {
+    background-color: rgba($background-color, 0.95);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    .message {
+      text-align: center;
+      color: #fff;
+      margin-top: 100px;
+    }
+    .provider-is-not-available {
+      margin-top: 145px;
+    }
+    .refetch {
+      color: #fff;
+      text-align: center;
+      background-color: #49BFC4;
+      cursor: pointer;
+      border: transparent 0;
+      padding: 10px;
+      margin: 20px 50px;
+      &:hover {
+        background-color: #FFC452;
+      }
+      &.tapped {
+        background-color: #FFC452;
+      }
+    }
+  }
+}
+
 #widget-stats {
   background-color: $background-color;
+  position: relative;
+  min-height: 320px;
+  padding: 30px 0;
   header {
-    padding: 10px;
     text-align: center;
     color: #fff;
     p {
       font-size: 4em;
+      line-height: 1em;
       margin: 0;
       font-weight: bold;
     }
@@ -19,13 +59,16 @@ $background-color: #16878a;
       margin: 0;
     }
   }
+  @include loading-white;
+  #stats-dashboard-graph {
+    padding: 30px 50px 0;
+  }
+  @include error;
 }
 
-#canvas {
-  display: block;
-}
-
-#stats-view {
+#recent-access {
+  position: relative;
+  min-height: 320px;
   header {
     margin-bottom: 8px;
     background-color: $background-color;
@@ -41,9 +84,6 @@ $background-color: #16878a;
   .inner {
     padding: 8px 10px;
   }
-  svg {
-    @include transform(rotate(90deg));
-  }
   .loading {
     background-color: rgba($background-color, 0.8);
     background-image: url("../assets/images/indicator-white.gif");
@@ -58,8 +98,110 @@ $background-color: #16878a;
   }
   .content {
     background-color: $background-color;
-    padding: 10px 20px 30px;
+    padding: 20px;
     min-height: 300px;
     position: relative;
   }
+  @include error;
+}
+
+#top-articles {
+  position: relative;
+  min-height: 320px;
+  header {
+    padding: 0 0 8px;
+    h1 {
+      margin: 0;
+      color: #000;
+      font-weight: normal;
+      font-size: 1em;
+    }
+  }
+  .inner {
+    padding: 0 10px 8px;
+  }
+  .loading,
+  .content-loading {
+    background-color: rgba($background-color, 0.8);
+    background-image: url("../assets/images/indicator-white.gif");
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  .content-loading {
+    background-color: rgba($background-color, 0.5);
+  }
+  .content {
+    background-color: $background-color;
+    min-height: 300px;
+    position: relative;
+  }
+  #top-articles-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  li {
+    padding: 20px;
+    border-bottom: 4px solid #006d6f;
+    position: relative;
+    @include pie-clearfix;
+    &:last-of-type {
+      border-bottom: 0 none transparent;
+    }
+    width: 100%;
+    min-height: 90px;
+    display: block;
+    .item-asset {
+      width: 75px;
+      height: 75px;
+      float: left;
+      border-radius: 100%;
+      overflow: hidden;
+      border: 4px solid white;
+      background-color: #fff;
+      margin-right: 10px;
+    }
+    .item-num {
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 100%;
+      border: 4px solid #fff;
+      color: #fff;
+      text-align: center;
+      line-height: 66px;
+      font-size: 45px;
+      @include single-text-shadow(0px,0px,10px,rgba(0,0,0,0.5));
+    }
+    .item-title {
+      color: #fff;
+      padding: 10px;
+    }
+    a {
+      display: block;
+      cursor: pointer;
+      height: 100%;
+    }
+    img {
+      height: 100%;
+      display: block;
+    }
+    .no-image {
+      display: block;
+      background-color: #003130;
+      color: #16878A;
+      text-align: center;
+      line-height: 63px;
+      font-size: 45px;
+    }
+  }
+  @include error;
 }
