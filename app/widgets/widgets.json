@@ -1,9 +1,8 @@
-[
-{
+[{
   "name": "stats",
   "id": "stats",
-  "dashboardView": "dashboard",
-  "viewView": "view"
+  "dashboardView": "dashboard/dashboard",
+  "viewView": "view/layout"
 }, {
   "name": "acception",
   "id": "acception",
