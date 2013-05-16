@@ -12,7 +12,9 @@ window.onload = function() {
 			'icon-pen' : '&#x23;',
 			'icon-user' : '&#x6f;',
 			'icon-arrow-right' : '&#x3e;',
-			'icon-cog' : '&#x2a;'
+			'icon-cog' : '&#x2a;',
+			'icon-bubble' : '&#x63;',
+			'icon-paper-plane' : '&#x74;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
