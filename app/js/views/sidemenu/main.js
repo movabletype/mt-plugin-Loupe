@@ -5,23 +5,23 @@ function (Marionette, commands, template) {
 
   return Marionette.Layout.extend({
     serializeData: function () {
-      var data = {};
-      commands.execute('controller:getUser', _.bind(function (user) {
-        data.user = this.user = user;
-      }, this));
-      commands.execute('controller:getBlogList', _.bind(function (blogs) {
-        data.blogs = this.blogs = blogs.items;
-        if (this.currentBlogId) {
-          _.each(data.blogs, _.bind(function (blog) {
-            if (blog.id === this.currentBlogId) {
-              blog.selected = true;
-              this.blog = blog;
-            } else {
-              delete blog.selected;
-            }
-          }, this));
-        }
-      }, this));
+      if (this.currentBlogId !== this.blog.id) {
+        _.each(this.blogs, _.bind(function (blog) {
+          if (this.id === this.currentBlogId) {
+            blog.selected = true;
+            this.blog = blog;
+          } else {
+            delete blog.selected;
+          }
+        }, this));
+      }
+
+      var data = {
+        user: this.user,
+        blogs: this.blogs,
+        blog: this.blog
+      };
+
       if (DEBUG) {
         console.log('sidebar:serializeData');
         console.log(data);
@@ -35,7 +35,10 @@ function (Marionette, commands, template) {
 
     blogs: null,
 
-    initialize: function () {
+    initialize: function (params) {
+      this.user = params.user || {};
+      this.blogs = (params.blogs && params.blogs.items) ? params.blogs.items : [];
+      this.blog = params.blog || {};
       this.currentBlogId = this.selectedBlogId = localStorage.getItem('currentBlogId') || null;
     },
 

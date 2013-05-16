@@ -43,13 +43,6 @@ function (Marionette, app, statsProvider, Model, template, Graph) {
       this.model = app.dashboardWidgetsData.stats = app.dashboardWidgetsData.stats || new Model();
       this.loading = true;
 
-      this.$el.hammer().on('tap', '.refetch', _.bind(function () {
-        this.loading = true;
-        this.error = false;
-        this.render();
-        this.fetch();
-      }, this));
-
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
 
@@ -69,6 +62,15 @@ function (Marionette, app, statsProvider, Model, template, Graph) {
     },
 
     onRender: function () {
+      if (this.error) {
+        this.$el.find('.refetch').hammer().one('tap', _.bind(function () {
+          this.loading = true;
+          this.error = false;
+          this.render();
+          this.fetch();
+        }, this));
+      }
+
       if (this.model.isSynced) {
         var graphEl = this.$el.find('.content');
         var graphData = this.model.toJSON().items;

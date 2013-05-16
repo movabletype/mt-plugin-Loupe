@@ -10,7 +10,7 @@
     width: 90px;
     height: 90px;
     overflow: hidden;
-    @include border-radius(100%);
+    @include border-radius(100px);
     border: 6px solid white;
     background-color: #fff;
     display: block;
@@ -26,8 +26,7 @@
     }
     &:nth-of-type(3n+2) {
       margin: 0 10px 10px;
-
-      @media screen and (max-width:$content-max-width){
+      @media screen and (max-width: $content-max-width) {
         margin-left: 5px;
         margin-right: 5px;
       }
@@ -243,4 +242,3 @@
   line-height: 1em;
   margin: 0;
 }
-

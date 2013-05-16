@@ -96,13 +96,6 @@ function (Marionette, app, statsProvider, Model, Collection, ItemViewModel, Item
       this.collection = app.dashboardWidgetsData.topArticlesCollection = app.dashboardWidgetsData.topArticlesCollection || new Collection();
       this.loading = true;
 
-      this.$el.hammer().on('tap', '.refetch', _.bind(function () {
-        this.loading = true;
-        this.error = false;
-        this.render();
-        this.fetch();
-      }, this));
-
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
 
@@ -118,6 +111,17 @@ function (Marionette, app, statsProvider, Model, Collection, ItemViewModel, Item
         }, this));
       } else {
         this.loading = false;
+      }
+    },
+
+    onRender: function () {
+      if (this.error) {
+        this.$el.find('.refetch').hammer().one('tap', _.bind(function () {
+          this.loading = true;
+          this.error = false;
+          this.render();
+          this.fetch();
+        }, this));
       }
     }
   });

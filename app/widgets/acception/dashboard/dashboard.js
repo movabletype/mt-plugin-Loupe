@@ -35,13 +35,17 @@ function (Marionette, app, commands, Collection, ItemView, template) {
         commands.execute('router:navigate', route);
         return false;
       });
+    },
 
-      this.$el.hammer().on('tap', '.refetch', _.bind(function () {
-        this.loading = true;
-        this.error = false;
-        this.render();
-        this.fetch();
-      }, this));
+    onRender: function () {
+      if (this.error) {
+        this.$el.find('.refetch').hammer().on('tap', _.bind(function () {
+          this.loading = true;
+          this.error = false;
+          this.render();
+          this.fetch();
+        }, this));
+      }
     },
 
     fetch: function () {

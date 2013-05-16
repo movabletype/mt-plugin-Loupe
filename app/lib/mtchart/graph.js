@@ -1,6 +1,6 @@
 define(['modernizr', 'mtchart.data', 'mtchart.date', 'mtchart.range'],
 
-function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
+function (Modernizr, MTChartData, MTChartDate, MTChartRange) {
 
   var MTChart = {};
   MTChart.Data = MTChartData;
@@ -19,13 +19,12 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @return {jQuery} return container jQuery object
    * @constructor
    */
-  MTChart.Graph = function(config, range) {
+  MTChart.Graph = function (config, range) {
     var data, that = this,
       defaultConf;
     this.id = 'graph-' + (new Date()).valueOf() + Math.floor(Math.random() * 100);
 
     defaultConf = {
-      'dataType': 'timeline',
       'type': 'bar',
       'yLength': 1,
       'autoSized': true
@@ -36,6 +35,8 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
 
     range['autoSized'] = this.config['autoSized'];
     this.range = MTChart.Range.generate(range);
+
+    this.config['dataType'] = this.range['dataType'] || 'timeline';
 
     if (!this.config['json']) {
       data = (this.config['staticPath'] || '') + (this.config['data'] || 'graph.json');
@@ -49,7 +50,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
     this.graphData = {};
     this.graphData[this.range.unit] = jQuery.Deferred();
 
-    this.getData(function(data) {
+    this.getData(function (data) {
       var graphData = that.generateGraphData(data);
       that.graphData[that.range.unit].resolve(graphData);
     });
@@ -61,12 +62,12 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
      * @return {jQuery} return jQuery object for chaining
      * update graph
      */
-    this.$graphContainer.on('UPDATE', function(e, newRange, unit) {
+    this.$graphContainer.on('UPDATE', function (e, newRange, unit) {
       that.update_(newRange, unit);
       return jQuery(this);
     });
 
-    jQuery(window).on('orientationchange debouncedresize', function() {
+    jQuery(window).on('orientationchange debouncedresize', function () {
       that.update_();
     });
 
@@ -74,8 +75,8 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
      * @return {jQuery} return jQuery object for chaining
      * return back the graph data range to callback
      */
-    this.$graphContainer.on('GET_DATA_RANGE', function(e, callback) {
-      that.getData(function(data) {
+    this.$graphContainer.on('GET_DATA_RANGE', function (e, callback) {
+      that.getData(function (data) {
         callback(MTChart.Range.getDataRange(data, that.range.isTimeline));
       });
       return jQuery(this);
@@ -85,8 +86,8 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
      * @return {jQuery} return jQuery object for chaining
      * return back the graph label array to callback
      */
-    this.$graphContainer.on('GET_LABEL', function(e, indexArray, callback) {
-      that.getData(function(data) {
+    this.$graphContainer.on('GET_LABEL', function (e, indexArray, callback) {
+      that.getData(function (data) {
         callback(that.getDataLabelByIndex(indexArray, data));
       });
       return jQuery(this);
@@ -96,12 +97,12 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
      * append graph container to the desinated container
      * @return {jQuery} return jQuery object for chaining
      */
-    this.$graphContainer.on('APPEND_TO', function(e, container) {
+    this.$graphContainer.on('APPEND_TO', function (e, container) {
       that.$graphContainer.appendTo(container);
-      that.graphData[that.range.unit].done(function(data) {
+      that.graphData[that.range.unit].done(function (data) {
         var filteredData;
         if (that.range.isTimeline) {
-          filteredData = jQuery.grep(data, function(v) {
+          filteredData = jQuery.grep(data, function (v) {
             return that.range.start <= v.timestamp && v.timestamp <= that.range.end;
           });
         } else {
@@ -119,7 +120,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * call getData function for getting graph JSON data
    * @param {Function} callback function recieve graph JSON data
    */
-  MTChart.Graph.prototype.getData = function(callback) {
+  MTChart.Graph.prototype.getData = function (callback) {
     MTChart.Data.getData(this.origData_, this.$graphContainer, callback, this);
   };
 
@@ -129,9 +130,9 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!Array.<object>} graph JSON data
    * @return {Array.<string>}
    */
-  MTChart.Graph.prototype.getDataLabelByIndex = function(indexArray, data) {
+  MTChart.Graph.prototype.getDataLabelByIndex = function (indexArray, data) {
     var label = this.config['dataLabel'] || 'x';
-    return jQuery.map(indexArray, function(i) {
+    return jQuery.map(indexArray, function (i) {
       return data[i][label];
     });
   };
@@ -142,10 +143,10 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!number} the number of set of Y data
    * @return {number} return the number of total count in current range
    */
-  MTChart.Graph.prototype.getTotalCount_ = function(data, index) {
+  MTChart.Graph.prototype.getTotalCount_ = function (data, index) {
     var total = 0,
       str = 'y' + (index || '');
-    jQuery.each(data, function(i, v) {
+    jQuery.each(data, function (i, v) {
       total = total + (v[str] || v.value || 0);
     });
     return total;
@@ -157,12 +158,12 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!number} number of set of Y data
    * @return {number} return the number of maxY for graph
    */
-  MTChart.Graph.prototype.getMaxY_ = function(data, yLength) {
+  MTChart.Graph.prototype.getMaxY_ = function (data, yLength) {
     var i, maxY, array, sum, key;
 
     if (this.config['type'] !== 'area') {
       array = [];
-      jQuery.each(data, function(index, value) {
+      jQuery.each(data, function (index, value) {
         for (i = 0; i < yLength; i++) {
           key = 'y' + (i || '');
           array.push(value[key]);
@@ -170,7 +171,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
       });
       maxY = Math.max.apply(null, array);
     } else {
-      maxY = Math.max.apply(null, jQuery.map(data, function(value) {
+      maxY = Math.max.apply(null, jQuery.map(data, function (value) {
         sum = 0;
         for (i = 0; i < yLength; i++) {
           key = 'y' + (i || '');
@@ -196,7 +197,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!number} maximum value among the Y data set.
    * @return {number}
    */
-  MTChart.Graph.prototype.getNumLines_ = function(maxY) {
+  MTChart.Graph.prototype.getNumLines_ = function (maxY) {
     var numlines;
     if (maxY >= 18) {
       numlines = 9;
@@ -214,7 +215,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!number} number of set of Y data
    * @return {y:[number,string],y1:[number,string]}
    */
-  MTChart.Graph.prototype.getDelta_ = function(data, index) {
+  MTChart.Graph.prototype.getDelta_ = function (data, index) {
     var e, s, delta, key, length = data.length;
 
     key = 'y' + (index || '');
@@ -229,7 +230,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!number} number of set of y data
    * @return {Array.<string>} array of y key strings
    */
-  MTChart.Graph.prototype.getYKeys_ = function(yLength) {
+  MTChart.Graph.prototype.getYKeys_ = function (yLength) {
     var i, array = [];
     for (i = 0; i < yLength; i++) {
       array.push('y' + (i || ''));
@@ -242,7 +243,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!number} number of set of y data
    * @return {Array.<string>} array of y key strings
    */
-  MTChart.Graph.prototype.getYLabels_ = function(yLength, yLabel) {
+  MTChart.Graph.prototype.getYLabels_ = function (yLength, yLabel) {
     var i, array = [];
     yLabel = yLabel ? yLabel.split(/,/) : [];
     for (i = 0; i < yLength; i++) {
@@ -251,12 +252,12 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
     return array;
   };
 
-  MTChart.Graph.prototype.getChartColors_ = function(colors, type) {
+  MTChart.Graph.prototype.getChartColors_ = function (colors, type) {
     var func = {
-      'reverse': function(arr) {
+      'reverse': function (arr) {
         return arr.reverse();
       },
-      'shuffle': function(arr) {
+      'shuffle': function (arr) {
         var i, j, length, tmp;
         length = arr.length;
         for (i = 0; i < length; i++) {
@@ -267,7 +268,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
         }
         return colors;
       },
-      'def': function(arr) {
+      'def': function (arr) {
         return arr;
       }
     };
@@ -282,23 +283,26 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {=string} graph type (bar|line|area|donut)
    * @return nothing
    */
-  MTChart.Graph.prototype.draw_ = function(data) {
-    var library;
+  MTChart.Graph.prototype.draw_ = function (data) {
+    var type = this.config['type'];
 
-    if (/^canvas/.test(this.config['type'])) {
-      library = 'mtchart.graph.easel';
-    } else if (/^css/.test(this.config['type'])) {
-      library = 'mtchart.graph.cssgraph'
+    if (/^canvas/.test(type)) {
+      require(['mtchart.graph.easel'], _.bind(function (easelGraph) {
+        easelGraph.call(this, data);
+      }, this));
+    } else if (/^css/.test(type)) {
+      require(['mtchart.graph.cssgraph'], _.bind(function (cssGraph) {
+        var func = type.substr(type.lastIndexOf('.') + 1);
+        cssGraph[func](data, this.config, this.$graphContainer);
+      }, this));
     } else {
-      library = 'mtchart.graph.morris';
+      require(['mtchart.graph.morris'], _.bind(function (morrisGraph) {
+        morrisGraph.call(this, data);
+      }, this));
     }
-
-    require([library], _.bind(function(drawGraph) {
-      drawGraph.call(this, data);
-    }, this));
   };
 
-  MTChart.Graph.prototype.hexToRgb = function(hexColor) {
+  MTChart.Graph.prototype.hexToRgb = function (hexColor) {
     var r = parseInt(hexColor.substr(1, 2), 16);
     var g = parseInt(hexColor.substr(3, 2), 16);
     var b = parseInt(hexColor.substr(5, 2), 16);
@@ -310,7 +314,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {=Array.<number>}
    * @param {=string} graph unit type (yearly|quater|monthly|weekly|daily|hourly)
    */
-  MTChart.Graph.prototype.update_ = function(newRange, unit) {
+  MTChart.Graph.prototype.update_ = function (newRange, unit) {
     var that = this;
     newRange = newRange || [];
     this.$graphEl.remove();
@@ -324,10 +328,10 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
       'dataType': this.range.dataType,
       'autoSized': this.config['autoSized']
     });
-    this.graphData[this.range.unit].done(function(data) {
+    this.graphData[this.range.unit].done(function (data) {
       var filteredData;
       if (that.range.isTimeline) {
-        filteredData = jQuery.grep(data, function(v) {
+        filteredData = jQuery.grep(data, function (v) {
           return that.range.min <= v.timestamp && v.timestamp <= that.range.max;
         });
       } else {
@@ -343,7 +347,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {=string} template data to use label
    * @constructor
    */
-  MTChart.Graph.Labels = function($container, yLength, template) {
+  MTChart.Graph.Labels = function ($container, yLength, template) {
     var i, key;
 
     this.$labelContainer = jQuery('<div class="graph-labels"></div>');
@@ -365,7 +369,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
   /**
    * remove label container
    */
-  MTChart.Graph.Labels.prototype.remove = function() {
+  MTChart.Graph.Labels.prototype.remove = function () {
     this.$labelContainer.remove();
   };
 
@@ -374,7 +378,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {=number} the number of Y data set
    * @return {MTChart.Graph.Labels.Total}
    */
-  MTChart.Graph.Labels.prototype.getTotalObject = function(i) {
+  MTChart.Graph.Labels.prototype.getTotalObject = function (i) {
     return this.totals['y' + (i || '')];
   };
 
@@ -383,7 +387,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!string} template data
    * @return nothing
    */
-  MTChart.Graph.Labels.prototype.importLabelTemplateAndAppend_ = function(template) {
+  MTChart.Graph.Labels.prototype.importLabelTemplateAndAppend_ = function (template) {
     var that = this;
 
     jQuery('<div class="graph-label"></div>')
@@ -402,7 +406,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * @param {!jQuery} jQuery object to attach
    * @param {!number} number for identify what Y data is associated with
    */
-  MTChart.Graph.Labels.Total = function(container, index) {
+  MTChart.Graph.Labels.Total = function (container, index) {
     this.index = index;
     this.$totalContainer = jQuery('<div class="graph-total"></div>')
       .appendTo(container);
@@ -412,7 +416,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * create element for displaying total count and append its container
    * @param {!number} total count
    */
-  MTChart.Graph.Labels.Total.prototype.createTotalCount = function(count) {
+  MTChart.Graph.Labels.Total.prototype.createTotalCount = function (count) {
     jQuery('<span class="graph-total-count graph-total-count-y"' + (this.index || '') + ' >' + count + '</span>')
       .appendTo(this.$totalContainer);
   };
@@ -421,14 +425,14 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
    * create element for displaying delta
    * @param {!number} delta count
    */
-  MTChart.Graph.Labels.Total.prototype.createDeltaCount = function(delta) {
+  MTChart.Graph.Labels.Total.prototype.createDeltaCount = function (delta) {
     var deltaClass = delta ? (delta < 0 ? 'minus' : 'plus') : 'zero';
 
     jQuery('<span class="graph-delta graph-delta-y"' + (this.index || '') + ' ><span class="' + deltaClass + '">(' + delta + ')</span></span>')
       .appendTo(this.$totalContainer);
   };
 
-  MTChart.Graph.prototype.generateGraphData = function(data) {
+  MTChart.Graph.prototype.generateGraphData = function (data) {
     var i, j, td, key, range = this.range,
       start = range.start,
       end = range.end,
@@ -465,7 +469,7 @@ function(Modernizr, MTChartData, MTChartDate, MTChartRange) {
       array = data;
     }
     if (this.config.type === 'donut') {
-      jQuery.each(array, function(i, v) {
+      jQuery.each(array, function (i, v) {
         jQuery.extend(v, {
           label: (v.xLabel || v.x),
           value: v.y

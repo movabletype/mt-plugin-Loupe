@@ -1,6 +1,6 @@
-define(['jquery', 'backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/mtapi/user', 'js/mtapi/blogs'],
+define(['jquery', 'backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs'],
 
-function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
+function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
   "use strict";
   return Marionette.Controller.extend({
     auth: function (callback) {
@@ -8,7 +8,7 @@ function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
         this.user = this.user || userApi();
         this.user.done(_.bind(function (user) {
           this.blogs = this.blogs || blogsApi(user.id);
-          this.blogs.done(function (blogs) {
+          this.blogs.done(_.bind(function (blogs) {
             var blog;
             var currentBlogId = localStorage.getItem('currentBlogId') || null;
             if (currentBlogId) {
@@ -20,14 +20,21 @@ function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
                 blog = blogs.items[0];
               }
             }
-            $('#app-building').remove();
+            if ($('#app-building').length) {
+              $('#app-building').remove();
+              vent.trigger('app:building:after', {
+                user: user,
+                blogs: blogs,
+                blog: blog
+              });
+            }
             callback({
               userId: user.id,
               blogId: blog.id,
               user: user,
               blog: blog
             });
-          });
+          }, this));
         }, this));
       }, this);
 

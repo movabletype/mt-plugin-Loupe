@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/commands', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/widget/layout'],
+define(['backbone', 'backbone.marionette', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/widget/layout'],
 
-function (Backbone, Marionette, commands, AppRouter, Controller, SidemenuLayout, DashboardLayout, WidgetLayout) {
+function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, WidgetLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -13,6 +13,10 @@ function (Backbone, Marionette, commands, AppRouter, Controller, SidemenuLayout,
   app.addRegions({
     main: '#app',
     sidemenu: '#sidemenu'
+  });
+
+  vent.on('app:building:after', function (params) {
+    app.sidemenu.show(new SidemenuLayout(params));
   });
 
   commands.setHandler('sidemenu:toggle', function () {
@@ -30,7 +34,10 @@ function (Backbone, Marionette, commands, AppRouter, Controller, SidemenuLayout,
     };
 
     if (!app.sidemenuShow) {
-      app.sidemenu.show(new SidemenuLayout());
+      app.sidemenu.$el.css({
+        'display': 'block'
+      })
+      // app.sidemenu.show(new SidemenuLayout());
       $headerMain.css({
         'margin-left': '0',
         'margin-right': '0'
@@ -73,9 +80,12 @@ function (Backbone, Marionette, commands, AppRouter, Controller, SidemenuLayout,
       setTimeout(function () {
         $header.removeClass('move');
         $appMainContainer.removeClass('move');
-        app.sidemenu.close();
+        // app.sidemenu.close();
+        app.sidemenu.$el.css({
+          'display': 'none'
+        });
         app.sidemenuShow = false;
-      }, 500);
+      }, 300);
     }
   });
 

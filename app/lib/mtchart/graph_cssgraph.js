@@ -1,6 +1,8 @@
 define(function () {
-  return function (data) {
-    var len = 7;
+  var cssGraph = {};
+
+  cssGraph.bar = function (data, config, $container) {
+    var len = data.length;
 
     var $CSSGraphContainer = $('<div class="css-graph">');
 
@@ -31,10 +33,55 @@ define(function () {
         'background-color': '#fed363'
       });
       $count = $el.find('.css-graph-bar-count');
-      $count.text(this.config['yLabel'][i] || dataY[i]);
+      $count.text(config['yLabel'][i] || dataY[i]);
       $el.appendTo($CSSGraphContainer);
     }
 
-    $CSSGraphContainer.appendTo(this.$graphContainer);
+    $CSSGraphContainer.appendTo($container);
   };
+
+  cssGraph.ratioBar = function (data, config, $container) {
+    var len = data.length;
+    var yLength = config['yLength'];
+    var chartColors = config['chartColors'];
+    var chartClasses = config['chartClasses'];
+    var i, j;
+
+    var $CSSGraphContainer = $('<div class="css-graph">');
+
+    var d, dataY, totalY, $el, $bar, width;
+    for (i = 0; i < len; i++) {
+      d = data[i];
+      dataY = [];
+      totalY = 0;
+      for (j = 0; j < yLength; j++) {
+        dataY.push(d['y' + (j || '')]);
+        totalY = totalY + parseInt(d['y' + (j || '')], 10);
+      }
+
+      $el = $('<div class="css-graph-container"></div>');
+
+      for (j = 0; j < yLength; j++) {
+        width = Math.floor((dataY[j] / totalY) * 100);
+        if (width) {
+          $bar = $('<div class="css-graph-y css-graph-y' + (j || '') + '"></div>');
+          $bar.css({
+            'width': width + '%',
+            'background-color': chartColors[j]
+          });
+
+          if (chartClasses && chartClasses[j]) {
+            $bar.addClass(chartClasses[j]);
+          }
+
+          $bar.appendTo($el);
+        }
+      }
+
+      $el.appendTo($CSSGraphContainer);
+    }
+    $CSSGraphContainer.appendTo($container);
+  };
+
+  return cssGraph;
 });

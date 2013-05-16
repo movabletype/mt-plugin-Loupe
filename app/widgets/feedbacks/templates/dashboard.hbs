@@ -1,4 +1,8 @@
 <header>
-<p id="feedbacks-count">18</p>
+<p id="feedbacks-count">{{totalResults}}</p>
 <h1 id="feedbacks-label">コメント&トラックバック</h1>
 </header>
+{{#if loading}}
+<div class="loading"></div>
+{{/if}}
+<div class="content"></div>

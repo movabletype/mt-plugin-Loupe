@@ -39,25 +39,23 @@ function (Marionette, app, commands, Collection, Model, template) {
         });
       }
 
-      this.$el.hammer().on('touch', '#accept-button', _.bind(function () {
+      var $acceptionButton = this.$el.find('#acception-button');
+
+      $acceptionButton.hammer().on('touch', _.bind(function () {
         this.ui.button.addClass('tapped');
       }, this));
 
-      this.$el.hammer().on('release', '#accept-button', _.bind(function () {
+      $acceptionButton.hammer().on('release', _.bind(function () {
         this.ui.button.removeClass('tapped');
       }, this));
 
-      this.$el.hammer().on('tap', '.acception-failed .close-me', function () {
-        $(this).parent().remove();
-      });
-
-      this.$el.hammer().on('tap', '#accept-button', _.bind(function () {
+      $acceptionButton.hammer().on('tap', _.bind(function () {
         this.loading = true;
         this.render();
         var options = {
           success: _.bind(function () {
             if (DEBUG) {
-              console.log('acception sccuess')
+              console.log('acception sccuess');
             }
             this.loading = false;
             this.accepted = true;
@@ -67,16 +65,24 @@ function (Marionette, app, commands, Collection, Model, template) {
           }, this),
           error: _.bind(function () {
             if (DEBUG) {
-              console.log('failed acception')
+              console.log('failed acception');
             }
             this.loading = false;
             this.acceptionFailed = true;
             this.render();
           }, this)
-        }
+        };
         this.model.sync('update', this.model, options);
       }, this));
 
+    },
+
+    onRender: function () {
+      if (this.acceptionFailed) {
+        this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
+          $(this).parent().remove();
+        });
+      }
     },
 
     serializeData: function () {

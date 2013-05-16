@@ -7,14 +7,15 @@ function (Marionette, MainView, template) {
     template: function (data) {
       return template(data);
     },
-    initialize: function () {
+    initialize: function (params) {
+      this.params = params;
       this.$el.addClass('container');
     },
     regions: {
       main: '#sidemenu-main',
     },
     onRender: function () {
-      this.main.show(new MainView())
+      this.main.show(new MainView(this.params))
     }
   });
 });

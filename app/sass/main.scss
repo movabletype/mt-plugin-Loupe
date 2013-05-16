@@ -52,6 +52,10 @@ textarea, input {
   }
 }
 
+#sidemenu {
+  display: none;
+}
+
 #blogname {
   text-align: center;
   font-weight: normal;
@@ -112,7 +116,7 @@ textarea, input {
       margin: 5px auto 0;
       width: 75px;
       height: 75px;
-      @include border-radius(100%);
+      @include border-radius(100px);
       border: 10px solid #fefae5;
       overflow: hidden;
       background-color: #fefae5;
@@ -159,7 +163,7 @@ textarea, input {
     overflow: hidden;
     background-position: center center;
     background-size: cover;
-    @include border-radius(100%);
+    @include border-radius(100px);
     float: left;
     &.no-image {
       font-size: 40px;
@@ -193,7 +197,7 @@ textarea, input {
     float: left;
     font-size: 40px;
     color: #666;
-    @include border-radius(100%);
+    @include border-radius(100px);
     background-color: #333;
     overflow: hidden;
     text-align: center;
