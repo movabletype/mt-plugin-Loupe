@@ -436,7 +436,6 @@ module.exports = function (grunt) {
               "backbone.wreqr",
               "backbone.babysitter",
               "backbone.marionette",
-              "backbone.marionette.handlebars",
               "hbs",
               "handlebars",
               "i18nprecompile",
