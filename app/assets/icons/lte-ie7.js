@@ -9,7 +9,10 @@ window.onload = function() {
 			'icon-arrow-left' : '&#x3c;',
 			'icon-menu' : '&#x3d;',
 			'icon-checkmark' : '&#x76;',
-			'icon-pen' : '&#x23;'
+			'icon-pen' : '&#x23;',
+			'icon-user' : '&#x6f;',
+			'icon-arrow-right' : '&#x3e;',
+			'icon-cog' : '&#x2a;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
@@ -28,4 +31,4 @@ window.onload = function() {
 			addIcon(el, icons[c[0]]);
 		}
 	}
-};};
+};
