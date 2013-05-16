@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
+define(['backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
 
-function (Marionette, statsProvider, model, collection, ItemViewModel, ItemView, template) {
+function (Marionette, app, statsProvider, Model, Collection, ItemViewModel, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
@@ -92,8 +92,8 @@ function (Marionette, statsProvider, model, collection, ItemViewModel, ItemView,
 
     initialize: function (options) {
       this.blogId = options.params.blogId;
-      this.model = model;
-      this.collection = collection;
+      this.model = app.dashboardWidgetsData.topArticlesModel = app.dashboardWidgetsData.topArticlesModel || new Model();
+      this.collection = app.dashboardWidgetsData.topArticlesCollection = app.dashboardWidgetsData.topArticlesCollection || new Collection();
       this.loading = true;
 
       this.$el.hammer().on('tap', '.refetch', _.bind(function () {
@@ -104,14 +104,14 @@ function (Marionette, statsProvider, model, collection, ItemViewModel, ItemView,
       }, this));
 
       if (!this.model.isSynced) {
-        statsProvider = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
+        var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
 
-        statsProvider.done(_.bind(function () {
+        statsProviderDfd.done(_.bind(function () {
           this.providerIsNotAvailable = false;
           this.fetch();
         }, this));
 
-        statsProvider.fail(_.bind(function () {
+        statsProviderDfd.fail(_.bind(function () {
           this.providerIsNotAvailable = true;
           this.loading = false;
           this.render();

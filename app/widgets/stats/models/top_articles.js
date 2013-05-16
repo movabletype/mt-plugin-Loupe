@@ -1,7 +1,7 @@
 define(['jquery', 'backbone', 'js/mtapi', 'mtchart.range'],
 
 function ($, Backbone, mtapi, chartRange) {
-  return new(Backbone.Model.extend({
+  return Backbone.Model.extend({
     isSynced: false,
     sync: function (method, model, options) {
       if (method === 'read') {
@@ -34,5 +34,5 @@ function ($, Backbone, mtapi, chartRange) {
         return dfd;
       }
     }
-  }))();
+  });
 });
