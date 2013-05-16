@@ -1,13 +1,11 @@
-define(['underscore', 'backbone', 'backbone.marionette', 'hbs!js/views/dashboard/templates/main'],
+define(['backbone.marionette', 'js/commands', 'hbs!js/views/dashboard/templates/main'],
 
-function (_, Backbone, Marionette, template) {
+function (Marionette, commands, template) {
   "use strict";
 
   return Marionette.Layout.extend({
     serializeData: function () {
-      return {
-        name: 'Six Apart ブログ'
-      };
+      return this.params.blog || {};
     },
 
     template: function (data) {

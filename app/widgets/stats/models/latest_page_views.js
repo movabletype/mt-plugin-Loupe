@@ -1,7 +1,7 @@
 define(['jquery', 'backbone', 'js/mtapi', 'mtchart.date'],
 
 function ($, Backbone, mtapi, chartDate) {
-  return new(Backbone.Model.extend({
+  return Backbone.Model.extend({
     isSynced: false,
     sync: function (method, model, options) {
       if (method === 'read') {
@@ -18,6 +18,8 @@ function ($, Backbone, mtapi, chartDate) {
           endDate: endDate
         };
 
+        params.path = ''
+
         mtapi.api.statsPageviewsForDate(options.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
@@ -33,5 +35,5 @@ function ($, Backbone, mtapi, chartDate) {
         return dfd;
       }
     }
-  }))();
+  });
 });

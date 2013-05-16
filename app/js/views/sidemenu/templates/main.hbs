@@ -1,3 +1,26 @@
-<section id="stats">
-俺はサイドメニュー
+<section class="user-info">
+  {{#with user}}
+    {{#if this.userpicURL}}
+      <div class="userpic" style="background-image: url({{userpicURL}});" /></div>
+    {{else}}
+      <div class="userpic no-image icon-user"></div>
+    {{/if}}
+    <div class="display-name">{{displayName}}</div>
+    <div class="close-sidemenu icon-arrow-right"></div>
+  {{/with}}
 </section>
+<section class="blogs-list">
+  <ul>
+  {{#each blogs}}
+    <li data-id="{{id}}" class="blog-item">
+      <a href="#" data-id="{{id}}" {{#if this.selected}}class="selected"{{/if}}>
+        <span class="icon-cog blog-asset"></span>
+        <span class="blog-name">{{this.name}}</span>
+      </a>
+    </li>
+  {{/each}}
+  </ul>
+</section>
+<div class="save-changes">
+  設定
+</div>

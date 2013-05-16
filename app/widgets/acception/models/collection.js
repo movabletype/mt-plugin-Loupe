@@ -1,5 +1,5 @@
 define(['jquery', 'backbone', 'js/mtapi', 'widgets/acception/models/model'], function ($, Backbone, mtapi, Model) {
-  return new(Backbone.Collection.extend({
+  return Backbone.Collection.extend({
     model: Model,
     initialize: function () {
       this.isSynced = false;
@@ -32,5 +32,5 @@ define(['jquery', 'backbone', 'js/mtapi', 'widgets/acception/models/model'], fun
       }, this));
       return dfd;
     }
-  }))();
+  });
 });

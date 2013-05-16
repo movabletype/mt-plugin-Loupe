@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
+define(['backbone.marionette', 'app', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
 
-function (Marionette, commands, collection, Model, template) {
+function (Marionette, app, commands, Collection, Model, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -15,7 +15,7 @@ function (Marionette, commands, collection, Model, template) {
     initialize: function (params) {
       this.blogId = params.params[0];
       this.entryId = params.params[1];
-      this.collection = collection;
+      this.collection = app.dashboardWidgetsData.acception = app.dashboardWidgetsData.acception || new Collection();
       this.model = this.collection.get(this.entryId);
       this.loading = true;
 

@@ -6,16 +6,29 @@ function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
     auth: function (callback) {
       var getUserAndBlogs = _.bind(function (callback) {
         this.user = this.user || userApi();
-        this.user.done(function (user) {
+        this.user.done(_.bind(function (user) {
           this.blogs = this.blogs || blogsApi(user.id);
           this.blogs.done(function (blogs) {
+            var blog;
+            var currentBlogId = localStorage.getItem('currentBlogId') || null;
+            if (currentBlogId) {
+              blog = _.find(blogs.items, function (b) {
+                return b.id === currentBlogId;
+              });
+            } else {
+              if (blogs.items && blogs.items.length) {
+                blog = blogs.items[0];
+              }
+            }
             $('#app-building').remove();
             callback({
               userId: user.id,
-              blogId: blogs.items[0].id
+              blogId: blog.id,
+              user: user,
+              blog: blog
             });
           });
-        });
+        }, this));
       }, this);
 
       if (this.token && this.token.expire && this.token.expire > Date.now()) {
@@ -48,14 +61,25 @@ function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
       }
     },
     initialize: function (options) {
+      commands.setHandler('controller:getUser', _.bind(function (callback) {
+        this.user.done(_.bind(function (user) {
+          callback(user)
+        }, this));
+      }, this));
+
+      commands.setHandler('controller:getBlogList', _.bind(function (callback) {
+        this.blogs.done(_.bind(function (blogs) {
+          callback(blogs);
+        }, this))
+      }, this));
+
       var widgets = options.widgets;
       _.forEach(widgets, function (widget) {
         var methodName = 'moveWidgetPage_' + widget.id;
         this[methodName] = function () {
           var params = [].slice.call(arguments, 0);
           this.auth(function (data) {
-            params.userId = data.userId;
-            params.blogId = data.blogId;
+            params = _.extend(params, data);
             commands.execute('move:widget', {
               to: 'widget',
               widget: widget,
@@ -67,9 +91,7 @@ function ($, Backbone, Marionette, mtapi, commands, userApi, blogsApi) {
     },
     moveDashboard: function () {
       this.auth(function (data) {
-        var params = {};
-        params.userId = data.userId;
-        params.blogId = data.blogId;
+        var params = data || {};
         commands.execute('move:dashboard', params);
       });
     },

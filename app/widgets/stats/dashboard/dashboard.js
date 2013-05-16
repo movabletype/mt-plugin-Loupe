@@ -1,6 +1,6 @@
-define(['jquery', 'backbone.marionette', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart.graph'],
+define(['jquery', 'backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart.graph'],
 
-function ($, Marionette, statsProvider, model, commands, template, Graph) {
+function ($, Marionette, app, statsProvider, Model, commands, template, Graph) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -46,7 +46,7 @@ function ($, Marionette, statsProvider, model, commands, template, Graph) {
 
     initialize: function (options) {
       this.blogId = options.params.blogId;
-      this.model = model;
+      this.model = app.dashboardWidgetsData.stats = app.dashboardWidgetsData.stats || new Model();
       this.loading = true;
 
       this.$el.hammer().on('tap', '.refetch', _.bind(function () {
@@ -57,14 +57,14 @@ function ($, Marionette, statsProvider, model, commands, template, Graph) {
       }, this));
 
       if (!this.model.isSynced) {
-        statsProvider = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
+        var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
 
-        statsProvider.done(_.bind(function () {
+        statsProviderDfd.done(_.bind(function () {
           this.providerIsNotAvailable = false;
           this.fetch();
         }, this));
 
-        statsProvider.fail(_.bind(function () {
+        statsProviderDfd.fail(_.bind(function () {
           this.providerIsNotAvailable = true;
           this.loading = false;
           this.render();
@@ -85,6 +85,9 @@ function ($, Marionette, statsProvider, model, commands, template, Graph) {
           };
         });
 
+        var width = this.$el.innerWidth() || 330;
+        var canvasWidth = width < 330 ? width : 330
+
         var config = {
           type: 'canvas.bar',
           json: graphData,
@@ -92,7 +95,7 @@ function ($, Marionette, statsProvider, model, commands, template, Graph) {
           lineWidth: 8,
           lineColors: 'rgb(254,213,99)',
           barColors: 'rgba(255,255,255,0.1)',
-          width: 330,
+          width: canvasWidth,
           height: 170
         };
 

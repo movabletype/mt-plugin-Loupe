@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart.graph'],
+define(['backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart.graph'],
 
-function (Marionette, statsProvider, model, template, Graph) {
+function (Marionette, app, statsProvider, Model, template, Graph) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -40,7 +40,7 @@ function (Marionette, statsProvider, model, template, Graph) {
 
     initialize: function (options) {
       this.blogId = options.params.blogId;
-      this.model = model;
+      this.model = app.dashboardWidgetsData.stats = app.dashboardWidgetsData.stats || new Model();
       this.loading = true;
 
       this.$el.hammer().on('tap', '.refetch', _.bind(function () {
@@ -51,14 +51,14 @@ function (Marionette, statsProvider, model, template, Graph) {
       }, this));
 
       if (!this.model.isSynced) {
-        statsProvider = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
+        var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
 
-        statsProvider.done(_.bind(function () {
+        statsProviderDfd.done(_.bind(function () {
           this.providerIsNotAvailable = false;
           this.fetch();
         }, this));
 
-        statsProvider.fail(_.bind(function () {
+        statsProviderDfd.fail(_.bind(function () {
           this.providerIsNotAvailable = true;
           this.loading = false;
           this.render();

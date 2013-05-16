@@ -14,7 +14,7 @@ body {
   margin: 0;
   padding: 0;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
-  //overflow: hidden;
+  // overflow: hidden;
 }
 
 textarea, input {

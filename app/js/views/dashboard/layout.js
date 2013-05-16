@@ -20,6 +20,7 @@ function (Marionette, template, HeaderView, MainLayout) {
     },
 
     onRender: function () {
+      this.header.show(new HeaderView());
       this.$el.addClass('container');
       this.main.show(new MainLayout({
         widgets: this.widgets,
@@ -28,8 +29,6 @@ function (Marionette, template, HeaderView, MainLayout) {
     },
 
     onShow: function () {
-      this.header.show(new HeaderView());
-
       var handleShadow = function () {
         var $this = $(this);
         if ($this.scrollTop() > 0) {

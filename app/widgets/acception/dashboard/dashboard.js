@@ -1,6 +1,6 @@
 define(['backbone.marionette', 'app', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/dashboard/itemview', 'hbs!widgets/acception/templates/dashboard'],
 
-function (Marionette, app, commands, collection, ItemView, template) {
+function (Marionette, app, commands, Collection, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
@@ -10,9 +10,17 @@ function (Marionette, app, commands, collection, ItemView, template) {
     itemView: ItemView,
     itemViewContainer: '#acceptions-list',
 
+    appendHtml: function (cv, iv) {
+      if (!this.loading) {
+        var $container = this.getItemViewContainer(cv);
+        $container.append(iv.el);
+      }
+    },
+
+
     initialize: function (options) {
       this.blogId = options.params.blogId;
-      this.collection = collection;
+      this.collection = app.dashboardWidgetsData.acception = app.dashboardWidgetsData.acception || new Collection();
       this.loading = true;
       if (!this.collection.isSynced) {
         this.fetch();
