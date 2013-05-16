@@ -8,10 +8,6 @@ function (Backbone, Marionette, commands, AppRouter, Controller, SidemenuLayout,
   app.addInitializer(function (options) {
     this.widgets = options.widgets;
     app.dashboardWidgetsData = {};
-
-    //$(document.body).on('touchmove', function (e) {
-    //  e.preventDefault();
-    //});
   });
 
   app.addRegions({

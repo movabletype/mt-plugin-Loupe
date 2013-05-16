@@ -85,7 +85,7 @@ function ($, Marionette, app, statsProvider, Model, commands, template, Graph) {
           };
         });
 
-        var width = this.$el.innerWidth() || 330;
+        var width = this.$el.innerWidth() || 300;
         var canvasWidth = width < 330 ? width : 330
 
         var config = {

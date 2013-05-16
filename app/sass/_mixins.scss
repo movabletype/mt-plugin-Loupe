@@ -1,3 +1,14 @@
+$default-transition-property: all;
+$default-transition-duration: 0.3s;
+$default-transition-function: ease;
+$default-transition-delay: 0s;
+
+$content-max-width: 450px;
+
+@mixin hardware-accelerate-hack {
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
 @mixin loading-base {
   background-repeat: no-repeat;
   background-size: 30px;

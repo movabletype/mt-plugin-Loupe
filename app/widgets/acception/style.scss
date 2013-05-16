@@ -1,3 +1,6 @@
+@import "compass/css3/border-radius";
+@import "../../sass/_mixins.scss";
+
 @mixin round-asset {
   li {
     margin-left: 0;
@@ -7,7 +10,7 @@
     width: 90px;
     height: 90px;
     overflow: hidden;
-    border-radius: 100%;
+    @include border-radius(100%);
     border: 6px solid white;
     background-color: #fff;
     display: block;
@@ -23,6 +26,11 @@
     }
     &:nth-of-type(3n+2) {
       margin: 0 10px 10px;
+
+      @media screen and (max-width:$content-max-width){
+        margin-left: 5px;
+        margin-right: 5px;
+      }
     }
     .no-image {
       display: block;
@@ -39,7 +47,7 @@
 
 #widget-acception {
   min-height: 320px;
-  padding: 30px 0 40px;
+  padding: 30px 10px 40px;
   background-color: #1e2142;
   color: #ffffff;
   text-align: center;
@@ -235,3 +243,4 @@
   line-height: 1em;
   margin: 0;
 }
+
