@@ -16,6 +16,7 @@
     "backbone.babysitter": "0.0.5",
     "require-handlebars-plugin": "0.4.0",
     "hammerjs": "1.0.5",
+    "jquery-smartresize": "git://github.com/louisremi/jquery-smartresize.git",
     "morris.js": "0.4.3",
     "requirejs-text": "2.0.5",
     "requirejs-plugins": "1.0.1",
