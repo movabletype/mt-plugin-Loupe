@@ -44,7 +44,10 @@ $background-color: #16878a;
   background-color: $background-color;
   position: relative;
   min-height: 320px;
-  padding: 30px 0 10px 0;
+  padding: 30px 30px 10px;
+  .tap-enabled{
+   cursor:pointer;
+  }
   header {
     text-align: center;
     color: #fff;
@@ -66,6 +69,12 @@ $background-color: #16878a;
     text-align: center;
   }
   @include error;
+  .graph-container {
+    min-height: 170px;
+  }
+  .graph-element {
+    margin: 0 auto;
+  }
 }
 
 #recent-access {

@@ -12,7 +12,10 @@ define(['jquery', 'js/mtapi'], function ($, mtapi) {
         }
         dfd.resolve(resp);
       } else {
-        dfd.fail(resp);
+        if (DEBUG) {
+          console.log('fail on get blogs');
+        }
+        dfd.reject(resp);
       }
     });
 

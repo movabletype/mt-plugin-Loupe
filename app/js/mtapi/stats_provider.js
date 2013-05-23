@@ -6,13 +6,15 @@ define(['jquery', 'js/mtapi', 'json2'], function ($, mtapi, JSON) {
 
     if (storedData[blogId]) {
       if (DEBUG) {
-        console.log('stats provider has been already stored')
+        console.log('stats provider has been already stored');
       }
       dfd.resolve({
         id: storedData[blogId]
       });
     } else {
-      mtapi.api.statsProvider(blogId, function (resp) {
+      mtapi.api.statsProvider(blogId, {
+        'bustCache': Date.now()
+      }, function (resp) {
         if (DEBUG) {
           console.log(resp);
         }

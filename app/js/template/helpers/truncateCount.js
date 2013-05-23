@@ -1,5 +1,5 @@
 define('template/helpers/truncateCount', ['handlebars'], function (Handlebars) {
-  function todaysPageViews(count) {
+  function truncateCount(count) {
 
     if (count) {
       count = parseFloat(count, 10);

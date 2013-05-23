@@ -36,7 +36,7 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
     if (!app.sidemenuShow) {
       app.sidemenu.$el.css({
         'display': 'block'
-      })
+      });
       // app.sidemenu.show(new SidemenuLayout());
       $headerMain.css({
         'margin-left': '0',
@@ -97,7 +97,7 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
       widgets: app.widgets,
       params: params
     }));
-  })
+  });
 
   commands.setHandler('move:dashboard', function (params) {
     app.main.show(new DashboardLayout({

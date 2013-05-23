@@ -1,4 +1,4 @@
-define('template/helpers/ifIs', ['handlebars'], function(Handlebars) {
+define('template/helpers/ifIs', ['handlebars'], function (Handlebars) {
   function ifIs(target, options) {
     var hash = options.hash;
 
@@ -7,7 +7,7 @@ define('template/helpers/ifIs', ['handlebars'], function(Handlebars) {
       'ne': (target !== options.hash.ne),
       'lt': (target <= options.hash.lt),
       'gt': (target >= options.hash.gt)
-    }
+    };
 
     var cond = hash.eq ? 'eq' : hash.ne ? 'ne' : hash.lt ? 'lt' : hash.gt ? 'gt' : ' ';
     if (map[cond]) {

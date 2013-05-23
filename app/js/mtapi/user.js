@@ -12,7 +12,10 @@ define(['jquery', 'js/mtapi'], function ($, mtapi) {
         }
         dfd.resolve(resp);
       } else {
-        dfd.fail(resp);
+        if (DEBUG) {
+          console.log('get user data failed');
+        }
+        dfd.reject(resp);
       }
     });
 

@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart.graph'],
+define(['backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart'],
 
-function (Marionette, app, statsProvider, Model, template, Graph) {
+function (Marionette, app, statsProvider, Model, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -86,27 +86,28 @@ function (Marionette, app, statsProvider, Model, template, Graph) {
         });
 
         var config = {
-          type: "css.bar",
-          json: data,
-          hideTotalCount: true,
-          hideDeltaCount: true,
+          type: "css.horizontalBar",
+          data: data,
           yLength: 1,
           yLabel: yLabel,
           autoSized: false,
           pointSize: 6,
-          chartColors: ["#fed563"],
-          hideHover: "always",
-          width: 390
+          barColor: "#fed563",
+          barBackgroundColor: "#003130",
+          dateColor: "#ffffff",
+          labelColor: "#ffffff",
+          showDate: true,
+          barWidth: 40,
+          barInterval: 10
         };
 
         var range = {
           dataType: "timeline",
           unit: 'daily',
-          maxLength: 7,
           length: 7
         };
 
-        new Graph(config, range).trigger('APPEND_TO', graphEl);
+        new ChartAPI.Graph(config, range).trigger('APPEND_TO', graphEl);
       }
     }
   });

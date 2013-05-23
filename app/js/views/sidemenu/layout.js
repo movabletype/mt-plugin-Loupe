@@ -12,10 +12,10 @@ function (Marionette, MainView, template) {
       this.$el.addClass('container');
     },
     regions: {
-      main: '#sidemenu-main',
+      main: '#sidemenu-main'
     },
     onRender: function () {
-      this.main.show(new MainView(this.params))
+      this.main.show(new MainView(this.params));
     }
   });
 });

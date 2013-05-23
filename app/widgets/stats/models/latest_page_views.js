@@ -1,34 +1,32 @@
-define(['jquery', 'backbone', 'js/mtapi', 'mtchart.date'],
+define(['jquery', 'backbone', 'moment', 'js/mtapi'],
 
-function ($, Backbone, mtapi, chartDate) {
+function ($, Backbone, moment, mtapi) {
   return Backbone.Model.extend({
     isSynced: false,
     sync: function (method, model, options) {
       if (method === 'read') {
-        var dfd = $.Deferred();
+        var dfd = $.Deferred(),
+          params = {
+            startDate: moment().subtract('days', 6).format(),
+            endDate: moment().format()
+          };
+
         dfd.done(options.success);
         dfd.fail(options.error);
-
-        var today = new Date();
-        var startDate = chartDate.zeroPadArray(chartDate.parse(today.valueOf() - (6 * 24 * 60 * 60 * 1000)), 'daily').join('-');
-        var endDate = chartDate.zeroPadArray(today, 'daily').join('-');
-
-        var params = {
-          startDate: startDate,
-          endDate: endDate
-        };
-
-        params.path = ''
 
         mtapi.api.statsPageviewsForDate(options.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
-              console.log('latest pageviews');
+              console.log('statsPageviewsForDate success in latest_page_view');
               console.log(resp);
             }
             this.isSynced = true;
             dfd.resolve(resp);
           } else {
+            if (DEBUG) {
+              console.log('statsPageviewsForDate fail in latest_page_view');
+              console.log(resp);
+            }
             dfd.reject(resp);
           }
         }, this));

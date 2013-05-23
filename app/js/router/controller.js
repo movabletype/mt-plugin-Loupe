@@ -6,8 +6,19 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
     auth: function (callback) {
       var getUserAndBlogs = _.bind(function (callback) {
         this.user = this.user || userApi();
+
+        this.user.fail(_.bind(function () {
+          delete this.user;
+          this.authorization();
+        }, this));
+
         this.user.done(_.bind(function (user) {
           this.blogs = this.blogs || blogsApi(user.id);
+
+          this.blogs.fail(_.bind(function () {
+            delete this.blogs;
+          }));
+
           this.blogs.done(_.bind(function (blogs) {
             var blog;
             var currentBlogId = localStorage.getItem('currentBlogId') || null;
@@ -59,25 +70,28 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
               console.log(res.error);
               console.log('Requesting token is failed. Move to Signin screen');
             }
-            var hash = location.href.indexOf(/#/);
-            var route = hash !== -1 ? location.href.slice(hash + 1) : '';
-            window.sessionStorage.setItem('routeCache', route);
-            location.replace(mtapi.baseUrl + '/v' + mtapi.api.getVersion() + '/authorization?redirect_uri=' + location.href);
+            this.authorization();
           }
         }, this));
       }
     },
+    authorization: function () {
+      var hash = location.href.lastIndexOf('#');
+      var route = hash !== -1 ? location.href.slice(hash + 1) : '';
+      window.sessionStorage.setItem('routeCache', route);
+      location.replace(mtapi.baseUrl + '/v' + mtapi.api.getVersion() + '/authorization?redirect_uri=' + location.href);
+    },
     initialize: function (options) {
       commands.setHandler('controller:getUser', _.bind(function (callback) {
         this.user.done(_.bind(function (user) {
-          callback(user)
+          callback(user);
         }, this));
       }, this));
 
       commands.setHandler('controller:getBlogList', _.bind(function (callback) {
         this.blogs.done(_.bind(function (blogs) {
           callback(blogs);
-        }, this))
+        }, this));
       }, this));
 
       var widgets = options.widgets;
@@ -104,8 +118,10 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
     },
     authorizationCallback: function () {
       var route = window.sessionStorage.getItem('routeCache') || '';
-      window.sessionStorage.removeItem('routeCache');
-      commands.execute('router:navigate', route);
+      this.auth(function () {
+        window.sessionStorage.removeItem('routeCache');
+        commands.execute('router:navigate', route);
+      });
     }
   });
 });

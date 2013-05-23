@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'widgets/feedbacks/models/comments_collection', 'widgets/feedbacks/models/trackbacks_collection', 'hbs!widgets/feedbacks/templates/dashboard', 'mtchart.graph'],
+define(['backbone.marionette', 'widgets/feedbacks/models/comments_collection', 'widgets/feedbacks/models/trackbacks_collection', 'hbs!widgets/feedbacks/templates/dashboard', 'mtchart'],
 
-function (Marionette, CommentsCollection, TrackbacksCollection, template, Graph) {
+function (Marionette, CommentsCollection, TrackbacksCollection, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -61,11 +61,13 @@ function (Marionette, CommentsCollection, TrackbacksCollection, template, Graph)
         }];
 
         var config = {
-          type: "css.ratioBar",
-          json: graphData,
+          type: "css.ratioHorizontalBar",
+          data: graphData,
           yLength: 2,
-          chartColors: ["#fed563", "#fffae6"],
-          chartClasses: ['icon-bubble', 'icon-paper-plane']
+          barColors: ["#fed563", "#fffae6"],
+          labelClasses: ['icon-bubble', 'icon-paper-plane'],
+          barWidth: 40,
+          labelSize: 24
         };
 
         var range = {
@@ -74,7 +76,7 @@ function (Marionette, CommentsCollection, TrackbacksCollection, template, Graph)
           length: 1
         };
 
-        new Graph(config, range).trigger('APPEND_TO', graphEl);
+        new ChartAPI.Graph(config, range).trigger('APPEND_TO', graphEl);
       }
     }
   });

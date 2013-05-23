@@ -1,6 +1,6 @@
-define(['jquery', 'backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart.graph'],
+define(['jquery', 'backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart'],
 
-function ($, Marionette, app, statsProvider, Model, commands, template, Graph) {
+function ($, Marionette, app, statsProvider, Model, commands, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -29,12 +29,14 @@ function ($, Marionette, app, statsProvider, Model, commands, template, Graph) {
           this.loading = false;
           this.error = false;
           this.$el.hammer().on('tap', this.navigatePage);
+          this.$el.addClass('tap-enabled');
           this.render();
         }, this),
         error: _.bind(function () {
           this.loading = false;
           this.error = true;
           this.$el.hammer().off('tap', this.navigatePage);
+          this.$el.removeClass('tap-enabled');
           this.render();
         }, this)
       });
@@ -65,6 +67,7 @@ function ($, Marionette, app, statsProvider, Model, commands, template, Graph) {
       } else {
         this.loading = false;
         this.$el.hammer().on('tap', this.navigatePage);
+        this.$el.addClass('tap-enabled');
       }
     },
 
@@ -83,31 +86,45 @@ function ($, Marionette, app, statsProvider, Model, commands, template, Graph) {
         graphData = _.map(graphData, function (item) {
           return {
             x: item.date,
-            y: item.pageviews
+            y: item.pageviews,
+            y1: item.pageviews
           };
         });
 
-        var width = this.$el.innerWidth() || 300;
-        var canvasWidth = width < 330 ? width : 330
-
         var config = {
-          type: 'canvas.bar',
-          json: graphData,
-          autoSized: false,
-          lineWidth: 8,
-          lineColors: 'rgb(254,213,99)',
-          barColors: 'rgba(255,255,255,0.1)',
-          width: canvasWidth,
+          type: 'easel.mix',
+          data: graphData,
+          yLength: 2,
+          mix: [{
+              type: 'bar',
+              yLength: 1,
+              chartColors: ['#ffffff'],
+              chartColorsAlpha: [0.1]
+            }, {
+              type: 'motionLine',
+              yLength: 1,
+              lineWidth: 8,
+              chartColors: ['#fed563']
+            }
+          ],
+          fallback: {
+            test: 'canvas',
+            type: 'morris.line',
+            data: graphData,
+            chartColors: ['#fed563'],
+            gridLineColor: '#ffffff',
+            gridTextColor: '#ffffff',
+            hideHover: 'always'
+          },
           height: 170
         };
 
         var range = {
           length: 7,
-          maxLength: 7,
           unit: 'daily'
         };
 
-        new Graph(config, range).trigger('APPEND_TO', this.$el.find('#stats-dashboard-graph'));
+        new ChartAPI.Graph(config, range).trigger('APPEND_TO', this.$el.find('#stats-dashboard-graph'));
       }
     }
   });

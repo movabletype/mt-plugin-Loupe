@@ -89,7 +89,7 @@ function (Marionette, commands, template) {
 
       this.$el.find('.close-sidemenu').hammer().on('tap', function () {
         commands.execute('sidemenu:toggle');
-      })
+      });
     }
   });
 });
