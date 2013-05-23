@@ -13,7 +13,7 @@ define(['jquery', 'js/mtapi', 'json2'], function ($, mtapi, JSON) {
       });
     } else {
       mtapi.api.statsProvider(blogId, {
-        'bustCache': Date.now()
+        'bustCache': (new Date()).valueOf()
       }, function (resp) {
         if (DEBUG) {
           console.log(resp);

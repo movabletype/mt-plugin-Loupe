@@ -49,7 +49,7 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
         }, this));
       }, this);
 
-      if (this.token && this.token.expire && this.token.expire > Date.now()) {
+      if (this.token && this.token.expire && this.token.expire > new Date()) {
         if (DEBUG) {
           console.log('user already has token, so skip request token');
           console.log(this.token);
@@ -62,7 +62,7 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
               console.log('got token successfully');
               console.log(res);
             }
-            res.expire = Date.now() + res.expires_in * 1000;
+            res.expire = new Date() + parseInt(res.expires_in, 10) * 1000;
             this.token = res;
             getUserAndBlogs(callback);
           } else {
