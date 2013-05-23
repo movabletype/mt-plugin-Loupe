@@ -9,20 +9,9 @@ module.exports = function (grunt) {
     }
   });
 
-  //grunt.loadNpmTasks('grunt-bulk-symlink');
+  grunt.loadNpmTasks('grunt-bulk-symlink');
 
-  var requireConfig = (function () {
-    var window = {};
-    var require = {
-      config: function (obj) {
-        require = function () {
-          return obj;
-        };
-        return obj;
-      }
-    };
-    return eval(grunt.file.read('./app/js/main.js').toString());
-  }());
+  var requireConfig = grunt.file.readJSON('./app/js/require.config.json');
 
   var requireJSPaths = {
     "requireLib": "lib/require",
@@ -34,7 +23,9 @@ module.exports = function (grunt) {
     "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr.min",
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
     "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette.min",
+    "moment": "components/moment/min/moment.min",
     "morris": "components/morris.js/morris.min",
+    "mtchart": "lib/chart-api/core/amd/mtchart.core.amd",
     "main": "js/main",
     "boot": "js/boot",
     "app": "js/app",
@@ -98,9 +89,9 @@ module.exports = function (grunt) {
 
   var settings = grunt.file.readJSON('settings.json');
 
-  //var bulkSymlinkLinks = grunt.file.expand('app/widgets/*/templates/helpers/*.js').map(function (filename) {
-  //  return '../../../' + filename.replace('app/', '');
-  //})
+  var bulkSymlinkLinks = grunt.file.expand('app/widgets/*/templates/helpers/*.js').map(function (filename) {
+    return '../../../' + filename.replace('app/', '');
+  });
 
   // Project configuration.
   grunt.initConfig({
@@ -156,64 +147,70 @@ module.exports = function (grunt) {
       beforeCompass: ['app/css/style.css'],
       build: ['build/*'],
       afterBuild: [
-        'build/build.txt',
-        'build/components',
-        'build/css/*',
-        'build/index.html',
-        'build/jade',
-        'build/js/boot.js',
-        'build/js/commands.js',
-        'build/js/mtapi',
-        'build/js/mtapi.js',
-        'build/js/router',
-        'build/js/main.js',
-        'build/js/lib',
-        'build/js/layouts',
-        'build/js/require.js',
-        'build/js/template',
-        'build/js/vent.js',
-        'build/js/views',
-        'build/lib',
-        'build/sass',
-        'build/template',
-        'build/templates',
-        'build/widgets',
-        'build/assets/icons/index.html',
-        'build/assets/icons/license.txt',
-        'build/assets/icons/Read Me.txt'],
+          'build/build.txt',
+          'build/components',
+          'build/css/*',
+          'build/index.html',
+          'build/jade',
+          'build/js/boot.js',
+          'build/js/commands.js',
+          'build/js/mtapi',
+          'build/js/mtapi.js',
+          'build/js/router',
+          'build/js/main.js',
+          'build/js/main.preprocess.js',
+          'build/js/require.config.json',
+          'build/js/lib',
+          'build/js/layouts',
+          'build/js/require.js',
+          'build/js/template',
+          'build/js/vent.js',
+          'build/js/views',
+          'build/lib',
+          'build/sass',
+          'build/template',
+          'build/templates',
+          'build/widgets',
+          'build/assets/icons/index.html',
+          'build/assets/icons/license.txt',
+          'build/assets/icons/Read Me.txt'
+      ],
       afterTest: ['template.js']
     },
     copy: {
       prep: {
         files: [{
-          expand: true,
-          src: ['app/components/morris.js/morris.css', 'app/lib/mtchart/mtchart.css'],
-          dest: 'app/css/lib/',
-          flatten: true
-        }, {
-          expand: true,
-          src: ['**/app.js', '**/endpoints.js'],
-          cwd: settings.mtApiPath,
-          dest: 'app/lib/data-api'
-        }]
+            expand: true,
+            src: ['app/lib/chart-api/mtchart.css'],
+            dest: 'app/css/lib/',
+            flatten: true
+          }, {
+            expand: true,
+            src: ['**/app.js', '**/endpoints.js'],
+            cwd: settings.mtApiPath,
+            dest: 'app/lib/data-api'
+          }
+        ]
       },
       build: {
         files: [{
-          expand: true,
-          cwd: 'app/',
-          src: ['widgets/**/assets/**'],
-          dest: 'build',
-          filter: 'isFile'
-        }]
+            expand: true,
+            cwd: 'app/',
+            src: ['widgets/**/assets/**'],
+            dest: 'build',
+            filter: 'isFile'
+          }
+        ]
       },
       beforeConcat: {
         files: [{
-          expand: true,
-          cwd: 'app/',
-          src: ['widgets/**/*.css'],
-          dest: 'app/css',
-          filter: 'isFile'
-        }]
+            expand: true,
+            cwd: 'app/',
+            src: ['widgets/**/*.css'],
+            dest: 'app/css',
+            filter: 'isFile'
+          }
+        ]
       }
     },
     symlink: {
@@ -223,25 +220,27 @@ module.exports = function (grunt) {
         options: {
           overwrite: true
         }
+      },
+      bulkSymlink: {
+        target: grunt.option('bulkSymlink'),
+        link: 'app/js/template/helpers',
+        options: {}
       }
     },
-    //bulkSymlink: {
-    //  prep: {
-    //    targets: bulkSymlinkLinks,
-    //    dir: 'app/js/template/helpers/',
-    //    options: {
-    //      overwrite: true
-    //    }
-    //  }
-    //},
+    bulkSymlink: {
+      prep: {
+        targets: bulkSymlinkLinks
+      }
+    },
     imagemin: {
       build: {
         files: [{
-          expand: true,
-          cwd: 'app/images',
-          src: '*.{png,jpg,jpeg}',
-          dest: 'build/images'
-        }]
+            expand: true,
+            cwd: 'app/images',
+            src: '*.{png,jpg,jpeg}',
+            dest: 'build/images'
+          }
+        ]
       }
     },
     watch: {
@@ -251,9 +250,17 @@ module.exports = function (grunt) {
       },
       css: {
         files: [
-          'app/sass/*.scss',
-          'app/widgets/*/**.scss'],
+            'app/sass/*.scss',
+            'app/widgets/*/**.scss'
+        ],
         tasks: ['clean:beforeCompass', 'compass', 'copy:beforeConcat', 'concat', 'cssmin']
+      }
+    },
+    preprocess: {
+      prep: {
+        files: {
+          'app/js/main.js': 'app/js/main.preprocess.js'
+        }
       }
     },
     connect: {
@@ -351,15 +358,16 @@ module.exports = function (grunt) {
       build: {
         options: {
           replacements: [{
-            pattern: /([,;])define\(/ig,
-            replacement: '$1\ndefine('
-          }, {
-            pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
-            replacement: ''
-          }, {
-            pattern: /;(require\(\["app"\])/,
-            replacement: ';\n$1'
-          }]
+              pattern: /([,;])define\(/ig,
+              replacement: '$1\ndefine('
+            }, {
+              pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
+              replacement: ''
+            }, {
+              pattern: /;(require\(\["app"\])/,
+              replacement: ';\n$1'
+            }
+          ]
         },
         files: {
           'build/js/app.js': 'build/js/app.js',
@@ -423,54 +431,48 @@ module.exports = function (grunt) {
           paths: requireJSPaths,
           dir: "build",
           modules: [{
-            name: 'vendor',
-            include: [
-              "jquery",
-              "modernizr",
-              "requireLib",
-              "text",
-              "json",
-              "underscore",
-              "backbone",
-              "backbone.localStorage",
-              "backbone.wreqr",
-              "backbone.babysitter",
-              "backbone.marionette",
-              "hbs",
-              "handlebars",
-              "i18nprecompile",
-              "json2",
-              "eve",
-              "raphael",
-              "morris",
-              "jquery.hammer",
-              "jquery.cookie",
-              "jquery.smartresize",
-              "jquery.smartscroll",
-              "mtchart",
-              "mtchart.data",
-              "mtchart.date",
-              "mtchart.range",
-              "mtchart.graph",
-              "mtchart.graph.cssgraph",
-              "mtchart.graph.easel",
-              "mtchart.graph.morris",
-              "mtchart.list",
-              "mtchart.slider",
-              "easeljs"]
-          }, {
-            name: 'template',
-            include: hbsTemplates,
-            exclude: ['vendor']
-          }, {
-            name: 'app',
-            include: ['boot'],
-            exclude: ['vendor', 'template']
-          }, {
-            name: 'widget',
-            include: widgetLibs.concat(widgetTemplates),
-            exclude: ['vendor', 'template', 'app']
-          }],
+              name: 'vendor',
+              include: [
+                  "requireLib",
+                  "mtapi",
+                  "mtendpoints",
+                  "jquery",
+                  "jquery.hammer",
+                  "jquery.smartresize",
+                  "jquery.smartscroll",
+                  "underscore",
+                  "backbone",
+                  "backbone.localStorage",
+                  "backbone.wreqr",
+                  "backbone.babysitter",
+                  "backbone.marionette",
+                  "text",
+                  "json",
+                  "hbs",
+                  "handlebars",
+                  "i18nprecompile",
+                  "json2",
+                  "moment",
+                  "eve",
+                  "raphael",
+                  "morris",
+                  "easeljs",
+                  "mtchart"
+              ]
+            }, {
+              name: 'template',
+              include: hbsTemplates,
+              exclude: ['vendor']
+            }, {
+              name: 'app',
+              include: ['boot'],
+              exclude: ['vendor', 'template']
+            }, {
+              name: 'widget',
+              include: widgetLibs.concat(widgetTemplates),
+              exclude: ['vendor', 'template', 'app']
+            }
+          ],
 
           skipDirOptimize: true,
           removeCombined: false,
@@ -524,37 +526,40 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'symlink:prep',
-    'copy:prep',
-    'clean:build',
-    'imagemin',
-    'clean:beforeCompass',
-    'compass',
-    'requirejs:build',
-    'clean:afterBuild',
-    'string-replace',
-    'copy:beforeConcat',
-    'cssmin:build',
-    'copy:build',
-    'jade:build',
-    'htmlmin',
-    'copy:beforeConcat',
-    'concat:dev']);
+      'symlink:prep',
+      'copy:prep',
+      'clean:build',
+      'imagemin',
+      'clean:beforeCompass',
+      'compass',
+      'requirejs:build',
+      'clean:afterBuild',
+      'string-replace',
+      'copy:beforeConcat',
+      'cssmin:build',
+      'copy:build',
+      'jade:build',
+      'htmlmin',
+      'copy:beforeConcat',
+      'concat:dev'
+  ]);
 
   grunt.registerTask('dev', [
-    'symlink:prep',
-    'copy:prep',
-    'jade:dev',
-    'compass:dev',
-    'copy:beforeConcat',
-    'concat:dev']);
+      'symlink:prep',
+      'copy:prep',
+      'jade:dev',
+      'compass:dev',
+      'copy:beforeConcat',
+      'concat:dev'
+  ]);
 
   grunt.registerTask('test', [
-    'requirejs:test',
-    'jshint',
-    'jasmine',
-    'clean:afterTest',
-    'open:test']);
+      'requirejs:test',
+      'jshint',
+      'jasmine',
+      'clean:afterTest',
+      'open:test'
+  ]);
 
   grunt.registerTask('none', []);
 };
