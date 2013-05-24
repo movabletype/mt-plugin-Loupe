@@ -1,10 +1,8 @@
 <div class="item-num">{{num}}</div>
 {{#if this.assets.length}}
-  <div class="item-asset">
-    {{#eachOnly this.assets 0}}
-      <img src="{{url}}" />
-    {{/eachOnly}}
-  </div>
+  {{#eachOnly this.assets 0}}
+  <div class="item-asset" style="background-image:url({{url}}); -pie-background: url({{url}}) no-repeat center center / cover"></div>
+  {{/eachOnly}}
 {{else}}
   <div class="item-asset no-image icon-pen"></div>
 {{/if}}

@@ -21,10 +21,12 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
 
   commands.setHandler('sidemenu:toggle', function () {
     var $el = app.main.$el;
+    var $body = $(document.body);
     var $appMain = $el.find('#main');
     var $appMainContainer = $el.find('.main-container');
     var $header = $el.find('#header');
     var $headerMain = $el.find('#header-main');
+    var isIE8 = $('.ie8').length !== 0;
 
     var initialOffset = $headerMain.offset().left;
     var secondOffset = $headerMain.offset().left + $headerMain.innerWidth() - 10;
@@ -37,7 +39,7 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
       app.sidemenu.$el.css({
         'display': 'block'
       });
-      // app.sidemenu.show(new SidemenuLayout());
+
       $headerMain.css({
         'margin-left': '0',
         'margin-right': '0'
@@ -54,6 +56,9 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
         'left': initialOffset + 'px'
       });
       setTimeout(function () {
+        if (isIE8) {
+          $body.addClass('move');
+        }
         $header.addClass('move');
         $appMainContainer.addClass('move');
         $appMainContainer.css({
@@ -77,15 +82,22 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
       });
       $appMainContainer.css(returnX);
       $header.css(returnX);
-      setTimeout(function () {
+
+      var finalize = function () {
         $header.removeClass('move');
         $appMainContainer.removeClass('move');
-        // app.sidemenu.close();
         app.sidemenu.$el.css({
           'display': 'none'
         });
         app.sidemenuShow = false;
-      }, 300);
+      }
+
+      if (isIE8) {
+        $body.removeClass('move');
+        finalize();
+      } else {
+        setTimeout(finalize, 300);
+      }
     }
   });
 

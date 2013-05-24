@@ -40,6 +40,8 @@ function (Marionette, commands, template) {
       this.blogs = (params.blogs && params.blogs.items) ? params.blogs.items : [];
       this.blog = params.blog || {};
       this.currentBlogId = this.selectedBlogId = localStorage.getItem('currentBlogId') || null;
+      console.log('sidemenu main')
+      console.log(this.blogs.length)
     },
 
     selectBlogHandler: function (bid) {

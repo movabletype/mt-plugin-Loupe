@@ -33,3 +33,8 @@ $content-max-width: 450px;
     @include loading-base;
   }
 }
+
+@mixin border-radius-with-pie($radius: $default-border-radius, $vertical-radius: false) {
+  @include border-radius($radius, $vertical-radius);
+  behavior: url(ie/PIE/PIE.htc);
+}

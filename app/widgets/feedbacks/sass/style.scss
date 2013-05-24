@@ -1,5 +1,5 @@
 @import "compass/utilities/general/clearfix";
-@import "../../sass/_mixins";
+@import "../../../sass/_mixins";
 
 #widget-feedbacks {
   min-height: 320px;
@@ -37,16 +37,7 @@
       margin: 0 10px;
     }
   }
-  &:before,
-  &:after {
-    content: " ";
-    /* 1 */
-    display: table;
-    /* 2 */
-  }
-  &:after {
-    clear: both;
-  }
+  @include pie-clearfix;
   .css-graph-y {
     color: #562632;
   }

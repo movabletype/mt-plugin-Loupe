@@ -1,7 +1,7 @@
 <section class="user-info">
   {{#with user}}
     {{#if this.userpicURL}}
-      <div class="userpic" style="background-image: url({{userpicURL}});" /></div>
+      <div class="userpic" style="background-image: url({{userpicURL}}); -pie-background: url({{userpicURL}}) no-repeat center center / cover"></div>
     {{else}}
       <div class="userpic no-image icon-user"></div>
     {{/if}}

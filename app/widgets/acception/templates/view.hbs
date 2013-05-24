@@ -9,10 +9,10 @@
       <div class="accepted"><span class="icon-checkmark"></span><span class="message">承認しました！</span></div>
     {{/if}}
     {{#if acceptionFailed}}
-      <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>  
+      <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>
     {{/if}}
     {{#if id}}
-    {{#ifIs status eq="Review"}}    
+    {{#ifIs status eq="Review"}}
       <ul id="acception-item">
         <li>
           {{#if assets.length}}
@@ -27,7 +27,7 @@
       <div class="title">{{title}}</div>
       <div id="accept-button">承認する</div>
     {{else}}
-      <div id="no-acceptance-needed-for-this-entry">      
+      <div id="no-acceptance-needed-for-this-entry">
       この記事は承認待ちではありません
       </div>
     {{/ifIs}}

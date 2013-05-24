@@ -1,13 +1,26 @@
 doctype 5
+//if lt IE 7
+  html.oldie
+//if IE 8
+  html.ie8
+// [if gt IE 8] <!
 html
+  // <![endif]
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes')
     meta(name='format-detection', content='telephone=no,email=no,address=no')
     meta(name='apple-mobile-web-app-capable', content='yes')
-    title user mode application
+    title Loupe
     link(rel='stylesheet', href='assets/icons/style.css')
     link(rel='stylesheet', href='css/style.css')
+
+    //if lte IE 8
+      script(src='ie/console-polyfill/index.js')
+      script(src='ie/html5shiv/html5shiv')
+      script(src='ie/selectivizr/selectivizr-min.js')
+      script(src='ie/PIE/PIE_IE678_uncompressed.js')
+
     if dev
       script#main-script(data-mtapi='#{mtApiCGIPath}', data-main='js/main', src='lib/require.js')
     else

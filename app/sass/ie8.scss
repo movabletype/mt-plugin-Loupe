@@ -1,0 +1,22 @@
+.ie8 {
+  #app-building {
+    -pie-background: url("assets/images/indicator-white.gif") no-repeat center center / 30px;
+  }
+  #header {
+    #header-main {
+      background-color: transparent;
+    }
+    #logo {
+      .logo-inner {
+        -pie-background: url("assets/images/sixapartkk_bigger.png") no-repeat center center / 105%;
+      }
+    }
+  }
+  #app {
+    &.sidemenu-opened {
+      .container {
+        overflow: hidden;
+      }
+    }
+  }
+}

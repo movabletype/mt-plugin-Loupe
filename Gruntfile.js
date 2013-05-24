@@ -126,7 +126,7 @@ module.exports = function (grunt) {
         options: {
           sassDir: 'app',
           cssDir: 'app/css',
-          specify: ['app/sass/**.scss', 'app/widgets/*/**.scss']
+          specify: ['app/sass/*.scss', 'app/widgets/*/*.scss', 'app/widgets/*/sass/*.scss']
         }
       }
     },
@@ -139,7 +139,7 @@ module.exports = function (grunt) {
     cssmin: {
       build: {
         files: {
-          'build/css/style.css': ['app/css/**/*.css']
+          'build/css/style.css': ['app/css/*/**/*.css']
         }
       }
     },
@@ -253,7 +253,11 @@ module.exports = function (grunt) {
             'app/sass/*.scss',
             'app/widgets/*/**.scss'
         ],
-        tasks: ['clean:beforeCompass', 'compass', 'copy:beforeConcat', 'concat', 'cssmin']
+        tasks: ['clean:beforeCompass', 'compass:dev', 'copy:beforeConcat', 'concat', 'cssmin']
+      },
+      ie: {
+        files: ['app/ie/sass/*.scss'],
+        tasks: ['compass:ie']
       }
     },
     preprocess: {

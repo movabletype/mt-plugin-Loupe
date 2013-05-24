@@ -22,6 +22,9 @@ body {
   font-family: 'Helvetica Neue',sans-serif;
   font-size: 100%;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
+  &.move {
+    overflow: hidden;
+  }
 }
 
 textarea, input {
@@ -116,11 +119,15 @@ textarea, input {
       margin: 5px auto 0;
       width: 75px;
       height: 75px;
-      @include border-radius(100px);
+      @include border-radius-with-pie(100px);
       border: 10px solid #fefae5;
       overflow: hidden;
       background-color: #fefae5;
       @include transition-shadow-header;
+      background-image: url("../assets/images/sixapartkk_bigger.png");
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
     }
     img {
       max-width: 100%;
@@ -161,10 +168,11 @@ textarea, input {
     width: 50px;
     height: 50px;
     overflow: hidden;
+    position: absolute;
+    z-index: 1;
     background-position: center center;
     background-size: cover;
-    @include border-radius(100px);
-    float: left;
+    @include border-radius-with-pie(100px);
     &.no-image {
       font-size: 40px;
       line-height: 50px;
@@ -194,10 +202,11 @@ textarea, input {
     width: 50px;
     height: 50px;
     display: block;
-    float: left;
+    position: absolute;
+    z-index: 1;
     font-size: 40px;
     color: #666;
-    @include border-radius(100px);
+    @include border-radius-with-pie(100px);
     background-color: #333;
     overflow: hidden;
     text-align: center;
@@ -208,10 +217,11 @@ textarea, input {
   .blog-name {
     display: block;
     height: 50px;
-    padding: 15px;
+    padding: 15px 15px 15px 60px;
   }
   .blog-item {
     border-bottom: 4px solid #52514d;
+    position: relative;
     a {
       color: #fff;
       text-decoration: none;
@@ -241,6 +251,7 @@ textarea, input {
   &.move {
     @include single-transition($property: left, $duration: 0.3s);
     @include hardware-accelerate-hack;
+    overflow: hidden;
   }
 }
 

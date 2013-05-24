@@ -782,7 +782,7 @@ ChartAPI.Graph.prototype.draw_ = function (data) {
   }
 
   if (config.fallback && config.fallback.test) {
-    if (!ChartAPI.Graph.test[config.fallback.test]) {
+    if (!ChartAPI.Graph.test[config.fallback.test]()) {
       arr = config.fallback.type.split('.');
       lib = arr[0];
       method = arr[1];
