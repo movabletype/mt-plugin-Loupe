@@ -49,9 +49,9 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
         }, this));
       }, this);
 
-      if (this.token && this.token.expire && this.token.expire > new Date()) {
+      if (this.token) {
         if (DEBUG) {
-          console.log('user already has token, so skip request token');
+          console.log('user already has token (authed)');
           console.log(this.token);
         }
         getUserAndBlogs(callback);
@@ -59,16 +59,16 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
         mtapi.api.token(_.bind(function (res) {
           if (!res.error) {
             if (DEBUG) {
-              console.log('got token successfully');
+              console.log('[mtapi:token:success]');
               console.log(res);
             }
-            res.expire = new Date() + parseInt(res.expires_in, 10) * 1000;
             this.token = res;
             getUserAndBlogs(callback);
           } else {
             if (DEBUG) {
+              console.log('[mtapi:token:error]');
               console.log(res.error);
-              console.log('Requesting token is failed. Move to Signin screen');
+              console.log('Move to Signin screen');
             }
             this.authorization();
           }
