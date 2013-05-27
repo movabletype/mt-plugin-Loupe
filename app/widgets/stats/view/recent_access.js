@@ -73,7 +73,7 @@ function (Marionette, app, statsProvider, Model, template, ChartAPI) {
 
       if (this.model.isSynced) {
         var graphEl = this.$el.find('.content');
-        var graphData = this.model.toJSON().items;
+        var graphData = this.model.toJSON().pageviews.items;
         var data = _.map(graphData, function (item) {
           return {
             x: item.date,

@@ -82,14 +82,21 @@ function ($, Marionette, app, statsProvider, Model, commands, template, ChartAPI
       }
 
       if (this.model.isSynced) {
-        var graphData = this.model.toJSON().items;
-        graphData = _.map(graphData, function (item) {
-          return {
-            x: item.date,
-            y: item.pageviews,
-            y1: item.pageviews
-          };
-        });
+        var data = this.model.toJSON(),
+          pageviews = data.pageviews.items,
+          visits = data.visits.items,
+          graphData = [],
+          p, v;
+
+        for (var i = 0, len = pageviews.length; i < len; i++) {
+          p = pageviews[i];
+          v = visits[i];
+          graphData.push({
+            x: p.date,
+            y: p.pageviews,
+            y1: v.visits
+          })
+        }
 
         var config = {
           type: 'easel.mix',

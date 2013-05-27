@@ -6,13 +6,11 @@ function ($, Backbone, moment, mtapi) {
     sync: function (method, model, options) {
       if (method === 'read') {
         var dfd = $.Deferred(),
+          dfd2 = $.Deferred(),
           params = {
             startDate: moment().subtract('days', 6).format(),
             endDate: moment().format()
           };
-
-        dfd.done(options.success);
-        dfd.fail(options.error);
 
         mtapi.api.statsPageviewsForDate(options.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
@@ -20,7 +18,6 @@ function ($, Backbone, moment, mtapi) {
               console.log('statsPageviewsForDate success in latest_page_view');
               console.log(resp);
             }
-            this.isSynced = true;
             dfd.resolve(resp);
           } else {
             if (DEBUG) {
@@ -30,7 +27,33 @@ function ($, Backbone, moment, mtapi) {
             dfd.reject(resp);
           }
         }, this));
-        return dfd;
+
+        mtapi.api.statsVisitsForDate(options.blogId, params, _.bind(function (resp) {
+          if (!resp.error) {
+            if (DEBUG) {
+              console.log('statsVisitsForDate success in latest_page_view');
+              console.log(resp);
+            }
+            this.isSynced = true;
+            dfd2.resolve(resp);
+          } else {
+            if (DEBUG) {
+              console.log('statsVisitsForDate fail in latest_page_view');
+              console.log(resp);
+            }
+            dfd2.reject(resp);
+          }
+        }, this));
+
+        $.when(dfd, dfd2).then(_.bind(function (pageviews, visits) {
+          this.isSynced = true;
+          options.success({
+            pageviews: pageviews,
+            visits: visits
+          }, options);
+        }, this), options.error);
+
+        return [dfd, dfd2];
       }
     }
   });
