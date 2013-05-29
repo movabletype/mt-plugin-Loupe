@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/widget/layout'],
+define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/widget/layout'],
 
-function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, WidgetLayout) {
+function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, WidgetLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -8,6 +8,14 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
   app.addInitializer(function (options) {
     this.widgets = options.widgets;
     app.dashboardWidgetsData = {};
+    if (device.platform) {
+      var $body = $(document.body)
+      $body.addClass(device.platform);
+      if (device.version) {
+        $body.addClass(device.platform + device.versionShortStr);
+        $body.addClass(device.platform + device.versionStr);
+      }
+    }
   });
 
   app.addRegions({
@@ -29,7 +37,6 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
     var $appMainContainer = $el.find('.main-container');
     var $header = $el.find('#header');
     var $headerMain = $el.find('#header-main');
-    var isIE8 = $('.ie8').length !== 0;
 
     var initialOffset = $headerMain.offset().left;
     var secondOffset = $headerMain.offset().left + $headerMain.innerWidth() - 18;
@@ -92,7 +99,7 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
         app.sidemenuShow = false;
       }
 
-      if (isIE8) {
+      if (device.isIE8) {
         finalize();
       } else {
         setTimeout(finalize, 300);
