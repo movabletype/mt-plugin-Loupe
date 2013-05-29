@@ -1,19 +1,19 @@
 define(['jquery', 'js/mtapi'], function ($, mtapi) {
-  return function (userId, options) {
+  return function (blogId) {
     var dfd = $.Deferred();
 
-    mtapi.api.listBlogs(userId, options, function (resp) {
+    mtapi.api.getBlog(blogId, function (resp) {
       if (DEBUG) {
         console.log(resp);
       }
       if (resp && !resp.error) {
         if (DEBUG) {
-          console.log('get blogs list successfully');
+          console.log('get blog successfully');
         }
         dfd.resolve(resp);
       } else {
         if (DEBUG) {
-          console.log('fail on get blogs');
+          console.log('fail on get blog');
         }
         dfd.reject(resp);
       }

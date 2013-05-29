@@ -16,6 +16,9 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
   });
 
   vent.on('app:building:after', function (params) {
+    if (DEBUG) {
+      console.log('[vent:app:building:after]');
+    }
     app.sidemenu.show(new SidemenuLayout(params));
   });
 
@@ -29,7 +32,7 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
     var isIE8 = $('.ie8').length !== 0;
 
     var initialOffset = $headerMain.offset().left;
-    var secondOffset = $headerMain.offset().left + $headerMain.innerWidth() - 10;
+    var secondOffset = $headerMain.offset().left + $headerMain.innerWidth() - 18;
 
     var returnX = {
       'left': '0px'
@@ -56,20 +59,18 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
         'left': initialOffset + 'px'
       });
       setTimeout(function () {
-        if (isIE8) {
-          $body.addClass('move');
-        }
-        $header.addClass('move');
-        $appMainContainer.addClass('move');
-        $appMainContainer.css({
-          'left': secondOffset + 'px'
-        });
-        $header.css({
-          'left': secondOffset + 'px'
-        });
+        $body.addClass('move');
         setTimeout(function () {
-          app.sidemenuShow = true;
-        }, 300);
+          $appMainContainer.css({
+            'left': secondOffset + 'px'
+          });
+          $header.css({
+            'left': secondOffset + 'px'
+          });
+          setTimeout(function () {
+            app.sidemenuShow = true;
+          }, 300);
+        }, 10);
       }, 10);
     } else {
       $headerMain.css({
@@ -84,8 +85,7 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
       $header.css(returnX);
 
       var finalize = function () {
-        $header.removeClass('move');
-        $appMainContainer.removeClass('move');
+        $body.removeClass('move');
         app.sidemenu.$el.css({
           'display': 'none'
         });
@@ -93,7 +93,6 @@ function (Backbone, Marionette, commands, vent, AppRouter, Controller, SidemenuL
       }
 
       if (isIE8) {
-        $body.removeClass('move');
         finalize();
       } else {
         setTimeout(finalize, 300);

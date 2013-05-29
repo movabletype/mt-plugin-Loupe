@@ -1,29 +1,16 @@
-define(['backbone.marionette', 'js/commands', 'hbs!js/views/sidemenu/templates/main'],
+define(['backbone.marionette', 'json2', 'js/commands', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/views/sidemenu/blogs-list', 'hbs!js/views/sidemenu/templates/main'],
 
-function (Marionette, commands, template) {
+function (Marionette, JSON, commands, getBlogsList, getBlog, BlogsListView, template) {
   "use strict";
 
   return Marionette.Layout.extend({
     serializeData: function () {
-      if (this.currentBlogId !== this.blog.id) {
-        _.each(this.blogs, _.bind(function (blog) {
-          if (this.id === this.currentBlogId) {
-            blog.selected = true;
-            this.blog = blog;
-          } else {
-            delete blog.selected;
-          }
-        }, this));
-      }
-
       var data = {
-        user: this.user,
-        blogs: this.blogs,
-        blog: this.blog
+        user: this.user
       };
 
       if (DEBUG) {
-        console.log('sidebar:serializeData');
+        console.log('[sidebar:main:serializeData]');
         console.log(data);
       }
       return data;
@@ -33,61 +20,21 @@ function (Marionette, commands, template) {
       return template(data);
     },
 
-    blogs: null,
+    regions: {
+      blogs: '#sidemenu-blogs-list'
+    },
 
     initialize: function (params) {
+      this.params = params;
       this.user = params.user || {};
-      this.blogs = (params.blogs && params.blogs.items) ? params.blogs.items : [];
-      this.blog = params.blog || {};
-      this.currentBlogId = this.selectedBlogId = localStorage.getItem('currentBlogId') || null;
-      console.log('sidemenu main')
-      console.log(this.blogs.length)
-    },
-
-    selectBlogHandler: function (bid) {
-      var $blogList = this.$el.find('.blogs-list');
-      this.selectedBlogId = parseInt(bid, 10);
-      _.each(this.blogs, function (blog) {
-        if (parseInt(blog.id, 10) === this.selectedBlogId) {
-          blog.selected = true;
-          this.blog = blog;
-        } else {
-          delete blog.selected;
-        }
-      }, this);
-      $blogList.find('.selected').removeClass('selected');
-      $blogList.find('[data-id=' + this.selectedBlogId + ']').addClass('selected');
-    },
-
-    saveChagesHandler: function () {
-      if (DEBUG) {
-        console.log('switching blog from ' + this.currentBlogId + ' to ' + this.selectedBlogId);
-      }
-      commands.execute('sidemenu:toggle');
-      if (this.currentBlogId !== this.selectedBlogId) {
-        this.currentBlogId = this.selectedBlogId;
-        localStorage.setItem('currentBlogId', this.selectedBlogId);
-        setTimeout(_.bind(function () {
-          commands.execute('dashboard:rerender', {
-            userId: this.user.id,
-            blogId: this.blog.id,
-            user: this.user,
-            blog: this.blog
-          });
-        }, this), 300);
-      }
     },
 
     onRender: function () {
-      var that = this;
+      this.blogs.show(new BlogsListView(this.params));
 
-      this.$el.find('.blogs-list').hammer().on('tap', 'a', function () {
-        that.selectBlogHandler($(this).data('id'));
-      });
-
-      this.$el.find('.save-changes').hammer().on('tap', function () {
-        that.saveChagesHandler();
-      });
+      this.$el.find('.save-changes').hammer().on('tap', _.bind(function () {
+        this.blogs.currentView.saveChagesHandler();
+      }, this));
 
       this.$el.find('.close-sidemenu').hammer().on('tap', function () {
         commands.execute('sidemenu:toggle');

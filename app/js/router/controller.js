@@ -1,11 +1,11 @@
-define(['jquery', 'backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs'],
+define(['jquery', 'backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog'],
 
-function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
+function ($, Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList, getBlog) {
   "use strict";
   return Marionette.Controller.extend({
     auth: function (callback) {
       var getUserAndBlogs = _.bind(function (callback) {
-        this.user = this.user || userApi();
+        this.user = this.user || getUser();
 
         this.user.fail(_.bind(function () {
           delete this.user;
@@ -13,39 +13,51 @@ function ($, Backbone, Marionette, mtapi, commands, vent, userApi, blogsApi) {
         }, this));
 
         this.user.done(_.bind(function (user) {
-          this.blogs = this.blogs || blogsApi(user.id);
+          var currentBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || null;
 
-          this.blogs.fail(_.bind(function () {
-            delete this.blogs;
-          }));
-
-          this.blogs.done(_.bind(function (blogs) {
-            var blog;
-            var currentBlogId = localStorage.getItem('currentBlogId') || null;
-            if (currentBlogId) {
-              blog = _.find(blogs.items, function (b) {
-                return b.id === currentBlogId;
-              });
-            } else {
-              if (blogs.items && blogs.items.length) {
-                blog = blogs.items[0];
-              }
-            }
+          var finalize = function (user, blog, blogs) {
             if ($('#app-building').length) {
               $('#app-building').remove();
               vent.trigger('app:building:after', {
+                userId: user.id,
+                blogId: blog.id,
                 user: user,
-                blogs: blogs,
-                blog: blog
+                blog: blog,
+                blogs: blogs
               });
             }
             callback({
               userId: user.id,
               blogId: blog.id,
               user: user,
-              blog: blog
+              blog: blog,
+              blogs: blogs
             });
-          }, this));
+          };
+
+          if (currentBlogId) {
+            this.blog = this.blog || getBlog(currentBlogId);
+
+            this.blog.fail(_.bind(function () {
+              delete this.blog;
+            }, this));
+
+            this.blog.done(_.bind(function (blog) {
+              finalize(user, blog);
+            }, this));
+          } else {
+            this.blogs = this.blogs || getBlogsList(user.id);
+
+            this.blogs.fail(_.bind(function () {
+              delete this.blogs;
+            }, this));
+
+            this.blogs.done(_.bind(function (blogs) {
+              if (blogs.items && blogs.items.length) {
+                finalize(user, blogs.items[0], blogs);
+              }
+            }, this));
+          }
         }, this));
       }, this);
 

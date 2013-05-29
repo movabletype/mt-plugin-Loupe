@@ -1,0 +1,40 @@
+<div class="histories">
+  {{#if historiesLoading}}
+  <div class="loading"></div>
+  {{/if}}
+  {{#if histories.length}}
+    <ul class="histories-list">
+    {{#each histories}}
+      <li data-id="{{id}}" class="blog-item">
+        <a href="#" data-id="{{id}}" {{#if this.selected}}class="selected"{{/if}}>
+          <span class="icon-cog blog-asset"></span>
+          <span class="blog-name">{{this.name}}</span>
+        </a>
+      </li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</div>
+<div class="blogs">
+  {{#if blogsLoading}}
+  <div class="loading"></div>
+  {{/if}}
+  <ul>
+  {{#each blogs}}
+    <li data-id="{{id}}" class="blog-item">
+      <a href="#" data-id="{{id}}" {{#if this.selected}}class="selected"{{/if}}>
+        <span class="icon-cog blog-asset"></span>
+        <span class="blog-name">{{this.name}}</span>
+      </a>
+    </li>
+  {{/each}}
+  </ul>
+</div>
+<div class="blog-item-nav-container">
+{{#ifIs prev exists=true}}
+  <div class="blog-item-nav blog-item-nav-prev" data-offset="{{prev}}"><span class="icon-arrow-left"></span>前の25件</div>
+{{/ifIs}}
+{{#ifIs totalResults gt=next}}
+  <div class="blog-item-nav blog-item-nav-next" data-offset="{{next}}">次の25件<span class="icon-arrow-right"></span></div>
+{{/ifIs}}
+</div>
