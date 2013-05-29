@@ -154,6 +154,8 @@ module.exports = function (grunt) {
           'build/index.html',
           'build/jade',
           'build/js/boot.js',
+          'build/js/collections',
+          'build/js/models',
           'build/js/commands.js',
           'build/js/mtapi',
           'build/js/mtapi.js',
