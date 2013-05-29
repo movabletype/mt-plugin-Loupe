@@ -38,18 +38,24 @@ function (Marionette, app, commands, Collection, Model, template) {
           })
         });
       }
+    },
 
-      var $acceptionButton = this.$el.find('#acception-button');
+    onRender: function () {
+      if (this.acceptionFailed) {
+        this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
+          $(this).parent().remove();
+        });
+      }
 
-      $acceptionButton.hammer().on('touch', _.bind(function () {
-        this.ui.button.addClass('tapped');
-      }, this));
+      this.ui.button.hammer().on('touch', function () {
+        $(this).addClass('tapped');
+      });
 
-      $acceptionButton.hammer().on('release', _.bind(function () {
-        this.ui.button.removeClass('tapped');
-      }, this));
+      this.ui.button.hammer().on('release', function () {
+        $(this).removeClass('tapped');
+      });
 
-      $acceptionButton.hammer().on('tap', _.bind(function () {
+      this.ui.button.hammer().on('tap', _.bind(function () {
         this.loading = true;
         this.render();
         var options = {
@@ -74,15 +80,6 @@ function (Marionette, app, commands, Collection, Model, template) {
         };
         this.model.sync('update', this.model, options);
       }, this));
-
-    },
-
-    onRender: function () {
-      if (this.acceptionFailed) {
-        this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
-          $(this).parent().remove();
-        });
-      }
     },
 
     serializeData: function () {
