@@ -97,7 +97,6 @@ function (Marionette, JSON, commands, Collection, getBlogsList, getBlog, templat
       this.blogsLoading = true;
 
       if (this.blogs.length) {
-        console.log(params.blogs);
         this.collection.totalResults = params.blogs.totalResults;
         this.collection.set(this.blogs);
       }
