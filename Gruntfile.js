@@ -40,16 +40,17 @@ module.exports = function (grunt) {
     jasminPathsCoverage[k] = '../../../app/' + v;
   });
 
-  var hbsTemplates = grunt.util._.map(grunt.file.expand('app/js/**/*.hbs'), function (v) {
-    return v.replace(/app\/(.*).hbs/, 'hbs!$1');
+  var hbsTemplates = [];
+  grunt.util._.forEach(grunt.file.expand('app/js/template/helpers/*.js'), function (v) {
+    hbsTemplates.push(v.replace(/app\/(.*).js/, '$1'));
+  });
+
+  grunt.util._.forEach(grunt.file.expand('app/js/**/*.hbs'), function (v) {
+    hbsTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
   });
 
   grunt.util._.forEach(grunt.file.expand('app/assets/**/*.hbs'), function (v) {
     hbsTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
-  });
-
-  grunt.util._.forEach(grunt.file.expand('app/js/template/helpers/*.js'), function (v) {
-    hbsTemplates.push(v.replace(/app\/(.*).js/, '$1'));
   });
 
   var widgetLibs = [];
