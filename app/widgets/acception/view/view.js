@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
+define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/models/model', 'hbs!widgets/acception/templates/view'],
 
-function (Marionette, app, commands, Collection, Model, template) {
+function (Marionette, app, device, commands, Collection, Model, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -41,21 +41,14 @@ function (Marionette, app, commands, Collection, Model, template) {
     },
 
     onRender: function () {
+
       if (this.acceptionFailed) {
         this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
           $(this).parent().remove();
         });
       }
 
-      this.ui.button.hammer().on('touch', function () {
-        $(this).addClass('tapped');
-      });
-
-      this.ui.button.hammer().on('release', function () {
-        $(this).removeClass('tapped');
-      });
-
-      this.ui.button.hammer().on('tap', _.bind(function () {
+      this.ui.button.hammer(device.options.hammer()).on('tap', _.bind(function () {
         this.loading = true;
         this.render();
         var options = {

@@ -8,12 +8,19 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
   app.addInitializer(function (options) {
     this.widgets = options.widgets;
     app.dashboardWidgetsData = {};
+    var $body = $(document.body);
     if (device.platform) {
-      var $body = $(document.body)
       $body.addClass(device.platform);
       if (device.version) {
         $body.addClass(device.platform + device.versionShortStr);
         $body.addClass(device.platform + device.versionStr);
+      }
+    }
+    if (device.browser) {
+      $body.addClass(device.browser);
+      if (device.browserVersion) {
+        $body.addClass(device.browser + device.browserVersionShortStr);
+        $body.addClass(device.browser + device.browserVersionStr);
       }
     }
   });
@@ -38,14 +45,22 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
     var $header = $el.find('#header');
     var $headerMain = $el.find('#header-main');
 
+    var width = $(window).width();
+    var mainWidth = $appMain.width();
+
+    if (width === mainWidth) {
+      $body.addClass('move');
+    }
+
     var initialOffset = $headerMain.offset().left;
-    var secondOffset = $headerMain.offset().left + $headerMain.innerWidth() - 18;
+    var secondOffset = $headerMain.offset().left + $headerMain.innerWidth() - 5;
 
     var returnX = {
       'left': '0px'
     };
 
     if (!app.sidemenuShow) {
+
       app.sidemenu.$el.css({
         'display': 'block'
       });
@@ -66,8 +81,11 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
         'left': initialOffset + 'px'
       });
       setTimeout(function () {
-        $body.addClass('move');
+        if (device.isIE8 || width !== mainWidth) {
+          $body.addClass('move');
+        }
         setTimeout(function () {
+
           $appMainContainer.css({
             'left': secondOffset + 'px'
           });

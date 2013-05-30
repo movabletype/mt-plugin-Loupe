@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart'],
+define(['backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart'],
 
-function (Marionette, app, statsProvider, Model, template, ChartAPI) {
+function (Marionette, app, device, statsProvider, Model, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -63,7 +63,7 @@ function (Marionette, app, statsProvider, Model, template, ChartAPI) {
 
     onRender: function () {
       if (this.error) {
-        this.$el.find('.refetch').hammer().one('tap', _.bind(function () {
+        this.$el.find('.refetch').hammer(device.options.hammer()).one('tap', _.bind(function () {
           this.loading = true;
           this.error = false;
           this.render();

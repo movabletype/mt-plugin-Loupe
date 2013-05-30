@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/commands', 'hbs!js/views/common/template/header'],
+define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/common/template/header'],
 
-function (Marionette, commands, template) {
+function (Marionette, device, commands, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -14,12 +14,11 @@ function (Marionette, commands, template) {
     },
 
     initialize: function (data) {
-      // this.$el.addClass('header-container');
       this.data = data;
     },
 
     onRender: function () {
-      this.ui.showSideMenu.hammer().on('tap', function () {
+      this.ui.showSideMenu.hammer(device.options.hammer()).on('tap', function () {
         commands.execute('sidemenu:toggle');
       });
     },

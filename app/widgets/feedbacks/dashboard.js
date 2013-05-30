@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'widgets/feedbacks/models/comments_collection', 'widgets/feedbacks/models/trackbacks_collection', 'hbs!widgets/feedbacks/templates/dashboard', 'mtchart'],
+define(['backbone.marionette', 'js/device', 'widgets/feedbacks/models/comments_collection', 'widgets/feedbacks/models/trackbacks_collection', 'hbs!widgets/feedbacks/templates/dashboard', 'mtchart'],
 
-function (Marionette, CommentsCollection, TrackbacksCollection, template, ChartAPI) {
+function (Marionette, device, CommentsCollection, TrackbacksCollection, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -46,7 +46,7 @@ function (Marionette, CommentsCollection, TrackbacksCollection, template, ChartA
 
     onRender: function () {
       if (this.error) {
-        this.$el.find('.refetch').hammer().one('tap', _.bind(function () {
+        this.$el.find('.refetch').hammer(device.options.hammer()).one('tap', _.bind(function () {
           this.loading = true;
           this.error = false;
           this.render();
@@ -56,9 +56,10 @@ function (Marionette, CommentsCollection, TrackbacksCollection, template, ChartA
         var graphEl = this.$el.find('.content');
 
         var graphData = [{
-          y: parseInt(this.commentsCollection.totalResults, 10),
-          y1: parseInt(this.trackbacksCollection.totalResults, 10)
-        }];
+            y: parseInt(this.commentsCollection.totalResults, 10),
+            y1: parseInt(this.trackbacksCollection.totalResults, 10)
+          }
+        ];
 
         var config = {
           type: "css.ratioHorizontalBar",

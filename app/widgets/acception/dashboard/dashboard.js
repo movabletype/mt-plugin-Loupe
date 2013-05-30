@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/dashboard/itemview', 'hbs!widgets/acception/templates/dashboard'],
+define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'widgets/acception/models/collection', 'widgets/acception/dashboard/itemview', 'hbs!widgets/acception/templates/dashboard'],
 
-function (Marionette, app, commands, Collection, ItemView, template) {
+function (Marionette, app, device, commands, Collection, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
@@ -17,7 +17,7 @@ function (Marionette, app, commands, Collection, ItemView, template) {
       }
     },
 
-
+    hammerOpts: device.options.hammer(),
     initialize: function (options) {
       this.blogId = options.params.blogId;
       this.collection = app.dashboardWidgetsData.acception = app.dashboardWidgetsData.acception || new Collection();
@@ -28,7 +28,7 @@ function (Marionette, app, commands, Collection, ItemView, template) {
         this.loading = false;
       }
 
-      this.$el.hammer().on('tap', 'a', function (e) {
+      this.$el.hammer(this.hammerOpts).on('tap', 'a', function (e) {
         e.preventDefault();
         e.stopPropagation();
         var route = $(this).data('route') || '';
@@ -39,7 +39,7 @@ function (Marionette, app, commands, Collection, ItemView, template) {
 
     onRender: function () {
       if (this.error) {
-        this.$el.find('.refetch').hammer().on('tap', _.bind(function () {
+        this.$el.find('.refetch').hammer(this.hammerOpts).on('tap', _.bind(function () {
           this.loading = true;
           this.error = false;
           this.render();

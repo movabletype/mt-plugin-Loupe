@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'hbs!js/views/common/template/view_header', 'js/commands'],
+define(['backbone.marionette', 'hbs!js/views/common/template/view_header', 'js/device', 'js/commands'],
 
-function (Marionette, template, commands) {
+function (Marionette, template, device, commands) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -18,7 +18,7 @@ function (Marionette, template, commands) {
     },
 
     onRender: function () {
-      this.ui.backDashboardButton.hammer().on('tap', function () {
+      this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', function () {
         commands.execute('router:navigate', '');
       });
     },

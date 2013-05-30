@@ -1,6 +1,6 @@
-define(['jquery', 'backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart'],
+define(['jquery', 'backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart'],
 
-function ($, Marionette, app, statsProvider, Model, commands, template, ChartAPI) {
+function ($, Marionette, app, device, statsProvider, Model, commands, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -28,14 +28,14 @@ function ($, Marionette, app, statsProvider, Model, commands, template, ChartAPI
         success: _.bind(function () {
           this.loading = false;
           this.error = false;
-          this.$el.hammer().on('tap', this.navigatePage);
+          this.$el.hammer(this.hammerOpts).on('tap', this.navigatePage);
           this.$el.addClass('tap-enabled');
           this.render();
         }, this),
         error: _.bind(function () {
           this.loading = false;
           this.error = true;
-          this.$el.hammer().off('tap', this.navigatePage);
+          this.$el.hammer(this.hammerOpts).off('tap', this.navigatePage);
           this.$el.removeClass('tap-enabled');
           this.render();
         }, this)
@@ -66,14 +66,16 @@ function ($, Marionette, app, statsProvider, Model, commands, template, ChartAPI
         }, this));
       } else {
         this.loading = false;
-        this.$el.hammer().on('tap', this.navigatePage);
+        this.$el.hammer(this.hammerOpts).on('tap', this.navigatePage);
         this.$el.addClass('tap-enabled');
       }
     },
 
+    hammerOpts: device.options.hammer(),
+
     onRender: function () {
       if (this.error) {
-        this.$el.hammer().one('tap', '.refetch', _.bind(function () {
+        this.$el.hammer(this.hammerOpts).one('tap', '.refetch', _.bind(function () {
           this.loading = true;
           this.error = false;
           this.render();

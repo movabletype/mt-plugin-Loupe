@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'json2', 'js/commands', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
+define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
 
-function (Marionette, JSON, commands, Collection, getBlogsList, getBlog, template) {
+function (Marionette, JSON, device, commands, Collection, getBlogsList, getBlog, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -262,12 +262,13 @@ function (Marionette, JSON, commands, Collection, getBlogsList, getBlog, templat
 
     onRender: function () {
       var that = this;
+      var hammerOpts = device.options.hammer();
 
-      this.$el.find('a').hammer().on('tap', function () {
+      this.$el.find('a').hammer(hammerOpts).on('tap', function () {
         that.selectBlogHandler($(this).data('id'));
       });
 
-      this.$el.find('.blog-item-nav').hammer().on('tap', function () {
+      this.$el.find('.blog-item-nav').hammer(hammerOpts).on('tap', function () {
         that.offset = parseInt($(this).data('offset'), 10) || 0;
         that.render();
       });

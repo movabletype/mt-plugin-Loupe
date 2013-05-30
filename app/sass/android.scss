@@ -1,0 +1,27 @@
+.android2,
+.android3,
+.android4-0 {
+  &.move #app {
+    display: none;
+  }
+  #app,
+  #sidemenu {
+    .container {
+      position: static;
+    }
+  }
+  .main-container {
+    margin-top: 60px;
+    position: static;
+  }
+  .sidemenu-main-container{
+    position: static;
+
+    .blogs-list {
+      position: static;
+    }
+    .save-changes-container {
+      position: static;
+    }
+  }
+}

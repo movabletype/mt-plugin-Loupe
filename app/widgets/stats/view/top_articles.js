@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
+define(['backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
 
-function (Marionette, app, statsProvider, Model, Collection, ItemViewModel, ItemView, template) {
+function (Marionette, app, device, statsProvider, Model, Collection, ItemViewModel, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
@@ -116,7 +116,7 @@ function (Marionette, app, statsProvider, Model, Collection, ItemViewModel, Item
 
     onRender: function () {
       if (this.error) {
-        this.$el.find('.refetch').hammer().one('tap', _.bind(function () {
+        this.$el.find('.refetch').hammer(device.options.hammer()).one('tap', _.bind(function () {
           this.loading = true;
           this.error = false;
           this.render();
