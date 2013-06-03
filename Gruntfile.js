@@ -18,7 +18,7 @@ module.exports = function (grunt) {
     "underscore": "components/underscore/underscore-min",
     "backbone": "components/backbone/backbone-min",
     "backbone.localStorage": "components/backbone.localStorage/backbone.localStorage-min",
-    "jquery": "components/jquery/jquery.min",
+    "jquery": "lib/jquery/jquery-1.10.1.min",
     "jquery.hammer": "components/hammerjs/dist/jquery.hammer.min",
     "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr.min",
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
@@ -155,10 +155,12 @@ module.exports = function (grunt) {
           'build/jade',
           'build/js/boot.js',
           'build/js/collections',
+          'build/js/device',
           'build/js/models',
           'build/js/commands.js',
           'build/js/mtapi',
           'build/js/mtapi.js',
+          'build/js/perf.js',
           'build/js/router',
           'build/js/main.js',
           'build/js/main.preprocess.js',
@@ -187,11 +189,6 @@ module.exports = function (grunt) {
             src: ['app/lib/chart-api/mtchart.css'],
             dest: 'app/css/lib/',
             flatten: true
-          }, {
-            expand: true,
-            src: ['**/app.js', '**/endpoints.js'],
-            cwd: settings.mtApiPath,
-            dest: 'app/lib/data-api'
           }
         ]
       },
@@ -397,7 +394,8 @@ module.exports = function (grunt) {
           pretty: true,
           data: {
             dev: true,
-            mtApiCGIPath: settings.mtApiCGIPath
+            mtApiCGIPath: settings.mtApiCGIPath,
+            mtApiPath: settings.mtApiPath
           }
         },
         files: {
@@ -409,7 +407,8 @@ module.exports = function (grunt) {
           pretty: true,
           data: {
             dev: false,
-            mtApiCGIPath: settings.mtApiCGIPath
+            mtApiCGIPath: settings.mtApiCGIPath,
+            mtApiPath: settings.mtApiPath
           }
         },
         files: {
@@ -441,8 +440,6 @@ module.exports = function (grunt) {
               name: 'vendor',
               include: [
                   "requireLib",
-                  "mtapi",
-                  "mtendpoints",
                   "jquery",
                   "jquery.hammer",
                   "jquery.smartresize",

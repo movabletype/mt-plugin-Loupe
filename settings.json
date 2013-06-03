@@ -1,5 +1,4 @@
 {
-  "mtApiPath": "../movabletype-internal/mt-static/data-api",
-  "mtApiCGIPath": "../../../../../cgi-bin/mt/movabletype-internal/mt-data-api.cgi",
-  "appId": "20130426"
+  "mtApiPath": "../../data-api/v1/js",
+  "mtApiCGIPath": "../../../../../cgi-bin/mt/movabletype-internal/mt-data-api.cgi"
 }

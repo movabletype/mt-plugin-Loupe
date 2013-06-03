@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'js/mtapi', 'widgets/stats/models/top_articles_itemview'], function ($, Backbone, mtapi, Model) {
+define(['backbone', 'js/mtapi', 'widgets/stats/models/top_articles_itemview'], function (Backbone, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
     comparator: function (item) {

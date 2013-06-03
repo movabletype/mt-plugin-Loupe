@@ -1,3 +1,3 @@
-define(['jquery', 'backbone', 'js/mtapi'], function ($, Backbone, mtapi) {
+define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
   return Backbone.Model.extend({});
 });

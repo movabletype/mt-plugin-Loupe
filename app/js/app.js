@@ -4,6 +4,11 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
   "use strict";
 
   var app = new Marionette.Application();
+  if (DEBUG) {
+    require(['perf'], function (perf) {
+      perf.start();
+    });
+  }
 
   app.addInitializer(function (options) {
     this.widgets = options.widgets;

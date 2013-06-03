@@ -1,4 +1,4 @@
-define(['jquery', 'js/mtapi', 'json2'], function ($, mtapi, JSON) {
+define(['js/mtapi', 'json2'], function (mtapi, JSON) {
   return function (blogId) {
     var dfd = $.Deferred();
 

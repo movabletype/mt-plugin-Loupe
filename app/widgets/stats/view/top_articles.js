@@ -123,6 +123,6 @@ function (Marionette, app, device, statsProvider, Model, Collection, ItemViewMod
           this.fetch();
         }, this));
       }
-    }
+    },
   });
 });

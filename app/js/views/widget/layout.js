@@ -26,6 +26,17 @@ function (Marionette, template, HeaderView) {
       var params = this.params;
       var path = 'widgets/' + id + '/';
 
+      if (DEBUG) {
+        require(['perf'], function (perf) {
+          perf.log('startBuildingWidgetView_' + id);
+          that.main.on('show', function () {
+            perf.log('endBuildingWidgetView_' + id);
+            perf.info('endBuildingWidgetView_' + id, 'startBuildingWidgetView_' + id);
+            perf.info();
+          });
+        });
+      }
+
       this.header.show(new HeaderView());
 
       if (this.widget.viewView) {

@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'js/mtapi'], function ($, Backbone, mtapi) {
+define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
   return Backbone.Model.extend({
     sync: function (method, model, options) {
       if (method === 'read') {

@@ -8,7 +8,7 @@ require.config(
     "backbone.wreqr": "components/backbone.wreqr/lib/amd/backbone.wreqr",
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter",
     "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette",
-    "jquery": "components/jquery/jquery",
+    "jquery": "lib/jquery/jquery-1.10.1",
     "jquery.hammer": "components/hammerjs/dist/jquery.hammer",
     "jquery.smartresize": "components/jquery-smartresize/jquery.debouncedresize",
     "jquery.smartscroll": "lib/smartscroll/smartscroll",
@@ -25,8 +25,7 @@ require.config(
     "text": "components/requirejs-text/text",
     "json": "components/requirejs-plugins/src/json",
     "easeljs": "lib/EaselJS/easeljs-0.6.1.min",
-    "mtapi": "lib/data-api/v1/js/app",
-    "mtendpoints": "lib/data-api/v1/js/endpoints"
+    "perf": "js/perf"
   },
   "shim": {
     "underscore": {
@@ -36,27 +35,21 @@ require.config(
       "exports": "Backbone",
       "deps": ["jquery", "underscore"]
     },
-    "jquery.hammer": ["jquery"],
-    "jquery.smartresize": ["jquery"],
-    "jquery.smartscroll": ["jquery"],
     "morris": {
       "exports": "Morris",
-      "deps": ["jquery", "raphael"]
+      "deps": ["raphael"]
     },
     "easeljs": {
       "exports": "createjs"
     },
-    "mtapi": {
-      "exports": "MT.DataAPI"
-    },
-    "mtendpoints": {
-      "deps": ["mtapi"]
-    },
     "json2": {
       "exports": "JSON"
-    }
+    },
+    "jquery.hammer": ["jquery"],
+    "jquery.smartresize": ["jquery"],
+    "jquery.smartscroll": ["jquery"]
   },
-  "deps": ["mtapi", "mtendpoints", "json2", "jquery", "jquery.hammer", "jquery.smartresize", "jquery.smartscroll", "underscore", "backbone"],
+  "deps": ["json2", "jquery", "jquery.hammer", "jquery.smartresize", "jquery.smartscroll", "underscore", "backbone"],
   "locale": "ja_jp",
   "hbs": {
     "disableI18n": false,

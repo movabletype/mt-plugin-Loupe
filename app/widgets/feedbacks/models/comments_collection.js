@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'js/mtapi', 'widgets/feedbacks/models/comments_model'], function ($, Backbone, mtapi, Model) {
+define(['backbone', 'js/mtapi', 'widgets/feedbacks/models/comments_model'], function (Backbone, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
     parse: function (resp) {

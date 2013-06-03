@@ -18,6 +18,9 @@ function (Marionette, commands, template) {
     },
 
     onRender: function () {
+      if (DEBUG) {
+        var widgetsDfds = [];
+      }
       _.forEach(this.widgets, function (widget) {
         var id = widget.id;
         $('<section id="widget-' + id + '"></section>').appendTo(this.el);
@@ -25,6 +28,16 @@ function (Marionette, commands, template) {
         var that = this;
         var path = 'widgets/' + id + '/';
 
+        if (DEBUG) {
+          var dfd = $.Deferred();
+          widgetsDfds.push(dfd);
+          that[id].on('show', function () {
+            require(['perf'], function (perf) {
+              perf.log('afterWidgetBuild_' + id);
+              dfd.resolve();
+            });
+          });
+        }
         if (widget.dashboardView) {
           require([path + widget.dashboardView.replace(/\.js$/, '')], function (View) {
             that[id].show(new View({
@@ -61,6 +74,15 @@ function (Marionette, commands, template) {
           });
         }
       }, this);
+      if (DEBUG) {
+        $.when.apply(this, widgetsDfds).done(function () {
+          require(['perf'], function (perf) {
+            perf.log('afterAllWidgetsLoaded');
+            perf.info('afterAllWidgetsLoaded');
+            console.log(perf);
+          });
+        });
+      }
     }
   });
 });

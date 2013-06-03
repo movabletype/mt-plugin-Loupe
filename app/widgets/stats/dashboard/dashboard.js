@@ -1,6 +1,6 @@
-define(['jquery', 'backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart'],
+define(['backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/commands', 'hbs!widgets/stats/templates/dashboard', 'mtchart'],
 
-function ($, Marionette, app, device, statsProvider, Model, commands, template, ChartAPI) {
+function (Marionette, app, device, statsProvider, Model, commands, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({

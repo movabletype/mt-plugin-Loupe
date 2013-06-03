@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'js/mtapi', 'widgets/acception/models/model'], function ($, Backbone, mtapi, Model) {
+define(['backbone', 'js/mtapi', 'widgets/acception/models/model'], function (Backbone, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
     initialize: function () {

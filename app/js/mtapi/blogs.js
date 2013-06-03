@@ -1,4 +1,4 @@
-define(['jquery', 'js/mtapi'], function ($, mtapi) {
+define(['js/mtapi'], function (mtapi) {
   return function (userId, options) {
     var dfd = $.Deferred();
 

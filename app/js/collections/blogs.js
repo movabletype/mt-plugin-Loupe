@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'js/mtapi/blogs', 'js/models/blog'], function ($, Backbone, getBlogsList, Model) {
+define(['backbone', 'js/mtapi/blogs', 'js/models/blog'], function (Backbone, getBlogsList, Model) {
   return Backbone.Collection.extend({
     model: Model,
     parse: function (resp) {
