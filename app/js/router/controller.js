@@ -1,6 +1,6 @@
-define(['jquery', 'backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog'],
+define(['backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog'],
 
-function ($, Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList, getBlog) {
+function (Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList, getBlog) {
   "use strict";
   return Marionette.Controller.extend({
     auth: function (callback) {
@@ -88,10 +88,11 @@ function ($, Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList,
       }
     },
     authorization: function () {
-      var hash = location.href.lastIndexOf('#');
-      var route = hash !== -1 ? location.href.slice(hash + 1) : '';
+      var hash = location.href.lastIndexOf('#'),
+        route = hash !== -1 ? location.href.slice(hash + 1) : '';
+
       window.sessionStorage.setItem('routeCache', route);
-      location.replace(mtapi.baseUrl + '/v' + mtapi.api.getVersion() + '/authorization?redirect_uri=' + location.href);
+      location.replace(mtapi.api.getAuthorizationUrl(location.href));
     },
     initialize: function (options) {
       commands.setHandler('controller:getUser', _.bind(function (callback) {
