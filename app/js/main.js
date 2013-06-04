@@ -52,7 +52,7 @@ require.config(
   "deps": ["json2", "jquery", "jquery.hammer", "jquery.smartresize", "jquery.smartscroll", "underscore", "backbone"],
   "locale": "ja_jp",
   "hbs": {
-    "disableI18n": false,
+    "disableI18n": true,
     "disableHelpers": false,
     "templateExtension": "hbs",
     "compileOptions": {}
