@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'hbs!widgets/stats/templates/recent_access', 'mtchart'],
+define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/latest_page_views', 'js/trans', 'hbs!widgets/stats/templates/recent_access', 'mtchart'],
 
-function (Marionette, app, device, statsProvider, Model, template, ChartAPI) {
+function (Marionette, app, commands, device, statsProvider, Model, Trans, template, ChartAPI) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -18,6 +18,8 @@ function (Marionette, app, device, statsProvider, Model, template, ChartAPI) {
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
       data.error = this.error ? true : false;
       data.loading = this.loading ? true : false;
+
+      data.trans = this.trans;
 
       return data;
     },
@@ -42,6 +44,14 @@ function (Marionette, app, device, statsProvider, Model, template, ChartAPI) {
       this.blogId = options.params.blogId;
       this.model = app.dashboardWidgetsData.stats = app.dashboardWidgetsData.stats || new Model();
       this.loading = true;
+
+      this.trans = null;
+      commands.execute('l10n', _.bind(function (l10n) {
+        l10n.load('widgets/stats/l10n', 'widgetStats').done(_.bind(function () {
+          this.trans = new Trans(l10n, 'widgetStats');
+          this.render();
+        }, this));
+      }, this));
 
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;

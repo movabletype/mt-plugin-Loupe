@@ -1,18 +1,20 @@
 <div class="inner">
-  <header><h1>今月のトップ記事</h1></header>
+  {{#if trans}}
+  <header><h1>{{#trans trans}}Top 3 in last month{{/trans}}</h1></header>
+  {{/if}}
   <div class="content">
     {{#if loading}}
     <div class="loading"></div>
     {{/if}}
     {{#if error}}
     <div class="error">
-      <div class="message">データの取得に失敗しました</div>
-      <div class="refetch">データの再取得</div>
+      <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
+      <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
     </div>
     {{/if}}
     {{#if providerIsNotAvailable}}
     <div class="error">
-      <div class="message provider-is-not-available">アクセス解析サービスが有効になっていません</div>
+      <div class="message provider-is-not-available">{{#trans trans}}Analytics service does not enabled{{/trans}}</div>
     </div>
     {{/if}}
     <ul id="top-articles-list">

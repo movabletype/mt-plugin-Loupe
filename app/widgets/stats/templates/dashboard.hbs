@@ -1,19 +1,21 @@
 {{#if loading}}
 <div class="loading"></div>
 {{/if}}
+{{#if trans}}
 <header>
 <p>{{todaysPageViews pageviews.items}}</p>
-<h1>今日のページビュー</h1>
+<h1>{{#trans trans}}Today's page views{{/trans}}</h1>
 </header>
+{{/if}}
 {{#if error}}
 <div class="error">
-  <div class="message">データの取得に失敗しました</div>
-  <div class="refetch">データの再取得</div>
+  <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
+  <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
 </div>
 {{/if}}
 {{#if providerIsNotAvailable}}
 <div class="error">
-  <div class="message provider-is-not-available">アクセス解析サービスが有効になっていません</div>
+  <div class="message provider-is-not-available">{{#trans trans}}Analytics service does not enabled{{/trans}}</div>
 </div>
 {{/if}}
 <div id="stats-dashboard-graph"></div>

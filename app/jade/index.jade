@@ -9,8 +9,11 @@ html
     link(rel='stylesheet', href='assets/icons/style.css')
     link(rel='stylesheet', href='css/style.css')
 
-    script(src='#{mtApiPath}/app.js')
-    script(src='#{mtApiPath}/endpoints.js')
+    if dev
+      script(src='#{mtApiPath}/app.js')
+      script(src='#{mtApiPath}/endpoints.js')
+    else
+      script(src='#{mtApiPath}/all.js')
 
     //if lte IE 8
       script(src='ie/console-polyfill/index.js')

@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'hbs!widgets/stats/templates/top_articles'],
+define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'js/mtapi/stats_provider', 'widgets/stats/models/top_articles', 'widgets/stats/models/top_articles_itemview_collection', 'widgets/stats/models/top_articles_itemview', 'widgets/stats/view/top_articles_itemview', 'js/trans', 'hbs!widgets/stats/templates/top_articles'],
 
-function (Marionette, app, device, statsProvider, Model, Collection, ItemViewModel, ItemView, template) {
+function (Marionette, app, commands, device, statsProvider, Model, Collection, ItemViewModel, ItemView, Trans, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
@@ -70,6 +70,8 @@ function (Marionette, app, device, statsProvider, Model, Collection, ItemViewMod
       data.loading = this.loading ? true : false;
       data.itemLoading = this.itemLoading ? true : false;
 
+      data.trans = this.trans;
+
       return data;
     },
 
@@ -95,6 +97,14 @@ function (Marionette, app, device, statsProvider, Model, Collection, ItemViewMod
       this.model = app.dashboardWidgetsData.topArticlesModel = app.dashboardWidgetsData.topArticlesModel || new Model();
       this.collection = app.dashboardWidgetsData.topArticlesCollection = app.dashboardWidgetsData.topArticlesCollection || new Collection();
       this.loading = true;
+
+      this.trans = null;
+      commands.execute('l10n', _.bind(function (l10n) {
+        l10n.load('widgets/stats/l10n', 'widgetStats').done(_.bind(function () {
+          this.trans = new Trans(l10n, 'widgetStats');
+          this.render();
+        }, this));
+      }, this));
 
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;

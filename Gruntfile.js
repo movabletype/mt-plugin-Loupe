@@ -70,6 +70,16 @@ module.exports = function (grunt) {
     }
   });
 
+  var langs = ['de', 'es', 'fr', 'ja', 'nl'];
+  var langTemplates = {};
+  grunt.util._.forEach(langs, function (lang) {
+    langTemplates[lang] = grunt.util._.map(grunt.file.expand({
+      cwd: 'app'
+    }, '**/' + lang + '.json'), function (src) {
+      return 'json!' + src;
+    });
+  });
+
   var widgetLibsForJasmine = grunt.file.expand({
     filter: function (src) {
       return !(/\/spec\//).test(src);
@@ -155,7 +165,7 @@ module.exports = function (grunt) {
           'build/jade',
           'build/js/boot.js',
           'build/js/collections',
-          'build/js/device',
+          'build/js/device.js',
           'build/js/models',
           'build/js/commands.js',
           'build/js/mtapi',
@@ -165,10 +175,12 @@ module.exports = function (grunt) {
           'build/js/main.js',
           'build/js/main.preprocess.js',
           'build/js/require.config.json',
+          'build/js/l10n.js',
           'build/js/lib',
           'build/js/layouts',
           'build/js/require.js',
           'build/js/template',
+          'build/js/trans.js',
           'build/js/vent.js',
           'build/js/views',
           'build/lib',
@@ -377,7 +389,12 @@ module.exports = function (grunt) {
           'build/js/app.js': 'build/js/app.js',
           'build/js/template.js': 'build/js/template.js',
           'build/js/vendor.js': 'build/js/vendor.js',
-          'build/js/widget.js': 'build/js/widget.js'
+          'build/js/widget.js': 'build/js/widget.js',
+          'build/l10n/de.js': 'build/l10n/de.js',
+          'build/l10n/es.js': 'build/l10n/es.js',
+          'build/l10n/fr.js': 'build/l10n/fr.js',
+          'build/l10n/ja.js': 'build/l10n/ja.js',
+          'build/l10n/nl.js': 'build/l10n/nl.js'
         }
       }
     },
@@ -469,12 +486,32 @@ module.exports = function (grunt) {
               exclude: ['vendor']
             }, {
               name: 'app',
-              include: ['boot'],
+              include: ['boot', 'js/trans'],
               exclude: ['vendor', 'template']
             }, {
               name: 'widget',
               include: widgetLibs.concat(widgetTemplates),
               exclude: ['vendor', 'template', 'app']
+            }, {
+              name: 'l10n/de',
+              include: langTemplates.de,
+              exclude: ['vendor', 'template', 'app', 'widget']
+            }, {
+              name: 'l10n/es',
+              include: langTemplates.es,
+              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de']
+            }, {
+              name: 'l10n/fr',
+              include: langTemplates.fr,
+              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de', 'l10n/es']
+            }, {
+              name: 'l10n/ja',
+              include: langTemplates.ja,
+              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de', 'l10n/es', 'l10n/fr']
+            }, {
+              name: 'l10n/nl',
+              include: langTemplates.nl,
+              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja']
             }
           ],
 

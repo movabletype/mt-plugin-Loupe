@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog'],
+define(['backbone', 'backbone.marionette', 'js/l10n', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog'],
 
-function (Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList, getBlog) {
+function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsList, getBlog) {
   "use strict";
   return Marionette.Controller.extend({
     auth: function (callback) {
@@ -13,17 +13,20 @@ function (Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList, ge
         }, this));
 
         this.user.done(_.bind(function (user) {
+          var l10n = this.l10n = this.l10n || new L10N('ja');
           var currentBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || null;
 
           var finalize = function (user, blog, blogs) {
             if ($('#app-building').length) {
-              $('#app-building').remove();
-              vent.trigger('app:building:after', {
-                userId: user.id,
-                blogId: blog.id,
-                user: user,
-                blog: blog,
-                blogs: blogs
+              l10n.waitLoadCommon(function () {
+                $('#app-building').remove();
+                vent.trigger('app:building:after', {
+                  userId: user.id,
+                  blogId: blog.id,
+                  user: user,
+                  blog: blog,
+                  blogs: blogs
+                });
               });
             }
             callback({
@@ -105,6 +108,10 @@ function (Backbone, Marionette, mtapi, commands, vent, getUser, getBlogsList, ge
         this.blogs.done(_.bind(function (blogs) {
           callback(blogs);
         }, this));
+      }, this));
+
+      commands.setHandler('l10n', _.bind(function (callback) {
+        this.l10n.waitLoadCommon(callback);
       }, this));
 
       var widgets = options.widgets;
