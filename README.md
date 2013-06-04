@@ -1,4 +1,4 @@
-MTCard (kari) is the building user mode application easily
+Loupe is the application for operating the user daily task easily.
 
 # Prerequisites
 Installation depends on [node](http://nodejs.org/), [npm](https://npmjs.org/), [bower](http://bower.io/) and [grunt-cli](http://gruntjs.com/)
@@ -10,6 +10,15 @@ Then, you can install bower and grunt-cli with npm like the following. When you 
 ```
   [sudo] npm install -g bower
   [sudo] npm install -g grunt-cli
+```
+
+This project use [sass](http://sass-lang.com/) with [compass](http://compass-style.org/)(required 0.12.2 higher) for building CSS.
+
+To install them, [gem](http://rubygems.org/) install is the easiest way. (In order to use gem, You need [ruby](http://www.ruby-lang.org/))
+
+```
+  [sudo] gem install sass
+  [sudo] gem install compass
 ```
 
 # Installation
@@ -33,12 +42,3 @@ grunt build task generate optimized scrips in build directory
 ```
   grunt build
 ```
-
-# connect server in local
-If you want to run the user mode application in local, grunt connect task can do it easily.
-
-```
-  grunt connect:test
-```
-
-You can see the app starting at http://localhost:9002/
