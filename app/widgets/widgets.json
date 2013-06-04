@@ -1,17 +1,22 @@
 [{
-  "name": "stats",
-  "id": "stats",
-  "dashboardView": "dashboard/dashboard",
-  "viewView": "view/layout"
-}, {
-  "name": "acception",
-  "id": "acception",
-  "dashboardView": "dashboard/dashboard",
-  "viewRoute": ":blog_id/:id",
-  "viewView": "view/view"
-}, {
-  "name": "feedbacks",
-  "id": "feedbacks",
-  "dashboardView": "dashboard",
-  "viewView": "view"
-}]
+    "name": "stats",
+    "id": "stats",
+    "dashboardView": "dashboard/dashboard",
+    "viewView": "view/layout"
+  }, {
+    "name": "acception",
+    "id": "acception",
+    "dashboardView": "dashboard/dashboard",
+    "viewRoute": ":blog_id/:id",
+    "viewView": "view/view"
+  }, {
+    "name": "upload",
+    "id": "upload",
+    "dashboardView": "dashboard/dashboard"
+  }, {
+    "name": "feedbacks",
+    "id": "feedbacks",
+    "dashboardView": "dashboard",
+    "viewView": "view"
+  }
+]

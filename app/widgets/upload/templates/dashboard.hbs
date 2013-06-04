@@ -1,0 +1,44 @@
+<header>
+<h1 id="upload-label">{{#trans trans}}Media Upload{{/trans}}</h1>
+</header>
+{{#if FileAPINotAvailable}}
+<div class="no-available">
+  {{#trans trans}}This feature is required File API capability{{/trans}}
+</div>
+{{else}}
+{{#if loading}}
+<div class="loading"></div>
+{{/if}}
+<div class="contents">
+{{#each uploadedImages}}
+<div class="uploaded-image">
+  <img src="{{this.url}}">
+</div>
+{{/each}}
+</div>
+{{#if uploading}}
+<div id="upload-file-uploading" class="upload-file">{{#trans trans}}uploading...{{/trans}}</div>
+{{else}}
+{{#if error}}
+<div class="error">
+  <p>{{#trans trans}}Failed uploading{{/trans}}</p>
+  {{#each error}}
+  <p>{{this.message}}</p>
+  {{/each}}
+</div>
+<div id="retry" class="upload-file">{{#trans trans}}retry{{/trans}}</div>
+{{/if}}
+<input type="file" id="upload-file-input" multiple/>
+<div id="upload-file" class="upload-file">
+  {{#if uploadCompleted}}
+    {{#trans trans}}more upload{{/trans}}
+    {{else}}
+      {{#if error}}
+        {{#trans trans}}choose another files{{/trans}}
+      {{else}}
+        {{#trans trans}}choose files{{/trans}}
+      {{/if}}
+  {{/if}}
+</div>
+{{/if}}
+{{/if}}
