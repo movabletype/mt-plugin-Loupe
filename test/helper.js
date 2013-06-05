@@ -1,1 +1,1 @@
-require(['json!widgets/widgets.json'], function () {});
+require(['json!cards/cards.json'], function () {});

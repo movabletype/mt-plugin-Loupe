@@ -114,16 +114,16 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
         this.l10n.waitLoadCommon(callback);
       }, this));
 
-      var widgets = options.widgets;
-      _.forEach(widgets, function (widget) {
-        var methodName = 'moveWidgetPage_' + widget.id;
+      var cards = options.cards;
+      _.forEach(cards, function (card) {
+        var methodName = 'moveCardPage_' + card.id;
         this[methodName] = function () {
           var params = [].slice.call(arguments, 0);
           this.auth(function (data) {
             params = _.extend(params, data);
-            commands.execute('move:widget', {
-              to: 'widget',
-              widget: widget,
+            commands.execute('move:card', {
+              to: 'card',
+              card: card,
               params: params
             });
           });

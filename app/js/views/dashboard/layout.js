@@ -15,7 +15,7 @@ function (Marionette, template, HeaderView, MainLayout) {
     },
 
     initialize: function (options) {
-      this.widgets = options.widgets;
+      this.cards = options.cards;
       this.params = options.params;
     },
 
@@ -23,7 +23,7 @@ function (Marionette, template, HeaderView, MainLayout) {
       this.header.show(new HeaderView());
       this.$el.addClass('container');
       this.main.show(new MainLayout({
-        widgets: this.widgets,
+        cards: this.cards,
         params: this.params
       }));
     },

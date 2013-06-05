@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/widget/layout'],
+define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
 
-function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, WidgetLayout) {
+function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, CardLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -11,8 +11,8 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
   }
 
   app.addInitializer(function (options) {
-    this.widgets = options.widgets;
-    app.dashboardWidgetsData = {};
+    this.cards = options.cards;
+    app.dashboardCardsData = {};
     var $body = $(document.body);
     if (device.platform) {
       $body.addClass(device.platform);
@@ -132,23 +132,23 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
 
   commands.setHandler('dashboard:rerender', function (params) {
     sessionStorage.removeItem('statsProvider');
-    app.dashboardWidgetsData = {};
+    app.dashboardCardsData = {};
 
     app.main.show(new DashboardLayout({
-      widgets: app.widgets,
+      cards: app.cards,
       params: params
     }));
   });
 
   commands.setHandler('move:dashboard', function (params) {
     app.main.show(new DashboardLayout({
-      widgets: app.widgets,
+      cards: app.cards,
       params: params
     }));
   });
 
-  commands.setHandler('move:widget', function (params) {
-    app.main.show(new WidgetLayout(params));
+  commands.setHandler('move:card', function (params) {
+    app.main.show(new CardLayout(params));
   });
 
   return app;

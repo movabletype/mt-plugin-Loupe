@@ -1,0 +1,12 @@
+.ie8 {
+  #card-feedbacks {
+    li {
+      &:nth-child(3n+2) {
+        margin: 0 10px;
+      }
+    }
+    .css-graph-y:last-child {
+      text-align: right;
+    }
+  }
+}

@@ -1,7 +1,7 @@
   describe("router", function () {
     'use strict';
 
-    var AppRouter, Controller, router, controller, commands, widgets;
+    var AppRouter, Controller, router, controller, commands, cards;
 
     var app = require('js/app');
     var mtapi = require('js/mtapi');
@@ -9,60 +9,61 @@
     Controller = require('js/router/controller');
     commands = require('js/commands');
 
-    widgets = [{
-      "name": "test",
-      "id": "test",
-      "dashboardView": "dashboard",
-      "viewView": "view"
-    }];
+    cards = [{
+        "name": "test",
+        "id": "test",
+        "dashboardView": "dashboard",
+        "viewView": "view"
+      }
+    ];
 
     beforeEach(function () {
       app.start({
-        widgets: widgets
+        cards: cards
       });
       controller = new Controller({
-        widgets: widgets
+        cards: cards
       });
     });
 
-    it("route to test widget", function () {
-      spyOn(controller, "moveWidgetPage_test");
+    it("route to test card", function () {
+      spyOn(controller, "moveCardPage_test");
       router = new AppRouter({
         controller: controller
-      }, widgets);
+      }, cards);
       router.navigate('test', true);
-      expect(controller.moveWidgetPage_test).toHaveBeenCalled();
+      expect(controller.moveCardPage_test).toHaveBeenCalled();
     });
 
     it("route to dashboard", function () {
       spyOn(controller, "moveDashboard");
       router = new AppRouter({
         controller: controller
-      }, widgets);
+      }, cards);
       router.navigate('', true);
       expect(controller.moveDashboard).toHaveBeenCalled();
     });
 
-    it("should not route unused widgets", function () {
-      spyOn(controller, "moveWidgetPage_test");
+    it("should not route unused cards", function () {
+      spyOn(controller, "moveCardPage_test");
       router = new AppRouter({
         controller: controller
-      }, widgets);
+      }, cards);
       router.navigate('test', true);
-      expect(controller.moveWidgetPage_test);
+      expect(controller.moveCardPage_test);
 
       controller = new Controller({
-        widgets: widgets
+        cards: cards
       });
-      spyOn(controller, "moveWidgetPage_test");
+      spyOn(controller, "moveCardPage_test");
       router = new AppRouter({
         controller: controller
       }, [{}]);
       router.navigate('test', true);
-      expect(controller.moveWidgetPage_test).not.toHaveBeenCalled();
+      expect(controller.moveCardPage_test).not.toHaveBeenCalled();
     });
 
-    it("route to dashboard even thought no widgets", function () {
+    it("route to dashboard even thought no cards", function () {
       spyOn(controller, "moveDashboard");
       router = new AppRouter({
         controller: controller
@@ -72,15 +73,15 @@
     });
 
     it("router should listen navigate command and navigate it", function () {
-      spyOn(controller, "moveWidgetPage_test");
+      spyOn(controller, "moveCardPage_test");
       router = new AppRouter({
         controller: controller
-      }, widgets);
+      }, cards);
       runs(function () {
         commands.execute('router:navigate', 'test');
       });
       runs(function () {
-        expect(controller.moveWidgetPage_test).toHaveBeenCalled();
+        expect(controller.moveCardPage_test).toHaveBeenCalled();
       });
     });
 
@@ -88,7 +89,7 @@
       spyOn(controller, "moveDashboard").andCallThrough();
       router = new AppRouter({
         controller: controller
-      }, widgets);
+      }, cards);
       runs(function () {
         commands.execute('router:navigate');
       });

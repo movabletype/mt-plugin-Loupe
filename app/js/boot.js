@@ -1,13 +1,13 @@
-require(['app', 'js/router/router', 'js/router/controller', 'json!widgets/widgets.json'], function (app, AppRouter, Controller, widgets) {
+require(['app', 'js/router/router', 'js/router/controller', 'json!cards/cards.json'], function (app, AppRouter, Controller, cards) {
   new AppRouter({
     controller: new Controller({
-      widgets: widgets
+      cards: cards
     })
-  }, widgets);
+  }, cards);
   Backbone.history.start();
   var mtApiCGIPath = $('#main-script').data('mtapi');
   app.start({
-    widgets: widgets,
+    cards: cards,
     mtApiCGIPath: mtApiCGIPath
   });
 });

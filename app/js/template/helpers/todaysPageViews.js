@@ -1,1 +1,1 @@
-../../../widgets/stats/templates/helpers/todaysPageViews.js
+../../../cards/stats/templates/helpers/todaysPageViews.js

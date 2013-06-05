@@ -10,16 +10,16 @@ function (Marionette, commands) {
 
   return Marionette.AppRouter.extend({
     appRoutes: appRoutes,
-    initialize: function (options, widgets) {
-      _.forEach(widgets, function (widget) {
-        if (widget.id && (widget.viewTemplate || widget.viewView)) {
+    initialize: function (options, cards) {
+      _.forEach(cards, function (card) {
+        if (card.id && (card.viewTemplate || card.viewView)) {
           var name;
-          if (widget.viewRoute) {
-            name = widget.id + '/' + widget.viewRoute;
+          if (card.viewRoute) {
+            name = card.id + '/' + card.viewRoute;
           } else {
-            name = widget.id;
+            name = card.id;
           }
-          var methodName = 'moveWidgetPage_' + widget.id;
+          var methodName = 'moveCardPage_' + card.id;
           var controller = options.controller;
           this.route(name, methodName, _.bind(controller[methodName], controller));
         }

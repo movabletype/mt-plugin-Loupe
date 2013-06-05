@@ -9,8 +9,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-bulk-symlink');
-
   var requireConfig = grunt.file.readJSON('./app/js/require.config.json');
 
   var requireJSPaths = {
@@ -31,7 +29,7 @@ module.exports = function (grunt) {
     "app": "js/app",
     "vendor": "js/vendor",
     "template": "js/template",
-    "widget": "js/widget"
+    "card": "js/card"
   };
 
 
@@ -53,19 +51,19 @@ module.exports = function (grunt) {
     hbsTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
   });
 
-  var widgetLibs = [];
-  var widgetTemplates = [];
+  var cardLibs = [];
+  var cardTemplates = [];
 
-  grunt.util._.forEach(grunt.file.expand('app/widgets/**/*.*'), function (v) {
+  grunt.util._.forEach(grunt.file.expand('app/cards/**/*.*'), function (v) {
     if (!/\/spec\//.test(v)) {
       if (/\.hbs$/.test(v)) {
-        widgetTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
+        cardTemplates.push(v.replace(/app\/(.*).hbs/, 'hbs!$1'));
       } else if (/\.js$/.test(v)) {
         if (!/templates\/helpers/.test(v)) {
-          widgetLibs.push(v.replace(/app\/(.*).js/, '$1'));
+          cardLibs.push(v.replace(/app\/(.*).js/, '$1'));
         }
       } else if (/\.(txt|text|tmpl|template|html|htm)/.test(v)) {
-        widgetTemplates.push(v.replace(/app\/(.*)/, 'text!$1'));
+        cardTemplates.push(v.replace(/app\/(.*)/, 'text!$1'));
       }
     }
   });
@@ -80,15 +78,15 @@ module.exports = function (grunt) {
     });
   });
 
-  var widgetLibsForJasmine = grunt.file.expand({
+  var cardLibsForJasmine = grunt.file.expand({
     filter: function (src) {
       return !(/\/spec\//).test(src);
     }
-  }, 'app/widgets/**/*.js');
+  }, 'app/cards/**/*.js');
 
   var specs = [];
   var helpers = ['test/template.js', 'test/helper.js'];
-  grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/widgets/*/spec/*.js')), function (src) {
+  grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
     } else {
@@ -96,11 +94,11 @@ module.exports = function (grunt) {
     }
   });
 
-  var testTarget = ['app/js/app.js', 'app/js/vent.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(widgetLibsForJasmine);
+  var testTarget = ['app/js/app.js', 'app/js/vent.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
 
   var settings = grunt.file.readJSON('settings.json');
 
-  var bulkSymlinkLinks = grunt.file.expand('app/widgets/*/templates/helpers/*.js').map(function (filename) {
+  var bulkSymlinkLinks = grunt.file.expand('app/cards/*/templates/helpers/*.js').map(function (filename) {
     return '../../../' + filename.replace('app/', '');
   });
 
@@ -137,7 +135,7 @@ module.exports = function (grunt) {
         options: {
           sassDir: 'app',
           cssDir: 'app/css',
-          specify: ['app/sass/*.scss', 'app/widgets/*/*.scss', 'app/widgets/*/sass/*.scss']
+          specify: ['app/sass/*.scss', 'app/cards/*/*.scss', 'app/cards/*/sass/*.scss']
         }
       }
     },
@@ -187,7 +185,7 @@ module.exports = function (grunt) {
           'build/sass',
           'build/template',
           'build/templates',
-          'build/widgets',
+          'build/cards',
           'build/assets/icons/index.html',
           'build/assets/icons/license.txt',
           'build/assets/icons/Read Me.txt'
@@ -208,7 +206,7 @@ module.exports = function (grunt) {
         files: [{
             expand: true,
             cwd: 'app/',
-            src: ['widgets/**/assets/**'],
+            src: ['cards/**/assets/**'],
             dest: 'build',
             filter: 'isFile'
           }
@@ -218,7 +216,7 @@ module.exports = function (grunt) {
         files: [{
             expand: true,
             cwd: 'app/',
-            src: ['widgets/**/*.css'],
+            src: ['cards/**/*.css'],
             dest: 'app/css',
             filter: 'isFile'
           }
@@ -234,14 +232,15 @@ module.exports = function (grunt) {
         }
       },
       bulkSymlink: {
-        target: grunt.option('bulkSymlink'),
-        link: 'app/js/template/helpers',
+        target: grunt.option('bulkSymlinkTarget'),
+        link: grunt.option('bulkSymlinkLink'),
         options: {}
       }
     },
     bulkSymlink: {
       prep: {
-        targets: bulkSymlinkLinks
+        targets: bulkSymlinkLinks,
+        dir: 'app/js/template/helpers/'
       }
     },
     imagemin: {
@@ -263,7 +262,7 @@ module.exports = function (grunt) {
       css: {
         files: [
             'app/sass/*.scss',
-            'app/widgets/*/**.scss'
+            'app/cards/*/**.scss'
         ],
         tasks: ['clean:beforeCompass', 'compass:dev', 'copy:beforeConcat', 'concat', 'cssmin']
       },
@@ -353,7 +352,7 @@ module.exports = function (grunt) {
     },
     'sass-convert': {
       files: {
-        src: ['app/sass/*.scss', 'app/widgets/**/*.scss']
+        src: ['app/sass/*.scss', 'app/cards/**/*.scss']
       }
     },
     htmlmin: {
@@ -389,7 +388,7 @@ module.exports = function (grunt) {
           'build/js/app.js': 'build/js/app.js',
           'build/js/template.js': 'build/js/template.js',
           'build/js/vendor.js': 'build/js/vendor.js',
-          'build/js/widget.js': 'build/js/widget.js',
+          'build/js/card.js': 'build/js/card.js',
           'build/l10n/de.js': 'build/l10n/de.js',
           'build/l10n/es.js': 'build/l10n/es.js',
           'build/l10n/fr.js': 'build/l10n/fr.js',
@@ -440,7 +439,7 @@ module.exports = function (grunt) {
           mainConfigFile: 'app/js/main.js',
           name: 'js/template',
           out: 'test/template.js',
-          include: ['lib/require', 'json!widgets/stats/settings.json', 'json!widgets/widgets.json'].concat(hbsTemplates).concat(widgetTemplates),
+          include: ['lib/require', 'json!cards/stats/settings.json', 'json!cards/cards.json'].concat(hbsTemplates).concat(cardTemplates),
           exclude: ['jquery', 'handlebars', 'hbs'],
           optimize: 'none',
           optimizeCss: 'none'
@@ -489,29 +488,29 @@ module.exports = function (grunt) {
               include: ['boot', 'js/trans'],
               exclude: ['vendor', 'template']
             }, {
-              name: 'widget',
-              include: widgetLibs.concat(widgetTemplates),
+              name: 'card',
+              include: cardLibs.concat(cardTemplates),
               exclude: ['vendor', 'template', 'app']
             }, {
               name: 'l10n/de',
               include: langTemplates.de,
-              exclude: ['vendor', 'template', 'app', 'widget']
+              exclude: ['vendor', 'template', 'app', 'card']
             }, {
               name: 'l10n/es',
               include: langTemplates.es,
-              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de']
+              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de']
             }, {
               name: 'l10n/fr',
               include: langTemplates.fr,
-              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de', 'l10n/es']
+              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es']
             }, {
               name: 'l10n/ja',
               include: langTemplates.ja,
-              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de', 'l10n/es', 'l10n/fr']
+              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr']
             }, {
               name: 'l10n/nl',
               include: langTemplates.nl,
-              exclude: ['vendor', 'template', 'app', 'widget', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja']
+              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja']
             }
           ],
 

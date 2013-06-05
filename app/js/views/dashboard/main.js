@@ -13,39 +13,39 @@ function (Marionette, commands, template) {
     },
 
     initialize: function (options) {
-      this.widgets = options.widgets;
+      this.cards = options.cards;
       this.params = options.params;
     },
 
     onRender: function () {
       if (DEBUG) {
-        var widgetsDfds = [];
+        var cardsDfds = [];
       }
-      _.forEach(this.widgets, function (widget) {
-        var id = widget.id;
-        $('<section id="widget-' + id + '"></section>').appendTo(this.el);
-        this.addRegion(id, "#widget-" + id);
+      _.forEach(this.cards, function (card) {
+        var id = card.id;
+        $('<section id="card-' + id + '"></section>').appendTo(this.el);
+        this.addRegion(id, "#card-" + id);
         var that = this;
-        var path = 'widgets/' + id + '/';
+        var path = 'cards/' + id + '/';
 
         if (DEBUG) {
           var dfd = $.Deferred();
-          widgetsDfds.push(dfd);
+          cardsDfds.push(dfd);
           that[id].on('show', function () {
             require(['perf'], function (perf) {
-              perf.log('afterWidgetBuild_' + id);
+              perf.log('afterCardBuild_' + id);
               dfd.resolve();
             });
           });
         }
-        if (widget.dashboardView) {
-          require([path + widget.dashboardView.replace(/\.js$/, '')], function (View) {
+        if (card.dashboardView) {
+          require([path + card.dashboardView.replace(/\.js$/, '')], function (View) {
             that[id].show(new View({
               params: that.params
             }));
           });
         } else {
-          var match = widget.dashboardTemplate.match(/^(.*)\.(.*)$/);
+          var match = card.dashboardTemplate.match(/^(.*)\.(.*)$/);
           var type, filename;
           if (match[2] === 'hbs') {
             type = 'hbs';
@@ -55,7 +55,7 @@ function (Marionette, commands, template) {
             filename = match[0];
           }
 
-          var script = widget.dashboardData ? [path + widget.dashboardData.replace(/\.js$/, '')] : [];
+          var script = card.dashboardData ? [path + card.dashboardData.replace(/\.js$/, '')] : [];
           var requirements = [type + '!' + path + filename].concat(script);
 
           require(requirements, function (template, data) {
@@ -75,10 +75,10 @@ function (Marionette, commands, template) {
         }
       }, this);
       if (DEBUG) {
-        $.when.apply(this, widgetsDfds).done(function () {
+        $.when.apply(this, cardsDfds).done(function () {
           require(['perf'], function (perf) {
-            perf.log('afterAllWidgetsLoaded');
-            perf.info('afterAllWidgetsLoaded');
+            perf.log('afterAllCardsLoaded');
+            perf.info('afterAllCardsLoaded');
             console.log(perf);
           });
         });
