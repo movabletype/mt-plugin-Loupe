@@ -1,0 +1,27 @@
+CACHE MANIFEST
+# build <!-- @echo buildTime -->
+
+NETWORK:
+*
+
+CACHE:
+assets/icons/fonts/MTIcon.dev.svg
+assets/icons/fonts/MTIcon.eot
+assets/icons/fonts/MTIcon.svg
+assets/icons/fonts/MTIcon.ttf
+assets/icons/fonts/MTIcon.woff
+assets/icons/lte-ie7.js
+assets/icons/style.css
+assets/images/indicator-white.gif
+assets/images/indicator.gif
+assets/images/sixapartkk_bigger.png
+css/style.css
+js/app.js
+js/card.js
+js/template.js
+js/vendor.js
+l10n/de.js
+l10n/es.js
+l10n/fr.js
+l10n/ja.js
+l10n/nl.js

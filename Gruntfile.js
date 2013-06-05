@@ -276,6 +276,17 @@ module.exports = function (grunt) {
         files: {
           'app/js/main.js': 'app/js/main.preprocess.js'
         }
+      },
+      appcache: {
+        options: {
+          inline: true,
+          context: {
+            buildTime: Date.now()
+          }
+        },
+        files: {
+          'build/manifest.appcache': 'app/etc/manifest.preprocess.appcache'
+        }
       }
     },
     connect: {
@@ -411,7 +422,8 @@ module.exports = function (grunt) {
           data: {
             dev: true,
             mtApiCGIPath: settings.mtApiCGIPath,
-            mtApiPath: settings.mtApiPath
+            mtApiPath: settings.mtApiPath,
+            manifestFile: null
           }
         },
         files: {
@@ -424,7 +436,8 @@ module.exports = function (grunt) {
           data: {
             dev: false,
             mtApiCGIPath: settings.mtApiCGIPath,
-            mtApiPath: settings.mtApiPath
+            mtApiPath: settings.mtApiPath,
+            manifestFile: null
           }
         },
         files: {
