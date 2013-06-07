@@ -7,7 +7,7 @@
     {{#ifIs status eq="Publish"}}
     <div class="pageviews">{{pageviews}}</div>
     <div class="title">{{title}}</div>
-    <div class="date">{{date}}</div>
+    <div class="date">{{formatDate date lang}}</div>
     <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
     <div class="body">{{sanitize body}}</div>
     {{/ifIs}}

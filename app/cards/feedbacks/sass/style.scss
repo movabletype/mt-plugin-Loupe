@@ -8,7 +8,7 @@
   @include loading-white;
   @include pie-clearfix;
   .loading {
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255, 255, 255, 0.2);
     z-index: 1000;
   }
   ul {
@@ -76,7 +76,7 @@
 #feedbacks-comment-view,
 #feedbacks-comment-entry {
   background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   position: relative;
   @include border-radius-with-pie(8px);
   .loading {
@@ -189,7 +189,6 @@
   #reply-container {
     position: relative;
   }
-
   #reply-button,
   #do-reply-button {
     background-color: #66a434;
@@ -237,10 +236,10 @@
   .reply-button-container {
     padding: 0 20px;
   }
-  #reply-textarea-container{
+  #reply-textarea-container {
     margin-top: 20px;
     padding: 10px 20px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #dddddd;
   }
   #reply-textarea {
     width: 100%;

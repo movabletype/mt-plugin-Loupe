@@ -97,7 +97,7 @@ function (Marionette, app, commands, device, moment, momentLang, statsProvider, 
           if (lang === 'us') {
             lang = ''
           }
-          data.date = moment(data.date).lang(lang).format('ll');
+          data.lang = lang;
         }
         commands.execute('header:render', data);
       }

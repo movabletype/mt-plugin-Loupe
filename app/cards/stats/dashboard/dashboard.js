@@ -14,7 +14,6 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
       if (!this.loading) {
         data = this.model.toJSON();
       }
-
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
       data.error = this.error ? true : false;
       data.loading = this.loading ? true : false;
@@ -58,6 +57,7 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
       this.trans = null;
 
       commands.execute('l10n', _.bind(function (l10n) {
+        this.l10n = l10n;
         l10n.load('cards/stats/l10n', 'cardStats').done(_.bind(function () {
           this.trans = new Trans(l10n, 'cardStats');
           this.render();
@@ -120,13 +120,13 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
           mix: [{
               type: 'bar',
               yLength: 1,
-              chartColors: ['#ffffff'],
-              chartColorsAlpha: [0.1]
+              chartColors: ['#cccccc'],
+              chartColorsAlpha: [0.5]
             }, {
               type: 'motionLine',
               yLength: 1,
               lineWidth: 8,
-              chartColors: ['#fed563']
+              chartColors: ['#55a038']
             }
           ],
           fallback: {

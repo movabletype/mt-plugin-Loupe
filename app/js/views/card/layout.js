@@ -40,6 +40,7 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
 
     onRender: function () {
       this.$el.addClass('container');
+
       var that = this;
       var id = this.card.id;
       var params = this.params;
@@ -55,6 +56,10 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
           });
         });
       }
+
+      this.main.on('show', _.bind(function () {
+        this.main.$el.addClass('card-view-' + this.card.id);
+      }, this));
 
       if (this.viewHeader) {
         require([path + this.viewHeader.replace(/\.js$/, '')], function (HeaderView) {

@@ -106,7 +106,7 @@ function (Marionette, app, device, commands, Trans, moment, momentLang, Collecti
           if (lang === 'us') {
             lang = ''
           }
-          data.date = moment(data.date).lang(lang).format('ll');
+          data.lang = lang;
         }
         console.log(data);
         commands.execute('header:render', data);

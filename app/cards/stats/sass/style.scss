@@ -41,22 +41,27 @@ $background-color: #16878a;
 }
 
 #card-stats {
-  background-color: $background-color;
   position: relative;
   min-height: 320px;
-  padding: 30px 30px 10px;
   .tap-enabled {
     cursor: pointer;
+  }
+  .stats-dashboard-graph-container {
+    width: 320px;
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+  .todays-pageviews {
+    font-size: 4em;
+    line-height: 1em;
+    margin: 0 auto;
+    font-weight: bold;
+    width: 100px;
+    text-align: center;
   }
   header {
     text-align: center;
     color: #fff;
-    p {
-      font-size: 4em;
-      line-height: 1em;
-      margin: 0;
-      font-weight: bold;
-    }
     h1 {
       font-size: 1em;
       font-weight: normal;

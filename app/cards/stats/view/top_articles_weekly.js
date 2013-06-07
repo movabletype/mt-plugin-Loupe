@@ -79,8 +79,8 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
     fetch: function () {
       this.model.fetch({
         blogId: this.blogId,
-        startDate: moment('2013-06-06').startOf(this.unit).format(),
-        endDate: moment('2013-06-06').endOf(this.unit).format(),
+        startDate: moment().startOf(this.unit).format(),
+        endDate: moment().endOf(this.unit).format(),
         limit: 10,
         success: _.bind(function () {
           this.loading = false;
