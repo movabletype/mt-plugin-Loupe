@@ -14,7 +14,11 @@ window.onload = function() {
 			'icon-arrow-right' : '&#x3e;',
 			'icon-cog' : '&#x2a;',
 			'icon-bubble' : '&#x63;',
-			'icon-paper-plane' : '&#x74;'
+			'icon-paper-plane' : '&#x74;',
+			'icon-undo' : '&#x21;',
+			'icon-share' : '&#x22;',
+			'icon-twitter' : '&#x24;',
+			'icon-cancel-circle' : '&#x78;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
