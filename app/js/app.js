@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
+define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/card/layout', 'js/views/card/item_layout'],
 
-function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, CardLayout) {
+function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, CardLayout, CardItemLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -147,8 +147,14 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
     }));
   });
 
-  commands.setHandler('move:card', function (params) {
+  commands.setHandler('move:cardView', function (params) {
+    console.log('fofifi');
+    console.log(params)
     app.main.show(new CardLayout(params));
+  });
+
+  commands.setHandler('move:cardItemView', function (params) {
+    app.main.show(new CardItemLayout(params));
   });
 
   return app;

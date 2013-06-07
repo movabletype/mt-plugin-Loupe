@@ -19,7 +19,8 @@ define(function () {
         this[namespace] = lexicon;
         dfd.resolve(this);
       }, this), function (err) {
-        console.warn('require failed: ' + path);
+        console.info('require failed: ' + path);
+        this[namespace] = {};
         dfd.resolve(this);
       });
     } else {

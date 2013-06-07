@@ -22,6 +22,12 @@ function (Marionette, commands) {
           var methodName = 'moveCardPage_' + card.id;
           var controller = options.controller;
           this.route(name, methodName, _.bind(controller[methodName], controller));
+
+          if (card.viewItemRoute) {
+            var itemName = card.id + '/' + card.viewItemRoute;
+            var itemMethodName = 'moveCardPageItem_' + card.id;
+            this.route(itemName, itemMethodName, _.bind(controller[itemMethodName]));
+          }
         }
       }, this);
 

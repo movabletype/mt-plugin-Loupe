@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'hbs!js/views/common/template/view_header', 'js/device', 'js/commands'],
+define(['backbone.marionette', 'hbs!js/views/common/template/view_header', 'js/device', 'js/commands', 'js/trans'],
 
-function (Marionette, template, device, commands) {
+function (Marionette, template, device, commands, Trans) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -13,8 +13,23 @@ function (Marionette, template, device, commands) {
       backDashboardButton: '#back-dashboard'
     },
 
-    initialize: function (data) {
-      this.data = data;
+    initialize: function (options) {
+      this.params = options.params;
+      this.settings = options.settings;
+
+      this.trans = null;
+      commands.execute('l10n', _.bind(function (l10n) {
+        var transId = 'card_' + this.settings.id;
+        l10n.load('cards/' + this.settings.id + '/l10n', transId).done(_.bind(function () {
+          this.trans = new Trans(l10n, transId);
+          this.render();
+        }, this));
+      }, this));
+
+      commands.setHandler('header:render', _.bind(function (data) {
+        this.object = data;
+        this.render();
+      }, this));
     },
 
     onRender: function () {
@@ -24,7 +39,9 @@ function (Marionette, template, device, commands) {
     },
 
     serializeData: function () {
-      return this.data;
+      var data = this.settings;
+      data.trans = this.trans;
+      return data;
     }
   });
 });

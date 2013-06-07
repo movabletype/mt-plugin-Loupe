@@ -23,7 +23,7 @@ function (Marionette, commands, template) {
       }
       _.forEach(this.cards, function (card) {
         var id = card.id;
-        $('<section id="card-' + id + '"></section>').appendTo(this.el);
+        $('<section id="card-' + id + '" class="card"></section>').appendTo(this.el);
         this.addRegion(id, "#card-" + id);
         var that = this;
         var path = 'cards/' + id + '/';
@@ -41,7 +41,8 @@ function (Marionette, commands, template) {
         if (card.dashboardView) {
           require([path + card.dashboardView.replace(/\.js$/, '')], function (View) {
             that[id].show(new View({
-              params: that.params
+              params: that.params,
+              settings: card
             }));
           });
         } else {
@@ -69,7 +70,8 @@ function (Marionette, commands, template) {
             });
 
             that[id].show(new View({
-              params: that.params
+              params: that.params,
+              settings: card
             }));
           });
         }

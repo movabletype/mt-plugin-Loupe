@@ -1,12 +1,17 @@
-define(['backbone.marionette', 'hbs!js/views/card/templates/layout', 'js/views/common/view_header'],
+define(['backbone.marionette', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/common/view_header', 'js/views/common/share'],
 
-function (Marionette, template, HeaderView) {
+function (Marionette, commands, template, CommonHeaderView, shareView) {
   "use strict";
 
   return Marionette.Layout.extend({
     initialize: function (options) {
+      console.log(options)
       this.card = options.card;
       this.params = options.params;
+      this.viewHeader = this.card.viewHeader;
+      this.viewView = this.card.viewView;
+      this.viewTemplate = this.card.viewTemplate;
+      this.viewData = this.card.viewData;
     },
 
     template: function (data) {
@@ -16,7 +21,21 @@ function (Marionette, template, HeaderView) {
     regions: {
       header: '#header',
       main: '#main',
-      footer: '#footer'
+    },
+
+    setShareHandler: function () {
+      commands.setHandler('share:show', _.bind(function (options) {
+        this.$el.append('<section id="share">');
+        this.addRegion('share', '#share');
+        this.share.show(new shareView(options));
+      }, this));
+
+      commands.setHandler('share:close', _.bind(function (options) {
+        if (this.share) {
+          this.share.close();
+        }
+        $('#share').remove();
+      }, this));
     },
 
     onRender: function () {
@@ -37,16 +56,29 @@ function (Marionette, template, HeaderView) {
         });
       }
 
-      this.header.show(new HeaderView());
-
-      if (this.card.viewView) {
-        require([path + that.card.viewView.replace(/\.js$/, '')], function (View) {
-          that.main.show(new View({
-            params: params
+      if (this.viewHeader) {
+        require([path + this.viewHeader.replace(/\.js$/, '')], function (HeaderView) {
+          that.header.show(new HeaderView({
+            params: params,
+            settings: that.card
           }));
         });
       } else {
-        var match = this.card.viewTemplate.match(/^(.*)\.(.*)$/);
+        this.header.show(new CommonHeaderView({
+          params: params,
+          settings: that.card
+        }));
+      }
+
+      if (this.viewView) {
+        require([path + this.viewView.replace(/\.js$/, '')], function (View) {
+          that.main.show(new View({
+            params: params,
+            settings: that.card
+          }));
+        });
+      } else {
+        var match = this.viewTemplate.match(/^(.*)\.(.*)$/);
         var type, filename;
         if (match[2] === 'hbs') {
           type = 'hbs';
@@ -55,7 +87,7 @@ function (Marionette, template, HeaderView) {
           type = 'text';
           filename = match[0];
         }
-        var script = this.card.viewData ? [path + this.card.viewData.replace(/\.js$/, '')] : [];
+        var script = this.viewData ? [path + this.viewData.replace(/\.js$/, '')] : [];
         var requirements = [type + '!' + path + filename].concat(script);
 
         require(requirements, function (template, data) {
@@ -68,25 +100,12 @@ function (Marionette, template, HeaderView) {
             template: template
           });
           that.main.show(new View({
-            params: params
+            params: params,
+            settings: that.card
           }));
         });
       }
-    },
-
-    onShow: function () {
-      var handleShadow = function () {
-        var $this = $(this);
-        if ($this.scrollTop() > 0) {
-          $('#header').addClass('shadow');
-        } else {
-          $('#header').removeClass('shadow');
-          $('.main-container').one('scroll', handleShadow);
-        }
-      };
-
-      $('.main-container').one('scroll', handleShadow);
-      $('.main-container').on('smartscroll', handleShadow);
+      this.setShareHandler();
     }
   });
 });

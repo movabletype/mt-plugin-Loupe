@@ -13,7 +13,7 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
         }, this));
 
         this.user.done(_.bind(function (user) {
-          var l10n = this.l10n = this.l10n || new L10N('ja');
+          var l10n = this.l10n = this.l10n || new L10N(user.language);
           var currentBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || null;
 
           var finalize = function (user, blog, blogs) {
@@ -115,19 +115,27 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
       }, this));
 
       var cards = options.cards;
-      _.forEach(cards, function (card) {
-        var methodName = 'moveCardPage_' + card.id;
-        this[methodName] = function () {
+      var methodFactory = _.bind(function (command, card) {
+        return _.bind(function () {
           var params = [].slice.call(arguments, 0);
           this.auth(function (data) {
             params = _.extend(params, data);
-            commands.execute('move:card', {
+            commands.execute(command, {
               to: 'card',
               card: card,
               params: params
             });
           });
-        };
+        }, this);
+      }, this);
+
+      _.forEach(cards, function (card) {
+        var methodName = 'moveCardPage_' + card.id;
+        this[methodName] = methodFactory('move:cardView', card);
+        if (card.viewItemRoute) {
+          var itemMethodName = 'moveCardPageItem_' + card.id;
+          this[itemMethodName] = methodFactory('move:cardItemView', card);
+        }
       }, this);
     },
     moveDashboard: function () {
