@@ -22,6 +22,7 @@ module.exports = function (grunt) {
     "backbone.babysitter": "components/backbone.babysitter/lib/amd/backbone.babysitter.min",
     "backbone.marionette": "components/backbone.marionette/lib/core/amd/backbone.marionette.min",
     "moment": "components/moment/min/moment.min",
+    "moment.lang": "components/moment/min/langs.min",
     "morris": "components/morris.js/morris.min",
     "mtchart": "lib/chart-api/core/amd/mtchart.core.amd",
     "main": "js/main",
@@ -68,7 +69,7 @@ module.exports = function (grunt) {
     }
   });
 
-  var langs = ['de', 'es', 'fr', 'ja', 'nl'];
+  var langs = ['de', 'es', 'fr', 'ja', 'nl', 'en-us'];
   var langTemplates = {};
   grunt.util._.forEach(langs, function (lang) {
     langTemplates[lang] = grunt.util._.map(grunt.file.expand({
@@ -262,7 +263,8 @@ module.exports = function (grunt) {
       css: {
         files: [
             'app/sass/*.scss',
-            'app/cards/*/**.scss'
+            'app/cards/*/**.scss',
+            'app/cards/*/*/**.scss'
         ],
         tasks: ['clean:beforeCompass', 'compass:dev', 'copy:beforeConcat', 'concat', 'cssmin']
       },
@@ -524,6 +526,10 @@ module.exports = function (grunt) {
               name: 'l10n/nl',
               include: langTemplates.nl,
               exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja']
+            }, {
+              name: 'l10n/en-us',
+              include: langTemplates.nl,
+              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja', 'l10n/nl']
             }
           ],
 
