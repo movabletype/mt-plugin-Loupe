@@ -1,14 +1,14 @@
 <header>
-<p id="acception-count">{{totalResults}}</p>
-<h1 id="acception-label">承認待ちの記事</h1>
+<h1 id="acception-label">{{#trans trans}}{{name}}{{/trans}}</h1>
+<p id="acception-count" class="card-header-count">{{totalResults}}</p>
 </header>
 {{#if loading}}
 <div class="loading"></div>
 {{/if}}
 {{#if error}}
 <div class="error">
-  <div class="message">記事の取得に失敗しました</div>
-  <div class="refetch">記事の再取得</div>
+  <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
+  <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
 </div>
 {{/if}}
 <ul id="acceptions-list">

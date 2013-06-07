@@ -1,43 +1,42 @@
 <section id="acception-view">
-  <div class="inner">
-    <header><h1>承認待ちの記事</h1></header>
-    <div class="content">
-    {{#if loading}}
-      <div class="loading"></div>
-    {{/if}}
-    {{#if accepted}}
-      <div class="accepted"><span class="icon-checkmark"></span><span class="message">承認しました！</span></div>
-    {{/if}}
-    {{#if acceptionFailed}}
-      <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>
-    {{/if}}
-    {{#if id}}
+  <div class="content">
+  {{#if loading}}
+    <div class="loading"></div>
+  {{/if}}
+  {{#if acceptionFailed}}
+    <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>
+  {{/if}}
+  {{#if id}}
     {{#ifIs status eq="Review"}}
-      <ul id="acception-item">
-        <li>
-          {{#if assets.length}}
-            {{#eachOnly assets 0}}
-              <img src="{{url}}" />
-            {{/eachOnly}}
-          {{else}}
-              <span class="icon-pen no-image"></span>
-          {{/if}}
-        </li>
-      </ul>
+      <div id="accept-button" class="contents-top-button">承認する</div>
       <div class="title">{{title}}</div>
-      <div id="accept-button">承認する</div>
+      <div class="date">{{date}}</div>
+      <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
+      <div class="body">{{sanitize body}}</div>
     {{else}}
-      <div id="no-acceptance-needed-for-this-entry">
-      この記事は承認待ちではありません
-      </div>
-    {{/ifIs}}
-    {{else}}
-      {{#if error}}
-        <div class="error-message">
-          記事の情報を取得できませんでした。
+      {{#ifIs status eq="Publish"}}
+      <div class="accepted contents-top-button">
+        <div id="accepted">
+          {{#if accepted}}
+            {{#trans trans}}Published!{{/trans}}
+          {{else}}
+            {{#trans trans}}Published{{/trans}}
+          {{/if}}
+          <span class="accepted-view-button-container"><span class="accepted-view-button icon-undo"></span></span>
         </div>
-      {{/if}}
+      </div>
+      <div class="title">{{title}}</div>
+      <div class="date">{{date}}</div>
+      <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
+      <div class="body">{{sanitize body}}</div>
+      {{/ifIs}}
+    {{/ifIs}}
+  {{else}}
+    {{#if error}}
+      <div class="error-message">
+        記事の情報を取得できませんでした。
+      </div>
     {{/if}}
-    </div>
+  {{/if}}
   </div>
 </section>

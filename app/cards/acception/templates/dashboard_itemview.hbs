@@ -1,9 +1,13 @@
 <a data-route="acception/{{blog.id}}/{{this.id}}">
+  <span class="item-asset-container">
   {{#if this.assets.length}}
     {{#eachOnly this.assets 0}}
-      <img src="{{url}}" />
+      <span class="item-asset" style="background-image:url({{url}})" /></span>
     {{/eachOnly}}
   {{else}}
-      <span class="icon-pen no-image"></span>
+      <span class="item-asset no-image"></span>
   {{/if}}
+  </span>
+  <span class="item-title">{{title}}</span>
+  <span class="item-arrow icon-arrow-right"></span>
 </a>

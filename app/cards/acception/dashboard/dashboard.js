@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'cards/acception/models/collection', 'cards/acception/dashboard/itemview', 'hbs!cards/acception/templates/dashboard'],
+define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'js/trans', 'cards/acception/models/collection', 'cards/acception/dashboard/itemview', 'hbs!cards/acception/templates/dashboard'],
 
-function (Marionette, app, device, commands, Collection, ItemView, template) {
+function (Marionette, app, device, commands, Trans, Collection, ItemView, template) {
   "use strict";
 
   return Marionette.CompositeView.extend({
@@ -22,11 +22,23 @@ function (Marionette, app, device, commands, Collection, ItemView, template) {
       this.blogId = options.params.blogId;
       this.collection = app.dashboardCardsData.acception = app.dashboardCardsData.acception || new Collection();
       this.loading = true;
-      if (!this.collection.isSynced) {
-        this.fetch();
-      } else {
-        this.loading = false;
-      }
+      this.settings = options.settings;
+
+      this.trans = null;
+      commands.execute('l10n', _.bind(function (l10n) {
+        var transId = 'card_' + this.settings.id;
+        l10n.load('cards/' + this.settings.id + '/l10n', transId).done(_.bind(function () {
+          this.trans = new Trans(l10n, transId);
+          if (!this.collection.isSynced) {
+            this.render();
+            this.fetch();
+          } else {
+            this.loading = false;
+            this.render();
+          }
+        }, this));
+      }, this));
+
 
       this.$el.hammer(this.hammerOpts).on('tap', 'a', function (e) {
         e.preventDefault();
@@ -70,6 +82,8 @@ function (Marionette, app, device, commands, Collection, ItemView, template) {
         data.totalResults = this.collection.totalResults;
         data.items = this.collection.toJSON();
       }
+      data.trans = this.trans;
+      data.name = this.settings.name || '';
       data.error = this.error ? true : false;
       data.loading = this.loading ? true : false;
       return data;
