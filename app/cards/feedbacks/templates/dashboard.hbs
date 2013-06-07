@@ -1,8 +1,22 @@
 <header>
-<p id="feedbacks-count">{{totalResults}}</p>
-<h1 id="feedbacks-label">コメント&トラックバック</h1>
+<h1 id="feedbacks-label">{{#trans trans}}{{name}}{{/trans}}</h1>
+<p id="feedbacks-count" class="card-header-count">{{totalResults}}</p>
 </header>
+
 {{#if loading}}
 <div class="loading"></div>
 {{/if}}
-<div class="content"></div>
+{{#if moreLoading}}
+<div class="loading"></div>
+{{/if}}
+{{#if error}}
+<div class="error">
+  <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
+  <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
+</div>
+{{/if}}
+<ul id="feedback-comments-list">
+</ul>
+<div id="feedbacks-readmore">
+  さらに見る
+</div>

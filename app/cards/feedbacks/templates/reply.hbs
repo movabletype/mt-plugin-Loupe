@@ -1,0 +1,17 @@
+{{#if replied}}
+<div class="reply-button-container">
+  <div id="reply-button" class="contents-top-button">追記・返信する</div>
+</div>
+<div id="reply-textarea-container">
+  <div id="reply-complete" class="contents-top-button">投稿されました</div>
+  <div>{{body}}</div>
+</div>
+{{else}}
+<div class="reply-button-container">
+  <div id="reply-disabled-button" class="contents-top-button">返信する</div>
+</div>
+<div id="reply-textarea-container">
+  <textarea id="reply-textarea"></textarea>
+  <div id="do-reply-button" class="contents-top-button">返信を投稿する</div>
+</div>
+{{/if}}

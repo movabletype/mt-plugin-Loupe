@@ -11,10 +11,17 @@ define(['backbone', 'js/mtapi', 'cards/feedbacks/models/comments_model'], functi
       dfd.done(options.success);
       dfd.fail(options.error);
 
-      mtapi.api.listComments(blogId, {
-        'limit': 1
-      }, _.bind(function (resp) {
+      var params = {
+        limit: options.limit,
+      }
+
+      if (options.offset) {
+        params.offset = options.offset;
+      }
+
+      mtapi.api.listComments(blogId, params, _.bind(function (resp) {
         if (DEBUG) {
+          console.log('comments_collection')
           console.log(resp);
         }
         if (!resp.error) {
