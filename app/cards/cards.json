@@ -20,7 +20,8 @@
   }, {
     "name": "feedbacks",
     "id": "feedbacks",
-    "dashboardView": "dashboard",
-    "viewView": "view"
+    "dashboardView": "dashboard/dashboard",
+    "viewView": "view/view",
+    "viewRoute": ":type/:blog_id/:id"
   }
 ]
