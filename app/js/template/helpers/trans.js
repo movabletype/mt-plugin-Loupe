@@ -6,7 +6,10 @@ define('template/helpers/trans', ['handlebars'], function (Handlebars) {
       var args = [].slice.call(arguments, 0, arguments.length - 2);
       args.unshift(str);
       str = trans.trans.apply(trans, args);
+    } else {
+      str = '';
     }
+
     return str;
   }
   Handlebars.registerHelper('trans', trans);
