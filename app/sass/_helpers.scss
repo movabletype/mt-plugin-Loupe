@@ -5,6 +5,16 @@ $default-transition-delay: 0s;
 
 $content-max-width: 450px;
 
+@mixin card-header {
+  background-color: $card-header-background-color;
+  color: $card-header-color;
+  h1 {
+    font-weight: normal;
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
 @mixin hardware-accelerate-hack {
   -webkit-transform: translate3d(0, 0, 0);
 }

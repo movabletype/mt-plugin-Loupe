@@ -6,7 +6,7 @@
 @import "compass/css3/user-interface";
 @import "compass/utilities/general/clearfix";
 
-@import "_mixins";
+@import "_helpers";
 
 * {
   @include box-sizing(border-box);
@@ -18,7 +18,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #000;
+  background-color: #e6e6e6;
   font-family: 'Helvetica Neue',sans-serif;
   font-size: 100%;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
@@ -82,20 +82,11 @@ textarea, input {
   padding: 0;
   font-size: 37px;
   z-index: 1000;
-  &.shadow {
-    @include single-box-shadow(rgba(0, 0, 0, 0.2), 0, 4px, 4px);
-    @include transition-shadow-header;
-    #logo .logo-inner {
-      @include single-box-shadow(rgba(0, 0, 0, 0.2), 0, 2px, 3px);
-      @include transition-shadow-header;
-    }
-  }
   #header-main {
-    background-color: #000;
     width: $content-max-width;
     height: 60px;
     margin: 0 auto;
-    padding: 3px 10px;
+    padding: 3px 0;
   }
   nav {
     position: relative;
@@ -107,24 +98,21 @@ textarea, input {
     left: 0;
     cursor: pointer;
   }
-  #logo {
-    .logo-inner {
-      margin: 5px auto 0;
-      width: 75px;
-      height: 75px;
-      @include border-radius-with-pie(100px);
-      border: 10px solid #fefae5;
-      overflow: hidden;
-      background-color: #fefae5;
-      @include transition-shadow-header;
-      background-image: url("../assets/images/sixapartkk_bigger.png");
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: contain;
-    }
-    img {
-      max-width: 100%;
-    }
+  #share-button {
+    color: #444;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    padding: 5px 10px;
+    background-color: #e6e6e6;
+    border: 1px solid #dddddd;
+    @include border-radius-with-pie(8px);
+  }
+  .header-title {
+    font-size: 14px;
+    text-align: center;
+    color: #444;
   }
 }
 
@@ -200,7 +188,7 @@ textarea, input {
     @include loading-white;
     .loading {
       background-color: #282828;
-      background-color: rgba(40,40,40,0.9);
+      background-color: rgba(40, 40, 40, 0.9);
       z-index: 100;
     }
     .histories {
@@ -258,10 +246,10 @@ textarea, input {
     padding: 0 10px;
     line-height: 76px;
     height: 76px;
-    &.blog-item-nav-prev{
+    &.blog-item-nav-prev {
       float: left;
     }
-    &.blog-item-nav-next{
+    &.blog-item-nav-next {
       float: right;
     }
     &:hover {
@@ -309,7 +297,6 @@ textarea, input {
 #sidemenu-main {
   margin: 0 auto;
   width: $content-max-width;
-  background-color: #fefae5;
   display: block;
   & > div {
     padding-bottom: 1px;
@@ -340,5 +327,53 @@ textarea, input {
   }
   .sidemenu-main-container .save-changes {
     margin-right: 30px;
+  }
+}
+
+#share {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  .share-inner {
+    width: $content-max-width;
+    margin: 0 auto;
+    position: relative;
+  }
+  #share-close {
+    color: #fff;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 50px;
+    cursor: pointer;
+  }
+  h1 {
+    margin: 0;
+    padding-top: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+  }
+  .share-list {
+    margin: 0;
+    padding: 0;
+    @include pie-clearfix;
+    li {
+      float: left;
+      a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        padding: 20px 50px;
+      }
+    }
+  }
+  .icon-twitter {
+    font-size: 100px;
   }
 }

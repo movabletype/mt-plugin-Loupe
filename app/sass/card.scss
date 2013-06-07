@@ -1,0 +1,43 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/box-sizing";
+@import "compass/css3/transform";
+@import "compass/css3/transition";
+@import "compass/css3/user-interface";
+@import "compass/utilities/general/clearfix";
+
+@import "_helpers";
+
+.card {
+  background-color: #f0f0f0;
+  padding: 0;
+  header {
+    background-color: #47a797;
+    color: #fff;
+    padding: 10px;
+    h1 {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 16px;
+      float: left;
+      margin: 0;
+    }
+    .card-header-count {
+      float: right;
+      margin: 0;
+      background-color: #ffcc33;
+      min-width: 16px;
+      font-size: 12px;
+      line-height: 16px;
+      @include border-radius-with-pie(100px);
+    }
+    @include pie-clearfix;
+  }
+}
+
+.card-view {
+  background-color: #f0f0f0;
+  border: 1px solid #dddddd;
+  color: #444;
+  @include border-radius-with-pie(8px);
+}
