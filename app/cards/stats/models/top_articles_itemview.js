@@ -2,8 +2,8 @@ define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
   return Backbone.Model.extend({
     initialize: function (options) {
       this.blogId = options.blogId;
-      this.pageviews = options.pageviews || 0;
       this.num = options.num;
+      this.pageviews = options.pageviews;
     },
     sync: function (method, model, options) {
       if (method === 'read') {

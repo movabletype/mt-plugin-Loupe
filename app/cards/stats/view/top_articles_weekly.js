@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'moment', 'moment.lang', 'js/mtapi/stats_provider', 'cards/stats/models/top_articles', 'cards/stats/models/top_articles_itemview_collection', 'cards/stats/models/top_articles_itemview', 'cards/stats/view/top_articles_itemview', 'js/trans', 'hbs!cards/stats/templates/top_articles'],
+define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'moment', 'moment.lang', 'js/mtapi/stats_provider', 'cards/stats/models/top_articles', 'cards/stats/models/top_articles_itemview_collection', 'cards/stats/models/top_articles_itemview', 'cards/stats/view/top_articles_itemview_weekly', 'js/trans', 'hbs!cards/stats/templates/top_articles_weekly'],
 
 function (Marionette, app, commands, device, momemt, momentLang, statsProvider, Model, Collection, ItemViewModel, ItemView, Trans, template) {
   "use strict";
@@ -11,7 +11,7 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
     },
 
     itemView: ItemView,
-    itemViewContainer: '#top-articles-list',
+    itemViewContainer: '#top-articles-list-weekly',
 
     appendHtml: function (cv, iv) {
       this.getItemViewContainer(cv).find('#eid-' + iv.model.id).html(iv.el);
@@ -44,7 +44,7 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
                 itemViewModel.fetch({
                   success: _.bind(function (resp) {
                     this.collection.add(itemViewModel, {
-                      sort: true,
+                      sort: true
                     })
                   }, this),
                   error: _.bind(function () {
@@ -98,8 +98,8 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
 
     initialize: function (options) {
       this.blogId = options.params.blogId;
-      this.model = app.dashboardCardsData.topArticlesModel = app.dashboardCardsData.topArticlesModel || new Model();
-      this.collection = app.dashboardCardsData.topArticlesCollection = app.dashboardCardsData.topArticlesCollection || new Collection();
+      this.model = app.dashboardCardsData.topArticlesWeeklyModel = app.dashboardCardsData.topArticlesWeeklyModel || new Model();
+      this.collection = app.dashboardCardsData.topArticlesCollectionWeekly = app.dashboardCardsData.topArticlesCollectionWeekly || new Collection();
       this.loading = true;
       this.settings = options.settings;
       this.unit = options.unit || 'day';

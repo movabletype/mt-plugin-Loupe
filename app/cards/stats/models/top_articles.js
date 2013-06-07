@@ -7,10 +7,14 @@ function (Backbone, mtapi, moment) {
       if (method === 'read') {
         var dfd = $.Deferred(),
           params = {
-            startDate: moment().startOf('month').format(),
-            endDate: moment().endOf('month').format(),
-            limit: 10
+            startDate: options.startDate,
+            endDate: options.endDate,
+            limit: options.limit
           };
+
+        if (options.path) {
+          params.path = options.path;
+        }
 
         dfd.done(options.success);
         dfd.fail(options.error);
