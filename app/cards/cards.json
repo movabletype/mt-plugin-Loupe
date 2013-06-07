@@ -2,13 +2,17 @@
     "name": "stats",
     "id": "stats",
     "dashboardView": "dashboard/dashboard",
-    "viewView": "view/layout"
+    "viewView": "view/layout",
+    "viewItemRoute": ":blog_id/:id/:unit",
+    "viewItemView": "view/post",
+    "viewItemHeader": "view/post_header"
   }, {
     "name": "acception",
     "id": "acception",
     "dashboardView": "dashboard/dashboard",
     "viewRoute": ":blog_id/:id",
-    "viewView": "view/view"
+    "viewView": "view/view",
+    "viewHeader": "view/view_header"
   }, {
     "name": "upload",
     "id": "upload",
