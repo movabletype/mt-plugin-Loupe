@@ -8,7 +8,7 @@ window.onload = function() {
 	var icons = {
 			'icon-arrow-left' : '&#x3c;',
 			'icon-menu' : '&#x3d;',
-			'icon-checkmark' : '&#x76;',
+			'icon-checkmark' : '&#x2713;',
 			'icon-pen' : '&#x23;',
 			'icon-user' : '&#x6f;',
 			'icon-arrow-right' : '&#x3e;',
@@ -18,7 +18,11 @@ window.onload = function() {
 			'icon-undo' : '&#x21;',
 			'icon-share' : '&#x22;',
 			'icon-twitter' : '&#x24;',
-			'icon-cancel-circle' : '&#x78;'
+			'icon-cancel-circle' : '&#x78;',
+			'icon-arrow-up' : '&#x25b4;',
+			'icon-arrow-down' : '&#x25be;',
+			'icon-arrow-down-right' : '&#xe000;',
+			'icon-arrow-up-right' : '&#xe001;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
