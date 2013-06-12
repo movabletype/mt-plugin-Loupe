@@ -1,18 +1,9 @@
-define(['backbone.marionette', 'js/views/common/view_header', 'hbs!cards/acception/templates/view_header', 'js/device', 'js/commands', 'js/trans'],
+define(['backbone.marionette', 'js/views/common/view_header', 'js/device', 'js/commands', 'js/trans'],
 
-function (Marionette, viewHeader, template, device, commands, Trans) {
+function (Marionette, viewHeader, device, commands, Trans) {
   "use strict";
 
   return viewHeader.extend({
-    template: function (data) {
-      return template(data);
-    },
-
-    ui: {
-      backDashboardButton: '#back-dashboard',
-      shareButton: '#share-button'
-    },
-
     onRender: function () {
       this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', function () {
         commands.execute('router:navigate', '');
@@ -26,6 +17,9 @@ function (Marionette, viewHeader, template, device, commands, Trans) {
     serializeData: function () {
       var data = viewHeader.prototype.serializeData.apply(this);
       data.post = this.object || {};
+      if (data.post.status === 'Publish') {
+        data.shareEnabled = true;
+      }
       return data;
     }
   });

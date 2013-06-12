@@ -5,6 +5,9 @@
 {{#if loading}}
 <div class="loading"></div>
 {{/if}}
+{{#if moreLoading}}
+<div class="loading"></div>
+{{/if}}
 {{#if error}}
 <div class="error">
   <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
@@ -13,3 +16,8 @@
 {{/if}}
 <ul id="acceptions-list">
 </ul>
+{{#if showMoreButton}}
+<div id="acceptions-readmore" class="button">
+  {{#trans trans}}read more{{/trans}}
+</div>
+{{/if}}

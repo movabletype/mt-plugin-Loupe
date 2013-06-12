@@ -1,6 +1,5 @@
-<div class="inner">
   {{#if trans}}
-  <header><h1>{{#trans trans}}Top 3 in last month{{/trans}}</h1></header>
+  <header><h1>{{#trans trans}}Top 3 of last week{{/trans}}</h1></header>
   {{/if}}
   <div class="content">
     {{#if loading}}
@@ -20,13 +19,15 @@
     <ul id="top-articles-list-weekly">
     {{#each items}}
       <li id="eid-{{this.entry.id}}" data-pageviews="{{this.pageviews}}">
-        <div class="content-loading"></div>
-        <div class="item-num">{{this.num}}</div>
-        <div class="item-content">
-          <div class="item-asset no-image icon-pen"></div>
-          <div class="item-title">{{this.title}}</div>
+        <div class="list-item-inner">
+          <div class="content-loading"></div>
+          <div class="item-num">{{this.num}}</div>
+          <div class="item-content">
+            <span class="item-asset circle"><span class="circle-inner"></span></span>
+            <span class="item-title">{{this.title}}</span>
+          </div>
+          <div class="item-pageviews">{{this.pageviews}}</div>
         </div>
-        <div class="item-pageviews">{{this.pageviews}}</div>
       </li>
     {{/each}}
     </ul>
@@ -34,4 +35,3 @@
     <div class="item-loading"></div>
     {{/if}}
   </div>
-</div>

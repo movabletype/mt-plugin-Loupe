@@ -22,6 +22,9 @@ function (Marionette, app, device, commands, Trans, CommentsCollection, template
       var data = {};
       if (!this.loading) {
         data.totalResults = parseInt(this.collection.totalResults, 10);
+        if (data.totalResults > this.collection.length) {
+          data.showMoreButton = true
+        }
       }
       data.loading = this.loading ? true : false;
       data.moreLoading = this.moreLoading ? true : false;

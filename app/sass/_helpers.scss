@@ -31,14 +31,16 @@ $content-max-width: 450px;
 }
 
 @mixin loading-white {
-  .loading {
+  .loading,
+  .content-loading {
     background-image: url("../assets/images/indicator-white.gif");
     @include loading-base;
   }
 }
 
 @mixin loading {
-  .loading {
+  .loading,
+  .content-loading {
     background-image: url("../assets/images/indicator.gif");
     @include loading-base;
   }
@@ -47,4 +49,31 @@ $content-max-width: 450px;
 @mixin border-radius-with-pie($radius: $default-border-radius, $vertical-radius: false) {
   @include border-radius($radius, $vertical-radius);
   behavior: url(ie/PIE/PIE.htc);
+}
+
+@mixin loupe-circle {
+  .circle {
+    border: 6px solid white;
+    background-color: #fff;
+    display: block;
+    overflow: hidden;
+    width: 44px;
+    height: 44px;
+    margin-right: 10px;
+    @include border-radius-with-pie(100px);
+  }
+  .circle-inner {
+    border: 1px solid #dddddd;
+    display: block;
+    background-color: #e6e6e6;
+    background-position: center center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    @include border-radius-with-pie(100px);
+  }
+}
+
+@mixin numeric-font {
+  font-family: 'LeagueGothicRegular','Helvetica Neue',sans-serif;
 }

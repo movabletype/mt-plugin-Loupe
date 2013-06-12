@@ -16,6 +16,10 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
       return data;
     },
 
+    ui: {
+      sidemenuHeaderArrow: '#sidemenu-header-arrow'
+    },
+
     template: function (data) {
       return template(data);
     },
@@ -29,9 +33,19 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
       this.user = params.user || {};
     },
 
+    hanldeToggle: function () {
+      this.ui.sidemenuHeaderArrow.toggleClass('rotate');
+    },
+
     onRender: function () {
       var hammerOpts = device.options.hammer();
       this.blogs.show(new BlogsListView(this.params));
+
+      commands.setHandler('sidemenu:header:toggle', _.bind(this.hanldeToggle, this));
+
+      this.$el.find('#sidemenu-header').hammer(hammerOpts).on('tap', _.bind(function () {
+        commands.execute('dashboard:toggle');
+      }));
 
       this.$el.find('.save-changes').hammer(hammerOpts).on('tap', _.bind(function () {
         this.blogs.currentView.saveChagesHandler();

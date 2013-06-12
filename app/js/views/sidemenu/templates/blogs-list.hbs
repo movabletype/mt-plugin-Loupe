@@ -5,9 +5,9 @@
   {{#if histories.length}}
     <ul class="histories-list">
     {{#each histories}}
-      <li data-id="{{id}}" class="blog-item">
-        <a href="#" data-id="{{id}}" {{#if this.selected}}class="selected"{{/if}}>
-          <span class="icon-cog blog-asset"></span>
+      <li data-id="{{id}}" class="blog-item{{#if this.selected}} selected{{/if}}">
+        <a href="#" data-id="{{id}}">
+          <span class="circle blog-asset"><span class="circle-inner"></span></span>
           <span class="blog-name">{{this.name}}</span>
         </a>
       </li>
@@ -21,13 +21,27 @@
   {{/if}}
   <ul>
   {{#each blogs}}
-    <li data-id="{{id}}" class="blog-item">
-      <a href="#" data-id="{{id}}" {{#if this.selected}}class="selected"{{/if}}>
-        <span class="icon-cog blog-asset"></span>
+    <li data-id="{{id}}" class="blog-item{{#if this.selected}} selected{{/if}}">
+      <a href="#" data-id="{{id}}">
+        <span class="circle blog-asset"><span class="circle-inner"></span></span>
         <span class="blog-name">{{this.name}}</span>
       </a>
     </li>
   {{/each}}
+    <li class="user-info">
+      {{#if user}}
+      {{#with user}}
+      <a href="#">
+        {{#if this.userpicURL}}
+          <div class="circle userpic" style="background-image: url({{userpicURL}}); -pie-background: url({{userpicURL}}) no-repeat center center / cover"></div>
+        {{else}}
+          <div class="userpic no-image icon-user"></div>
+        {{/if}}
+        <div class="display-name">{{#trans ../trans}}settings{{/trans}}</div>
+      </a>
+      {{/with}}
+      {{/if}}
+    </li>
   </ul>
 </div>
 <div class="blog-item-nav-container">

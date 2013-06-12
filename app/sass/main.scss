@@ -1,3 +1,4 @@
+@import "compass/css3/images";
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 @import "compass/css3/box-sizing";
@@ -7,6 +8,10 @@
 @import "compass/utilities/general/clearfix";
 
 @import "_helpers";
+
+$header-height: 60px;
+$header-inner-height: 44px;
+$header-padding-top: 7px;
 
 * {
   @include box-sizing(border-box);
@@ -22,6 +27,9 @@ body {
   font-family: 'Helvetica Neue',sans-serif;
   font-size: 100%;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
+  &.hide {
+    overflow: hidden;
+  }
 }
 
 textarea, input {
@@ -52,16 +60,8 @@ textarea, input {
   }
 }
 
-#sidemenu {
+#sidemenu .container {
   display: none;
-}
-
-#blogname {
-  text-align: center;
-  font-weight: normal;
-  font-size: 1.5em;
-  padding-top: 30px;
-  margin: 0;
 }
 
 @mixin transition-header {
@@ -73,9 +73,10 @@ textarea, input {
 }
 
 #header {
-  height: 60px;
+  height: $header-height;
+  background-color: #e6e6e6;
   position: absolute;
-  color: #fff;
+  color: #444;
   top: 0;
   left: 0;
   right: 0;
@@ -84,16 +85,16 @@ textarea, input {
   z-index: 1000;
   #header-main {
     width: $content-max-width;
-    height: 60px;
+    height: $header-height;
     margin: 0 auto;
-    padding: 3px 0;
+    padding: 10px 0 9px;
   }
   nav {
     position: relative;
   }
   #show-sidemenu,
   #back-dashboard {
-    color: #fdd668;
+    color: #444;
     position: absolute;
     left: 0;
     cursor: pointer;
@@ -105,26 +106,102 @@ textarea, input {
     right: 0;
     cursor: pointer;
     padding: 5px 10px;
-    background-color: #e6e6e6;
-    border: 1px solid #dddddd;
-    @include border-radius-with-pie(8px);
+    background-color: #e0e0e0;
+    border: 1px solid #cccccc;
+    font-size: 30px;
+    @include border-radius-with-pie(4px);
   }
   .header-title {
-    font-size: 14px;
+    font-size: 18px;
+    line-height: 40px;
     text-align: center;
     color: #444;
   }
+  @include loupe-circle;
+  @include transition-shadow-header;
+  &.shadow {
+    @include single-box-shadow(rgba(158, 158, 158, 0.2), 0, 4px, 4px);
+    @include transition-shadow-header;
+  }
 }
 
-.main-container,
-.sidemenu-main-container {
+#dashboard {
+  @include single-transition($property: top);
+  #header {
+    cursor: pointer;
+    #header-main {
+      padding: $header-padding-top 0 9px;
+    }
+  }
+  #blogname {
+    text-align: center;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: $header-inner-height;
+    height: $header-inner-height;
+    margin: 0;
+  }
+  .circle {
+    display: none;
+    position: absolute;
+  }
+  .icon-arrow-down {
+    display: none;
+    position: absolute;
+    top: $header-padding-top;
+    height: $header-inner-height;
+    line-height: $header-inner-height;
+    color: #999;
+    @include single-transition($property: transform);
+    &.rotate {
+      @include transform(rotate(180deg));
+    }
+  }
+}
+
+.header-button {
+  background-color: #e0e0e0;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  line-height: 38px;
+  padding: 0 7px;
+  font-weight: bold;
+  min-width: 50px;
+  height: 40px;
+  position: absolute;
+  padding: 0 7px 0 4px;
+  border-left: 0 none;
+  margin-left: 14px;
+  a {
+    width: 100%;
+  }
+  &:before {
+    position: absolute;
+    display: block;
+    width: 26px;
+    height: 26px;
+    content: '\00a0';
+    @include transform(rotateY(42deg) rotate(45deg));
+    background-color: #e0e0e0;
+    border: 1px solid #cccccc;
+    margin-top: 5px;
+    margin-left: -16px;
+    z-index: -1;
+  }
+}
+
+.main-container {
   padding: 0 0 1px 0;
   overflow: auto;
-  top: 60px;
+  top: $header-height;
   bottom: 0;
   left: 0;
   right: 0;
   position: absolute;
+  background-color: #e6e6e6;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -135,51 +212,19 @@ textarea, input {
 .sidemenu-main-container {
   z-index: 9;
   top: 0;
+  bottom: $header-height;
+  left: 0;
+  right: 0;
+  position: absolute;
+  -webkit-overflow-scrolling: touch;
   overflow: hidden;
-  .user-info {
-    padding: 5px 10px;
-    position: relative;
-    border-bottom: 4px solid #e0e0e0;
-    @include pie-clearfix;
-  }
-  .display-name {
-    margin-left: 60px;
-    line-height: 50px;
-  }
-  .userpic {
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    position: absolute;
-    z-index: 1;
-    background-position: center center;
-    background-size: cover;
-    @include border-radius-with-pie(100px);
-    &.no-image {
-      font-size: 40px;
-      line-height: 50px;
-      text-align: center;
-      color: #666;
-    }
-  }
-  .close-sidemenu {
-    font-size: 37px;
-    position: absolute;
-    right: 10px;
-    cursor: pointer;
-    color: #fdd668;
-    top: 0;
-    bottom: 0;
-    text-align: right;
-    line-height: 60px;
-  }
   .blogs-list {
     position: absolute;
     top: 64px;
-    bottom: 90px;
+    bottom: 0;
     overflow: auto;
     left: 0;
-    right: 5px;
+    right: 0;
     ul {
       list-style-type: none;
       padding: 0;
@@ -203,41 +248,51 @@ textarea, input {
         background-position: center 100px;
       }
     }
+    @include loupe-circle;
   }
-  .blog-asset {
-    width: 50px;
-    height: 50px;
-    display: block;
-    position: absolute;
-    z-index: 1;
-    font-size: 40px;
-    color: #666;
-    @include border-radius-with-pie(100px);
-    background-color: #333;
-    overflow: hidden;
-    text-align: center;
-    line-height: 50px;
-    margin-right: 10px;
-    opacity: 0.8;
-  }
+  .display-name,
   .blog-name {
     display: block;
     height: 50px;
     padding: 15px 15px 15px 60px;
   }
+  .userpic {
+    width: 44px;
+    height: 50px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    background-position: center center;
+    background-size: cover;
+    @include border-radius-with-pie(100px);
+    &.no-image {
+      font-size: 40px;
+      line-height: 50px;
+      text-align: center;
+      color: #666;
+    }
+  }
+  .user-info,
   .blog-item {
-    border-bottom: 4px solid #52514d;
+    border-bottom: 1px solid #665d66;
     position: relative;
+    .circle {
+      float: left;
+    }
     a {
+      border-bottom: 1px solid #4b434b;
       color: #fff;
       text-decoration: none;
       display: block;
-      padding: 13px 10px;
-      &:hover {
-        background-color: #fdd668;
+      padding: 13px 20px;
+    }
+    &.selected {
+      a {
+        color: #ffb142;
       }
-      &.selected {
-        background-color: #ff6633;
+      .circle {
+        border-color: #ffb142;
+        background-color: #ffb142;
       }
     }
   }
@@ -256,21 +311,27 @@ textarea, input {
       color: #ff6633;
     }
   }
-  .save-changes-container {
+  #sidemenu-header {
+    background-color: #625362;
+    position: relative;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  #sidemenu-header-logo {
+    text-align: center;
+    margin: 0;
+    line-height: 44px;
+  }
+  #sidemenu-header-arrow {
+    font-size: 36px;
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    .save-changes {
-      height: 60px;
-      margin: 10px 18px 10px 10px;
-      padding: 10px;
-      text-align: center;
-      background-color: #ff6633;
-      line-height: 40px;
-      cursor: pointer;
-      &:hover {
-        background-color: #fdd668;
-      }
+    top: 10px;
+    right: 10px;
+    border: 3px solid white;
+    @include border-radius-with-pie(100px);
+    @include single-transition($property: transform);
+    &.rotate {
+      @include transform(rotate(180deg));
     }
   }
 }
@@ -293,8 +354,7 @@ textarea, input {
   }
 }
 
-#main,
-#sidemenu-main {
+#main {
   margin: 0 auto;
   width: $content-max-width;
   display: block;
@@ -304,15 +364,13 @@ textarea, input {
 }
 
 #sidemenu-main {
-  background-color: #282828;
+  margin: 0 auto;
+  width: $content-max-width;
+  display: block;
+  background-color: #372e37;
   color: #fff;
   height: 100%;
   position: relative;
-}
-
-.main section {
-  margin: 10px;
-  @include pie-clearfix;
 }
 
 @media screen and (max-width: $content-max-width) {
@@ -354,7 +412,7 @@ textarea, input {
   }
   h1 {
     margin: 0;
-    padding-top: 50px;
+    padding: 120px 0 40px;
     text-align: center;
     color: #fff;
     font-size: 20px;

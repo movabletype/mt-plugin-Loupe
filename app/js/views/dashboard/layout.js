@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'hbs!js/views/dashboard/templates/layout', 'js/views/common/header', 'js/views/dashboard/main'],
+define(['backbone.marionette', 'js/commands', 'hbs!js/views/dashboard/templates/layout', 'js/views/common/header', 'js/views/dashboard/main'],
 
-function (Marionette, template, HeaderView, MainLayout) {
+function (Marionette, commands, template, HeaderView, MainLayout) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -20,12 +20,27 @@ function (Marionette, template, HeaderView, MainLayout) {
     },
 
     onRender: function () {
-      this.header.show(new HeaderView());
+      this.header.show(new HeaderView({
+        params: this.params
+      }));
+      this.$el.attr('id', 'dashboard');
       this.$el.addClass('container');
       this.main.show(new MainLayout({
         cards: this.cards,
         params: this.params
       }));
+
+      commands.setHandler('dashboard:slidedown', _.bind(function (height) {
+        this.$el.css({
+          top: $(window).height() - height + 'px'
+        })
+      }, this));
+
+      commands.setHandler('dashboard:slideup', _.bind(function (height) {
+        this.$el.css({
+          top: '0'
+        })
+      }, this));
     },
 
     onShow: function () {

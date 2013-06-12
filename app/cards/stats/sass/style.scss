@@ -4,7 +4,7 @@
 @import "compass/utilities/general/clearfix";
 @import "../../../sass/_helpers.scss";
 
-$background-color: #16878a;
+$background-color: #f0f0f0;
 
 @mixin error {
   .error {
@@ -51,13 +51,26 @@ $background-color: #16878a;
     margin: 0 auto;
     padding: 30px 0;
   }
+  .today {
+    padding: 10px 0 0 10px;
+  }
   .todays-pageviews {
+    @include numeric-font;
     font-size: 4em;
     line-height: 1em;
     margin: 0 auto;
     font-weight: bold;
     width: 100px;
     text-align: center;
+    .diff-icon {
+      font-size: 16px;
+    }
+    .icon-arrow-up-right {
+      color: green;
+    }
+    .icon-arrow-down-right {
+      color: red;
+    }
   }
   header {
     text-align: center;
@@ -68,7 +81,6 @@ $background-color: #16878a;
       margin: 0;
     }
   }
-  @include loading-white;
   #stats-dashboard-graph {
     padding: 10px 0 0;
     text-align: center;
@@ -83,80 +95,21 @@ $background-color: #16878a;
 }
 
 #recent-access {
-  position: relative;
-  min-height: 320px;
-  header {
-    margin-bottom: 8px;
-    background-color: $background-color;
-    padding: 10px;
-    h1 {
-      margin: 0;
-      padding: 20px 10px 20px;
-      color: #fff;
-      text-align: center;
-      font-weight: normal;
-      font-size: 24px;
-    }
-  }
-  .inner {
-    padding: 8px 10px;
-  }
-  .loading {
-    background-color: rgba($background-color, 0.8);
-    background-image: url("../assets/images/indicator-white.gif");
-    background-repeat: no-repeat;
-    background-size: 30px;
-    background-position: center center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-  }
   .content {
-    background-color: $background-color;
-    padding: 20px;
-    min-height: 300px;
-    position: relative;
+    padding: 13px;
+  }
+  .css-graph-bar-count {
+    @include numeric-font;
+  }
+  .css-graph-date {
+    font-weight: bold;
   }
   @include error;
 }
 
 .top-articles {
-  position: relative;
-  min-height: 320px;
-  header {
-    padding: 0 0 8px;
-    h1 {
-      margin: 0;
-      color: #000;
-      font-weight: normal;
-      font-size: 1em;
-    }
-  }
-  .inner {
-    padding: 0 10px 8px;
-  }
-  .loading,
   .content-loading {
-    background-color: rgba($background-color, 0.8);
-    background-image: url("../assets/images/indicator-white.gif");
-    background-repeat: no-repeat;
-    background-size: 30px;
-    background-position: center center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-  }
-  .content-loading {
-    background-color: rgba($background-color, 0.5);
-  }
-  .content {
-    background-color: $background-color;
-    min-height: 300px;
-    position: relative;
+    background-color: rgba(#f0f0f0, 0.5);
   }
   #top-articles-list,
   #top-articles-list-weekly {
@@ -164,87 +117,128 @@ $background-color: #16878a;
     margin: 0;
     padding: 0;
     text-align: left;
-  }
-  li {
-    padding: 20px;
-    border-bottom: 4px solid #006d6f;
-    position: relative;
-    @include pie-clearfix;
-    &:last-of-type {
-      border-bottom: 0 none transparent;
+    li {
+      margin: 0;
+      padding: 0;
+      border-bottom: 1px solid white;
+      &:last-child {
+        border-bottom: 0 none transparent;
+        a {
+          border-bottom: 0 none transparent;
+        }
+      }
+      position: relative;
+      .list-item-inner,
+      a {
+        display: block;
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+        border-bottom: 1px solid #e6e6e6;
+        @include pie-clearfix;
+      }
+      a {
+        cursor: pointer;
+      }
+      @include pie-clearfix;
     }
-    width: 100%;
-    min-height: 120px;
-    display: block;
-    .item-asset {
-      width: 50px;
-      height: 50px;
+    .circle {
       float: left;
-      @include border-radius-with-pie(100px);
-      overflow: hidden;
-      border: 4px solid white;
-      background-color: #fff;
-      margin-right: 10px;
-      background-position: center center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      position: absolute;
-      z-index: 1;
+      width: 75px;
+      height: 75px;
+      border-color: #ccc;
+      background-color: #ccc;
+      .circle-inner {
+        border-color: #fff;
+        background-color: #999;
+      }
+      &.image {
+        background-color: transparent;
+        background-size: cover;
+        background-position: center center;
+        .circle-inner {
+          border-color: transparent;
+          background-color: transparent;
+        }
+      }
     }
     .item-num {
       position: absolute;
       z-index: 2;
-      width: 50px;
-      height: 50px;
-      background-color: rgba(0, 0, 0, 0.4);
-      @include border-radius-with-pie(100px);
-      border: 4px solid white;
+      width: 75px;
+      height: 75px;
       color: #fff;
+      padding: 4px;
       text-align: center;
       line-height: 66px;
       font-size: 45px;
       @include single-text-shadow(0px, 0px, 10px, rgba(0, 0, 0, 0.5));
     }
     .item-title {
-      color: #fff;
-      padding: 10px 0 10px 65px;
-      margin-right: 50px;
       float: left;
+      width: 60%;
     }
     .item-pageviews {
       position: absolute;
       color: #fff;
-      right: 10px;
+      top: 36px;
+      right: 30px;
       width: 50px;
       padding: 5px 10px;
       background-color: #47cdec;
       border: 2px solid #20a7b7;
+      text-align: center;
       @include border-radius-with-pie(8px);
     }
-    .item-container {
-      position: relative;
-      margin-right: 30px;
-    }
     .icon-arrow-right {
-      color: #fff;
-    }
-    a {
-      display: block;
-      cursor: pointer;
-      height: 100%;
-    }
-    img {
-      height: 100%;
-      display: block;
-    }
-    .no-image {
-      display: block;
-      background-color: #003130;
-      color: #16878A;
-      text-align: center;
-      line-height: 63px;
-      font-size: 45px;
+      position: absolute;
+      right: 10px;
+      top: 45px;
+      color: #ccc;
     }
   }
   @include error;
+}
+
+#stats-post {
+  .pageviews {
+    color: #fff;
+    background-color: #47cdec;
+    border: 2px solid #20a7b7;
+    @include border-radius-with-pie(8px);
+    .label {
+      display: block;
+      padding: 10px;
+      border-right: 1px solid #3ca0c5;
+      width: 170px;
+      float: left;
+      white-space: nowrap;
+    }
+    .pageview {
+      display: block;
+      padding: 10px;
+      margin-left: 170px;
+      border-left: 1px solid #57e2f7;
+    }
+  }
+  .content {
+    padding: 10px 20px 30px;
+    min-height: 300px;
+    position: relative;
+  }
+  .title {
+    text-align: left;
+    padding: 10px 0 20px;
+    font-weight: bold;
+  }
+  .body {
+    line-height: 1.8em;
+    img {
+      max-width: 100%;
+    }
+  }
+  .author-name {
+    font-weight: bold;
+    margin-left: 10px;
+  }
 }

@@ -1,59 +1,64 @@
-define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
+define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
 
-function (Marionette, JSON, device, commands, Collection, getBlogsList, getBlog, template) {
+function (Marionette, JSON, device, commands, Trans, Collection, getBlogsList, getBlog, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
     serializeData: function () {
-      var blogs = this.collection.toJSON() || [],
-        totalResults = this.collection.totalResults,
-        prev;
+      var data = {};
+      if (this.trans) {
+        var blogs = this.collection.toJSON() || [],
+          totalResults = this.collection.totalResults,
+          prev;
 
-      if (DEBUG) {
-        console.log('[sidemenu:blogs:serializeData]');
-        console.log(blogs);
-        console.log(totalResults);
-      }
+        if (DEBUG) {
+          console.log('[sidemenu:blogs:serializeData]');
+          console.log(blogs);
+          console.log(totalResults);
+        }
 
-      this.histories = this.histories || [];
-      this.offset = parseInt(this.offset, 10) || 0;
-      this.offset = this.offset < 0 ? 0 : this.offset;
+        this.histories = this.histories || [];
+        this.offset = parseInt(this.offset, 10) || 0;
+        this.offset = this.offset < 0 ? 0 : this.offset;
 
-      if (this.offset !== 0) {
-        prev = (this.offset - 25 < -1) ? 0 : this.offset - 25;
-      }
+        if (this.offset !== 0) {
+          prev = (this.offset - 25 < -1) ? 0 : this.offset - 25;
+        }
 
-      this.next = this.offset === 0 ? this.offset + 25 - this.histories.length : this.offset + 25;
+        this.next = this.offset === 0 ? this.offset + 25 - this.histories.length : this.offset + 25;
 
-      if (blogs.length > this.offset) {
-        this.blogsLoading = false;
-        this.blogs = blogs.slice(this.offset, this.next);
-      } else {
-        if (totalResults !== undefined && totalResults < this.offset + this.histories.length) {
+        if (blogs.length > this.offset) {
           this.blogsLoading = false;
-          this.blogs = [];
+          this.blogs = blogs.slice(this.offset, this.next);
         } else {
-          if (!this.blogLoading) {
-            this.blogsLoading = true;
-            this.fetch();
+          if (totalResults !== undefined && totalResults < this.offset + this.histories.length) {
+            this.blogsLoading = false;
+            this.blogs = [];
+          } else {
+            if (!this.blogLoading) {
+              this.blogsLoading = true;
+              this.fetch();
+            }
           }
         }
+
+        if (!this.blogsLoading && !this.historiesLoading) {
+          this.selectCurrentBlog();
+        }
+
+        data = {
+          totalResults: parseInt(this.collection.totalResults, 10),
+          blogs: this.blogs,
+          user: this.user,
+          trans: this.trans,
+          next: this.next,
+          prev: prev,
+          blogsLoading: this.blogsLoading ? true : false,
+          historiesLoading: this.historiesLoading ? true : false
+        };
+
+        data.histories = this.offset === 0 ? this.histories : [];
       }
-
-      if (!this.blogsLoading && !this.historiesLoading) {
-        this.selectCurrentBlog();
-      }
-
-      var data = {
-        totalResults: parseInt(this.collection.totalResults, 10),
-        blogs: this.blogs,
-        next: this.next,
-        prev: prev,
-        blogsLoading: this.blogsLoading ? true : false,
-        historiesLoading: this.historiesLoading ? true : false
-      };
-
-      data.histories = this.offset === 0 ? this.histories : [];
 
       return data;
     },
@@ -104,10 +109,14 @@ function (Marionette, JSON, device, commands, Collection, getBlogsList, getBlog,
       this.historiesLoading = true;
       this.refetchBlogHistoryData();
 
+      this.trans = null;
+      commands.execute('l10n', _.bind(function (l10n) {
+        this.trans = new Trans(l10n);
+        this.render();
+      }, this));
+
       if (DEBUG) {
         console.log('[sidemenu:blogs:initialize]');
-        console.log(this.blogs.length);
-        console.log(this.collection.totalResults);
       }
 
       commands.setHandler('sidemenu:getRecentBlogHistory', this.getRecentBlogHistory);
@@ -132,7 +141,7 @@ function (Marionette, JSON, device, commands, Collection, getBlogsList, getBlog,
           remove: false
         };
         if (this.histories && this.histories.length) {
-          options.excludeIds = this.histories.map(function (b) {
+          options.excludeIds = _.map(this.histories, function (b) {
             return b.id;
           }).join(',');
         }
@@ -146,13 +155,14 @@ function (Marionette, JSON, device, commands, Collection, getBlogsList, getBlog,
       this.selectCurrentBlog(this.selectedBlogId);
       $blogList.find('.selected').removeClass('selected');
       $blogList.find('[data-id=' + this.selectedBlogId + ']').addClass('selected');
+      this.saveChagesHandler();
     },
 
     saveChagesHandler: function () {
       if (DEBUG) {
         console.log('switching blog from ' + this.currentBlogId + ' to ' + this.selectedBlogId);
       }
-      commands.execute('sidemenu:toggle');
+      commands.execute('dashboard:toggle');
       if (this.currentBlogId !== this.selectedBlogId) {
         this.currentBlogId = this.selectedBlogId;
         localStorage.setItem('currentBlogId', this.selectedBlogId);

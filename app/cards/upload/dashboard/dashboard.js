@@ -18,7 +18,7 @@ function (Marionette, app, mtapi, device, commands, Trans, template) {
     initialize: function (options) {
       this.trans = null;
       this.blog = options.params.blog || null;
-      this.FileAPINotAvailable = (!window.FileReader || device.platform === 'windows-phone') ? true : false;
+      // this.FileAPINotAvailable = (!window.FileReader || device.platform === 'windows-phone') ? true : false;
 
       commands.execute('l10n', _.bind(function (l10n) {
         l10n.load('cards/upload/l10n', 'cardUpload').done(_.bind(function () {
@@ -34,20 +34,25 @@ function (Marionette, app, mtapi, device, commands, Trans, template) {
       var hammerOpts = device.options.hammer();
 
       var upload = _.bind(function (files) {
+        console.log('upload Start')
         this.uploadedImages = [];
         this.error = [];
         this.errorImages = [];
         this.uploading = true;
         this.render();
         var dfds = [];
+        console.log('files')
+        console.log(files)
         _.each(files, function (file) {
-          console.log(file);
+          console.log('in file')
+          console.log(file)
           var dfd = $.Deferred();
           dfds.push(dfd);
           mtapi.api.uploadAsset(blogId, {
             file: file,
             autoRenameIfExists: true
-          }, _.bind(function (resp) {
+          },
+            _.bind(function (resp) {
             console.log(resp);
             if (!resp.error) {
               dfd.resolve();
@@ -79,8 +84,12 @@ function (Marionette, app, mtapi, device, commands, Trans, template) {
       }, this));
 
       this.ui.uploadForm.on('change', function (e) {
-        var files = e.target.files;
-        upload(files);
+        if ((window.FileReader && device.platform !== 'windows-phone')) {
+          var files = e.target.files;
+          upload(files);
+        } else {
+          upload([$('#upload-file-input').get(0)]);
+        }
       });
     },
 

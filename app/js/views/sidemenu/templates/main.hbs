@@ -1,18 +1,6 @@
-<section class="user-info">
-  {{#with user}}
-    {{#if this.userpicURL}}
-      <div class="userpic" style="background-image: url({{userpicURL}}); -pie-background: url({{userpicURL}}) no-repeat center center / cover"></div>
-    {{else}}
-      <div class="userpic no-image icon-user"></div>
-    {{/if}}
-    <div class="display-name">{{displayName}}</div>
-    <div class="close-sidemenu icon-arrow-right"></div>
-  {{/with}}
-</section>
+<header id="sidemenu-header">
+  <h1 id="sidemenu-header-logo">Loupe</h1>
+  <div id="sidemenu-header-arrow" class="icon-arrow-up"></div>
+</header>
 <section id="sidemenu-blogs-list" class="blogs-list">
 </section>
-<div class="save-changes-container">
-  <div class="save-changes">
-    設定
-  </div>
-</div>

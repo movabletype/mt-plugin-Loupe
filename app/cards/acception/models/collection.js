@@ -17,9 +17,19 @@ define(['backbone', 'js/mtapi', 'cards/acception/models/model'], function (Backb
       dfd.done(options.success);
       dfd.fail(options.error);
 
-      mtapi.api.listEntries(blogId, {
-        'status': 'Review'
-      }, _.bind(function (resp) {
+      var params = {
+        status: 'Review'
+      };
+
+      if (options.limit) {
+        params.limit = parseInt(options.limit, 10);
+      }
+
+      if (options.offset) {
+        params.offset = parseInt(options.offset, 10);
+      }
+
+      mtapi.api.listEntries(blogId, params, _.bind(function (resp) {
         if (DEBUG) {
           console.log(resp);
         }

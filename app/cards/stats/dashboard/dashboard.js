@@ -13,6 +13,19 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
 
       if (!this.loading) {
         data = this.model.toJSON();
+        var len = data.pageviews.items.length;
+        if (len > 1) {
+          var yesterday = parseInt(data.pageviews.items[len - 2].pageviews, 10);
+          var today = parseInt(data.pageviews.items[len - 1].pageviews, 10);
+          this.diff = today - yesterday;
+          if (this.diff <= 0) {
+            data.diffIcon = 'icon-arrow-down-right'
+          } else {
+            data.diffIcon = 'icon-arrow-up-right'
+          }
+        }
+        data.lang = this.l10n.userLang;
+        data.today = (new Date()).valueOf();
       }
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
       data.error = this.error ? true : false;
@@ -126,7 +139,9 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
               type: 'motionLine',
               yLength: 1,
               lineWidth: 8,
-              chartColors: ['#55a038']
+              chartColors: ['#55a038'],
+              drawPointer: true,
+              pointerColors: ['#ea4b29']
             }
           ],
           fallback: {

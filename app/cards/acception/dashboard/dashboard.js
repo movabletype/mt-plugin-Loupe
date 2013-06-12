@@ -31,7 +31,7 @@ function (Marionette, app, device, commands, Trans, Collection, ItemView, templa
           this.trans = new Trans(l10n, transId);
           if (!this.collection.isSynced) {
             this.render();
-            this.fetch();
+            this.fetch(3);
           } else {
             this.loading = false;
             this.render();
@@ -39,6 +39,12 @@ function (Marionette, app, device, commands, Trans, Collection, ItemView, templa
         }, this));
       }, this));
 
+      this.$el.hammer(this.hammerOpts).on('tap', '#acceptions-readmore', _.bind(function () {
+        var offset = this.collection.length;
+        this.moreLoading = true;
+        this.render();
+        this.fetch(5, offset);
+      }, this));
 
       this.$el.hammer(this.hammerOpts).on('tap', 'a', function (e) {
         e.preventDefault();
@@ -60,16 +66,21 @@ function (Marionette, app, device, commands, Trans, Collection, ItemView, templa
       }
     },
 
-    fetch: function () {
+    fetch: function (limit, offset) {
       this.collection.fetch({
         blogId: this.blogId,
-        reset: true,
+        limit: limit,
+        offset: offset,
+        merge: true,
+        remove: false,
         success: _.bind(function () {
           this.loading = false;
+          this.moreLoading = false;
           this.render();
         }, this),
         error: _.bind(function () {
           this.loading = false;
+          this.moreLoading = false;
           this.error = true;
           this.render();
         }, this)
@@ -79,9 +90,13 @@ function (Marionette, app, device, commands, Trans, Collection, ItemView, templa
     serializeData: function () {
       var data = {};
       if (!this.loading) {
-        data.totalResults = this.collection.totalResults;
+        data.totalResults = parseInt(this.collection.totalResults, 10);
         data.items = this.collection.toJSON();
+        if (data.totalResults > this.collection.length) {
+          data.showMoreButton = true
+        }
       }
+      data.moreLoading = this.moreLoading ? true : false;
       data.trans = this.trans;
       data.name = this.settings.name || '';
       data.error = this.error ? true : false;

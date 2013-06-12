@@ -62,15 +62,6 @@
       top: 30px;
     }
   }
-  #feedbacks-readmore {
-    cursor: pointer;
-    text-align: center;
-    color: #fff;
-    padding: 10px;
-    margin: 10px;
-    @include border-radius-with-pie(5px);
-    background-color: #5d9b44;
-  }
 }
 
 #feedbacks-comment-view,

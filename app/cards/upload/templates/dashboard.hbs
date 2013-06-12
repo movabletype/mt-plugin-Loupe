@@ -28,8 +28,10 @@
 </div>
 <div id="retry" class="upload-file">{{#trans trans}}retry{{/trans}}</div>
 {{/if}}
-<input type="file" id="upload-file-input" multiple/>
-<div id="upload-file" class="upload-file">
+<form id="upload-file-form" method="post" name="upload-file">
+  <input type="file" id="upload-file-input"/>
+</form>
+<div id="upload-file" class="button">
   {{#if uploadCompleted}}
     {{#trans trans}}more upload{{/trans}}
     {{else}}

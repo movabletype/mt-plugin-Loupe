@@ -1,4 +1,4 @@
-define(function () {
+define(['jquery'], function ($) {
   var mtApiCGIPath = $('#main-script').data('mtapi');
   var clientId = $('#main-script').data('client');
   if (!clientId) {

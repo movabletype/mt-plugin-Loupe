@@ -48,8 +48,8 @@ function (Marionette, app, commands, device, moment, momentLang, statsProvider, 
                   this.statsModel = new StatsModel();
                   this.statsModel.fetch({
                     blogId: this.blogId,
-                    startDate: moment().startOf('day').format(),
-                    endDate: moment().endOf('day').format(),
+                    startDate: moment().startOf(this.unit).format(),
+                    endDate: moment().endOf(this.unit).format(),
                     limit: 1,
                     path: path,
                     success: _.bind(function (resp) {
@@ -101,12 +101,11 @@ function (Marionette, app, commands, device, moment, momentLang, statsProvider, 
         }
         commands.execute('header:render', data);
       }
+      data.label = this.unit === 'day' ? 'Today\'s access' : 'This week\'s access';
       data.pageviews = data.pageviews || this.pageviews || null;
       data.trans = this.trans;
       data.error = this.error ? true : false;
       data.loading = this.loading ? true : false;
-      console.log('post')
-      console.log(data);
       return data;
     }
   });

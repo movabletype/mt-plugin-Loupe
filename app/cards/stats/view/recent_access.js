@@ -92,7 +92,13 @@ function (Marionette, app, commands, device, statsProvider, Model, Trans, templa
         });
 
         var yLabel = _.map(graphData, function (item) {
-          return item.pageviews > 1000 ? (Math.round(item.pageviews / 100) / 10) + 'K' : item.pageviews;
+          var label = item.pageviews;
+          if (item.pageviews >= 1000000) {
+            label = Math.round(item.pageviews / 1000000) + 'M';
+          } else if (item.pageviews >= 1000) {
+            label = Math.round(item.pageviews / 1000) + 'K';
+          }
+          return label;
         });
 
         var config = {
@@ -102,9 +108,11 @@ function (Marionette, app, commands, device, statsProvider, Model, Trans, templa
           yLabel: yLabel,
           autoSized: false,
           pointSize: 6,
-          barColor: "#fed563",
-          barBackgroundColor: "#003130",
-          dateColor: "#ffffff",
+          barColor: "#efb330",
+          barBackgroundColor: "#353035",
+          dateColor: "#444444",
+          dateColorSaturday: "#4079e6",
+          dateColorSunday: "#ec4b05",
           labelColor: "#ffffff",
           showDate: true,
           barWidth: 40,

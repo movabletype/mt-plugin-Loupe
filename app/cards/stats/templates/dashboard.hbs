@@ -17,7 +17,10 @@
   <div class="message provider-is-not-available">{{#trans trans}}Analytics service does not enabled{{/trans}}</div>
 </div>
 {{/if}}
+{{#if today}}<div class="today">{{formatDate today lang}}</div>{{/if}}
 <div class="stats-dashboard-graph-container">
-  <div class="todays-pageviews">{{todaysPageViews pageviews.items}}</div>
+  {{#if pageviews.items}}
+  <div class="todays-pageviews">{{todaysPageViews pageviews.items}}<span class="diff-icon {{diffIcon}}"></span></div>
+  {{/if}}
   <div id="stats-dashboard-graph"></div>
 </div>
