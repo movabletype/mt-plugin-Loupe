@@ -10,7 +10,8 @@ function (Marionette, template, device, commands, Trans) {
     },
 
     ui: {
-      backDashboardButton: '#back-dashboard'
+      backDashboardButton: '#back-dashboard',
+      shareButton: '#share-button'
     },
 
     initialize: function (options) {

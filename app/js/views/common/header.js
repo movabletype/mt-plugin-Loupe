@@ -6,25 +6,67 @@ function (Marionette, device, commands, template) {
   return Marionette.ItemView.extend({
 
     template: function (data) {
+      console.log(data);
       return template(data);
     },
 
     ui: {
-      showSideMenu: '#show-sidemenu'
+      blognameArrow: '#blogname-arrow'
     },
 
-    initialize: function (data) {
-      this.data = data;
+    initialize: function (options) {
+      this.blog = options.params.blog;
+    },
+
+    handleSlide: function () {
+      var $blognameArrow = this.ui.blognameArrow;
+      if ($blognameArrow.hasClass('rotate')) {
+        $(document.body).toggleClass('hide');
+        commands.execute('dashboard:slideup');
+        commands.execute('sidemenu:header:toggle')
+        $blognameArrow.toggleClass('rotate');
+      } else {
+        $(document.body).toggleClass('hide');
+        commands.execute('sidemenu:show');
+        commands.execute('dashboard:slidedown', this.$el.height());
+        commands.execute('sidemenu:header:toggle');
+        $blognameArrow.toggleClass('rotate');
+      }
     },
 
     onRender: function () {
-      this.ui.showSideMenu.hammer(device.options.hammer()).on('tap', function () {
-        commands.execute('sidemenu:toggle');
-      });
+      var $blognameInner = this.$el.find('#blogname-inner');
+      var $loupeCircle = this.$el.find('#blogname-circle');
+      var $blognameArrow = this.ui.blognameArrow;
+
+      setTimeout(_.bind(function () {
+        var offset = $blognameInner.offset();
+        var width = $blognameInner.width();
+        $loupeCircle.offset({
+          left: offset.left - $loupeCircle.outerWidth(true)
+        })
+          .css({
+          display: 'block'
+        });
+        $blognameArrow.offset({
+          left: offset.left + width
+        })
+          .css({
+          display: 'block'
+        });
+      }, this), 0);
+
+      commands.setHandler('dashboard:toggle', _.bind(this.handleSlide, this));
+
+      this.$el.hammer(device.options.hammer()).on('tap', _.bind(this.handleSlide, this));
     },
 
     serializeData: function () {
-      return this.data;
+      var data = {};
+      if (this.blog) {
+        data.blog = this.blog;
+      }
+      return data;
     }
   });
 });

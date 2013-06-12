@@ -1,6 +1,7 @@
 <div id="header-main">
-  <nav>
-    <a id="show-sidemenu" class="icon-menu"></a>
-    <div id="logo"><div class="logo-inner"></div></div>
-  </nav>
+  {{#if blog}}
+  <div id="blogname-circle" class="circle"><div class="circle-inner"></div></div>
+  <h1 id="blogname"><span id="blogname-inner">{{blog.name}}</span></h1>
+  <div id="blogname-arrow" class="icon-arrow-down"></div>
+  {{/if}}
 </div>
