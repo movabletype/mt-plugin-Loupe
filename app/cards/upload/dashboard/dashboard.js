@@ -24,7 +24,12 @@ function (mtapi, device, commands, CardItemView, template) {
         this.error = [];
         this.errorImages = [];
         this.uploading = true;
-        this.render();
+        this.$el.find('#upload-file-uploading').css({
+          display: 'block'
+        });
+        this.$el.find('#upload-file').css({
+          display: 'none'
+        });
         var dfds = [];
         _.each(files, _.bind(function (file) {
           var dfd = $.Deferred();
@@ -53,11 +58,7 @@ function (mtapi, device, commands, CardItemView, template) {
           this.render();
         }, this));
       }, this);
-      /*
-      this.ui.uploadButton.hammer(this.hammerOpts).on('tap', _.bind(function () {
-        this.ui.uploadForm.trigger('click');
-      }, this));
-*/
+
       this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function () {
         upload(this.errorImages);
       }, this));

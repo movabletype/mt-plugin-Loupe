@@ -8,9 +8,6 @@
 </div>
 {{/each}}
 </div>
-{{#if uploading}}
-<div id="upload-file-uploading" class="upload-file button">{{#trans trans}}uploading...{{/trans}}</div>
-{{else}}
 {{#if error}}
 <div class="error">
   <p>{{#trans trans}}Failed uploading{{/trans}}</p>
@@ -39,5 +36,5 @@
     {{/if}}
   </label>
 </div>
+<div id="upload-file-uploading" class="upload-file button" style="display:none">{{#trans trans}}uploading...{{/trans}}</div>
 </form>
-{{/if}}
