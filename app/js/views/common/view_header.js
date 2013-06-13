@@ -37,6 +37,10 @@ function (Marionette, template, device, commands, Trans) {
       this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', function () {
         commands.execute('router:navigate', '');
       });
+
+      this.ui.shareButton.hammer(device.options.hammer()).on('tap', _.bind(function () {
+        commands.execute('card:' + this.settings.id + ':share:show', '');
+      }, this));
     },
 
     serializeData: function () {

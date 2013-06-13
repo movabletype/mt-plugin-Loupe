@@ -1,28 +1,38 @@
-define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'moment', 'moment.lang', 'js/mtapi/stats_provider', 'cards/stats/models/top_articles', 'cards/stats/models/top_articles_itemview_collection', 'cards/stats/models/top_articles_itemview', 'cards/stats/view/top_articles_itemview', 'js/trans', 'hbs!cards/stats/templates/top_articles'],
+define(['js/views/card/composite',
+    'js/cache',
+    'js/commands',
+    'js/device',
+    'moment',
+    'moment.lang',
+    'js/mtapi/stats_provider',
+    'cards/stats/models/top_articles',
+    'cards/stats/models/top_articles_itemview_collection',
+    'cards/stats/models/top_articles_itemview',
+    'cards/stats/view/top_articles_itemview',
+    'hbs!cards/stats/templates/top_articles'
+],
 
-function (Marionette, app, commands, device, momemt, momentLang, statsProvider, Model, Collection, ItemViewModel, ItemView, Trans, template) {
-  "use strict";
+function (CardCompositeView, cache, commands, device, momemt, momentLang, statsProvider, Model, ItemViewCollection, ItemViewModel, ItemView, template) {
+  'use strict';
 
-  return Marionette.CompositeView.extend({
+  return CardCompositeView.extend({
     numberOfArticles: 3,
 
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     itemView: ItemView,
-    itemViewContainer: '#top-articles-list',
+    itemViewContainer: '#top-articles-list-day',
 
     appendHtml: function (cv, iv) {
       this.getItemViewContainer(cv).find('#eid-' + iv.model.id).html(iv.el);
     },
 
     serializeData: function () {
-      var data = {};
+      var data = this.serializeDataInitialize();
       var selectedItems = [];
 
       if (!this.loading) {
-        data = this.model.toJSON();
+        data = _.extend(data, this.model.toJSON());
         if (data.items && data.items.length) {
           var count = this.numberOfArticles;
           _.each(data.items, function (item) {
@@ -38,13 +48,14 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
                   id: eid,
                   blogId: this.blogId,
                   num: num,
-                  pageviews: item.pageviews
+                  pageviews: item.pageviews,
+                  unit: this.unit
                 });
 
                 itemViewModel.fetch({
                   success: _.bind(function (resp) {
                     this.collection.add(itemViewModel, {
-                      sort: true,
+                      sort: true
                     })
                   }, this),
                   error: _.bind(function () {
@@ -67,11 +78,9 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
       }
 
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
-      data.error = this.error ? true : false;
-      data.loading = this.loading ? true : false;
       data.itemLoading = this.itemLoading ? true : false;
-
-      data.trans = this.trans;
+      data.title = 'Top 3 of the ' + this.unit;
+      data.unit = this.unit;
 
       return data;
     },
@@ -82,7 +91,7 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
         startDate: moment().startOf(this.unit).format(),
         endDate: moment().endOf(this.unit).format(),
         limit: 10,
-        success: _.bind(function () {
+        success: _.bind(function (resp) {
           this.loading = false;
           this.error = false;
           this.itemLoading = true;
@@ -97,21 +106,13 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
     },
 
     initialize: function (options) {
-      this.blogId = options.params.blogId;
-      this.model = app.dashboardCardsData.topArticlesModel = app.dashboardCardsData.topArticlesModel || new Model();
-      this.collection = app.dashboardCardsData.topArticlesCollection = app.dashboardCardsData.topArticlesCollection || new Collection();
-      this.loading = true;
-      this.settings = options.settings;
-      this.unit = options.unit || 'day';
+      CardCompositeView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.trans = null;
-      commands.execute('l10n', _.bind(function (l10n) {
-        var transId = 'card_' + this.settings.id;
-        l10n.load('cards/stats/l10n', transId).done(_.bind(function () {
-          this.trans = new Trans(l10n, transId);
-          this.render();
-        }, this));
-      }, this));
+      this.unit = options.unit || 'day';
+      this.model = cache.get('toparticle_' + this.unit + '_model_' + this.blogId) || cache.set('toparticle_' + this.unit + '_model_' + this.blogId, new Model());
+      this.collection = cache.get('toparticle_itemview_' + this.unit + '_collection_' + this.blogId) || cache.set('toparticle_itemview_' + this.unit + '_collection_' + this.blogId, new ItemViewCollection());
+
+      this.setTranslation();
 
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
@@ -128,18 +129,14 @@ function (Marionette, app, commands, device, momemt, momentLang, statsProvider, 
         }, this));
       } else {
         this.loading = false;
+        this.render();
       }
+
+      this.handleItemViewNavigate();
     },
 
     onRender: function () {
-      if (this.error) {
-        this.$el.find('.refetch').hammer(device.options.hammer()).one('tap', _.bind(function () {
-          this.loading = true;
-          this.error = false;
-          this.render();
-          this.fetch();
-        }, this));
-      }
+      this.handleRefetch();
     }
   });
 });

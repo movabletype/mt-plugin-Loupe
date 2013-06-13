@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/commands', 'js/device', 'hbs!cards/stats/templates/layout', 'cards/stats/view/recent_access', 'cards/stats/view/top_articles', 'cards/stats/view/top_articles_weekly'],
+define(['backbone.marionette', 'hbs!cards/stats/templates/layout', 'cards/stats/view/recent_access', 'cards/stats/view/top_articles', 'cards/stats/view/top_articles_weekly'],
 
-function (Marionette, commands, device, template, RecentAccessView, TopArticlesView, TopArticlesWeeklyView) {
+function (Marionette, template, RecentAccessView, TopArticlesView, TopArticlesWeeklyView) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -36,14 +36,6 @@ function (Marionette, commands, device, template, RecentAccessView, TopArticlesV
         settings: this.settings,
         unit: 'week'
       }));
-
-      this.$el.find('.top-articles').hammer(device.options.hammer()).on('tap', 'a', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var route = $(this).data('route') || '';
-        commands.execute('router:navigate', route);
-        return false;
-      });
     }
   });
 });

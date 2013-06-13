@@ -1,13 +1,15 @@
 define(['backbone', 'js/mtapi', 'cards/feedbacks/models/comments_model'], function (Backbone, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
+    initialize: function (blogId) {
+      this.blogId = blogId;
+    },
     parse: function (resp) {
       this.totalResults = resp.totalResults;
       return resp.items;
     },
     sync: function (method, model, options) {
       var dfd = $.Deferred();
-      var blogId = options.blogId;
       dfd.done(options.success);
       dfd.fail(options.error);
 
@@ -19,7 +21,7 @@ define(['backbone', 'js/mtapi', 'cards/feedbacks/models/comments_model'], functi
         params.offset = options.offset;
       }
 
-      mtapi.api.listComments(blogId, params, _.bind(function (resp) {
+      mtapi.api.listComments(this.blogId, params, _.bind(function (resp) {
         if (DEBUG) {
           console.log('comments_collection')
           console.log(resp);

@@ -1,80 +1,80 @@
-define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'moment', 'moment.lang', 'js/mtapi/stats_provider', 'cards/stats/models/top_articles_itemview', 'cards/stats/models/top_articles_itemview_collection', 'js/trans', 'hbs!cards/stats/templates/post', 'cards/stats/models/top_articles'],
+define(['js/views/card/itemview',
+    'js/cache',
+    'js/commands',
+    'js/device',
+    'moment',
+    'moment.lang',
+    'js/mtapi/stats_provider',
+    'cards/stats/models/top_articles_itemview',
+    'cards/stats/models/top_articles_itemview_collection',
+    'js/trans',
+    'hbs!cards/stats/templates/post',
+    'cards/stats/models/top_articles'
+],
 
-function (Marionette, app, commands, device, moment, momentLang, statsProvider, Model, Collection, Trans, template, StatsModel) {
-  "use strict";
-  return Marionette.ItemView.extend({
-    template: function (data) {
-      return template(data);
-    },
+function (CardItemView, cache, commands, device, moment, momentLang, statsProvider, Model, ItemViewCollection, Trans, template, StatsModel) {
+  'use strict';
+  return CardItemView.extend({
+    template: template,
 
     initialize: function (options) {
+      CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
+
       this.blogId = options.params[0];
       this.entryId = options.params[1];
       this.unit = options.params[2];
-      if (this.unit === 'day') {
-        this.collection = app.dashboardCardsData.topArticlesCollection = app.dashboardCardsData.topArticlesCollection || new Collection();
-      } else {
-        this.collection = app.dashboardCardsData.topArticlesCollectionWeekly = app.dashboardCardsData.topArticlesCollectionWeekly || new Collection();
-      }
+
+      this.collection = cache.get('toparticle_itemview_' + this.unit + '_collection_' + this.blogId) || cache.set('toparticle_itemview_' + this.unit + '_collection_' + this.blogId, new ItemViewCollection());
       this.model = this.collection.get(this.entryId) || null;
-      this.loading = true;
-      this.settings = options.settings;
+      this.setTranslation(_.bind(function () {
+        if (this.model) {
+          this.loading = false;
+          this.render();
+        } else {
+          this.render();
 
-      this.trans = null;
-      commands.execute('l10n', _.bind(function (l10n) {
-        var transId = 'card_' + this.settings.id;
-        l10n.load('cards/' + this.settings.id + '/l10n', transId).done(_.bind(function () {
-          this.trans = new Trans(l10n, transId);
-          if (this.model) {
-            this.loading = false;
-            this.render();
-          } else {
-            this.render();
+          this.model = new Model({
+            id: this.entryId,
+            blogId: this.blogId
+          });
+          this.model.fetch({
+            success: _.bind(function () {
+              var permalink = this.model.toJSON().permalink || null;
+              var path;
+              if (permalink) {
+                permalink = permalink.match(/http(?:s)?:\/\/[^\/]+\/(.*)/);
+                path = permalink.length > 1 ? permalink[1] : null;
+              }
 
-            this.model = new Model({
-              id: this.entryId,
-              blogId: this.blogId
-            });
-            this.model.fetch({
-              success: _.bind(function () {
-                var permalink = this.model.toJSON().permalink || null;
-                var path;
-                if (permalink) {
-                  permalink = permalink.match(/http(?:s)?:\/\/[^\/]+\/(.*)/);
-                  path = permalink.length > 1 ? permalink[1] : null;
-                }
-
-                if (path) {
-                  this.statsModel = new StatsModel();
-                  this.statsModel.fetch({
-                    blogId: this.blogId,
-                    startDate: moment().startOf(this.unit).format(),
-                    endDate: moment().endOf(this.unit).format(),
-                    limit: 1,
-                    path: path,
-                    success: _.bind(function (resp) {
-                      this.loading = false;
-                      this.error = false;
-                      this.pageviews = resp.toJSON().items[0].pageviews;
-                      // this.collection.add(this.model);
-                      this.render();
-                    }, this),
-                    error: _.bind(function () {
-                      this.loading = false;
-                      this.error = true;
-                      this.render();
-                    }, this)
-                  });
-                }
-              }, this),
-              error: _.bind(function () {
-                this.error = true;
-                this.loading = false;
-                this.render();
-              }, this)
-            });
-          }
-        }, this));
+              if (path) {
+                this.statsModel = new StatsModel();
+                this.statsModel.fetch({
+                  blogId: this.blogId,
+                  startDate: moment().startOf(this.unit).format(),
+                  endDate: moment().endOf(this.unit).format(),
+                  limit: 1,
+                  path: path,
+                  success: _.bind(function (resp) {
+                    this.loading = false;
+                    this.error = false;
+                    this.pageviews = resp.toJSON().items[0] ? resp.toJSON().items[0].pageviews : 0;
+                    this.render();
+                  }, this),
+                  error: _.bind(function () {
+                    this.loading = false;
+                    this.error = true;
+                    this.render();
+                  }, this)
+                });
+              }
+            }, this),
+            error: _.bind(function () {
+              this.error = true;
+              this.loading = false;
+              this.render();
+            }, this)
+          });
+        }
       }, this));
 
       commands.setHandler('card:stats:share:show', _.bind(function () {
@@ -89,23 +89,24 @@ function (Marionette, app, commands, device, moment, momentLang, statsProvider, 
     },
 
     serializeData: function () {
-      var data = {};
+      var data = this.serializeDataInitialize();
       if (this.model) {
-        data = this.model.toJSON();
-        if (data.author) {
-          var lang = data.author.language.split('-');
-          if (lang === 'us') {
-            lang = ''
-          }
-          data.lang = lang;
-        }
+        data = _.extend(data, this.model.toJSON());
         commands.execute('header:render', data);
       }
-      data.label = this.unit === 'day' ? 'Today\'s access' : 'This week\'s access';
-      data.pageviews = data.pageviews || this.pageviews || null;
-      data.trans = this.trans;
-      data.error = this.error ? true : false;
-      data.loading = this.loading ? true : false;
+      var map = {
+        day: "Today's",
+        week: "This week's",
+        month: "This month's",
+        year: "This year's"
+      }
+
+
+      data.label = map[this.unit] + ' access';
+      console.log(data);
+      if (data.pageviews === undefined) {
+        data.pageviews = this.pageviews;
+      }
       return data;
     }
   });

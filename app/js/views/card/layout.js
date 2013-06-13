@@ -8,10 +8,10 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
       console.log(options)
       this.card = options.card;
       this.params = options.params;
-      this.viewHeader = this.card.viewHeader;
-      this.viewView = this.card.viewView;
-      this.viewTemplate = this.card.viewTemplate;
-      this.viewData = this.card.viewData;
+      this.viewHeader = options.viewHeader || this.card.viewHeader;
+      this.viewView = options.viewView || this.card.viewView;
+      this.viewTemplate = options.viewTemplate || this.card.viewTemplate;
+      this.viewData = options.viewData || this.card.viewData;
     },
 
     template: function (data) {

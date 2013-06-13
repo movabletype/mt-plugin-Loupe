@@ -1,11 +1,14 @@
 define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
   return Backbone.Model.extend({
+    initialize: function (options) {
+      this.blogId = options.blogId;
+    },
     sync: function (method, model, options) {
       if (method === 'read') {
         var dfd = $.Deferred();
         dfd.done(options.success);
         dfd.fail(options.error);
-        mtapi.api.getComment(options.blogId, this.id, function (resp) {
+        mtapi.api.getComment(this.blogId, this.id, function (resp) {
           if (!resp.error) {
             dfd.resolve(resp);
           } else {

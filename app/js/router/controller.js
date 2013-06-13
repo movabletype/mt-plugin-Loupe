@@ -39,7 +39,9 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
           };
 
           if (currentBlogId) {
-            this.blog = this.blog || getBlog(currentBlogId);
+            if (!this.blog || this.blog.id !== currentBlogId) {
+              this.blog = getBlog(currentBlogId);
+            }
 
             this.blog.fail(_.bind(function () {
               delete this.blog;
@@ -130,11 +132,11 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
       }, this);
 
       _.forEach(cards, function (card) {
-        var methodName = 'moveCardPage_' + card.id;
-        this[methodName] = methodFactory('move:cardView', card);
-        if (card.viewItemRoute) {
-          var itemMethodName = 'moveCardPageItem_' + card.id;
-          this[itemMethodName] = methodFactory('move:cardItemView', card);
+        if (card.routes && card.routes.length) {
+          _.each(card.routes, function (route) {
+            var routeMethodName = 'moveCardPage_' + card.id + route.id;
+            this[routeMethodName] = methodFactory('move:cardView:' + card.id + ':' + route.id, card);
+          }, this)
         }
       }, this);
     },

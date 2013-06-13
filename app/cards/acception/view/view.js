@@ -4,9 +4,7 @@ function (Marionette, app, device, commands, Trans, moment, momentLang, Collecti
   "use strict";
 
   return Marionette.ItemView.extend({
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     ui: {
       button: '#accept-button'

@@ -11,22 +11,16 @@ function (Marionette, commands) {
   return Marionette.AppRouter.extend({
     appRoutes: appRoutes,
     initialize: function (options, cards) {
+      console.log(cards)
       _.forEach(cards, function (card) {
-        if (card.id && (card.viewTemplate || card.viewView)) {
-          var name;
-          if (card.viewRoute) {
-            name = card.id + '/' + card.viewRoute;
-          } else {
-            name = card.id;
-          }
-          var methodName = 'moveCardPage_' + card.id;
+        if (card.id) {
           var controller = options.controller;
-          this.route(name, methodName, _.bind(controller[methodName], controller));
-
-          if (card.viewItemRoute) {
-            var itemName = card.id + '/' + card.viewItemRoute;
-            var itemMethodName = 'moveCardPageItem_' + card.id;
-            this.route(itemName, itemMethodName, _.bind(controller[itemMethodName]));
+          if (card.routes && card.routes.length) {
+            _.each(card.routes, function (route) {
+              var routeName = route.route ? card.id + '/' + route.route : card.id;
+              var routeMethodName = 'moveCardPage_' + card.id + route.id;
+              this.route(routeName, routeMethodName, _.bind(controller[routeMethodName], controller));
+            }, this);
           }
         }
       }, this);

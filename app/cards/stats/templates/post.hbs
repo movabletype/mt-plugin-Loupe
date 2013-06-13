@@ -1,8 +1,6 @@
 <section id="stats-post" class="card">
   <div class="content">
-  {{#if loading}}
-    <div class="loading"></div>
-  {{/if}}
+  {{>js_views_card_partials_loading}}
   {{#if id}}
     {{#ifIs status eq="Publish"}}
     <div class="pageviews">

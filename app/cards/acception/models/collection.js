@@ -1,11 +1,12 @@
 define(['backbone', 'js/mtapi', 'cards/acception/models/model'], function (Backbone, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
-    initialize: function () {
+    initialize: function (blogId) {
+      this.blogId = blogId;
       this.isSynced = false;
     },
     comparator: function (item) {
-      return item.get('id');
+      return -1 * item.get('id');
     },
     parse: function (resp) {
       this.totalResults = resp.totalResults;
@@ -13,7 +14,6 @@ define(['backbone', 'js/mtapi', 'cards/acception/models/model'], function (Backb
     },
     sync: function (method, model, options) {
       var dfd = $.Deferred();
-      var blogId = options.blogId;
       dfd.done(options.success);
       dfd.fail(options.error);
 
@@ -29,7 +29,7 @@ define(['backbone', 'js/mtapi', 'cards/acception/models/model'], function (Backb
         params.offset = parseInt(options.offset, 10);
       }
 
-      mtapi.api.listEntries(blogId, params, _.bind(function (resp) {
+      mtapi.api.listEntries(this.blogId, params, _.bind(function (resp) {
         if (DEBUG) {
           console.log(resp);
         }

@@ -1,37 +1,19 @@
-  {{#if trans}}
-  <header><h1>{{#trans trans}}Top 3 of today{{/trans}}</h1></header>
+{{>js_views_card_partials_title}}
+<div class="content">
+  {{>js_views_card_partials_loading}}
+  {{>js_views_card_partials_fetchError}}
+  {{>js_views_card_partials_providerIsNotAvailable}}
+  <ul id="top-articles-list-{{unit}}" class="top-articles-list">
+  {{#each items}}
+    <li id="eid-{{this.entry.id}}" data-pageviews="{{this.pageviews}}">
+      <div class="list-item-inner">
+        <div class="content-loading"></div>
+        {{>cards_stats_templates_itemviewContent}}
+      </div>
+    </li>
+  {{/each}}
+  </ul>
+  {{#if itemLoading}}
+  <div class="item-loading"></div>
   {{/if}}
-  <div class="content">
-    {{#if loading}}
-    <div class="loading"></div>
-    {{/if}}
-    {{#if error}}
-    <div class="error">
-      <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
-      <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
-    </div>
-    {{/if}}
-    {{#if providerIsNotAvailable}}
-    <div class="error">
-      <div class="message provider-is-not-available">{{#trans trans}}Analytics service does not enabled{{/trans}}</div>
-    </div>
-    {{/if}}
-    <ul id="top-articles-list">
-    {{#each items}}
-      <li id="eid-{{this.entry.id}}" data-pageviews="{{this.pageviews}}">
-        <div class="list-item-inner">
-          <div class="content-loading"></div>
-          <div class="item-num">{{this.num}}</div>
-          <div class="item-content">
-            <span class="item-asset circle"><span class="circle-inner"></span></span>
-            <span class="item-title">{{this.title}}</span>
-          </div>
-          <div class="item-pageviews">{{this.pageviews}}</div>
-        </div>
-      </li>
-    {{/each}}
-    </ul>
-    {{#if itemLoading}}
-    <div class="item-loading"></div>
-    {{/if}}
-  </div>
+</div>

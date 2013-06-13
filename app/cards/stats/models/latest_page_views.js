@@ -3,6 +3,9 @@ define(['backbone', 'moment', 'js/mtapi'],
 function (Backbone, moment, mtapi) {
   return Backbone.Model.extend({
     isSynced: false,
+    initialize: function (blogId) {
+      this.blogId = blogId;
+    },
     sync: function (method, model, options) {
       if (method === 'read') {
         var dfd = $.Deferred(),
@@ -12,7 +15,7 @@ function (Backbone, moment, mtapi) {
             endDate: moment().format()
           };
 
-        mtapi.api.statsPageviewsForDate(options.blogId, params, _.bind(function (resp) {
+        mtapi.api.statsPageviewsForDate(this.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
               console.log('statsPageviewsForDate success in latest_page_view');
@@ -28,7 +31,7 @@ function (Backbone, moment, mtapi) {
           }
         }, this));
 
-        mtapi.api.statsVisitsForDate(options.blogId, params, _.bind(function (resp) {
+        mtapi.api.statsVisitsForDate(this.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
               console.log('statsVisitsForDate success in latest_page_view');

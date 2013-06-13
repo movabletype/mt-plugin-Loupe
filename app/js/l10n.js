@@ -20,6 +20,7 @@ define(function () {
         dfd.resolve(this);
       }, this), function (err) {
         console.info('require failed: ' + path);
+        console.info(err);
         this[namespace] = {};
         dfd.resolve(this);
       });

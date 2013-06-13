@@ -1,24 +1,6 @@
-<header>
-<h1 id="feedbacks-label">{{#trans trans}}{{name}}{{/trans}}</h1>
-<p id="feedbacks-count" class="card-header-count">{{totalResults}}</p>
-</header>
-
-{{#if loading}}
-<div class="loading"></div>
-{{/if}}
-{{#if moreLoading}}
-<div class="loading"></div>
-{{/if}}
-{{#if error}}
-<div class="error">
-  <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
-  <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
-</div>
-{{/if}}
+{{>js_views_card_partials_loading}}
+{{>js_views_card_partials_title}}
+{{>js_views_card_partials_fetchError}}
 <ul id="feedback-comments-list">
 </ul>
-{{#if showMoreButton}}
-<div id="feedbacks-readmore" class="button">
-  さらに見る
-</div>
-{{/if}}
+{{>js_views_card_partials_readmore}}

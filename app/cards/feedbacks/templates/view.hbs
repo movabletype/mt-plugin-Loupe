@@ -1,19 +1,14 @@
 <section id="feedbacks-comment-view">
   <div class="content">
     <div class="comment-container">
-    {{#if loading}}
-      <div class="loading"></div>
-    {{/if}}
+    {{>js_views_card_partials_loading}}
     {{#if acceptionFailed}}
       <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>
     {{/if}}
     {{#if id}}
       {{#ifIs status eq="Pending"}}
         <div id="accept-button" class="contents-top-button">承認する</div>
-        <div class="title">{{title}}</div>
-        <div class="date">{{formatDate date lang}}</div>
-        <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
-        <div class="body">{{sanitize body}}</div>
+        {{>cards_feedbacks_templates_comment}}
       {{else}}
         {{#ifIs status eq="Approved"}}
         <div class="accepted contents-top-button">
@@ -26,10 +21,7 @@
             <span class="accepted-view-button-container"><span class="accepted-view-button icon-undo"></span></span>
           </div>
         </div>
-        <div class="title">{{title}}</div>
-        <div class="date">{{formatDate date lang}}</div>
-        <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
-        <div class="body">{{sanitize body}}</div>
+        {{>cards_feedbacks_templates_comment}}
       </div>
       <div id="reply-container">
         <div class="reply-button-container">
@@ -42,7 +34,7 @@
     {{#if error}}
     <div class="comment-container">
       <div class="error-message">
-        記事の情報を取得できませんでした。
+        コメントの情報を取得できませんでした。
       </div>
     </div>
     {{/if}}

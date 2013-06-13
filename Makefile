@@ -15,8 +15,11 @@ clean:
 	-rm -rf app/template
 	-find . -name '.DS_Store' | xargs rm
 
-build:
+dev:
 	-npm install
 	-bower install
 	-grunt dev
+
+build:
+	-make dev
 	-grunt build

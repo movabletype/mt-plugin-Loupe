@@ -19,7 +19,7 @@
     "raphael": "lib/raphael/raphael",
     "morris": "components/morris.js/morris",
     "moment": "components/moment/moment",
-    "moment.lang": "components/moment/min/langs",
+    "moment.lang": "components/moment/min/langs.min",
     "mtchart": "lib/chart-api/core/amd/mtchart.core.amd",
     "app": "js/app",
     "text": "components/requirejs-text/text",

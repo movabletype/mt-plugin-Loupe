@@ -70,20 +70,11 @@
   border: 1px solid #dddddd;
   position: relative;
   @include border-radius-with-pie(8px);
+  @include loading-white;
   .loading {
     background-color: #f0f0f0;
     background-color: rgba(240, 240, 240, 0.8);
     @include border-radius-with-pie(8px);
-    background-image: url("../assets/images/indicator-white.gif");
-    background-repeat: no-repeat;
-    background-size: 30px;
-    background-position: center center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 10;
   }
   .acception-failed {
     background-color: rgba(255, 255, 255, 0.8);
@@ -239,12 +230,5 @@
   }
   #do-reply-button {
     margin-top: 10px;
-  }
-}
-
-#feedbacks-comment-entry {
-  margin: 10px 0;
-  header {
-    @include border-radius-with-pie(8px);
   }
 }

@@ -42,7 +42,7 @@ function (Marionette, app, commands, device, statsProvider, Model, Trans, templa
 
     initialize: function (options) {
       this.blogId = options.params.blogId;
-      this.model = app.dashboardCardsData.stats = app.dashboardCardsData.stats || new Model();
+      this.model = app.dashboardCardsData.stats = app.dashboardCardsData.stats || new Model(this.blogId);
       this.loading = true;
 
       this.trans = null;

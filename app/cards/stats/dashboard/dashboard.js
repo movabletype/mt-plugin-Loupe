@@ -1,59 +1,49 @@
-define(['backbone.marionette', 'app', 'js/device', 'js/mtapi/stats_provider', 'cards/stats/models/latest_page_views', 'js/commands', 'js/trans', 'hbs!cards/stats/templates/dashboard', 'mtchart'],
+define([
+    'js/cache',
+    'js/commands',
+    'js/mtapi/stats_provider',
+    'js/views/card/itemview',
+    'cards/stats/models/latest_page_views',
+    'hbs!cards/stats/templates/dashboard',
+    'mtchart'
+], function (cache, commands, statsProvider, CardItemView, Model, template, ChartAPI) {
+  'use strict';
 
-function (Marionette, app, device, statsProvider, Model, commands, Trans, template, ChartAPI) {
-  "use strict";
-
-  return Marionette.ItemView.extend({
-    template: function (data) {
-      return template(data);
-    },
+  return CardItemView.extend({
+    template: template,
 
     serializeData: function () {
-      var data = {};
+      var data = this.serializeDataInitialize();
+      data.title = "Today's page views";
 
       if (!this.loading) {
-        data = this.model.toJSON();
+        data = _.extend({}, data, this.model.toJSON());
         var len = data.pageviews.items.length;
         if (len > 1) {
           var yesterday = parseInt(data.pageviews.items[len - 2].pageviews, 10);
           var today = parseInt(data.pageviews.items[len - 1].pageviews, 10);
           this.diff = today - yesterday;
           if (this.diff <= 0) {
-            data.diffIcon = 'icon-arrow-down-right'
+            data.diffIcon = 'icon-arrow-down-right';
           } else {
-            data.diffIcon = 'icon-arrow-up-right'
+            data.diffIcon = 'icon-arrow-up-right';
           }
         }
-        data.lang = this.l10n.userLang;
         data.today = (new Date()).valueOf();
       }
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
-      data.error = this.error ? true : false;
-      data.loading = this.loading ? true : false;
-
-      if (this.trans) {
-        data.trans = this.trans;
-      }
-
       return data;
     },
 
     fetch: function () {
-      this.model.fetch({
-        blogId: this.blogId,
-        success: _.bind(function () {
-          this.loading = false;
-          this.error = false;
+      CardItemView.prototype.fetch.call(this, {
+        successCallback: _.bind(function () {
           this.$el.hammer(this.hammerOpts).on('tap', this.navigatePage);
           this.$el.addClass('tap-enabled');
-          this.render();
         }, this),
-        error: _.bind(function () {
-          this.loading = false;
-          this.error = true;
+        errorCallback: _.bind(function () {
           this.$el.hammer(this.hammerOpts).off('tap', this.navigatePage);
           this.$el.removeClass('tap-enabled');
-          this.render();
         }, this)
       });
     },
@@ -62,20 +52,12 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
       commands.execute('router:navigate', 'stats');
     },
 
-    initialize: function (options) {
-      this.blogId = options.params.blogId;
-      this.model = app.dashboardCardsData.stats = app.dashboardCardsData.stats || new Model();
-      this.loading = true;
+    initialize: function () {
+      CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.trans = null;
+      this.model = cache.get('stats_' + this.blogId) || cache.set('stats_' + this.blogId, new Model(this.blogId));
 
-      commands.execute('l10n', _.bind(function (l10n) {
-        this.l10n = l10n;
-        l10n.load('cards/stats/l10n', 'cardStats').done(_.bind(function () {
-          this.trans = new Trans(l10n, 'cardStats');
-          this.render();
-        }, this));
-      }, this));
+      this.setTranslation();
 
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
@@ -97,17 +79,8 @@ function (Marionette, app, device, statsProvider, Model, commands, Trans, templa
       }
     },
 
-    hammerOpts: device.options.hammer(),
-
     onRender: function () {
-      if (this.error) {
-        this.$el.hammer(this.hammerOpts).one('tap', '.refetch', _.bind(function () {
-          this.loading = true;
-          this.error = false;
-          this.render();
-          this.fetch();
-        }, this));
-      }
+      this.handleRefetch();
 
       if (this.model.isSynced) {
         var data = this.model.toJSON(),

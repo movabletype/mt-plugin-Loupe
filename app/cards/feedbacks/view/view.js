@@ -1,12 +1,24 @@
-define(['backbone.marionette', 'app', 'js/mtapi', 'js/device', 'js/commands', 'js/trans', 'moment', 'moment.lang', 'cards/feedbacks/models/comments_collection', 'cards/feedbacks/models/comments_model', 'cards/feedbacks/models/comments_entry_model', 'cards/feedbacks/models/comments_entry_collection', 'hbs!cards/feedbacks/templates/view', 'hbs!cards/feedbacks/templates/reply'],
+define(['js/views/card/itemview',
+    'js/cache',
+    'js/mtapi',
+    'js/device',
+    'js/commands',
+    'js/trans',
+    'moment',
+    'moment.lang',
+    'cards/feedbacks/models/comments_collection',
+    'cards/feedbacks/models/comments_model',
+    'js/models/entry',
+    'js/collections/entries',
+    'hbs!cards/feedbacks/templates/view',
+    'hbs!cards/feedbacks/templates/reply'
+],
 
-function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, Collection, Model, EntryModel, EntryCollection, template, replyTemplate) {
-  "use strict";
+function (CardItemView, cache, mtapi, device, commands, Trans, moment, momentLang, CommentsCollection, Model, EntryModel, EntryCollection, template, replyTemplate) {
+  'use strict';
 
-  return Marionette.ItemView.extend({
-    template: function (data) {
-      return template(data);
-    },
+  return CardItemView.extend({
+    template: template,
 
     ui: {
       button: '#accept-button',
@@ -15,46 +27,41 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
     },
 
     initialize: function (options) {
-      this.user = options.user;
+      CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
+
       this.type = options.params[0];
       this.blogId = options.params[1];
       this.commentId = options.params[2];
-      this.collection = app.dashboardCardsData.feedbacks = app.dashboardCardsData.feedbacks || new Collection();
-      this.entryCollection = app.dashboardCardsData.feedbacksCommentsEntry = app.dashboardCardsData.feedbacksCommentsEntry || new EntryCollection();
-      this.model = this.collection.get(this.commentId);
-      this.loading = true;
-      this.entryLoading = true;
-      this.settings = options.settings;
 
-      this.trans = null;
-      commands.execute('l10n', _.bind(function (l10n) {
-        var transId = 'card_' + this.settings.id;
-        this.l10n = l10n;
-        l10n.load('cards/' + this.settings.id + '/l10n', transId).done(_.bind(function () {
-          this.trans = new Trans(l10n, transId);
-          if (this.model) {
-            this.loading = false;
-            this.render();
-          } else {
-            this.render();
-            this.model = new Model({
-              id: this.commentId
-            });
-            this.model.fetch({
-              blogId: this.blogId,
-              success: _.bind(function () {
-                this.collection.add(this.model);
-                this.loading = false;
-                this.render();
-              }, this),
-              error: _.bind(function () {
-                this.error = true;
-                this.loading = false;
-                this.render();
-              }, this)
-            });
-          }
-        }, this));
+      this.collection = cache.get('feedbacks_comments_' + this.blogId) || cache.set('feedbacks_comments_' + this.blogId, new CommentsCollection(this.blogId));
+      this.entryCollection = cache.get('entries_' + this.blogId) || cache.set('entries_' + this.blogId, new EntryCollection(this.blogId));
+      this.model = this.collection.get(this.commentId);
+
+      this.entryLoading = true;
+
+      this.setTranslation(_.bind(function () {
+        if (this.model) {
+          this.loading = false;
+          this.render();
+        } else {
+          this.render();
+          this.model = new Model({
+            blogId: this.blogId,
+            id: this.commentId
+          });
+          this.model.fetch({
+            success: _.bind(function () {
+              this.collection.add(this.model);
+              this.loading = false;
+              this.render();
+            }, this),
+            error: _.bind(function () {
+              this.error = true;
+              this.loading = false;
+              this.render();
+            }, this)
+          });
+        }
       }, this));
 
       commands.setHandler('card:acception:share:show', _.bind(function () {
@@ -85,8 +92,6 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
             this.model.set({
               entry: entry
             });
-            console.log('success')
-            console.log(this.model.toJSON());
             this.render();
           }, this);
 
@@ -94,6 +99,7 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
             success(entry.toJSON());
           } else {
             entry = new EntryModel({
+              blogId: this.blogId,
               id: data.entry.id
             });
             entry.fetch({
@@ -137,7 +143,9 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
                 replied: true,
                 body: body
               }));
-              var newComment = new Model();
+              var newComment = new Model({
+                blogId: this.blogId
+              });
               newComment.set(resp);
               this.collection.unshift(newComment);
             } else {
@@ -147,7 +155,7 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
         }
       }, this));
 
-      this.ui.button.hammer(device.options.hammer()).on('tap', _.bind(function () {
+      this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function () {
         this.loading = true;
         this.render();
         var options = {
@@ -159,7 +167,6 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
             this.loading = false;
             this.accepted = true;
             this.model.set(this.model.parse(resp));
-            console.log(this.model.toJSON());
             this.render();
           }, this),
           error: _.bind(function () {
@@ -176,27 +183,17 @@ function (Marionette, app, mtapi, device, commands, Trans, moment, momentLang, C
     },
 
     serializeData: function () {
-      var data = {};
+      var data = this.serializeDataInitialize();
       if (this.model) {
-        data = this.model.toJSON();
-        if (data.author) {
-          var lang = this.l10n.userLang.split('-');
-          if (lang === 'us') {
-            lang = ''
-          }
-          data.lang = lang;
-        }
+        data = _.extend(data, this.model.toJSON());
         if (data.entry && data.entry.fetched) {
           this.entryLoading = false;
         }
       }
-      data.trans = this.trans;
-      data.error = this.error ? true : false;
-      data.loading = this.loading ? true : false;
-      data.entryError = this.entryError ? true : false;
-      data.entryLoading = this.entryLoading ? true : false;
-      data.accepted = this.accepted ? true : false;
-      data.acceptionFailed = this.acceptionFailed ? true : false;
+      data.entryError = this.entryError;
+      data.entryLoading = this.entryLoading;
+      data.accepted = this.accepted;
+      data.acceptionFailed = this.acceptionFailed;
       return data;
     }
   });

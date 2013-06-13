@@ -1,23 +1,5 @@
-<header>
-<h1 id="acception-label">{{#trans trans}}{{name}}{{/trans}}</h1>
-<p id="acception-count" class="card-header-count">{{totalResults}}</p>
-</header>
-{{#if loading}}
-<div class="loading"></div>
-{{/if}}
-{{#if moreLoading}}
-<div class="loading"></div>
-{{/if}}
-{{#if error}}
-<div class="error">
-  <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
-  <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
-</div>
-{{/if}}
-<ul id="acceptions-list">
-</ul>
-{{#if showMoreButton}}
-<div id="acceptions-readmore" class="button">
-  {{#trans trans}}read more{{/trans}}
-</div>
-{{/if}}
+{{>js_views_card_partials_loading}}
+{{>js_views_card_partials_title}}
+{{>js_views_card_partials_fetchError}}
+<ul id="acceptions-list"></ul>
+{{>js_views_card_partials_readmore}}

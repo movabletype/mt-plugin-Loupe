@@ -1,0 +1,12 @@
+<div class="item-num">{{this.num}}</div>
+<div class="item-content">
+  {{#if this.assets.length}}
+    {{#eachOnly this.assets 0}}
+    <div class="item-asset image circle" style="background-image:url({{url}}); -pie-background: url({{url}}) no-repeat center center / cover"><div class="circle-inner"></div></div>
+    {{/eachOnly}}
+  {{else}}
+    <div class="item-asset no-image circle"><div class="circle-inner"></div></div>
+  {{/if}}
+  <div class="item-title">{{title}}</div>
+</div>
+<div class="item-pageviews">{{this.pageviews}}</div>

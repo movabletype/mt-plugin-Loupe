@@ -2,6 +2,7 @@
 @import "compass/css3/box-shadow";
 @import "compass/css3/box-sizing";
 @import "compass/css3/images";
+@import "compass/css3/opacity";
 @import "compass/css3/transform";
 @import "compass/css3/transition";
 @import "compass/css3/user-interface";
@@ -25,6 +26,7 @@
     background-color: #47a797;
     color: #fff;
     padding: 8px 10px;
+    min-height: 42px;
     @include border-top-radius(5px);
     h1 {
       font-weight: normal;
@@ -64,6 +66,10 @@
     @include border-radius(5px);
     background-color: #5d9b44;
     @include background-image(linear-gradient(#5d9b44,#5d9b44 92%, #478235 92%, #527630));
+  }
+  .button-loading {
+    cursor: auto;
+    @include opacity(0.5);
   }
   @include single-box-shadow(rgba(0, 0, 0, 0.2), 0, 0, 4px, 0);
   @include loupe-circle;

@@ -1,27 +1,48 @@
 [{
     "name": "stats",
     "id": "stats",
-    "dashboardView": "dashboard/dashboard",
-    "viewView": "view/layout",
-    "viewItemRoute": ":blog_id/:id/:unit",
-    "viewItemView": "view/post",
-    "viewItemHeader": "view/post_header"
+    "dashboard": {
+      "view": "dashboard/dashboard"
+    },
+    "routes": [{
+        "id": "view",
+        "view": "view/layout"
+      }, {
+        "id": "post",
+        "route": ":blog_id/:id/:unit",
+        "view": "view/post",
+        "header": "view/post_header"
+      }
+    ]
   }, {
     "name": "acception",
     "id": "acception",
-    "dashboardView": "dashboard/dashboard",
-    "viewRoute": ":blog_id/:id",
-    "viewView": "view/view",
-    "viewHeader": "view/view_header"
+    "dashboard": {
+      "view": "dashboard/dashboard"
+    },
+    "routes": [{
+        "id": "view",
+        "route": ":blog_id/:id",
+        "view": "view/view",
+        "header": "view/view_header"
+      }
+    ]
   }, {
     "name": "upload",
     "id": "upload",
-    "dashboardView": "dashboard/dashboard"
+    "dashboard": {
+      "view": "dashboard/dashboard"
+    }
   }, {
     "name": "feedbacks",
     "id": "feedbacks",
-    "dashboardView": "dashboard/dashboard",
-    "viewView": "view/view",
-    "viewRoute": ":type/:blog_id/:id"
+    "dashboard": {
+      "view": "dashboard/dashboard"
+    },
+    "routes": [{
+        "view": "view/view",
+        "route": ":type/:blog_id/:id"
+      }
+    ]
   }
 ]

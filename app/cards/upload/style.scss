@@ -2,17 +2,6 @@
 @import "../../sass/_helpers.scss";
 
 #card-upload {
-  min-height: 160px;
-  color: #ffffff;
-  position: relative;
-  .contents {
-    min-height: 100px;
-  }
-  .no-available {
-    height: 100px;
-    color: #999;
-    padding: 10px;
-  }
   .uploaded-image {
     width: 100%;
     padding: 10px;
@@ -22,15 +11,6 @@
   }
   #upload-file-input {
     visibility: hidden;
-  }
-  .error,
-  .upload-file {
-    cursor: pointer;
-    text-align: center;
-    color: #444;
-    padding: 10px;
-    margin: 10px;
-    @include border-radius-with-pie(5px);
   }
   #retry,
   #upload-file {

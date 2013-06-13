@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/card/layout', 'js/views/card/item_layout'],
+define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
 
-function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, CardLayout, CardItemLayout) {
+function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, CardLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -28,6 +28,32 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
         $body.addClass(device.browser + device.browserVersionStr);
       }
     }
+    _.each(app.cards, function (card) {
+      if (card.routes && card.routes.length) {
+        _.each(card.routes, function (route) {
+          commands.setHandler('move:cardView:' + card.id + ':' + route.id, function (params) {
+            console.log('move:cardView:' + card.id + ':' + route.id)
+            var path = 'cards/' + card.id + '/';
+            if (route.layout) {
+              require([path + route.layout.replace(/\.js$/, '')], function (Layout) {
+                app.main.show(new Layout({
+                  params: params
+                }));
+              });
+            } else {
+              params = _.extend(params, {
+                viewHeader: route.header,
+                viewView: route.view,
+                viewTemplate: route.template,
+                viewData: route.data
+              });
+              params.viewView = route.view;
+              app.main.show(new CardLayout(params));
+            }
+          })
+        })
+      }
+    });
   });
 
   app.addRegions({
@@ -57,16 +83,6 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
       cards: app.cards,
       params: params
     }));
-  });
-
-  commands.setHandler('move:cardView', function (params) {
-    console.log('fofifi');
-    console.log(params)
-    app.main.show(new CardLayout(params));
-  });
-
-  commands.setHandler('move:cardItemView', function (params) {
-    app.main.show(new CardItemLayout(params));
   });
 
   return app;

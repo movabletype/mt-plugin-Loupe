@@ -1,14 +1,6 @@
-<header>
-<h1 id="upload-label">{{#trans trans}}Media Upload{{/trans}}</h1>
-</header>
-{{#if FileAPINotAvailable}}
-<div class="no-available">
-  {{#trans trans}}This feature is required File API capability{{/trans}}
-</div>
-{{else}}
-{{#if loading}}
-<div class="loading"></div>
-{{/if}}
+{{>js_views_card_partials_loading}}
+{{>js_views_card_partials_title}}
+
 <div class="contents">
 {{#each uploadedImages}}
 <div class="uploaded-image">
@@ -17,7 +9,7 @@
 {{/each}}
 </div>
 {{#if uploading}}
-<div id="upload-file-uploading" class="upload-file">{{#trans trans}}uploading...{{/trans}}</div>
+<div id="upload-file-uploading" class="upload-file button">{{#trans trans}}uploading...{{/trans}}</div>
 {{else}}
 {{#if error}}
 <div class="error">
@@ -26,21 +18,26 @@
   <p>{{this.message}}</p>
   {{/each}}
 </div>
-<div id="retry" class="upload-file">{{#trans trans}}retry{{/trans}}</div>
+<div id="retry" class="upload-file button">
+  <label for="upload-file-input">
+  {{#trans trans}}retry{{/trans}}
+  </label>
+</div>
 {{/if}}
 <form id="upload-file-form" method="post" name="upload-file">
   <input type="file" id="upload-file-input"/>
-</form>
 <div id="upload-file" class="button">
-  {{#if uploadCompleted}}
-    {{#trans trans}}more upload{{/trans}}
+  <label for="upload-file-input">
+    {{#if uploadCompleted}}
+      {{#trans trans}}more upload{{/trans}}
     {{else}}
       {{#if error}}
         {{#trans trans}}choose another files{{/trans}}
       {{else}}
         {{#trans trans}}choose files{{/trans}}
       {{/if}}
-  {{/if}}
+    {{/if}}
+  </label>
 </div>
-{{/if}}
+</form>
 {{/if}}
