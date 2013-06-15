@@ -22,7 +22,9 @@ window.onload = function() {
 			'icon-arrow-up' : '&#x25b4;',
 			'icon-arrow-down' : '&#x25be;',
 			'icon-arrow-down-right' : '&#xe000;',
-			'icon-arrow-up-right' : '&#xe001;'
+			'icon-arrow-up-right' : '&#xe001;',
+			'icon-arrow-right-2' : '&#xe002;',
+			'icon-checkmark-circle' : '&#xe003;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
