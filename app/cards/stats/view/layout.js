@@ -1,12 +1,10 @@
-define(['backbone.marionette', 'hbs!cards/stats/templates/layout', 'cards/stats/view/recent_access', 'cards/stats/view/top_articles', 'cards/stats/view/top_articles_weekly'],
+define(['backbone.marionette', 'js/commands', 'hbs!cards/stats/templates/layout', 'cards/stats/view/recent_access', 'cards/stats/view/top_articles', 'cards/stats/view/top_articles_weekly'],
 
-function (Marionette, template, RecentAccessView, TopArticlesView, TopArticlesWeeklyView) {
+function (Marionette, commands, template, RecentAccessView, TopArticlesView, TopArticlesWeeklyView) {
   "use strict";
 
   return Marionette.Layout.extend({
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     regions: {
       recentAccess: '#recent-access',
@@ -15,27 +13,21 @@ function (Marionette, template, RecentAccessView, TopArticlesView, TopArticlesWe
     },
 
     initialize: function (options) {
-      this.params = options.params;
-      this.settings = options.settings;
+      this.options = options;
     },
 
     onRender: function () {
-      this.recentAccess.show(new RecentAccessView({
-        params: this.params,
-        settings: this.settings
-      }));
+      this.recentAccess.show(new RecentAccessView(this.options));
 
-      this.topArticles.show(new TopArticlesView({
-        params: this.params,
-        settings: this.settings,
+      this.topArticles.show(new TopArticlesView(
+        _.extend(this.options, {
         unit: 'day'
-      }));
+      })));
 
-      this.topArticlesWeekly.show(new TopArticlesWeeklyView({
-        params: this.params,
-        settings: this.settings,
+      this.topArticlesWeekly.show(new TopArticlesWeeklyView(
+        _.extend(this.options, {
         unit: 'week'
-      }));
+      })));
     }
   });
 });

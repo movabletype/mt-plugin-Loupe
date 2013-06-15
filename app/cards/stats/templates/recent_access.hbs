@@ -1,19 +1,6 @@
-  {{#if trans}}
-  <header><h1>{{#trans trans}}Access in last week{{/trans}}</h1></header>
-  {{/if}}
-  <div class="content">
-    {{#if loading}}
-    <div class="loading"></div>
-    {{/if}}
-    {{#if error}}
-    <div class="error">
-      <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
-      <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
-    </div>
-    {{/if}}
-    {{#if providerIsNotAvailable}}
-    <div class="error">
-      <div class="message provider-is-not-available">{{#trans trans}}Analytics service does not enabled{{/trans}}</div>
-    </div>
-    {{/if}}
-  </div>
+{{>js_views_card_partials_title}}
+<div class="content">
+  {{>js_views_card_partials_loading}}
+  {{>js_views_card_partials_fetchError}}
+  {{>js_views_card_partials_providerIsNotAvailable}}
+</div>

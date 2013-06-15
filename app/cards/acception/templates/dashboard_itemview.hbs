@@ -1,13 +1,13 @@
 <a data-route="acception/{{blog.id}}/{{this.id}}">
-  <span class="item-asset-container">
-  {{#if this.assets.length}}
-    {{#eachOnly this.assets 0}}
-      <span class="item-asset" style="background-image:url({{url}})" /></span>
-    {{/eachOnly}}
-  {{else}}
-      <span class="item-asset no-image"></span>
-  {{/if}}
+  <span class="item-content">
+    {{#if this.assets.length}}
+      {{#eachOnly this.assets 0}}
+      <span class="item-asset image circle" style="background-image:url({{url}}); -pie-background: url({{url}}) no-repeat center center / cover"><span class="circle-inner"></span></span>
+      {{/eachOnly}}
+    {{else}}
+      <span class="item-asset no-image circle"><span class="circle-inner"></span></span>
+    {{/if}}
+    <span class="item-title">{{title}}</span>
+    <span class="item-arrow icon-arrow-right"></span>
   </span>
-  <span class="item-title">{{title}}</span>
-  <span class="item-arrow icon-arrow-right"></span>
 </a>

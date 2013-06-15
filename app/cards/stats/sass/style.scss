@@ -4,42 +4,6 @@
 @import "compass/utilities/general/clearfix";
 @import "../../../sass/_helpers.scss";
 
-$background-color: #f0f0f0;
-
-@mixin error {
-  .error {
-    background-color: rgba($background-color, 0.95);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    .message {
-      text-align: center;
-      color: #fff;
-      margin-top: 100px;
-    }
-    .provider-is-not-available {
-      margin-top: 145px;
-    }
-    .refetch {
-      color: #fff;
-      text-align: center;
-      background-color: #49BFC4;
-      cursor: pointer;
-      border: transparent 0;
-      padding: 10px;
-      margin: 20px 50px;
-      &:hover {
-        background-color: #FFC452;
-      }
-      &.tapped {
-        background-color: #FFC452;
-      }
-    }
-  }
-}
-
 #card-stats {
   position: relative;
   min-height: 320px;
@@ -49,7 +13,7 @@ $background-color: #f0f0f0;
   .stats-dashboard-graph-container {
     width: 320px;
     margin: 0 auto;
-    padding: 30px 0;
+    padding: 10px 0;
   }
   .today {
     padding: 10px 0 0 10px;
@@ -65,6 +29,7 @@ $background-color: #f0f0f0;
     .diff-icon {
       font-size: 16px;
     }
+    .icon-arrow-right-2,
     .icon-arrow-up-right {
       color: green;
     }
@@ -85,7 +50,6 @@ $background-color: #f0f0f0;
     padding: 10px 0 0;
     text-align: center;
   }
-  @include error;
   .graph-container {
     min-height: 170px;
   }
@@ -104,45 +68,31 @@ $background-color: #f0f0f0;
   .css-graph-date {
     font-weight: bold;
   }
-  @include error;
 }
 
-.top-articles {
+#top-articles,
+#top-articles-weekly {
   .content-loading {
     background-color: rgba(#f0f0f0, 0.5);
   }
   .top-articles-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    text-align: left;
     li {
-      margin: 0;
-      padding: 0;
-      border-bottom: 1px solid white;
       &:last-child {
         border-bottom: 0 none transparent;
         a {
           border-bottom: 0 none transparent;
         }
       }
-      position: relative;
-      .list-item-inner,
-      a {
-        display: block;
-        height: 100%;
-        width: 100%;
-        padding: 10px;
-        border-bottom: 1px solid #e6e6e6;
-        @include pie-clearfix;
-      }
-      a {
-        cursor: pointer;
-      }
+    }
+    .list-item-inner {
+      display: block;
+      height: 100%;
+      width: 100%;
+      padding: 10px;
+      border-bottom: 1px solid #e6e6e6;
       @include pie-clearfix;
     }
     .circle {
-      float: left;
       width: 75px;
       height: 75px;
       border-color: #ccc;
@@ -153,8 +103,6 @@ $background-color: #f0f0f0;
       }
       &.image {
         background-color: transparent;
-        background-size: cover;
-        background-position: center center;
         .circle-inner {
           border-color: transparent;
           background-color: transparent;
@@ -174,8 +122,7 @@ $background-color: #f0f0f0;
       @include single-text-shadow(0px, 0px, 10px, rgba(0, 0, 0, 0.5));
     }
     .item-title {
-      float: left;
-      width: 60%;
+      padding-right: 70px;
     }
     .item-pageviews {
       position: absolute;
@@ -189,14 +136,7 @@ $background-color: #f0f0f0;
       text-align: center;
       @include border-radius-with-pie(8px);
     }
-    .icon-arrow-right {
-      position: absolute;
-      right: 10px;
-      top: 45px;
-      color: #ccc;
-    }
   }
-  @include error;
 }
 
 #stats-post {

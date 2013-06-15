@@ -5,9 +5,10 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
 
   return Marionette.Layout.extend({
     initialize: function (options) {
+      console.log('card layout')
       console.log(options)
+      this.options = options;
       this.card = options.card;
-      this.params = options.params;
       this.viewHeader = options.viewHeader || this.card.viewHeader;
       this.viewView = options.viewView || this.card.viewView;
       this.viewTemplate = options.viewTemplate || this.card.viewTemplate;
@@ -43,7 +44,6 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
 
       var that = this;
       var id = this.card.id;
-      var params = this.params;
       var path = 'cards/' + id + '/';
 
       if (DEBUG) {
@@ -63,24 +63,15 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
 
       if (this.viewHeader) {
         require([path + this.viewHeader.replace(/\.js$/, '')], function (HeaderView) {
-          that.header.show(new HeaderView({
-            params: params,
-            settings: that.card
-          }));
+          that.header.show(new HeaderView(that.options));
         });
       } else {
-        this.header.show(new CommonHeaderView({
-          params: params,
-          settings: that.card
-        }));
+        this.header.show(new CommonHeaderView(this.options));
       }
 
       if (this.viewView) {
         require([path + this.viewView.replace(/\.js$/, '')], function (View) {
-          that.main.show(new View({
-            params: params,
-            settings: that.card
-          }));
+          that.main.show(new View(that.options));
         });
       } else {
         var match = this.viewTemplate.match(/^(.*)\.(.*)$/);
@@ -104,10 +95,7 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
           var View = Marionette.ItemView.extend({
             template: template
           });
-          that.main.show(new View({
-            params: params,
-            settings: that.card
-          }));
+          that.main.show(new View(that.options));
         });
       }
       this.setShareHandler();

@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/l10n', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog'],
+define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/mtapi/logout'],
 
-function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsList, getBlog) {
+function (Marionette, L10N, cache, mtapi, commands, vent, getUser, getBlogsList, getBlog, logout) {
   "use strict";
   return Marionette.Controller.extend({
     auth: function (callback) {
@@ -43,8 +43,15 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
               this.blog = getBlog(currentBlogId);
             }
 
-            this.blog.fail(_.bind(function () {
+            this.blog.fail(_.bind(function (resp) {
               delete this.blog;
+              callback = function (data) {
+                var params = data || {};
+                commands.execute('move:dashboard', params);
+              };
+              finalize(user, {
+                error: resp.error
+              });
             }, this));
 
             this.blog.done(_.bind(function (blog) {
@@ -99,6 +106,18 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
       window.sessionStorage.setItem('routeCache', route);
       location.replace(mtapi.api.getAuthorizationUrl(location.href));
     },
+
+    logout: function () {
+      logout().done(_.bind(function () {
+        localStorage.removeItem('currentBlogId');
+        localStorage.removeItem('recentBlogHistory');
+        delete this.token;
+        cache.clearAll();
+        vent.trigger('after:logout');
+        commands.execute('router:navigate', '');
+      }, this));
+    },
+
     initialize: function (options) {
       commands.setHandler('controller:getUser', _.bind(function (callback) {
         this.user.done(_.bind(function (user) {
@@ -119,14 +138,13 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
       var cards = options.cards;
       var methodFactory = _.bind(function (command, card) {
         return _.bind(function () {
-          var params = [].slice.call(arguments, 0);
+          var routes = [].slice.call(arguments, 0);
           this.auth(function (data) {
-            params = _.extend(params, data);
-            commands.execute(command, {
-              to: 'card',
-              card: card,
-              params: params
+            var params = _.extend({}, data, {
+              routes: routes,
+              card: card
             });
+            commands.execute(command, params);
           });
         }, this);
       }, this);
@@ -141,8 +159,11 @@ function (Backbone, Marionette, L10N, mtapi, commands, vent, getUser, getBlogsLi
       }, this);
     },
     moveDashboard: function () {
+      var routes = [].slice.call(arguments, 0);
       this.auth(function (data) {
-        var params = data || {};
+        var params = _.extend({}, data, {
+          routes: routes
+        });
         commands.execute('move:dashboard', params);
       });
     },

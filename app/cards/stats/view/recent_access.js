@@ -1,57 +1,29 @@
-define(['backbone.marionette', 'app', 'js/commands', 'js/device', 'js/mtapi/stats_provider', 'cards/stats/models/latest_page_views', 'js/trans', 'hbs!cards/stats/templates/recent_access', 'mtchart'],
+define(['js/views/card/itemview', 'js/cache', 'js/commands', 'js/device', 'js/mtapi/stats_provider', 'cards/stats/models/latest_page_views', 'js/trans', 'hbs!cards/stats/templates/recent_access', 'mtchart'],
 
-function (Marionette, app, commands, device, statsProvider, Model, Trans, template, ChartAPI) {
+function (CardItemView, cache, commands, device, statsProvider, Model, Trans, template, ChartAPI) {
   "use strict";
 
-  return Marionette.ItemView.extend({
-    template: function (data) {
-      return template(data);
-    },
+  return CardItemView.extend({
+    template: template,
 
     serializeData: function () {
-      var data = {};
+      var data = this.serializeDataInitialize();
+      data.title = 'Access in last week';
 
       if (!this.loading) {
-        data = this.model.toJSON();
+        data = _.extend(data, this.model.toJSON());
       }
 
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
-      data.error = this.error ? true : false;
-      data.loading = this.loading ? true : false;
-
-      data.trans = this.trans;
-
       return data;
     },
 
-    fetch: function () {
-      this.model.fetch({
-        blogId: this.blogId,
-        success: _.bind(function () {
-          this.loading = false;
-          this.error = false;
-          this.render();
-        }, this),
-        error: _.bind(function () {
-          this.loading = false;
-          this.error = true;
-          this.render();
-        }, this)
-      });
-    },
+    initialize: function () {
+      CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-    initialize: function (options) {
-      this.blogId = options.params.blogId;
-      this.model = app.dashboardCardsData.stats = app.dashboardCardsData.stats || new Model(this.blogId);
-      this.loading = true;
+      this.model = cache.get(this.blogId, 'stats_latest_page_views') || cache.set(this.blogId, 'stats_latest_page_views', new Model(this.blogId));
 
-      this.trans = null;
-      commands.execute('l10n', _.bind(function (l10n) {
-        l10n.load('cards/stats/l10n', 'cardStats').done(_.bind(function () {
-          this.trans = new Trans(l10n, 'cardStats');
-          this.render();
-        }, this));
-      }, this));
+      this.setTranslation();
 
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
@@ -72,14 +44,7 @@ function (Marionette, app, commands, device, statsProvider, Model, Trans, templa
     },
 
     onRender: function () {
-      if (this.error) {
-        this.$el.find('.refetch').hammer(device.options.hammer()).one('tap', _.bind(function () {
-          this.loading = true;
-          this.error = false;
-          this.render();
-          this.fetch();
-        }, this));
-      }
+      this.handleRefetch();
 
       if (this.model.isSynced) {
         var graphEl = this.$el.find('.content');

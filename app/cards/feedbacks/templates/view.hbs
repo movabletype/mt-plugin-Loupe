@@ -1,43 +1,41 @@
-<section id="feedbacks-comment-view">
+<section id="feedbacks-comment-view" class="card">
   <div class="content">
     <div class="comment-container">
     {{>js_views_card_partials_loading}}
     {{#if acceptionFailed}}
-      <div class="acception-failed"><span class="message">承認に失敗しました</span><div class="close-me">閉じる</div></div>
+      <div class="acception-failed error"><span class="message"><span class="message-inner">{{#trans trans}}Acception failed{{/trans}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
+    {{/if}}
+    {{#if fetchError}}
+      <div class="error">
+      <span class="message"><span class="message-inner">{{#trans trans}}Failed fetching data{{/trans}}</span></span>
+      </div>
     {{/if}}
     {{#if id}}
       {{#ifIs status eq="Pending"}}
-        <div id="accept-button" class="contents-top-button">承認する</div>
+        <div id="accept-button" class="contents-top-button button">{{#trans trans}}Approve{{/trans}}</div>
         {{>cards_feedbacks_templates_comment}}
       {{else}}
         {{#ifIs status eq="Approved"}}
-        <div class="accepted contents-top-button">
-          <div id="accepted">
+        <div class="ok contents-top-button button button-with-undo">
+          <span class="button-icon icon-checkmark-circle"></span>
+          <span id="accepted" class="button-label">
             {{#if accepted}}
               {{#trans trans}}Published!{{/trans}}
             {{else}}
               {{#trans trans}}Published{{/trans}}
             {{/if}}
-            <span class="accepted-view-button-container"><span class="accepted-view-button icon-undo"></span></span>
-          </div>
+          <span class="button-undo"><span class="button-undo-inner icon-undo"></span></span>
+          </span>
         </div>
         {{>cards_feedbacks_templates_comment}}
       </div>
       <div id="reply-container">
         <div class="reply-button-container">
-          <div id="reply-button" class="contents-top-button">返信する</div>
+          <div id="reply-button" class="button">{{#trans trans}}Reply{{/trans}}</div>
         </div>
       </div>
       {{/ifIs}}
     {{/ifIs}}
-  {{else}}
-    {{#if error}}
-    <div class="comment-container">
-      <div class="error-message">
-        コメントの情報を取得できませんでした。
-      </div>
-    </div>
-    {{/if}}
   {{/if}}
   </div>
 </section>
@@ -51,8 +49,7 @@
   {{/if}}
   {{#if entryError}}
   <div class="error">
-    <div class="message">{{#trans trans}}Failed fetching data{{/trans}}</div>
-    <div class="refetch">{{#trans trans}}re-fetch data{{/trans}}</div>
+    <span class="message"><span class="message-inner">{{#trans trans}}Failed fetching data{{/trans}}</span></span>
   </div>
   {{/if}}
   {{#if entry.fetched}}

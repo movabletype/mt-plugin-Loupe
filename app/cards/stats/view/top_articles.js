@@ -109,8 +109,8 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
       CardCompositeView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
       this.unit = options.unit || 'day';
-      this.model = cache.get('toparticle_' + this.unit + '_model_' + this.blogId) || cache.set('toparticle_' + this.unit + '_model_' + this.blogId, new Model());
-      this.collection = cache.get('toparticle_itemview_' + this.unit + '_collection_' + this.blogId) || cache.set('toparticle_itemview_' + this.unit + '_collection_' + this.blogId, new ItemViewCollection());
+      this.model = cache.get(this.blogId, 'toparticle_' + this.unit + '_model') || cache.set(this.blogId, 'toparticle_' + this.unit + '_model', new Model());
+      this.collection = cache.get(this.blogId, 'toparticle_itemview_' + this.unit + '_collection') || cache.set(this.blogId, 'toparticle_itemview_' + this.unit + '_collection', new ItemViewCollection());
 
       this.setTranslation();
 

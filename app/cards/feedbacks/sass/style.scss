@@ -1,121 +1,33 @@
 @import "compass/css3/border-radius";
+@import "compass/css3/images";
 @import "compass/utilities/general/clearfix";
 @import "../../../sass/_helpers.scss";
 
 #card-feedbacks {
-  min-height: 320px;
-  position: relative;
-  @include loading-white;
-  @include pie-clearfix;
-  .loading {
-    background-color: rgba(255, 255, 255, 0.2);
-    z-index: 1000;
-  }
-  ul {
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    text-align: left;
+  .content {
+    min-height: 266px;
   }
   li {
-    margin: 0;
-    padding: 0;
-    border-bottom: 1px solid white;
-    position: relative;
-    @include pie-clearfix;
-    a {
-      display: block;
-      cursor: pointer;
-      height: 100%;
-      width: 100%;
-      padding: 10px;
-      border-bottom: 1px solid #e6e6e6;
-      @include pie-clearfix;
-    }
-    .item-asset-container {
-      display: block;
-      overflow: hidden;
-      float: left;
-      width: 50px;
-      height: 50px;
-      margin-right: 10px;
-    }
     .item-asset {
       font-size: 50px;
       color: #999;
       display: block;
       width: 100%;
       height: 100%;
-    }
-    .item-title {
-      display: block;
-      color: #444;
-      overflow: hidden;
-      margin: 0 60px;
-    }
-    .item-arrow {
-      display: block;
-      position: absolute;
-      right: 10px;
-      color: #e6e6e6;
-      top: 30px;
+      margin-right: 10px;
     }
   }
 }
 
 #feedbacks-comment-view,
 #feedbacks-comment-entry {
-  background-color: #f0f0f0;
-  border: 1px solid #dddddd;
-  position: relative;
-  @include border-radius-with-pie(8px);
-  @include loading-white;
-  .loading {
-    background-color: #f0f0f0;
-    background-color: rgba(240, 240, 240, 0.8);
-    @include border-radius-with-pie(8px);
-  }
-  .acception-failed {
-    background-color: rgba(255, 255, 255, 0.8);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-    padding-top: 30%;
-    .message {
-      font-size: 1.2em;
-      padding-left: 10px;
-    }
-  }
-  .acception-failed {
-    background-color: rgba(30, 33, 66, 0.95);
-    font-weight: normal;
-    padding-top: 20%;
-    .close-me {
-      color: #fff;
-      text-align: center;
-      background-color: #547ed7;
-      cursor: pointer;
-      border: transparent 0;
-      padding: 10px;
-      margin: 20px;
-      &:hover {
-        background-color: #FFC452;
-      }
-      &.tapped {
-        background-color: #FFC452;
-      }
-    }
-  }
   .content {
     padding: 10px 20px 30px;
     min-height: 300px;
     position: relative;
+  }
+  .date {
+    padding: 5px 0 10px;
   }
   .title {
     text-align: left;
@@ -132,41 +44,25 @@
     font-weight: bold;
     margin-left: 10px;
   }
-  .contents-top-button {
-    color: #fff;
-    text-align: center;
-    width: 100%;
-    background-color: #e74e21;
-    @include border-radius-with-pie(8px);
-    border: transparent 0;
-    padding: 10px;
-    position: relative;
-    &:hover {
-      background-color: #FFC452;
-    }
-    &.tapped {
-      background-color: #FFC452;
-    }
-  }
-  .accepted-view-button-container {
+}
+
+#feedbacks-comment-view {
+  .acception-failed {
+    background-color: rgba(240, 240, 240, 0.95);
     position: absolute;
-    border-left: 1px solid #558130;
-    display: block;
     top: 0;
+    bottom: 0;
     right: 0;
-    height: 100%;
+    left: 0;
+    z-index: 13;
   }
-  .accepted-view-button {
-    display: block;
-    font-size: 22px;
-    border-left: 1px solid #aed399;
-    width: 100%;
-    height: 100%;
-    padding: 10px 15px;
-    cursor: pointer;
+  .content {
+    padding: 10px 0 30px;
+    min-height: 300px;
+    position: relative;
   }
-  #accept-button {
-    cursor: pointer;
+  .comment-container {
+    padding: 10px 20px 20px;
   }
   #reply-container {
     position: relative;
@@ -175,45 +71,15 @@
   #do-reply-button {
     background-color: #66a434;
     cursor: pointer;
+    margin: 10px 0;
   }
   #reply-complete {
-    background-color: #999;
+    background-color: #666;
+    @include background-image(linear-gradient(#666666, #666666 92%, #666666 92%, #666666));
     margin: 10px 0;
   }
   #reply-disabled-button {
-    background-color: #999;
-    color: #666;
-  }
-  .contents-top-button.accepted {
-    background-color: #66a434;
-  }
-  #accept-button-disabled {
-    color: #fff;
-    text-align: center;
-    width: 100%;
-    background-color: #ddd;
-    border: transparent 0;
-    padding: 10px;
-  }
-  .error-message {
-    text-align: center;
-    margin-top: 115px;
-  }
-}
-
-.card-view.card-view-feedbacks {
-  background-color: transparent;
-  border: 0 none transparent;
-}
-
-#feedbacks-comment-view {
-  .content {
-    padding: 10px 0 30px;
-    min-height: 300px;
-    position: relative;
-  }
-  .comment-container {
-    padding: 10px 20px 20px;
+    margin: 10px 0;
   }
   .reply-button-container {
     padding: 0 20px;

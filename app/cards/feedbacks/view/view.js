@@ -29,12 +29,13 @@ function (CardItemView, cache, mtapi, device, commands, Trans, moment, momentLan
     initialize: function (options) {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.type = options.params[0];
-      this.blogId = options.params[1];
-      this.commentId = options.params[2];
+      var routes = options.routes;
+      this.type = routes[0];
+      this.blogId = routes[1];
+      this.commentId = routes[2];
 
-      this.collection = cache.get('feedbacks_comments_' + this.blogId) || cache.set('feedbacks_comments_' + this.blogId, new CommentsCollection(this.blogId));
-      this.entryCollection = cache.get('entries_' + this.blogId) || cache.set('entries_' + this.blogId, new EntryCollection(this.blogId));
+      this.collection = cache.get(this.blogId, 'feedbacks_comments') || cache.set(this.blogId, 'feedbacks_comments', new CommentsCollection(this.blogId));
+      this.entryCollection = cache.get(this.blogId, 'entries') || cache.set(this.blogId, 'entries', new EntryCollection(this.blogId));
       this.model = this.collection.get(this.commentId);
 
       this.entryLoading = true;
@@ -56,7 +57,9 @@ function (CardItemView, cache, mtapi, device, commands, Trans, moment, momentLan
               this.render();
             }, this),
             error: _.bind(function () {
-              this.error = true;
+              this.fetchError = true;
+              this.entryError = true;
+              this.entryLoading = false;
               this.loading = false;
               this.render();
             }, this)
@@ -119,7 +122,8 @@ function (CardItemView, cache, mtapi, device, commands, Trans, moment, momentLan
 
       this.ui.replyContainer.hammer(device.options.hammer()).on('tap', '#reply-button', _.bind(function () {
         this.ui.replyContainer.html(replyTemplate({
-          replied: false
+          replied: false,
+          trans: this.trans
         }));
       }, this));
 
@@ -134,14 +138,16 @@ function (CardItemView, cache, mtapi, device, commands, Trans, moment, momentLan
             blog: data.blog,
             parent: this.commentId,
             date: moment().format(),
-            body: body
+            body: body,
+            trans: this.trans
           }
           this.ui.replyContainer.prepend('<div class="loading"></div>');
           mtapi.api.createReplyComment(this.blogId, data.entry.id, this.commentId, reply, _.bind(function (resp) {
             if (!resp.error) {
               this.ui.replyContainer.html(replyTemplate({
                 replied: true,
-                body: body
+                body: body,
+                trans: this.trans
               }));
               var newComment = new Model({
                 blogId: this.blogId

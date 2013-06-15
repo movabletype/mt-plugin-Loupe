@@ -1,15 +1,16 @@
-define(['js/mtapi', 'json2'], function (mtapi, JSON) {
+define(['js/cache', 'js/mtapi', 'json2'], function (cache, mtapi, JSON) {
   return function (blogId) {
     var dfd = $.Deferred();
 
     var storedData = sessionStorage.getItem('statsProvider') ? JSON.parse(sessionStorage.getItem('statsProvider')) : {};
+    var storedData = cache.get(blogId, 'statsProvider') || null;
 
-    if (storedData[blogId]) {
+    if (storedData) {
       if (DEBUG) {
         console.log('stats provider has been already stored');
       }
       dfd.resolve({
-        id: storedData[blogId]
+        id: storedData
       });
     } else {
       mtapi.api.statsProvider(blogId, {
@@ -22,15 +23,13 @@ define(['js/mtapi', 'json2'], function (mtapi, JSON) {
           if (DEBUG) {
             console.log('stats provider is ' + resp.id);
           }
-          storedData[blogId] = resp;
-          sessionStorage.setItem('statsProvider', JSON.stringify(storedData));
+          cache.set(blogId, 'statsProvider', resp);
           dfd.resolve(resp);
         } else {
           dfd.reject(resp);
         }
       });
     }
-
     return dfd;
   };
 });

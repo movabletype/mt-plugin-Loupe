@@ -6,11 +6,11 @@ function (Marionette, commands, device, Trans) {
   var cardItemViewProto = {
     initialize: function (options) {
       var params = options.params;
-      this.blogId = params.blogId;
-      this.blog = params.blog;
-      this.user = params.user;
-      this.userId = params.userId;
-      this.settings = options.settings;
+      this.blogId = options.blogId;
+      this.blog = options.blog;
+      this.user = options.user;
+      this.userId = options.userId;
+      this.card = options.card;
       this.loading = true;
       this.trans = null;
       this.hammerOpts = device.options.hammer();
@@ -18,9 +18,9 @@ function (Marionette, commands, device, Trans) {
     setTranslation: function (callback) {
       // render after finished set up translation
       commands.execute('l10n', _.bind(function (l10n) {
-        var name = 'card_' + this.settings.id
+        var name = 'card_' + this.card.id
         this.l10n = l10n;
-        l10n.load('cards/' + this.settings.id + '/l10n', name).done(_.bind(function () {
+        l10n.load('cards/' + this.card.id + '/l10n', name).done(_.bind(function () {
           this.trans = new Trans(l10n, name);
           if (callback) {
             callback();
@@ -41,6 +41,7 @@ function (Marionette, commands, device, Trans) {
       }
     },
     fetch: function (options) {
+      options = options || {};
       var params = {
         success: _.bind(function () {
           this.loading = false;
@@ -73,7 +74,7 @@ function (Marionette, commands, device, Trans) {
         }
         data.lang = lang;
       }
-      data.name = this.settings.id;
+      data.name = this.card.id;
       data.fetchError = this.fetchError;
       data.loading = this.loading;
       data.loadingReadmore = this.loadingReadmore;

@@ -3,15 +3,19 @@ define(function () {
 
   var cache = {}
   return {
-    get: function (name) {
-      return cache[name];
+    get: function (id, key) {
+      return cache[id] ? cache[id][key] : null;
     },
-    set: function (name, value) {
-      cache[name] = value;
-      return cache[name];
+    set: function (id, key, value) {
+      cache[id] = cache[id] || {}
+      cache[id][key] = value;
+      return cache[id][key];
     },
-    clear: function () {
-      cache = {};
+    clear: function (id) {
+      delete cache[id];
+    },
+    clearAll: function () {
+      cache = {}
     }
   };
 });

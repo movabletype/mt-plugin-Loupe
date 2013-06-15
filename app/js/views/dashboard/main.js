@@ -1,20 +1,55 @@
-define(['backbone.marionette', 'js/commands', 'hbs!js/views/dashboard/templates/main'],
+define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'hbs!js/views/dashboard/templates/main'],
 
-function (Marionette, commands, template) {
+function (Marionette, commands, Trans, getBlog, template) {
   "use strict";
 
   return Marionette.Layout.extend({
     serializeData: function () {
-      return this.params.blog || {};
+      var data = {};
+      data.error = this.error;
+      data.trans = this.trans;
+      return data;
     },
 
     template: function (data) {
       return template(data);
     },
 
+    prepareCards: function (options) {
+      if (options.blog) {
+        this.error = options.blog.error;
+      } else {
+        this.error = {
+          code: 404,
+          message: 'Please select any site from the above menu'
+        }
+      }
+      this.cards = this.error ? [] : options.cards;
+      commands.execute('l10n', _.bind(function (l10n) {
+        this.trans = new Trans(l10n);
+        this.render();
+      }, this));
+    },
+
     initialize: function (options) {
-      this.cards = options.cards;
-      this.params = options.params;
+      if (options.refetch) {
+        this.blog = getBlog(options.blogId);
+        this.blog.fail(_.bind(function (resp) {
+          options.blog = {
+            error: resp.error
+          }
+          $('#app-building').remove();
+          this.prepareCards(options);
+        }, this));
+
+        this.blog.done(_.bind(function (blog) {
+          options.blog = blog;
+          $('#app-building').remove();
+          this.prepareCards(options);
+        }, this));
+      } else {
+        this.prepareCards(options)
+      }
     },
 
     onRender: function () {
@@ -42,10 +77,9 @@ function (Marionette, commands, template) {
           }
           if (dashboard.view) {
             require([path + dashboard.view.replace(/\.js$/, '')], function (View) {
-              that[id].show(new View({
-                params: that.params,
-                settings: card
-              }));
+              that[id].show(new View(_.extend(that.options, {
+                card: card
+              })));
             });
           } else if (dashboard.template) {
             var match = dashboard.template.match(/^(.*)\.(.*)$/);
@@ -71,10 +105,9 @@ function (Marionette, commands, template) {
                 template: template
               });
 
-              that[id].show(new View({
-                params: that.params,
-                settings: card
-              }));
+              that[id].show(new View(_.extend(that.options, {
+                card: card
+              })));
             });
           }
         }

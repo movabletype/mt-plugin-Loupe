@@ -20,11 +20,12 @@ function (CardItemView, cache, commands, device, moment, momentLang, statsProvid
     initialize: function (options) {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.blogId = options.params[0];
-      this.entryId = options.params[1];
-      this.unit = options.params[2];
+      var routes = options.routes;
+      this.blogId = routes[0];
+      this.entryId = routes[1];
+      this.unit = routes[2];
 
-      this.collection = cache.get('toparticle_itemview_' + this.unit + '_collection_' + this.blogId) || cache.set('toparticle_itemview_' + this.unit + '_collection_' + this.blogId, new ItemViewCollection());
+      this.collection = cache.get(this.blogId, 'toparticle_itemview_' + this.unit + '_collection') || cache.set(this.blogId, 'toparticle_itemview_' + this.unit + '_collection', new ItemViewCollection());
       this.model = this.collection.get(this.entryId) || null;
       this.setTranslation(_.bind(function () {
         if (this.model) {
@@ -101,9 +102,7 @@ function (CardItemView, cache, commands, device, moment, momentLang, statsProvid
         year: "This year's"
       }
 
-
       data.label = map[this.unit] + ' access';
-      console.log(data);
       if (data.pageviews === undefined) {
         data.pageviews = this.pageviews;
       }

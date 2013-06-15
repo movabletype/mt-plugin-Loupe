@@ -11,7 +11,7 @@ define(['backbone', 'js/cache', 'js/mtapi', 'js/models/entry', 'js/collections/e
         var dfd = $.Deferred();
         dfd.done(options.success);
         dfd.fail(options.error);
-        var entryCollection = cache.get('entries_' + this.blogId) || cache.set('entries_' + this.blogId, new EntryCollection(this.blogId));
+        var entryCollection = cache.get(this.blogId, 'entries') || cache.set(this.blogId, 'entries', new EntryCollection(this.blogId));
         if (entryCollection.get(this.id)) {
           dfd.resolve(entryCollection.get(this.id).toJSON());
         } else {

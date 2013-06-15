@@ -1,4 +1,4 @@
-define(['backbone', 'js/mtapi', 'cards/acception/models/model'], function (Backbone, mtapi, Model) {
+define(['backbone', 'moment', 'js/mtapi', 'cards/acception/models/model'], function (Backbone, moment, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
     initialize: function (blogId) {
@@ -6,7 +6,7 @@ define(['backbone', 'js/mtapi', 'cards/acception/models/model'], function (Backb
       this.isSynced = false;
     },
     comparator: function (item) {
-      return -1 * item.get('id');
+      return -1 * moment(item.get('date')).valueOf();
     },
     parse: function (resp) {
       this.totalResults = resp.totalResults;

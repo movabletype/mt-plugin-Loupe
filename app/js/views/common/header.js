@@ -5,17 +5,14 @@ function (Marionette, device, commands, template) {
 
   return Marionette.ItemView.extend({
 
-    template: function (data) {
-      console.log(data);
-      return template(data);
-    },
+    template: template,
 
     ui: {
       blognameArrow: '#blogname-arrow'
     },
 
     initialize: function (options) {
-      this.blog = options.params.blog;
+      this.blog = options.blog;
     },
 
     handleSlide: function () {
@@ -65,6 +62,9 @@ function (Marionette, device, commands, template) {
       var data = {};
       if (this.blog) {
         data.blog = this.blog;
+        if (!this.blog.name) {
+          data.blog.name = 'Loupe'
+        }
       }
       return data;
     }

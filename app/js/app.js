@@ -12,7 +12,6 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
 
   app.addInitializer(function (options) {
     this.cards = options.cards;
-    app.dashboardCardsData = {};
     var $body = $(document.body);
     if (device.platform) {
       $body.addClass(device.platform);
@@ -32,13 +31,13 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
       if (card.routes && card.routes.length) {
         _.each(card.routes, function (route) {
           commands.setHandler('move:cardView:' + card.id + ':' + route.id, function (params) {
-            console.log('move:cardView:' + card.id + ':' + route.id)
+            if (DEBUG) {
+              console.log('move:cardView:' + card.id + ':' + route.id);
+            }
             var path = 'cards/' + card.id + '/';
             if (route.layout) {
               require([path + route.layout.replace(/\.js$/, '')], function (Layout) {
-                app.main.show(new Layout({
-                  params: params
-                }));
+                app.main.show(new Layout(params));
               });
             } else {
               params = _.extend(params, {
@@ -69,20 +68,15 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
   });
 
   commands.setHandler('dashboard:rerender', function (params) {
-    sessionStorage.removeItem('statsProvider');
-    app.dashboardCardsData = {};
-
-    app.main.show(new DashboardLayout({
-      cards: app.cards,
-      params: params
-    }));
+    $(document.body).append('<div id="app-building"></div>');
+    params.refetch = true;
+    params.cards = app.cards;
+    app.main.show(new DashboardLayout(params));
   });
 
   commands.setHandler('move:dashboard', function (params) {
-    app.main.show(new DashboardLayout({
-      cards: app.cards,
-      params: params
-    }));
+    params.cards = app.cards;
+    app.main.show(new DashboardLayout(params));
   });
 
   return app;

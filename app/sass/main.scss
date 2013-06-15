@@ -47,6 +47,7 @@ textarea, input {
   bottom: 0;
   right: 0;
   left: 0;
+  z-index: 11;
 }
 
 #app,
@@ -132,6 +133,10 @@ textarea, input {
     #header-main {
       padding: $header-padding-top 0 9px;
     }
+    .circle {
+      display: none;
+      position: absolute;
+    }
   }
   #blogname {
     text-align: center;
@@ -140,10 +145,6 @@ textarea, input {
     line-height: $header-inner-height;
     height: $header-inner-height;
     margin: 0;
-  }
-  .circle {
-    display: none;
-    position: absolute;
   }
   .icon-arrow-down {
     display: none;
@@ -156,6 +157,10 @@ textarea, input {
     &.rotate {
       @include transform(rotate(180deg));
     }
+  }
+  .no-priviledges-error {
+    text-align: center;
+    margin: 100px 0;
   }
 }
 
@@ -373,21 +378,6 @@ textarea, input {
   position: relative;
 }
 
-@media screen and (max-width: $content-max-width) {
-  #header #header-main,
-  #main {
-    width: 100%;
-    min-width: 320px;
-  }
-  #sidemenu-main {
-    width: 100%;
-    min-width: 300px;
-  }
-  .sidemenu-main-container .save-changes {
-    margin-right: 30px;
-  }
-}
-
 #share {
   position: absolute;
   left: 0;
@@ -412,7 +402,7 @@ textarea, input {
   }
   h1 {
     margin: 0;
-    padding: 120px 0 40px;
+    padding: 24% 0 6%;
     text-align: center;
     color: #fff;
     font-size: 20px;
@@ -433,5 +423,21 @@ textarea, input {
   }
   .icon-twitter {
     font-size: 100px;
+  }
+}
+
+@media screen and (max-width: $content-max-width) {
+  #header #header-main,
+  #main,
+  #share .share-inner {
+    width: 100%;
+    min-width: 320px;
+  }
+  #sidemenu-main {
+    width: 100%;
+    min-width: 300px;
+  }
+  .sidemenu-main-container .save-changes {
+    margin-right: 30px;
   }
 }

@@ -31,13 +31,13 @@
     <li class="user-info">
       {{#if user}}
       {{#with user}}
-      <a href="#">
+      <a href="#logout">
         {{#if this.userpicURL}}
           <div class="circle userpic" style="background-image: url({{userpicURL}}); -pie-background: url({{userpicURL}}) no-repeat center center / cover"></div>
         {{else}}
           <div class="userpic no-image icon-user"></div>
         {{/if}}
-        <div class="display-name">{{#trans ../trans}}settings{{/trans}}</div>
+        <div class="display-name">{{#trans ../trans}}settings (currently logout){{/trans}}</div>
       </a>
       {{/with}}
       {{/if}}

@@ -3,8 +3,6 @@ define(['backbone.marionette', 'cards/stats/models/top_articles_itemview', 'hbs!
 function (Marionette, Model, template) {
   "use strict";
   return Marionette.ItemView.extend({
-    template: function (data) {
-      return template(data);
-    }
+    template: template
   });
 });

@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
+define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
 
-function (Marionette, JSON, device, commands, Trans, Collection, getBlogsList, getBlog, template) {
+function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsList, getBlog, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -262,7 +262,7 @@ function (Marionette, JSON, device, commands, Trans, Collection, getBlogsList, g
 
         dfd.fail(_.bind(function () {
           console.warn('getBlogList failed at refetchBlogHistoryData, so removing histories');
-          this.removeRecentBlogHistory();
+          // this.removeRecentBlogHistory();
           finalize();
         }, this));
       } else {
@@ -274,8 +274,16 @@ function (Marionette, JSON, device, commands, Trans, Collection, getBlogsList, g
       var that = this;
       var hammerOpts = device.options.hammer();
 
-      this.$el.find('a').hammer(hammerOpts).on('tap', function () {
-        that.selectBlogHandler($(this).data('id'));
+      this.$el.find('a').hammer(hammerOpts).on('tap', function (e) {
+        var $this = $(this);
+        if ($this.attr('href') === '#logout') {
+          commands.execute('dashboard:toggle');
+        } else {
+          e.preventDefault();
+          e.stopPropagation();
+          that.selectBlogHandler($(this).data('id'));
+          return false;
+        }
       });
 
       this.$el.find('.blog-item-nav').hammer(hammerOpts).on('tap', function () {

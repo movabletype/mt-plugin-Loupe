@@ -1,9 +1,9 @@
-define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'js/trans', 'moment', 'moment.lang', 'cards/acception/models/collection', 'cards/acception/models/model', 'hbs!cards/acception/templates/view'],
+define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/trans', 'moment', 'moment.lang', 'cards/acception/models/collection', 'cards/acception/models/model', 'hbs!cards/acception/templates/view'],
 
-function (Marionette, app, device, commands, Trans, moment, momentLang, Collection, Model, template) {
+function (CardItemView, cache, device, commands, Trans, moment, momentLang, Collection, Model, template) {
   "use strict";
 
-  return Marionette.ItemView.extend({
+  return CardItemView.extend({
     template: template,
 
     ui: {
@@ -11,40 +11,35 @@ function (Marionette, app, device, commands, Trans, moment, momentLang, Collecti
     },
 
     initialize: function (options) {
-      this.blogId = options.params[0];
-      this.entryId = options.params[1];
-      this.collection = app.dashboardCardsData.acception = app.dashboardCardsData.acception || new Collection();
+      CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
+      var routes = options.routes;
+      this.blogId = routes[0];
+      this.entryId = routes[1];
+      this.collection = cache.get(this.blogId, 'acception') || cache.set(this.blogId, 'acception', new Collection(this.blogId));
       this.model = this.collection.get(this.entryId);
-      this.loading = true;
-      this.settings = options.settings;
 
-      this.trans = null;
-      commands.execute('l10n', _.bind(function (l10n) {
-        var transId = 'card_' + this.settings.id;
-        l10n.load('cards/' + this.settings.id + '/l10n', transId).done(_.bind(function () {
-          this.trans = new Trans(l10n, transId);
-          if (this.model) {
-            this.loading = false;
-            this.render();
-          } else {
-            this.render();
-            this.model = new Model();
-            this.model.fetch({
-              blogId: this.blogId,
-              entryId: this.entryId,
-              success: _.bind(function () {
-                this.collection.add(this.model);
-                this.loading = false;
-                this.render();
-              }, this),
-              error: _.bind(function () {
-                this.error = true;
-                this.loading = false;
-                this.render();
-              }, this)
-            });
-          }
-        }, this));
+      this.setTranslation(_.bind(function () {
+        if (this.model) {
+          this.loading = false;
+          this.render();
+        } else {
+          this.render();
+          this.model = new Model();
+          this.model.fetch({
+            blogId: this.blogId,
+            entryId: this.entryId,
+            success: _.bind(function () {
+              this.collection.add(this.model);
+              this.loading = false;
+              this.render();
+            }, this),
+            error: _.bind(function () {
+              this.fetchError = true;
+              this.loading = false;
+              this.render();
+            }, this)
+          });
+        }
       }, this));
 
       commands.setHandler('card:acception:share:show', _.bind(function () {
@@ -96,22 +91,11 @@ function (Marionette, app, device, commands, Trans, moment, momentLang, Collecti
     },
 
     serializeData: function () {
-      var data = {};
+      var data = this.serializeDataInitialize();
       if (this.model) {
-        data = this.model.toJSON();
-        if (data.author) {
-          var lang = data.author.language.split('-');
-          if (lang === 'us') {
-            lang = ''
-          }
-          data.lang = lang;
-        }
-        console.log(data);
+        data = _.extend(data, this.model.toJSON());
         commands.execute('header:render', data);
       }
-      data.trans = this.trans;
-      data.error = this.error ? true : false;
-      data.loading = this.loading ? true : false;
       data.accepted = this.accepted ? true : false;
       data.acceptionFailed = this.acceptionFailed ? true : false;
       return data;

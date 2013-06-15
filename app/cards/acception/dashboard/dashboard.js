@@ -11,7 +11,7 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
     initialize: function () {
       CardCompositeView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.collection = cache.get('acception_' + this.blogId) || cache.set('acception_' + this.blogId, new Collection(this.blogId));
+      this.collection = cache.get(this.blogId, 'acception') || cache.set(this.blogId, 'acception', new Collection(this.blogId));
 
       this.setTranslation(_.bind(function () {
         if (!this.collection.isSynced) {

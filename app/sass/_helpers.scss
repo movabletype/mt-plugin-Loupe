@@ -35,6 +35,8 @@ $content-max-width: 450px;
   .content-loading {
     background-image: url("../assets/images/indicator-white.gif");
     @include loading-base;
+    background-color: rgba(240, 240, 240, 0.8);
+    z-index: 13;
   }
 }
 

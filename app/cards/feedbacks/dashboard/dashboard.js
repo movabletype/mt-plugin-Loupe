@@ -24,7 +24,7 @@ function (cache, device, commands, Trans, CommentsCollection, template, comments
     initialize: function (options) {
       CardCompositeView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.collection = cache.get('feedbacks_comments_' + this.blogId) || cache.set('feedbacks_comments_' + this.blogId, new CommentsCollection(this.blogId));
+      this.collection = cache.get(this.blogId, 'feedbacks_comments') || cache.set(this.blogId, 'feedbacks_comments', new CommentsCollection(this.blogId));
 
       this.setTranslation(_.bind(function () {
         if (!this.collection.isSynced) {

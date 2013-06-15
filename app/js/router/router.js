@@ -5,6 +5,8 @@ function (Marionette, commands) {
 
   var appRoutes = {
     '': 'moveDashboard',
+    'dashboard/:blog_id': 'moveDashboard',
+    'logout': 'logout',
     '_login': 'authorizationCallback'
   };
 

@@ -18,15 +18,19 @@ define([
 
       if (!this.loading) {
         data = _.extend({}, data, this.model.toJSON());
-        var len = data.pageviews.items.length;
-        if (len > 1) {
-          var yesterday = parseInt(data.pageviews.items[len - 2].pageviews, 10);
-          var today = parseInt(data.pageviews.items[len - 1].pageviews, 10);
-          this.diff = today - yesterday;
-          if (this.diff <= 0) {
-            data.diffIcon = 'icon-arrow-down-right';
-          } else {
-            data.diffIcon = 'icon-arrow-up-right';
+        if (data.pageviews && data.pageviews.items) {
+          var len = data.pageviews.items.length;
+          if (len > 1) {
+            var yesterday = parseInt(data.pageviews.items[len - 2].pageviews, 10);
+            var today = parseInt(data.pageviews.items[len - 1].pageviews, 10);
+            this.diff = today - yesterday;
+            if (this.diff < 0) {
+              data.diffIcon = 'icon-arrow-down-right';
+            } else if (this.diff > 0) {
+              data.diffIcon = 'icon-arrow-up-right';
+            } else {
+              data.diffIcon = 'icon-arrow-right-2';
+            }
           }
         }
         data.today = (new Date()).valueOf();
@@ -55,7 +59,7 @@ define([
     initialize: function () {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
-      this.model = cache.get('stats_' + this.blogId) || cache.set('stats_' + this.blogId, new Model(this.blogId));
+      this.model = cache.get(this.blogId, 'stats_latest_page_views') || cache.set(this.blogId, 'stats_latest_page_views', new Model(this.blogId));
 
       this.setTranslation();
 
