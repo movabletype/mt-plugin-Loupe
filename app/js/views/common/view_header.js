@@ -44,7 +44,7 @@ function (Marionette, template, device, commands, Trans) {
     },
 
     serializeData: function () {
-      var data = this.card;
+      var data = _.clone(this.card);
       data.trans = this.trans;
       return data;
     }
