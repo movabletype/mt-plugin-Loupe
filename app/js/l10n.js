@@ -18,12 +18,12 @@ define(function () {
       require([path], _.bind(function (lexicon) {
         this[namespace] = lexicon;
         dfd.resolve(this);
-      }, this), function (err) {
+      }, this), _.bind(function (err) {
         console.info('require failed: ' + path);
         console.info(err);
         this[namespace] = {};
         dfd.resolve(this);
-      });
+      }, this));
     } else {
       dfd.resolve(this);
     }

@@ -1,13 +1,11 @@
-define(['backbone.marionette', 'hbs!js/views/common/template/view_header', 'js/device', 'js/commands', 'js/trans'],
+define(['js/views/card/itemview', 'hbs!js/views/common/template/view_header', 'js/device', 'js/commands', 'js/trans'],
 
-function (Marionette, template, device, commands, Trans) {
+function (CardItemView, template, device, commands, Trans) {
   "use strict";
 
-  return Marionette.ItemView.extend({
+  return CardItemView.extend({
 
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     ui: {
       backDashboardButton: '#back-dashboard',
@@ -15,18 +13,8 @@ function (Marionette, template, device, commands, Trans) {
     },
 
     initialize: function (options) {
-      this.options = options;
-      this.card = options.card;
-
-      this.trans = null;
-      commands.execute('l10n', _.bind(function (l10n) {
-        var transId = 'card_' + this.card.id;
-        l10n.load('cards/' + this.card.id + '/l10n', transId).done(_.bind(function () {
-          this.trans = new Trans(l10n, transId);
-          this.render();
-        }, this));
-      }, this));
-
+      CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
+      this.setTranslation();
       commands.setHandler('header:render', _.bind(function (data) {
         this.object = data;
         this.render();
@@ -44,7 +32,8 @@ function (Marionette, template, device, commands, Trans) {
     },
 
     serializeData: function () {
-      var data = _.clone(this.card);
+      var data = this.serializeDataInitialize();
+      data = _.extend(data, _.clone(this.card));
       data.trans = this.trans;
       return data;
     }

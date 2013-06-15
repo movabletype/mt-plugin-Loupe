@@ -1,12 +1,10 @@
-define(['backbone.marionette', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/common/view_header', 'js/views/common/share'],
+define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/common/view_header', 'js/views/common/share'],
 
-function (Marionette, commands, template, CommonHeaderView, shareView) {
+function (Marionette, CardItemView, commands, template, CommonHeaderView, shareView) {
   "use strict";
 
   return Marionette.Layout.extend({
     initialize: function (options) {
-      console.log('card layout')
-      console.log(options)
       this.options = options;
       this.card = options.card;
       this.viewHeader = options.viewHeader || this.card.viewHeader;
@@ -92,8 +90,12 @@ function (Marionette, commands, template, CommonHeaderView, shareView) {
           } else {
             template = _.template(template, data);
           }
-          var View = Marionette.ItemView.extend({
-            template: template
+          var View = CardItemView.extend({
+            template: template,
+            initialize: function () {
+              CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
+              this.setTranslation();
+            }
           });
           that.main.show(new View(that.options));
         });
