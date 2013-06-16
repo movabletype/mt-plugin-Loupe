@@ -14,13 +14,15 @@ define(function () {
   L10N.prototype.load = function (path, namespace) {
     var dfd = $.Deferred();
     if (this.userLang && !this[namespace]) {
-      var path = 'json!' + path + '/' + this.userLang + '.json';
+      path = 'json!' + path + '/' + this.userLang + '.json';
       require([path], _.bind(function (lexicon) {
         this[namespace] = lexicon;
         dfd.resolve(this);
       }, this), _.bind(function (err) {
-        console.info('require failed: ' + path);
-        console.info(err);
+        if (DEBUG) {
+          console.log('require failed: ' + path);
+          console.log(err);
+        }
         this[namespace] = {};
         dfd.resolve(this);
       }, this));
@@ -49,7 +51,7 @@ define(function () {
     } else {
       this.loadCommon().done(callback);
     }
-  }
+  };
 
   return L10N;
 });

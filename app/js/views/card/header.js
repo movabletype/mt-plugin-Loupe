@@ -1,6 +1,6 @@
-define(['js/views/card/itemview', 'hbs!js/views/card/templates/header', 'js/device', 'js/commands', 'js/trans'],
+define(['js/views/card/itemview', 'hbs!js/views/card/templates/header', 'js/device', 'js/commands'],
 
-function (CardItemView, template, device, commands, Trans) {
+function (CardItemView, template, device, commands) {
   "use strict";
 
   return CardItemView.extend({
@@ -12,7 +12,7 @@ function (CardItemView, template, device, commands, Trans) {
       shareButton: '#share-button'
     },
 
-    initialize: function (options) {
+    initialize: function () {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
       this.setTranslation();
       commands.setHandler('header:render', _.bind(function (data) {

@@ -1,6 +1,6 @@
 define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/card/header', 'js/views/share/share'],
 
-function (Marionette, CardItemView, commands, template, CommonHeaderView, shareView) {
+function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareView) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -19,17 +19,17 @@ function (Marionette, CardItemView, commands, template, CommonHeaderView, shareV
 
     regions: {
       header: '#header',
-      main: '#main',
+      main: '#main'
     },
 
     setShareHandler: function () {
       commands.setHandler('share:show', _.bind(function (options) {
         this.$el.append('<section id="share">');
         this.addRegion('share', '#share');
-        this.share.show(new shareView(options));
+        this.share.show(new ShareView(options));
       }, this));
 
-      commands.setHandler('share:close', _.bind(function (options) {
+      commands.setHandler('share:close', _.bind(function () {
         if (this.share) {
           this.share.close();
         }

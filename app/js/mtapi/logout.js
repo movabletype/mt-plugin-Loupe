@@ -4,7 +4,7 @@ define(['js/mtapi'], function (mtapi) {
 
     mtapi.api.revokeAuthentication(function (resp) {
       if (DEBUG) {
-        console.log(resp)
+        console.log(resp);
       }
       if (resp.status && resp.status === 'success') {
         if (DEBUG) {

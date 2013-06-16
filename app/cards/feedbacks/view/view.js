@@ -130,7 +130,6 @@ function (CardItemView, cache, mtapi, device, commands, Trans, moment, momentLan
       this.ui.replyContainer.hammer(device.options.hammer()).on('tap', '#do-reply-button', _.bind(function () {
         var body = $('#reply-textarea').val();
         var data = this.model.toJSON();
-        console.log(data.entry.id)
         if (body.length) {
           var reply = {
             author: this.user,

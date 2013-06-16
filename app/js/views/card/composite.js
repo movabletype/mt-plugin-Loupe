@@ -51,10 +51,10 @@ function (Marionette, commands, CardItemView) {
         }, this)
       };
 
-      params = _.extend(params, options)
+      params = _.extend(params, options);
       this.collection.fetch(params);
     }
-  })
+  });
 
   return Marionette.CompositeView.extend(cardCompositeViewProto, {
     cardCompositeViewProto: cardCompositeViewProto

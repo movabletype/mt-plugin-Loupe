@@ -1,11 +1,11 @@
 define('template/helpers/trans', ['handlebars'], function (Handlebars) {
-  function trans(trans, options) {
+  function trans(func, options) {
     var str = options.fn(this);
 
-    if (trans) {
+    if (func) {
       var args = [].slice.call(arguments, 0, arguments.length - 2);
       args.unshift(str);
-      str = trans.trans.apply(trans, args);
+      str = func.trans.apply(func, args);
     } else {
       str = '';
     }

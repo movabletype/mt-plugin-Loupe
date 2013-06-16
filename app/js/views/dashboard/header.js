@@ -20,7 +20,7 @@ function (Marionette, device, commands, template) {
       if ($blognameArrow.hasClass('rotate')) {
         $(document.body).toggleClass('hide');
         commands.execute('dashboard:slideup');
-        commands.execute('menu:header:toggle')
+        commands.execute('menu:header:toggle');
         $blognameArrow.toggleClass('rotate');
       } else {
         $(document.body).toggleClass('hide');
@@ -63,7 +63,7 @@ function (Marionette, device, commands, template) {
       if (this.blog) {
         data.blog = this.blog;
         if (!this.blog.name) {
-          data.blog.name = 'Loupe'
+          data.blog.name = 'Loupe';
         }
       }
       return data;

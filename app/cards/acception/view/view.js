@@ -74,7 +74,6 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
             this.collection.remove(this.model);
             this.collection.totalResults = this.collection.totalResults - 1;
             this.model.set(this.model.parse(resp));
-            console.log(this.model.toJSON());
             this.render();
           }, this),
           error: _.bind(function () {

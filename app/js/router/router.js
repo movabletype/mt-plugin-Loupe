@@ -12,7 +12,6 @@ function (Marionette, commands) {
   return Marionette.AppRouter.extend({
     appRoutes: appRoutes,
     initialize: function (options, cards) {
-      console.log(cards)
       _.forEach(cards, function (card) {
         if (card.id) {
           var controller = options.controller;

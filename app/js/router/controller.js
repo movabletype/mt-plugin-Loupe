@@ -142,7 +142,7 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, getBlogsList,
           _.each(card.routes, function (route) {
             var routeMethodName = 'moveCardPage_' + card.id + route.id;
             this[routeMethodName] = methodFactory('move:cardView:' + card.id + ':' + route.id, card);
-          }, this)
+          }, this);
         }
       }, this);
     },

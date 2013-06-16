@@ -5,7 +5,6 @@ function (Marionette, commands, device, Trans) {
 
   var cardItemViewProto = {
     initialize: function (options) {
-      var params = options.params;
       this.blogId = options.blogId;
       this.blog = options.blog;
       this.user = options.user;
@@ -18,7 +17,7 @@ function (Marionette, commands, device, Trans) {
     setTranslation: function (callback) {
       // render after finished set up translation
       commands.execute('l10n', _.bind(function (l10n) {
-        var name = 'card_' + this.card.id
+        var name = 'card_' + this.card.id;
         this.l10n = l10n;
         l10n.load('cards/' + this.card.id + '/l10n', name).done(_.bind(function () {
           this.trans = new Trans(l10n, name);
@@ -66,11 +65,11 @@ function (Marionette, commands, device, Trans) {
       this.model.fetch(params);
     },
     serializeDataInitialize: function () {
-      var data = {}
+      var data = {};
       if (this.l10n) {
         var lang = this.l10n.userLang.split('-');
         if (lang === 'us') {
-          lang = ''
+          lang = '';
         }
         data.lang = lang;
       }

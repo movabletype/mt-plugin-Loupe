@@ -1,9 +1,7 @@
-define(['js/cache', 'js/mtapi', 'json2'], function (cache, mtapi, JSON) {
+define(['js/cache', 'js/mtapi'], function (cache, mtapi) {
   return function (blogId) {
-    var dfd = $.Deferred();
-
-    var storedData = sessionStorage.getItem('statsProvider') ? JSON.parse(sessionStorage.getItem('statsProvider')) : {};
-    var storedData = cache.get(blogId, 'statsProvider') || null;
+    var dfd = $.Deferred(),
+      storedData = cache.get(blogId, 'statsProvider') || null;
 
     if (storedData) {
       if (DEBUG) {

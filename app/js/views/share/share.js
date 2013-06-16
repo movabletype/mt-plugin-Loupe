@@ -23,7 +23,7 @@ function (Marionette, template, device, commands, Trans) {
     onRender: function () {
       this.$el.find('#share-close').hammer(device.options.hammer()).on('tap', _.bind(function () {
         commands.execute('share:close');
-      }, this))
+      }, this));
     },
 
     serializeData: function () {

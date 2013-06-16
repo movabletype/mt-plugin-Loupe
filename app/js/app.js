@@ -49,8 +49,8 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
               params.viewView = route.view;
               app.main.show(new CardLayout(params));
             }
-          })
-        })
+          });
+        });
       }
     });
   });

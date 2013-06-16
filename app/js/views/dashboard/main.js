@@ -22,7 +22,7 @@ function (Marionette, commands, Trans, getBlog, template) {
         this.error = {
           code: 404,
           message: 'Please select any site from the above menu'
-        }
+        };
       }
       this.cards = this.error ? [] : options.cards;
       commands.execute('l10n', _.bind(function (l10n) {
@@ -37,7 +37,7 @@ function (Marionette, commands, Trans, getBlog, template) {
         this.blog.fail(_.bind(function (resp) {
           options.blog = {
             error: resp.error
-          }
+          };
           $('#app-building').remove();
           this.prepareCards(options);
         }, this));
@@ -48,16 +48,14 @@ function (Marionette, commands, Trans, getBlog, template) {
           this.prepareCards(options);
         }, this));
       } else {
-        this.prepareCards(options)
+        this.prepareCards(options);
       }
     },
 
     onRender: function () {
-      if (DEBUG) {
-        var cardsDfds = [];
-      }
+      var cardsDfds = [];
       _.forEach(this.cards, function (card) {
-        var dashboard = card.dashboard
+        var dashboard = card.dashboard;
         if (dashboard) {
           var id = card.id;
           $('<section id="card-' + id + '" class="card"></section>').appendTo(this.el);

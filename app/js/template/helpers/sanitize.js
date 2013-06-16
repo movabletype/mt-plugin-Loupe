@@ -1,5 +1,24 @@
 define('template/helpers/sanitize', ['handlebars'], function (Handlebars) {
-  function sanitize(str, options) {
+  function sanitize(str) {
+    function saniTize(el) {
+      var s;
+      var $el = $(el);
+      if ($el.children().length) {
+        var arr = [];
+        $el.contents().each(function (i, el) {
+          arr.push(saniTize(el));
+        });
+        s = $('<div></div>').html(trimAttributes($el.html(arr.join('')))).html();
+      } else {
+        if (/script|iframe/i.test(el.tagName)) {
+          s = '';
+        } else {
+          s = $('<div></div>').html(trimAttributes($el)).html();
+        }
+      }
+      return s;
+    }
+
     str = saniTize($('<div></div>').html(str));
 
     function trimAttributes($el) {
@@ -27,24 +46,6 @@ define('template/helpers/sanitize', ['handlebars'], function (Handlebars) {
       return $newEl;
     }
 
-    function saniTize(el) {
-      var s;
-      var $el = $(el);
-      if ($el.children().length) {
-        var arr = [];
-        $el.contents().each(function (i, el) {
-          arr.push(saniTize(el));
-        });
-        s = $('<div></div>').html(trimAttributes($el.html(arr.join('')))).html();
-      } else {
-        if (/script|iframe/i.test(el.tagName)) {
-          s = ''
-        } else {
-          s = $('<div></div>').html(trimAttributes($el)).html();
-        }
-      }
-      return s;
-    }
     return new Handlebars.SafeString(str);
   }
   Handlebars.registerHelper('sanitize', sanitize);
