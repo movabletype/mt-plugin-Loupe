@@ -1,4 +1,4 @@
-define(['js/views/card/itemview', 'hbs!js/views/common/template/view_header', 'js/device', 'js/commands', 'js/trans'],
+define(['js/views/card/itemview', 'hbs!js/views/card/templates/header', 'js/device', 'js/commands', 'js/trans'],
 
 function (CardItemView, template, device, commands, Trans) {
   "use strict";

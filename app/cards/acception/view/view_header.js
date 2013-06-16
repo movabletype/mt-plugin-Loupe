@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'js/views/common/view_header'],
+define(['backbone.marionette', 'js/views/card/header'],
 
 function (Marionette, viewHeader) {
   "use strict";

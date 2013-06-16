@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'js/commands', 'hbs!js/views/dashboard/templates/layout', 'js/views/common/header', 'js/views/dashboard/main'],
+define(['backbone.marionette', 'js/commands', 'hbs!js/views/dashboard/templates/layout', 'js/views/dashboard/header', 'js/views/dashboard/main'],
 
 function (Marionette, commands, template, HeaderView, MainLayout) {
   "use strict";
@@ -15,8 +15,6 @@ function (Marionette, commands, template, HeaderView, MainLayout) {
     },
 
     initialize: function (options) {
-      console.log('dashboard layout')
-      console.log(options);
       this.options = options;
     },
 

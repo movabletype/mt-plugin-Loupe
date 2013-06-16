@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'hbs!js/views/common/template/share', 'js/device', 'js/commands', 'js/trans'],
+define(['backbone.marionette', 'hbs!js/views/common/templates/share', 'js/device', 'js/commands', 'js/trans'],
 
 function (Marionette, template, device, commands, Trans) {
   "use strict";

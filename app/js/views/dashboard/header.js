@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/common/template/header'],
+define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboard/templates/header'],
 
 function (Marionette, device, commands, template) {
   "use strict";

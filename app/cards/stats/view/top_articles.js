@@ -36,7 +36,7 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
         if (data.items && data.items.length) {
           var count = this.numberOfArticles;
           _.each(data.items, function (item) {
-            var eid = item.entry && item.entry.id || null;
+            var eid = item.entry ? item.entry.id : null;
             if (count && eid) {
               count = count - 1;
               var num = this.numberOfArticles - count;

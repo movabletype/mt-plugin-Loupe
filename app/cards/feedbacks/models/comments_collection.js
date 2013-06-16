@@ -1,8 +1,11 @@
-define(['backbone', 'js/mtapi', 'cards/feedbacks/models/comments_model'], function (Backbone, mtapi, Model) {
+define(['backbone', 'moment', 'js/mtapi', 'cards/feedbacks/models/comments_model'], function (Backbone, moment, mtapi, Model) {
   return Backbone.Collection.extend({
     model: Model,
     initialize: function (blogId) {
       this.blogId = blogId;
+    },
+    comparator: function (item) {
+      return -1 * moment(item.get('date')).valueOf();
     },
     parse: function (resp) {
       this.totalResults = resp.totalResults;

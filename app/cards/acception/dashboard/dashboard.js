@@ -50,9 +50,6 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
       if (!this.loading) {
         data.count = parseInt(this.collection.totalResults, 10);
         data.items = this.collection.toJSON();
-        if (data.count > this.collection.length) {
-          data.showMoreButton = true
-        }
       }
       return data;
     }
