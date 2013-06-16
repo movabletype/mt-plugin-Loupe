@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/card/header', 'js/views/common/share'],
+define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/card/header', 'js/views/share/share'],
 
 function (Marionette, CardItemView, commands, template, CommonHeaderView, shareView) {
   "use strict";

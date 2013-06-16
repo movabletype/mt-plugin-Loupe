@@ -119,18 +119,6 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, getBlogsList,
     },
 
     initialize: function (options) {
-      commands.setHandler('controller:getUser', _.bind(function (callback) {
-        this.user.done(_.bind(function (user) {
-          callback(user);
-        }, this));
-      }, this));
-
-      commands.setHandler('controller:getBlogList', _.bind(function (callback) {
-        this.blogs.done(_.bind(function (blogs) {
-          callback(blogs);
-        }, this));
-      }, this));
-
       commands.setHandler('l10n', _.bind(function (callback) {
         this.l10n.waitLoadCommon(callback);
       }, this));

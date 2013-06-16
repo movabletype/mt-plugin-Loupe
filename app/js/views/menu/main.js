@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/views/sidemenu/blogs-list', 'hbs!js/views/sidemenu/templates/main'],
+define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/views/menu/blogs-list', 'hbs!js/views/menu/templates/main'],
 
 function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListView, template) {
   "use strict";
@@ -17,7 +17,7 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
     },
 
     ui: {
-      sidemenuHeaderArrow: '#sidemenu-header-arrow'
+      menuHeaderArrow: '#menu-header-arrow'
     },
 
     template: function (data) {
@@ -25,7 +25,7 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
     },
 
     regions: {
-      blogs: '#sidemenu-blogs-list'
+      blogs: '#menu-blogs-list'
     },
 
     initialize: function (params) {
@@ -34,16 +34,16 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
     },
 
     hanldeToggle: function () {
-      this.ui.sidemenuHeaderArrow.toggleClass('rotate');
+      this.ui.menuHeaderArrow.toggleClass('rotate');
     },
 
     onRender: function () {
       var hammerOpts = device.options.hammer();
       this.blogs.show(new BlogsListView(this.params));
 
-      commands.setHandler('sidemenu:header:toggle', _.bind(this.hanldeToggle, this));
+      commands.setHandler('menu:header:toggle', _.bind(this.hanldeToggle, this));
 
-      this.$el.find('#sidemenu-header').hammer(hammerOpts).on('tap', _.bind(function () {
+      this.$el.find('#menu-header').hammer(hammerOpts).on('tap', _.bind(function () {
         commands.execute('dashboard:toggle');
       }));
 
@@ -51,8 +51,8 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
         this.blogs.currentView.saveChagesHandler();
       }, this));
 
-      this.$el.find('.close-sidemenu').hammer(hammerOpts).on('tap', function () {
-        commands.execute('sidemenu:toggle');
+      this.$el.find('.close-menu').hammer(hammerOpts).on('tap', function () {
+        commands.execute('menu:toggle');
       });
     }
   });

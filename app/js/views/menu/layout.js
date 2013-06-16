@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'js/views/sidemenu/main', 'hbs!js/views/sidemenu/templates/layout'],
+define(['backbone.marionette', 'app', 'js/device', 'js/commands', 'js/views/menu/main', 'hbs!js/views/menu/templates/layout'],
 
 function (Marionette, app, device, commands, MainView, template) {
   "use strict";
@@ -12,18 +12,18 @@ function (Marionette, app, device, commands, MainView, template) {
       this.$el.addClass('container');
     },
     regions: {
-      main: '#sidemenu-main'
+      main: '#menu-main'
     },
     onRender: function () {
       this.main.show(new MainView(this.params));
 
-      commands.setHandler('sidemenu:show', _.bind(function () {
+      commands.setHandler('menu:show', _.bind(function () {
         this.$el.css({
           display: 'block'
         });
       }, this));
 
-      commands.setHandler('sidemenu:toggle', function () {
+      commands.setHandler('menu:toggle', function () {
         var $el = app.main.$el;
         var $body = $(document.body);
         var $appMain = $el.find('#main');
@@ -45,9 +45,9 @@ function (Marionette, app, device, commands, MainView, template) {
           'left': '0px'
         };
 
-        if (!app.sidemenuShow) {
+        if (!app.menuShow) {
 
-          app.sidemenu.$el.css({
+          app.menu.$el.css({
             'display': 'block'
           });
 
@@ -79,7 +79,7 @@ function (Marionette, app, device, commands, MainView, template) {
                 'left': secondOffset + 'px'
               });
               setTimeout(function () {
-                app.sidemenuShow = true;
+                app.menuShow = true;
               }, 300);
             }, 10);
           }, 10);
@@ -97,10 +97,10 @@ function (Marionette, app, device, commands, MainView, template) {
 
           var finalize = function () {
             $body.removeClass('move');
-            app.sidemenu.$el.css({
+            app.menu.$el.css({
               'display': 'none'
             });
-            app.sidemenuShow = false;
+            app.menuShow = false;
           };
 
           if (device.isIE8) {

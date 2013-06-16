@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/sidemenu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
+define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
 
-function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, SidemenuLayout, DashboardLayout, CardLayout) {
+function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -57,14 +57,14 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, S
 
   app.addRegions({
     main: '#app',
-    sidemenu: '#sidemenu'
+    menu: '#menu'
   });
 
   vent.on('app:building:after', function (params) {
     if (DEBUG) {
       console.log('[vent:app:building:after]');
     }
-    app.sidemenu.show(new SidemenuLayout(params));
+    app.menu.show(new MenuLayout(params));
   });
 
   commands.setHandler('dashboard:rerender', function (params) {

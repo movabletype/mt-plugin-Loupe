@@ -51,7 +51,7 @@ textarea, input {
 }
 
 #app,
-#sidemenu {
+#menu {
   width: 100%;
   height: 100%;
   .container {
@@ -61,7 +61,7 @@ textarea, input {
   }
 }
 
-#sidemenu .container {
+#menu .container {
   display: none;
 }
 
@@ -93,7 +93,7 @@ textarea, input {
   nav {
     position: relative;
   }
-  #show-sidemenu,
+  #show-menu,
   #back-dashboard {
     color: #444;
     position: absolute;
@@ -214,7 +214,7 @@ textarea, input {
   z-index: 10;
 }
 
-.sidemenu-main-container {
+.menu-main-container {
   z-index: 9;
   top: 0;
   bottom: $header-height;
@@ -316,18 +316,18 @@ textarea, input {
       color: #ff6633;
     }
   }
-  #sidemenu-header {
+  #menu-header {
     background-color: #625362;
     position: relative;
     padding: 10px 20px;
     cursor: pointer;
   }
-  #sidemenu-header-logo {
+  #menu-header-logo {
     text-align: center;
     margin: 0;
     line-height: 44px;
   }
-  #sidemenu-header-arrow {
+  #menu-header-arrow {
     font-size: 36px;
     position: absolute;
     top: 10px;
@@ -368,7 +368,7 @@ textarea, input {
   }
 }
 
-#sidemenu-main {
+#menu-main {
   margin: 0 auto;
   width: $content-max-width;
   display: block;
@@ -433,11 +433,11 @@ textarea, input {
     width: 100%;
     min-width: 320px;
   }
-  #sidemenu-main {
+  #menu-main {
     width: 100%;
     min-width: 300px;
   }
-  .sidemenu-main-container .save-changes {
+  .menu-main-container .save-changes {
     margin-right: 30px;
   }
 }

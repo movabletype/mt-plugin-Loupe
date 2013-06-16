@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/sidemenu/templates/blogs-list'],
+define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/menu/templates/blogs-list'],
 
 function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsList, getBlog, template) {
   "use strict";
@@ -12,7 +12,7 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
           prev;
 
         if (DEBUG) {
-          console.log('[sidemenu:blogs:serializeData]');
+          console.log('[menu:blogs:serializeData]');
           console.log(blogs);
           console.log(totalResults);
         }
@@ -116,12 +116,12 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
       }, this));
 
       if (DEBUG) {
-        console.log('[sidemenu:blogs:initialize]');
+        console.log('[menu:blogs:initialize]');
       }
 
-      commands.setHandler('sidemenu:getRecentBlogHistory', this.getRecentBlogHistory);
-      commands.setHandler('sidemenu:setRecentBlogHistory', this.setRecentBlogHistory);
-      commands.setHandler('sidemenu:resetRecentBlogHistory', this.resetRecentBlogHistory);
+      commands.setHandler('menu:getRecentBlogHistory', this.getRecentBlogHistory);
+      commands.setHandler('menu:setRecentBlogHistory', this.setRecentBlogHistory);
+      commands.setHandler('menu:resetRecentBlogHistory', this.resetRecentBlogHistory);
     },
 
     fetch: function () {
@@ -130,7 +130,7 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
           userId: this.user.id,
           success: _.bind(function () {
             if (DEBUG) {
-              console.log('[sidemenu:main:fetch:success]');
+              console.log('[menu:main:fetch:success]');
             }
             this.selectCurrentBlog();
             this.render();
@@ -196,7 +196,7 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
 
     setRecentBlogHistory: function (blog) {
       if (DEBUG) {
-        console.log('[sidemenu:blog-list:setRecentBlogHistory]');
+        console.log('[menu:blog-list:setRecentBlogHistory]');
       }
       var recentBlogHistory = this.getRecentBlogHistory();
       blog = _.extend(blog, {
@@ -291,7 +291,7 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
         that.render();
       });
 
-      $('#sidemenu-blogs-list').scrollTop(0);
+      $('#menu-blogs-list').scrollTop(0);
     }
   });
 });

@@ -20,13 +20,13 @@ function (Marionette, device, commands, template) {
       if ($blognameArrow.hasClass('rotate')) {
         $(document.body).toggleClass('hide');
         commands.execute('dashboard:slideup');
-        commands.execute('sidemenu:header:toggle')
+        commands.execute('menu:header:toggle')
         $blognameArrow.toggleClass('rotate');
       } else {
         $(document.body).toggleClass('hide');
-        commands.execute('sidemenu:show');
+        commands.execute('menu:show');
         commands.execute('dashboard:slidedown', this.$el.height());
-        commands.execute('sidemenu:header:toggle');
+        commands.execute('menu:header:toggle');
         $blognameArrow.toggleClass('rotate');
       }
     },
