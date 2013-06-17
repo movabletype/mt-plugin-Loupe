@@ -1,5 +1,5 @@
 {
   "mtApiPath": "../../data-api/v1/js",
   "mtApiCGIPath": "../../../../../cgi-bin/mt/movabletype-internal/mt-data-api.cgi",
-  "libPath": "./"
+  "libPath": "."
 }

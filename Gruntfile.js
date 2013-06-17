@@ -427,7 +427,7 @@ module.exports = function (grunt) {
             dev: true,
             mtApiCGIPath: settings.mtApiCGIPath,
             mtApiPath: settings.mtApiPath,
-            libPath: './',
+            libPath: '.',
             manifestFile: null
           }
         },

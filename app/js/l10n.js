@@ -2,7 +2,7 @@ define(function () {
   "use strict";
 
   var L10N = function (userLang) {
-    this.libRoot = $('#main-script').data('base');
+    this.libPath = $('#main-script').data('base') || '.';
     this.userLang = userLang || null;
     this.lexicon = {};
     this.loadCommon();
@@ -36,7 +36,7 @@ define(function () {
   L10N.prototype.loadCommon = function () {
     var dfd = this.loadCommonDfd = $.Deferred();
     if (this.userLang && !this.common) {
-      require([this.libRoot + 'l10n/' + this.userLang + '.js'], _.bind(function (lexicon) {
+      require([this.libPath + '/l10n/' + this.userLang + '.js'], _.bind(function (lexicon) {
         this.common = lexicon;
         dfd.resolve(this);
       }, this));
