@@ -21,7 +21,7 @@ function (mtapi, device, commands, CardItemView, template) {
     onRender: function () {
       var upload = _.bind(function (files) {
         this.uploadedImages = [];
-        this.error = [];
+        this.uploadError = [];
         this.errorImages = [];
         this.uploading = true;
         this.$el.find('#upload-file-uploading').css({
@@ -44,14 +44,14 @@ function (mtapi, device, commands, CardItemView, template) {
               this.uploadedImages.push(resp);
             } else {
               this.errorImages.push(file);
-              this.error.push(resp.error);
+              this.uploadError.push(resp.error);
               dfd.reject();
             }
             this.render();
           }, this));
         }, this));
         $.when.apply(this, dfds).done(_.bind(function () {
-          this.error = false;
+          this.uploadError = [];
           this.uploadCompleted = true;
         }, this)).always(_.bind(function () {
           this.uploading = false;
@@ -60,6 +60,7 @@ function (mtapi, device, commands, CardItemView, template) {
       }, this);
 
       this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.ui.retryButton.remove();
         upload(this.errorImages);
       }, this));
 
@@ -76,6 +77,7 @@ function (mtapi, device, commands, CardItemView, template) {
       var data = this.serializeDataInitialize();
       data.title = 'Media Upload';
       data.loading = false;
+      data.uploadError = this.uploadError || [];
       data.uploading = this.uploading ? true : false;
       data.uploadCompleted = this.uploadCompleted ? true : false;
       data.uploadedImages = this.uploadedImages;

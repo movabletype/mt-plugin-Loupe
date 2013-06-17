@@ -8,21 +8,25 @@
 </div>
 {{/each}}
 </div>
-{{#if error}}
+{{#if uploadError.length}}
 <div class="error">
+  <div class="message"><div class="message-inner">
   <p>{{#trans trans}}Failed uploading{{/trans}}</p>
-  {{#each error}}
+  {{#each uploadError}}
   <p>{{this.message}}</p>
   {{/each}}
+  </div></div>
 </div>
+{{/if}}
+<form id="upload-file-form" method="post" name="upload-file">
+  <input type="file" id="upload-file-input"/>
+{{#if uploadError.length}}
 <div id="retry" class="upload-file button">
   <label for="upload-file-input">
   {{#trans trans}}retry{{/trans}}
   </label>
 </div>
 {{/if}}
-<form id="upload-file-form" method="post" name="upload-file">
-  <input type="file" id="upload-file-input"/>
 <div id="upload-file" class="button">
   <label for="upload-file-input">
     {{#if uploadCompleted}}
