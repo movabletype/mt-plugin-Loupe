@@ -427,6 +427,7 @@ module.exports = function (grunt) {
             dev: true,
             mtApiCGIPath: settings.mtApiCGIPath,
             mtApiPath: settings.mtApiPath,
+            libPath: './',
             manifestFile: null
           }
         },
@@ -441,6 +442,7 @@ module.exports = function (grunt) {
             dev: false,
             mtApiCGIPath: settings.mtApiCGIPath,
             mtApiPath: settings.mtApiPath,
+            libPath: settings.libPath,
             manifestFile: null
           }
         },
@@ -601,7 +603,6 @@ module.exports = function (grunt) {
       'cssmin:build',
       'copy:build',
       'jade:build',
-      'htmlmin',
       'copy:beforeConcat',
       'concat:dev'
   ]);
