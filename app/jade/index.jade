@@ -11,10 +11,10 @@ html(manifest=manifestFile)
     link(rel='stylesheet', href='#{libPath}/css/style.css')
 
     if dev
-      script(src='#{libPath}/#{mtApiPath}/app.js')
-      script(src='#{libPath}/#{mtApiPath}/endpoints.js')
+      script(src='#{mtApiPath}/app.js')
+      script(src='#{mtApiPath}/endpoints.js')
     else
-      script(src='#{libPath}/#{mtApiPath}/all.js')
+      script(src='#{mtApiPath}/all.js')
 
     //if lte IE 8
       script(src='#{libPath}/ie/console-polyfill/index.js')
