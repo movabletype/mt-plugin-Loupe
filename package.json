@@ -1,6 +1,6 @@
 {
-  "name": "userModeApp",
-  "version": "0.0.0",
+  "name": "Loupe",
+  "version": "0.1.0",
   "description": "user mode application",
   "main": "Gruntfile.js",
   "repository": "",

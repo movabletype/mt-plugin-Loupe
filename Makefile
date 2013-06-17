@@ -10,14 +10,12 @@ update:
 clean:
 	-rm -rf build
 	-rm -rf node_modules
-	-rm -rf app/components
 	-rm -rf app/css
 	-rm -rf app/template
 	-find . -name '.DS_Store' | xargs rm
 
 dev:
 	-npm install
-	-bower install
 	-grunt dev
 
 build:
