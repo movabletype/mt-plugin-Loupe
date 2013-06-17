@@ -246,17 +246,6 @@ module.exports = function (grunt) {
         dir: 'app/js/template/helpers/'
       }
     },
-    //    imagemin: {
-    //      build: {
-    //        files: [{
-    //            expand: true,
-    //            cwd: 'app/images',
-    //            src: '*.{png,jpg,jpeg}',
-    //            dest: 'build/images'
-    //          }
-    //        ]
-    //      }
-    //    },
     watch: {
       index: {
         files: 'app/jade/*.jade',
