@@ -246,17 +246,17 @@ module.exports = function (grunt) {
         dir: 'app/js/template/helpers/'
       }
     },
-    imagemin: {
-      build: {
-        files: [{
-            expand: true,
-            cwd: 'app/images',
-            src: '*.{png,jpg,jpeg}',
-            dest: 'build/images'
-          }
-        ]
-      }
-    },
+    //    imagemin: {
+    //      build: {
+    //        files: [{
+    //            expand: true,
+    //            cwd: 'app/images',
+    //            src: '*.{png,jpg,jpeg}',
+    //            dest: 'build/images'
+    //          }
+    //        ]
+    //      }
+    //    },
     watch: {
       index: {
         files: 'app/jade/*.jade',
@@ -593,8 +593,8 @@ module.exports = function (grunt) {
       'symlink:prep',
       'copy:prep',
       'clean:build',
-      'imagemin',
-      'clean:beforeCompass',
+    // 'imagemin',
+    'clean:beforeCompass',
       'compass',
       'requirejs:build',
       'clean:afterBuild',
