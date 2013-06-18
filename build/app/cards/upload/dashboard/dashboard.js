@@ -15,10 +15,15 @@ function (mtapi, device, commands, CardItemView, template) {
 
     initialize: function () {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
+      this.checkSupport();
       this.setTranslation();
     },
 
     onRender: function () {
+      if (this.FileInputNotSupported) {
+        this.$el.parent().hide();
+      }
+
       var upload = _.bind(function (files) {
         this.uploadedImages = [];
         this.uploadError = [];
@@ -73,9 +78,18 @@ function (mtapi, device, commands, CardItemView, template) {
       });
     },
 
+    checkSupport: function () {
+      if ((device.isIOS && device.version && device.version < 6.0) || (device.isWindowsPhone)) {
+        this.FileInputNotSupported = true;
+      } else {
+        this.FileInputNotSupported = false;
+      }
+    },
+
     serializeData: function () {
       var data = this.serializeDataInitialize();
       data.title = 'Media Upload';
+      data.FileInputNotSupported = this.FileInputNotSupported;
       data.loading = false;
       data.uploadError = this.uploadError || [];
       data.uploading = this.uploading ? true : false;
