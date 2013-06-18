@@ -23,6 +23,12 @@ function (Marionette, app, device, commands, MainView, template) {
         });
       }, this));
 
+      commands.setHandler('menu:hide', _.bind(function () {
+        this.$el.css({
+          display: 'none'
+        });
+      }, this));
+
       commands.setHandler('menu:toggle', function () {
         var $el = app.main.$el;
         var $body = $(document.body);

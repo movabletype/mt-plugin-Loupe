@@ -1,8 +1,17 @@
 .android2,
 .android3,
 .android4 {
-  &.move #app {
-    display: none;
+  &.hide {
+    overflow: visible;
+    #header {
+      position: static;
+    }
+    #app .main-container {
+      display: none;
+      .main-container {
+        margin-top: 0;
+      }
+    }
   }
   #app,
   #menu {

@@ -19,6 +19,7 @@ function (Marionette, device, commands, template) {
       var $blognameArrow = this.ui.blognameArrow;
       if ($blognameArrow.hasClass('rotate')) {
         $(document.body).toggleClass('hide');
+        commands.execute('menu:hide');
         commands.execute('dashboard:slideup');
         commands.execute('menu:header:toggle');
         $blognameArrow.toggleClass('rotate');
