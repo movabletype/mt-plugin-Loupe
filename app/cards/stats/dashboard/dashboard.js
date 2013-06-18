@@ -1,12 +1,13 @@
 define([
     'js/cache',
     'js/commands',
+    'js/device',
     'js/mtapi/stats_provider',
     'js/views/card/itemview',
     'cards/stats/models/latest_page_views',
     'hbs!cards/stats/templates/dashboard',
     'mtchart'
-], function (cache, commands, statsProvider, CardItemView, Model, template, ChartAPI) {
+], function (cache, commands, device, statsProvider, CardItemView, Model, template, ChartAPI) {
   'use strict';
 
   return CardItemView.extend({
@@ -117,13 +118,13 @@ define([
               yLength: 1,
               lineWidth: 8,
               chartColors: ['#55a038'],
-              drawPointer: true,
+              drawPointer: device.isAndroid ? false : true,
               pointerColors: ['#ea4b29']
             }
           ],
           fallback: {
             test: 'canvas',
-            type: 'morris.line',
+            type: 'morris.bar',
             data: graphData,
             chartColors: ['#fed563'],
             gridLineColor: '#ffffff',
