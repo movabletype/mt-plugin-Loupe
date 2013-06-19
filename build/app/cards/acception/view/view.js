@@ -65,9 +65,15 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
             console.log('update sccuess');
           }
           this.loading = false;
-          this.accepted = true;
-          this.collection.remove(this.model);
-          this.collection.totalResults = this.collection.totalResults - 1;
+          if (status === 'Publish') {
+            this.accepted = true;
+            this.collection.remove(this.model);
+            this.collection.totalResults = this.collection.totalResults - 1;
+          } else {
+            this.accepted = true;
+            this.collection.add(this.model);
+            this.collection.totalResults = this.collection.totalResults + 1;
+          }
           this.model.set(this.model.parse(resp));
           this.render();
         }, this),

@@ -49,6 +49,9 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
       data.title = data.name;
       if (!this.loading) {
         data.count = parseInt(this.collection.totalResults, 10);
+        if (data.count > this.collection.length) {
+          data.showMoreButton = true
+        }
         data.items = this.collection.toJSON();
       }
       return data;
