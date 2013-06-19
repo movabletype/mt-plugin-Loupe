@@ -40,7 +40,7 @@
       "view": "dashboard/dashboard"
     },
     "routes": [{
-        "view": "view/view",
+        "view": "view/layout",
         "route": ":type/:blog_id/:id"
       }
     ]

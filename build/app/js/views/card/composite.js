@@ -3,7 +3,7 @@ define(['backbone.marionette', 'js/commands', 'js/views/card/itemview'],
 function (Marionette, commands, CardItemView) {
   "use strict";
 
-  var cardCompositeViewProto = _.extend(CardItemView.cardItemViewProto, {
+  var cardCompositeViewProto = _.extend({}, CardItemView.cardItemViewProto, {
     appendHtml: function (cv, iv) {
       if (!this.loading) {
         var $container = this.getItemViewContainer(cv);
@@ -27,6 +27,7 @@ function (Marionette, commands, CardItemView) {
       });
     },
     fetch: function (options) {
+      options = options || {};
       var params = {
         merge: true,
         remove: false,

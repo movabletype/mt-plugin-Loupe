@@ -32,29 +32,33 @@ function (Marionette, device, commands, template) {
       }
     },
 
-    onRender: function () {
+    adjustHeader: function () {
       var $blognameInner = this.$el.find('#blogname-inner');
       var $loupeCircle = this.$el.find('#blogname-circle');
       var $blognameArrow = this.ui.blognameArrow;
+      var offset = $blognameInner.offset();
+      var width = $blognameInner.width();
+      $loupeCircle.offset({
+        left: offset.left - $loupeCircle.outerWidth(true)
+      })
+        .css({
+        display: 'block'
+      });
+      $blognameArrow.offset({
+        left: offset.left + width
+      })
+        .css({
+        display: 'block'
+      });
+    },
 
+    onRender: function () {
       setTimeout(_.bind(function () {
-        var offset = $blognameInner.offset();
-        var width = $blognameInner.width();
-        $loupeCircle.offset({
-          left: offset.left - $loupeCircle.outerWidth(true)
-        })
-          .css({
-          display: 'block'
-        });
-        $blognameArrow.offset({
-          left: offset.left + width
-        })
-          .css({
-          display: 'block'
-        });
+        this.adjustHeader();
       }, this), 0);
 
       commands.setHandler('dashboard:toggle', _.bind(this.handleSlide, this));
+      $(window).on('orientationchange debouncedresize', _.bind(this.adjustHeader, this));
 
       this.$el.hammer(device.options.hammer()).on('tap', _.bind(this.handleSlide, this));
     },

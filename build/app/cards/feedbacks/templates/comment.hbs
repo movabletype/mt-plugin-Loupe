@@ -1,3 +1,34 @@
-<div class="date">{{formatDate date lang}}</div>
-<div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
-<div class="body">{{sanitize body}}</div>
+  <div class="comment-container">
+    {{>js_views_card_partials_loading}}
+    {{#if acceptionFailed}}
+      <div class="acception-failed error"><span class="message"><span class="message-inner">{{error.message}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
+    {{/if}}
+    {{#if fetchError}}
+      <div class="error">
+      <span class="message"><span class="message-inner">{{#trans trans}}Failed fetching data{{/trans}}</span></span>
+      </div>
+    {{/if}}
+    {{#if status}}
+      {{#ifIs status eq="Pending"}}
+        <div id="accept-button" class="contents-top-button button">{{#trans trans}}Approve{{/trans}}</div>
+        {{>cards_feedbacks_templates_content}}
+      {{else}}
+        {{#ifIs status eq="Approved"}}
+        <div class="ok contents-top-button button button-with-undo">
+          <span class="button-icon icon-checkmark-circle"></span>
+          <span id="accepted" class="button-label">
+            {{#if accepted}}
+              {{#trans trans}}Published!{{/trans}}
+            {{else}}
+              {{#trans trans}}Published{{/trans}}
+            {{/if}}
+          <span id="comment-undo" class="button-undo"><span class="button-undo-inner icon-undo"></span></span>
+          </span>
+        </div>
+        {{>cards_feedbacks_templates_content}}
+      </div>
+      {{/ifIs}}
+    {{/ifIs}}
+  {{/if}}
+  </div>
+</div>

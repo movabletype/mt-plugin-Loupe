@@ -14,14 +14,15 @@ define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
         });
         return dfd;
       } else if (method === 'update') {
-        // only update status to 'Publish'
-        var dfd = $.Deferred();
+        var dfd = $.Deferred(),
+          blogId = model.get('blog').id,
+          entryId = model.get('id'),
+          entry = model.toJSON();
+
         dfd.done(options.success);
         dfd.fail(options.error);
-        var blogId = model.get('blog').id;
-        var entryId = model.get('id');
-        var entry = model.toJSON();
-        entry.status = 'Publish';
+        entry.status = options.status || entry.status;
+
         mtapi.api.updateEntry(blogId, entryId, entry, function (resp) {
           if (!resp.error) {
             dfd.resolve(resp);

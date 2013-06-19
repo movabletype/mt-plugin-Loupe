@@ -13,9 +13,7 @@ function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareV
       this.viewData = options.viewData || this.card.viewData;
     },
 
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     regions: {
       header: '#header',

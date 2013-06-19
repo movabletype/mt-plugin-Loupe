@@ -7,7 +7,8 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
     template: template,
 
     ui: {
-      button: '#accept-button'
+      button: '#accept-button',
+      undo: '#accept-undo'
     },
 
     initialize: function (options) {
@@ -53,6 +54,35 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
       }, this))
     },
 
+    update: function (status) {
+      this.loading = true;
+      this.render();
+      var options = {
+        status: status,
+        success: _.bind(function (resp) {
+          if (DEBUG) {
+            console.log(resp);
+            console.log('update sccuess');
+          }
+          this.loading = false;
+          this.accepted = true;
+          this.collection.remove(this.model);
+          this.collection.totalResults = this.collection.totalResults - 1;
+          this.model.set(this.model.parse(resp));
+          this.render();
+        }, this),
+        error: _.bind(function () {
+          if (DEBUG) {
+            console.log('failed update');
+          }
+          this.loading = false;
+          this.acceptionFailed = true;
+          this.render();
+        }, this)
+      };
+      this.model.sync('update', this.model, options);
+    },
+
     onRender: function () {
       if (this.acceptionFailed) {
         this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
@@ -60,32 +90,12 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
         });
       }
 
-      this.ui.button.hammer(device.options.hammer()).on('tap', _.bind(function () {
-        this.loading = true;
-        this.render();
-        var options = {
-          success: _.bind(function (resp) {
-            if (DEBUG) {
-              console.log(resp);
-              console.log('acception sccuess');
-            }
-            this.loading = false;
-            this.accepted = true;
-            this.collection.remove(this.model);
-            this.collection.totalResults = this.collection.totalResults - 1;
-            this.model.set(this.model.parse(resp));
-            this.render();
-          }, this),
-          error: _.bind(function () {
-            if (DEBUG) {
-              console.log('failed acception');
-            }
-            this.loading = false;
-            this.acceptionFailed = true;
-            this.render();
-          }, this)
-        };
-        this.model.sync('update', this.model, options);
+      this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.update('Publish')
+      }, this));
+
+      this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.update('Review')
       }, this));
     },
 

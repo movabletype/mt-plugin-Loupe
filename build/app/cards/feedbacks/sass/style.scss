@@ -21,6 +21,9 @@
 
 #feedbacks-comment-view,
 #feedbacks-comment-entry {
+  .error .message {
+    height: 236px;
+  }
   .content {
     padding: 10px 20px 30px;
     min-height: 300px;
@@ -64,6 +67,10 @@
   .comment-container {
     padding: 10px 20px 20px;
   }
+}
+
+#reply {
+  position: relative;
   #reply-container {
     position: relative;
   }

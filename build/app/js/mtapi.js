@@ -2,8 +2,7 @@ define(['jquery'], function ($) {
   var mtApiCGIPath = $('#main-script').data('mtapi');
   var clientId = $('#main-script').data('client');
   if (!clientId) {
-    clientId = sessionStorage.getItem('clientId', clientId) || 'loupe' + (new Date()).valueOf();
-    sessionStorage.setItem('clientId', clientId);
+    clientId = 'loupe';
   }
   var api = new MT.DataAPI({
     baseUrl: mtApiCGIPath,

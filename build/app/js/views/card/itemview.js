@@ -5,6 +5,7 @@ function (Marionette, commands, device, Trans) {
 
   var cardItemViewProto = {
     initialize: function (options) {
+      options = options || {};
       this.blogId = options.blogId;
       this.blog = options.blog;
       this.user = options.user;

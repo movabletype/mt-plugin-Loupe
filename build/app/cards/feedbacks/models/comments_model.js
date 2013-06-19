@@ -24,7 +24,7 @@ define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
         var blogId = model.get('blog').id;
         var id = model.get('id');
         var comment = model.toJSON();
-        comment.status = 'Approved';
+        comment.status = options.status || comment.status;
         mtapi.api.updateComment(blogId, id, comment, function (resp) {
           if (!resp.error) {
             dfd.resolve(resp);
