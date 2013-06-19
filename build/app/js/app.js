@@ -27,6 +27,25 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
         $body.addClass(device.browser + device.browserVersionStr);
       }
     }
+    vent.on('app:building:after', function (params) {
+      if (DEBUG) {
+        console.log('[vent:app:building:after]');
+      }
+      app.menu.show(new MenuLayout(params));
+    });
+
+    commands.setHandler('dashboard:rerender', function (params) {
+      $(document.body).append('<div id="app-building"></div>');
+      params.refetch = true;
+      params.cards = app.cards;
+      app.main.show(new DashboardLayout(params));
+    });
+
+    commands.setHandler('move:dashboard', function (params) {
+      params.cards = app.cards;
+      app.main.show(new DashboardLayout(params));
+    });
+
     _.each(app.cards, function (card) {
       if (card.routes && card.routes.length) {
         _.each(card.routes, function (route) {
@@ -58,25 +77,6 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
   app.addRegions({
     main: '#app',
     menu: '#menu'
-  });
-
-  vent.on('app:building:after', function (params) {
-    if (DEBUG) {
-      console.log('[vent:app:building:after]');
-    }
-    app.menu.show(new MenuLayout(params));
-  });
-
-  commands.setHandler('dashboard:rerender', function (params) {
-    $(document.body).append('<div id="app-building"></div>');
-    params.refetch = true;
-    params.cards = app.cards;
-    app.main.show(new DashboardLayout(params));
-  });
-
-  commands.setHandler('move:dashboard', function (params) {
-    params.cards = app.cards;
-    app.main.show(new DashboardLayout(params));
   });
 
   return app;
