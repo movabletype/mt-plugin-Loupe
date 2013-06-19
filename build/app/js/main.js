@@ -63,4 +63,6 @@ require.config(
 );
 
 window.DEBUG = true;
+window.Mock = false;
+
 require(['js/boot'], function () {});

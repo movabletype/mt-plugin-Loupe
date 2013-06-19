@@ -1,0 +1,8 @@
+require.config(
+<!-- @include require.config.json -->
+);
+
+window.DEBUG = true;
+window.Mock = <!-- @echo mock -->;
+
+require(['js/boot'<!-- @if mock -->,'js/mtapi/mock'<!-- @endif -->], function () {});

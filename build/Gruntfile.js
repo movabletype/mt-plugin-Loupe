@@ -265,8 +265,14 @@ module.exports = function (grunt) {
     },
     preprocess: {
       prep: {
+        options: {
+          inline: true,
+          context: {
+            mock: grunt.option('mock') || false
+          }
+        },
         files: {
-          'app/js/main.js': 'app/js/main.preprocess.js'
+          'app/js/main.js': 'app/js/main.preprocess'
         }
       },
       appcache: {
@@ -539,7 +545,8 @@ module.exports = function (grunt) {
             compress: {
               sequences: false,
               global_defs: {
-                DEBUG: false
+                DEBUG: false,
+                Mock: false
               },
               unsafe: true
             },

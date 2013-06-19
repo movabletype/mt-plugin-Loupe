@@ -9,6 +9,13 @@ define(['jquery'], function ($) {
     baseUrl: mtApiCGIPath,
     clientId: clientId
   });
+  if (DEBUG) {
+    if (Mock) {
+      console.log('use mock');
+      var MockObject = require('js/mtapi/mock');
+      api = new MockObject();
+    }
+  }
   return {
     api: api,
     baseUrl: mtApiCGIPath,
