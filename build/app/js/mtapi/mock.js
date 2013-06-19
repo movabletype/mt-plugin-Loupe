@@ -576,5 +576,8 @@ define(function () {
     }, arguments)
   };
 
+  window.MT = window.MT || {};
+  MT.DataAPI = Mock;
+
   return Mock;
 });
