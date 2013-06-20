@@ -585,6 +585,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
+      'preprocess:prep',
       'symlink:prep',
       'copy:prep',
       'clean:build',
@@ -602,6 +603,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('dev', [
+      'preprocess:prep',
       'symlink:prep',
       'copy:prep',
       'jade:dev',
