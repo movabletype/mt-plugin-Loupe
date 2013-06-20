@@ -17,11 +17,11 @@ function (Marionette, cache, commands, device, Trans) {
       var permsList = cache.get('user', 'perms');
       this.perms = permsList.get(this.blogId) ? permsList.get(this.blogId).get('permissions') : null;
     },
-    userHasPermission: function (target) {
-      if (this.perms) {
-        var i, len = this.perms.length;
+    permissionCheck: function (target, perms) {
+      if (perms) {
+        var i, len = perms.length;
         for (i = 0; i < len; i++) {
-          if (this.perms[i] === target) {
+          if (perms[i] === target) {
             return true;
           }
         }
@@ -29,6 +29,15 @@ function (Marionette, cache, commands, device, Trans) {
       } else {
         return false;
       }
+    },
+    userHasPermission: function (target) {
+      return this.permissionCheck(target, this.perms);
+    },
+    userHasSystemPermission: function (target) {
+      return this.permissionCheck(target, this.user.permissions);
+    },
+    userIsSystemAdmin: function () {
+      return this.userHasSystemPermission('administer');
     },
     dashboardShowWithPermission: function (perm) {
       var dfd = $.Deferred(),

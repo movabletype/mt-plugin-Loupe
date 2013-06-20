@@ -15,7 +15,7 @@ function (mtapi, device, commands, CardItemView, template) {
 
     initialize: function () {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
-      this.perm = this.userHasPermission('upload');
+      this.perm = this.userIsSystemAdmin() || this.userHasPermission('upload');
       this.dashboardShowWithPermission(this.perm)
         .done(_.bind(function () {
         this.checkSupport();
