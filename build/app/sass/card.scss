@@ -16,7 +16,7 @@
   header {
     border-bottom: 2px solid darken($card-header-color, 10%);
     color: #fff;
-    padding: 0.488rem 0.667rem;
+    padding: 0.667rem 0.667rem 0.488rem;
     min-height: 2.469rem;
     @include border-top-radius(5px);
     @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
@@ -32,12 +32,14 @@
     .card-header-count {
       float: right;
       margin: 0;
-      background-color: #efb346;
-      border: 2px solid #977429;
-      min-width: 16px;
-      font-size: 12px;
-      line-height: 20px;
-      padding: 0 5px;
+      background-color: $count-background-color;
+      border: 2px solid darken($count-background-color, 20%);
+      min-width: 1rem;
+      font-size: 1rem;
+      font-family: helvetica, arial, sans-serif;
+      font-weight: bold;
+      line-height: 1;
+      padding: 0.217rem 0.488rem;
       @include border-radius-with-pie(100px);
     }
     @include pie-clearfix;
@@ -66,18 +68,24 @@
     position: relative;
     cursor: pointer;
     text-align: center;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1rem;
+    line-height: 1.5;
     color: #fff;
-    padding: 10px;
-    margin: 10px;
-    min-height: 44px;
-    @include border-radius(5px);
-    background-color: #5d9b44;
-    @include background-image(linear-gradient(#5d9b44, #5d9b44 92%, #478235 92%, #527630));
+    padding: 1rem;
+    margin: 1rem 1rem 1.5rem;
+    min-height: 2.469rem;
+    background-color: $btn-basic-color;
+    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
+    @include border-radius($radius);
+    @include transition-duration(0.1s);
+    @include transition-timing-function(ease-in);
     &:hover {
-      background-color: #FFC452;
-      @include background-image(linear-gradient(#ffc452, #ffc452 92%, #ffc452 92%, #ffc452));
+      
+    }
+    &:active, &:hover:active{
+      top: 7px;
+      background-color: darken($btn-basic-color, 2%);
+      @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
     }
     &.tapped {
       background-color: #FFC452;
@@ -102,10 +110,15 @@
     @include opacity(0.5);
   }
   .contents-top-button {
-    margin: 10px 0;
-    background-color: #e74e21;
-    @include background-image(linear-gradient(#e74e21, #e74e21 92%, #af371d 92%, #942a13));
-    @include border-radius-with-pie(8px);
+    margin: 1rem 1rem 1.5rem;
+    background-color: $btn-attention-color;
+    @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
+    @include border-radius-with-pie(radius);
+    &:active, &:hover:active{
+      top: 7px;
+      background-color: darken($btn-attention-color, 2%);
+      @include box-shadow(0px 1px 0px 0px darken($btn-attention-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
+    }
   }
   .ok {
     cursor: auto;
@@ -184,6 +197,9 @@
         padding: 10px;
         border-bottom: 1px solid #e6e6e6;
         @include pie-clearfix;
+        &:active{
+          @include background-image(linear-gradient(rgba($black, 0.15), rgba($black, 0.05) 5%));
+        }
       }
       .item-content {
         display: table;

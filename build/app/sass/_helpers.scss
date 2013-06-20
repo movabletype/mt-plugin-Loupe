@@ -26,6 +26,9 @@ $card-background-color: #F3F3F5;
 $card-header-color: #3B9486;
 $card-border-color: #C2C3C5;
 $card-shadow-color: #A6A7AC;
+$btn-basic-color: #64A237;
+$btn-attention-color: #E94E1C;
+$count-background-color: #EFB02E;
 
 @mixin hardware-accelerate-hack {
   -webkit-transform: translate3d(0, 0, 0);
