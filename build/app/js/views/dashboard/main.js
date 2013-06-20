@@ -11,9 +11,7 @@ function (Marionette, commands, Trans, getBlog, template) {
       return data;
     },
 
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     prepareCards: function (options) {
       if (options.blog) {
@@ -27,7 +25,6 @@ function (Marionette, commands, Trans, getBlog, template) {
       this.cards = this.error ? [] : options.cards;
       commands.execute('l10n', _.bind(function (l10n) {
         this.trans = new Trans(l10n);
-        this.render();
       }, this));
     },
 
