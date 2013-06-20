@@ -10,11 +10,10 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
 
     initialize: function () {
       CardCompositeView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
-      var $root = $('#card-' + this.card.id);
       this.perm = this.userHasPermission('edit_all_posts');
 
-      if (this.perm) {
-        $root.show();
+      this.dashboardShowWithPermission(this.perm)
+        .done(_.bind(function () {
         this.collection = cache.get(this.blogId, 'acception') || cache.set(this.blogId, 'acception', new Collection(this.blogId));
 
         this.setTranslation(_.bind(function () {
@@ -37,9 +36,7 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
           commands.execute('router:navigate', route);
           return false;
         });
-      } else {
-        $root.hide();
-      }
+      }, this));
     },
 
     onRender: function () {
@@ -62,7 +59,7 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
         if (!this.loading) {
           data.count = parseInt(this.collection.totalResults, 10);
           if (data.count > this.collection.length) {
-            data.showMoreButton = true
+            data.showMoreButton = true;
           }
           data.items = this.collection.toJSON();
         }

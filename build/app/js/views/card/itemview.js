@@ -27,8 +27,21 @@ function (Marionette, cache, commands, device, Trans) {
         }
         return false;
       } else {
-        return false
+        return false;
       }
+    },
+    dashboardShowWithPermission: function (perm) {
+      var dfd = $.Deferred(),
+        $root = $('#card-' + this.card.id);
+
+      if (perm) {
+        $root.show();
+        dfd.resolve();
+      } else {
+        $root.hide();
+        dfd.reject();
+      }
+      return dfd;
     },
     setTranslation: function (callback) {
       // render after finished set up translation
