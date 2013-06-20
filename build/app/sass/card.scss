@@ -1,20 +1,12 @@
-@import "compass/css3/border-radius";
-@import "compass/css3/box-shadow";
-@import "compass/css3/box-sizing";
-@import "compass/css3/images";
-@import "compass/css3/opacity";
-@import "compass/css3/transform";
-@import "compass/css3/transition";
-@import "compass/css3/user-interface";
-@import "compass/utilities/general/clearfix";
-
 @import "_helpers";
+
+/* Card: */
 
 .card {
   color: #444;
-  background-color: #f0f0f0;
-  border: 1px solid #c5bec2;
-  margin: 10px 0;
+  background-color: $card-background-color;
+  border: 2px solid $card-border-color;
+  margin: 1rem 0 1.5rem;
   position: relative;
   overflow: hidden;
   &:first-child {
@@ -22,17 +14,18 @@
   }
   padding: 0;
   header {
-    border-top: 1px solid #83c9c0;
-    border-bottom: 1px solid #308177;
-    background-color: #47a797;
+    border-bottom: 2px solid darken($card-header-color, 10%);
     color: #fff;
-    padding: 8px 10px;
-    min-height: 42px;
+    padding: 0.488rem 0.667rem;
+    min-height: 2.469rem;
     @include border-top-radius(5px);
+    @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
+    @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 5%) 100%));
     h1 {
       font-weight: normal;
-      font-size: 16px;
-      line-height: 20px;
+      font-size: 1rem;
+      text-shadow: 0 -1px 0 rgba($black, 0.6);
+      line-height: 1.5;
       float: left;
       margin: 0;
     }
@@ -209,7 +202,7 @@
       }
     }
   }
-  @include single-box-shadow(rgba(0, 0, 0, 0.2), 0, 0, 4px, 0);
+  @include box-shadow($card-shadow-color 0 0.667rem 0, rgba($white, 0.2) 0 1px 0 inset);
   @include loupe-circle;
-  @include border-radius(8px);
+  @include border-radius($radius);
 }

@@ -29,3 +29,5 @@ build/test/coverage
 
 # sass cache
 *.sass-cache
+
+/build/app/js/main.js
