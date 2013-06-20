@@ -69,7 +69,7 @@ function (Marionette, cache, commands, device, Trans) {
     },
     handleRefetch: function (options) {
       if (this.fetchError) {
-        this.$el.find('.refetch').hammer(this.hammerOpts).one('tap', _.bind(function () {
+        this.$el.hammer(this.hammerOpts).on('tap', '.refetch', _.bind(function () {
           this.loading = true;
           this.fetchError = false;
           this.render();

@@ -1,16 +1,14 @@
   <div class="comment-container">
     {{>js_views_card_partials_loading}}
+    {{>js_views_card_partials_fetchError}}
     {{#if acceptionFailed}}
       <div class="acception-failed error"><span class="message"><span class="message-inner">{{error.message}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
     {{/if}}
-    {{#if fetchError}}
-      <div class="error">
-      <span class="message"><span class="message-inner">{{#trans trans}}Failed fetching data{{/trans}}</span></span>
-      </div>
-    {{/if}}
     {{#if status}}
       {{#ifIs status eq="Pending"}}
+        {{#if commentApprovePerm}}
         <div id="accept-button" class="contents-top-button button">{{#trans trans}}Approve{{/trans}}</div>
+        {{/if}}
         {{>cards_feedbacks_templates_content}}
       {{else}}
         {{#ifIs status eq="Approved"}}
@@ -18,12 +16,14 @@
           <span class="button-icon icon-checkmark-circle"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}
-              {{#trans trans}}Published!{{/trans}}
+              {{#trans trans}}Approved!{{/trans}}
             {{else}}
-              {{#trans trans}}Published{{/trans}}
+              {{#trans trans}}Approved{{/trans}}
             {{/if}}
+          {{#if commentApprovePerm}}
           <span id="comment-undo" class="button-undo"><span class="button-undo-inner icon-undo"></span></span>
           </span>
+          {{/if}}
         </div>
         {{>cards_feedbacks_templates_content}}
       </div>

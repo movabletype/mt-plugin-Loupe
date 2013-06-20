@@ -2,13 +2,15 @@ define(['js/views/card/itemview_layout',
     'js/cache',
     'cards/feedbacks/models/comments_collection',
     'cards/feedbacks/models/comments_model',
+    'js/collections/entries',
+    'js/models/entry',
     'hbs!cards/feedbacks/templates/layout',
     'cards/feedbacks/view/comment',
     'cards/feedbacks/view/reply',
     'cards/feedbacks/view/entry'
 ],
 
-function (CardItemViewLayout, cache, Collection, Model, template, commentView, replyView, entryView) {
+function (CardItemViewLayout, cache, Collection, Model, EntryCollection, EntryModel, template, commentView, replyView, entryView) {
   'use strict';
 
   return CardItemViewLayout.extend({
@@ -35,7 +37,7 @@ function (CardItemViewLayout, cache, Collection, Model, template, commentView, r
 
       this.setTranslation(_.bind(function () {
         if (this.model) {
-          this.loading = false;
+          this.fetchEntry();
         } else {
           this.render();
           this.model = new Model({
@@ -51,8 +53,40 @@ function (CardItemViewLayout, cache, Collection, Model, template, commentView, r
       CardItemViewLayout.prototype.fetch.call(this, {
         successCallback: _.bind(function () {
           this.collection.add(this.model);
+          this.loading = true;
+          this.fetchEntry()
         }, this)
       })
+    },
+
+    fetchEntry: function () {
+      var data = this.model.toJSON();
+      var entryId = data.entry ? data.entry.id : null;
+      this.entryCollection = cache.get(this.blogId, 'entries') || cache.set(this.blogId, 'entries', new EntryCollection(this.blogId));
+      this.entryModel = this.entryCollection.get(entryId);
+      if (this.entryModel) {
+        this.build();
+      } else {
+        this.entryModel = new EntryModel({
+          blogId: this.blogId,
+          id: entryId
+        });
+        var options = {
+          success: _.bind(function () {
+            this.loading = false;
+            this.fetchError = false;
+            this.render();
+            this.entryCollection.add(this.entryModel);
+            this.build();
+          }, this),
+          error: _.bind(function () {
+            this.loading = false;
+            this.fetchError = true;
+            this.render();
+          }, this)
+        };
+        this.entryModel.fetch(options);
+      }
     },
 
     build: function () {
@@ -63,7 +97,7 @@ function (CardItemViewLayout, cache, Collection, Model, template, commentView, r
         type: this.type,
         blogId: this.blogId,
         commentId: this.commentId,
-        entryId: data.entry ? data.entry.id : null
+        entryModel: this.entryModel
       });
       this.comment.show(new commentView(options));
       this.reply.show(new replyView(options));
@@ -72,16 +106,12 @@ function (CardItemViewLayout, cache, Collection, Model, template, commentView, r
 
     onRender: function () {
       if (this.fetchError) {
-        this.comment.show(new commentView({
+        this.handleRefetch();
+        var options = _.extend(this.options, {
           fetchError: this.fetchError
-        }));
-        this.entry.show(new entryView({
-          fetchError: this.fetchError
-        }))
-      } else {
-        if (this.model) {
-          this.build();
-        }
+        })
+        this.comment.show(new commentView(options));
+        this.entry.show(new entryView(options))
       }
     },
 

@@ -1,4 +1,5 @@
-{{#ifIs status eq="Approved"}}
+{{#if entryIsPublished}}
+{{#if commentIsApproved}}
   {{>js_views_card_partials_loading}}
   {{#if initial}}
   <div id="reply-container">
@@ -38,4 +39,5 @@
   </div>
   {{/if}}
   {{/if}}
-{{/ifIs}}
+{{/if}}
+{{/if}}

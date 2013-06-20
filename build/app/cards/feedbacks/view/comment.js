@@ -1,10 +1,9 @@
 define(['js/views/card/itemview',
-    'js/cache',
     'js/commands',
     'hbs!cards/feedbacks/templates/comment'
 ],
 
-function (CardItemView, cache, commands, template) {
+function (CardItemView, commands, template) {
   'use strict';
 
   return CardItemView.extend({
@@ -18,8 +17,24 @@ function (CardItemView, cache, commands, template) {
     initialize: function (options) {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
       this.fetchError = options.fetchError;
-      this.collection = options.collection;
-      this.model = options.model;
+      if (!this.fetchError) {
+        this.collection = options.collection;
+        this.model = options.model;
+        this.entryModel = options.entryModel;
+
+        this.commentApprovePerm = false;
+
+        var entry = this.entryModel.toJSON();
+        if (entry.status === 'Publish') {
+          if (this.userIsSystemAdmin() || (this.userHasPermission('manage_feedback') || this.userHasPermission('edit_all_posts'))) {
+            this.commentApprovePerm = true;
+          } else {
+            if ((entry.author && entry.author.displayName === this.user.name) && this.userHasPermission('publish_post')) {
+              this.commentApprovePerm = true;
+            }
+          }
+        }
+      }
       this.loading = false;
       this.setTranslation();
     },
@@ -78,6 +93,7 @@ function (CardItemView, cache, commands, template) {
       data.accepted = this.accepted;
       data.acceptionFailed = this.acceptionFailed;
       data.error = this.error;
+      data.commentApprovePerm = this.commentApprovePerm;
       return data;
     }
   });
