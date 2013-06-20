@@ -11,8 +11,12 @@ define(function () {
       cache[id][key] = value;
       return cache[id][key];
     },
-    clear: function (id) {
-      delete cache[id];
+    clear: function (id, key) {
+      if (!key) {
+        delete cache[id];
+      } else {
+        delete cache[id][key];
+      }
     },
     clearAll: function () {
       cache = {}

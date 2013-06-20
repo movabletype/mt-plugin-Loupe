@@ -27,16 +27,6 @@ $card-header-color: #3B9486;
 $card-border-color: #C2C3C5;
 $card-shadow-color: #A6A7AC;
 
-@mixin card-header {
-  background-color: $card-header-background-color;
-  color: $card-header-color;
-  h1 {
-    font-weight: normal;
-    padding: 10px;
-    font-size: 16px;
-  }
-}
-
 @mixin hardware-accelerate-hack {
   -webkit-transform: translate3d(0, 0, 0);
 }

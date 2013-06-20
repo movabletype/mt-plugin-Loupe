@@ -5,14 +5,8 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
 
   return Marionette.Layout.extend({
     serializeData: function () {
-      var data = {
-        user: this.user
-      };
-
-      if (DEBUG) {
-        console.log('[sidebar:main:serializeData]');
-        console.log(data);
-      }
+      var data = {}
+      data.user = this.user;
       return data;
     },
 
@@ -20,17 +14,15 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
       menuHeaderArrow: '#menu-header-arrow'
     },
 
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     regions: {
       blogs: '#menu-blogs-list'
     },
 
-    initialize: function (params) {
-      this.params = params;
-      this.user = params.user || {};
+    initialize: function (options) {
+      this.options = options;
+      this.user = options.user;
     },
 
     hanldeToggle: function () {
@@ -39,7 +31,7 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
 
     onRender: function () {
       var hammerOpts = device.options.hammer();
-      this.blogs.show(new BlogsListView(this.params));
+      this.blogs.show(new BlogsListView(this.options));
 
       commands.setHandler('menu:header:toggle', _.bind(this.hanldeToggle, this));
 

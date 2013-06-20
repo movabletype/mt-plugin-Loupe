@@ -34,13 +34,6 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
       app.menu.show(new MenuLayout(params));
     });
 
-    commands.setHandler('dashboard:rerender', function (params) {
-      $(document.body).append('<div id="app-building"></div>');
-      params.refetch = true;
-      params.cards = app.cards;
-      app.main.show(new DashboardLayout(params));
-    });
-
     commands.setHandler('move:dashboard', function (params) {
       params.cards = app.cards;
       app.main.show(new DashboardLayout(params));

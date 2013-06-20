@@ -1,18 +1,30 @@
-define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/mtapi/logout'],
+define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/collections/blogs', 'js/models/blog', 'js/mtapi/logout'],
 
-function (Marionette, L10N, cache, mtapi, commands, vent, getUser, getBlogsList, getBlog, logout) {
+function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollection, BlogModel, logout) {
   "use strict";
   return Marionette.Controller.extend({
     auth: function (callback) {
       var getUserAndBlogs = _.bind(function (callback) {
-        this.user = this.user || getUser();
+        var dfd,
+          user = cache.get('user', 'user');
 
-        this.user.fail(_.bind(function () {
-          delete this.user;
+        if (user) {
+          dfd = $.Deferred();
+          dfd.resolve(user);
+        } else {
+          dfd = getUser();
+        }
+
+        dfd.fail(_.bind(function (user) {
+          cache.clear('user', 'user');
+          if (DEBUG) {
+            console.log(user);
+          }
           this.authorization();
         }, this));
 
-        this.user.done(_.bind(function (user) {
+        dfd.done(_.bind(function (user) {
+          cache.set('user', 'user', user);
           var l10n = this.l10n = this.l10n || new L10N(user.language);
           var currentBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || null;
 
@@ -38,37 +50,64 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, getBlogsList,
             });
           };
 
-          if (currentBlogId) {
-            if (!this.blog || this.blog.id !== currentBlogId) {
-              this.blog = getBlog(currentBlogId);
-            }
+          var blog, blogError, blogSuccess,
+            blogCollection = cache.get('user', 'blogs') || cache.set('user', 'blogs', new BlogCollection());
 
-            this.blog.fail(_.bind(function (resp) {
-              delete this.blog;
+          if (currentBlogId) {
+            var blogModel = blogCollection.get(currentBlogId);
+
+            blogSuccess = _.bind(function (blogModel) {
+              finalize(user, blogModel.toJSON());
+            }, this),
+            blogError = _.bind(function (blogModel) {
+              if (DEBUG) {
+                console.log('get blog fail');
+                console.log(blogModel);
+              }
               callback = function (data) {
-                var params = data || {};
-                commands.execute('move:dashboard', params);
+                data = data || {};
+                commands.execute('move:dashboard', data);
               };
               finalize(user, {
-                error: resp.error
+                error: blogModel.error
               });
-            }, this));
+            }, this);
 
-            this.blog.done(_.bind(function (blog) {
-              finalize(user, blog);
-            }, this));
+            if (blogModel) {
+              blogSuccess(blogModel);
+            } else {
+              blogModel = new BlogModel({
+                id: currentBlogId
+              });
+              blogModel.fetch({
+                success: blogSuccess,
+                error: blogError
+              });
+            }
           } else {
-            this.blogs = this.blogs || getBlogsList(user.id);
-
-            this.blogs.fail(_.bind(function () {
-              delete this.blogs;
-            }, this));
-
-            this.blogs.done(_.bind(function (blogs) {
-              if (blogs.items && blogs.items.length) {
-                finalize(user, blogs.items[0], blogs);
+            blogError = _.bind(function (resp) {
+              if (DEBUG) {
+                console.log('get blog list fail');
+                console.log(resp);
               }
-            }, this));
+              cache.clear('user', 'blogs');
+            }, this);
+
+            blogSuccess = _.bind(function (blogCollection) {
+              var blogs = blogCollection.toJSON();
+              blog = blogs.length ? blogs[0] : null;
+              finalize(user, blog, blogs);
+            }, this);
+
+            if (blogCollection.length) {
+              blogSuccess(blogCollection);
+            } else {
+              blogCollection.fetch({
+                userId: user.id,
+                success: blogSuccess,
+                error: blogError
+              });
+            }
           }
         }, this));
       }, this);

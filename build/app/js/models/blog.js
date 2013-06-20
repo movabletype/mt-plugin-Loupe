@@ -1,8 +1,11 @@
 define(['backbone', 'js/mtapi/blog'], function (Backbone, getBlog) {
   return Backbone.Model.extend({
-    sync: function (method) {
+    sync: function (method, model, options) {
       if (method === 'read') {
-        return getBlog(this.id);
+        var dfd = getBlog(this.id);
+        dfd.done(options.success);
+        dfd.fail(options.error)
+        return dfd;
       }
     }
   });

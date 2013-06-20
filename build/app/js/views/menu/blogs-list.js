@@ -1,21 +1,16 @@
-define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/menu/templates/blogs-list'],
+define(['backbone.marionette', 'json2', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/menu/templates/blogs-list'],
 
-function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsList, getBlog, template) {
+function (Marionette, JSON, cache, device, commands, vent, Trans, Collection, getBlogsList, getBlog, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
     serializeData: function () {
       var data = {};
+
       if (this.trans) {
         var blogs = this.collection.toJSON() || [],
           totalResults = this.collection.totalResults,
           prev;
-
-        if (DEBUG) {
-          console.log('[menu:blogs:serializeData]');
-          console.log(blogs);
-          console.log(totalResults);
-        }
 
         this.histories = this.histories || [];
         this.offset = parseInt(this.offset, 10) || 0;
@@ -83,28 +78,18 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
       }
     },
 
-    collection: new Collection(),
+    template: template,
 
-    template: function (data) {
-      return template(data);
-    },
+    initialize: function (options) {
+      this.user = options.user;
+      this.blog = options.blog;
 
-    blogs: null,
-
-    initialize: function (params) {
-      this.user = params.user || null;
-      this.blogs = (params.blogs && params.blogs.items) ? params.blogs.items : [];
-
-      this.blog = params.blog || null;
       this.currentBlogId = this.selectedBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || (this.blog && this.blog.id ? this.blog.id : null);
 
       this.offset = 0;
       this.blogsLoading = true;
 
-      if (this.blogs.length) {
-        this.collection.totalResults = params.blogs.totalResults;
-        this.collection.set(this.blogs);
-      }
+      this.collection = cache.get('user', 'blogs') || cache.set('user', 'blogs', new Collection());
 
       this.historiesLoading = true;
       this.refetchBlogHistoryData();
@@ -115,38 +100,32 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
         this.render();
       }, this));
 
-      if (DEBUG) {
-        console.log('[menu:blogs:initialize]');
-      }
-
       commands.setHandler('menu:getRecentBlogHistory', this.getRecentBlogHistory);
       commands.setHandler('menu:setRecentBlogHistory', this.setRecentBlogHistory);
       commands.setHandler('menu:resetRecentBlogHistory', this.resetRecentBlogHistory);
     },
 
     fetch: function () {
-      if (this.user && this.user.id) {
-        var options = {
-          userId: this.user.id,
-          success: _.bind(function () {
-            if (DEBUG) {
-              console.log('[menu:main:fetch:success]');
-            }
-            this.selectCurrentBlog();
-            this.render();
-          }, this),
-          offset: parseInt(this.offset, 10) || 0,
-          limit: this.next - this.offset,
-          merge: true,
-          remove: false
-        };
-        if (this.histories && this.histories.length) {
-          options.excludeIds = _.map(this.histories, function (b) {
-            return b.id;
-          }).join(',');
-        }
-        this.collection.fetch(options);
+      var options = {
+        userId: this.user.id,
+        success: _.bind(function () {
+          if (DEBUG) {
+            console.log('[menu:main:fetch:success]');
+          }
+          this.selectCurrentBlog();
+          this.render();
+        }, this),
+        offset: parseInt(this.offset, 10) || 0,
+        limit: this.next - this.offset,
+        merge: true,
+        remove: false
+      };
+      if (this.histories && this.histories.length) {
+        options.excludeIds = _.map(this.histories, function (b) {
+          return b.id;
+        }).join(',');
       }
+      this.collection.fetch(options);
     },
 
     selectBlogHandler: function (bid) {
@@ -179,7 +158,7 @@ function (Marionette, JSON, device, commands, vent, Trans, Collection, getBlogsL
         this.render();
 
         setTimeout(_.bind(function () {
-          commands.execute('dashboard:rerender', {
+          commands.execute('move:dashboard', {
             userId: this.user.id,
             blogId: this.blog.id,
             user: this.user,
