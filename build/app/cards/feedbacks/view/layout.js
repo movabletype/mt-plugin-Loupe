@@ -65,7 +65,12 @@ function (CardItemViewLayout, cache, Collection, Model, EntryCollection, EntryMo
       this.entryCollection = cache.get(this.blogId, 'entries') || cache.set(this.blogId, 'entries', new EntryCollection(this.blogId));
       this.entryModel = this.entryCollection.get(entryId);
       if (this.entryModel) {
-        this.build();
+        this.loading = false;
+        this.fetchError = false;
+        this.render();
+        setTimeout(_.bind(function () {
+          this.build();
+        }, this), 0)
       } else {
         this.entryModel = new EntryModel({
           blogId: this.blogId,
@@ -76,8 +81,10 @@ function (CardItemViewLayout, cache, Collection, Model, EntryCollection, EntryMo
             this.loading = false;
             this.fetchError = false;
             this.render();
-            this.entryCollection.add(this.entryModel);
-            this.build();
+            setTimeout(_.bind(function () {
+              this.entryCollection.add(this.entryModel);
+              this.build();
+            }, this), 0)
           }, this),
           error: _.bind(function () {
             this.loading = false;
