@@ -16,42 +16,48 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
       var routes = options.routes;
       this.blogId = routes[0];
       this.entryId = routes[1];
-      this.collection = cache.get(this.blogId, 'acception') || cache.set(this.blogId, 'acception', new Collection(this.blogId));
-      this.model = this.collection.get(this.entryId);
+      this.perm = this.userHasPermission('edit_all_posts');
 
-      this.setTranslation(_.bind(function () {
-        if (this.model) {
-          this.loading = false;
-          this.render();
-        } else {
-          this.render();
-          this.model = new Model();
-          this.model.fetch({
-            blogId: this.blogId,
-            entryId: this.entryId,
-            success: _.bind(function () {
-              this.collection.add(this.model);
-              this.loading = false;
-              this.render();
-            }, this),
-            error: _.bind(function () {
-              this.fetchError = true;
-              this.loading = false;
-              this.render();
-            }, this)
-          });
-        }
-      }, this));
+      if (this.perm) {
+        this.collection = cache.get(this.blogId, 'acception') || cache.set(this.blogId, 'acception', new Collection(this.blogId));
+        this.model = this.collection.get(this.entryId);
 
-      commands.setHandler('card:acception:share:show', _.bind(function () {
-        var data = this.serializeData();
-        commands.execute('share:show', {
-          share: {
-            url: data.permalink,
-            tweetText: (data.title + ' ' + data.excerpt)
+        this.setTranslation(_.bind(function () {
+          if (this.model) {
+            this.loading = false;
+            this.render();
+          } else {
+            this.render();
+            this.model = new Model();
+            this.model.fetch({
+              blogId: this.blogId,
+              entryId: this.entryId,
+              success: _.bind(function () {
+                this.collection.add(this.model);
+                this.loading = false;
+                this.render();
+              }, this),
+              error: _.bind(function () {
+                this.fetchError = true;
+                this.loading = false;
+                this.render();
+              }, this)
+            });
           }
-        });
-      }, this))
+        }, this));
+
+        commands.setHandler('card:acception:share:show', _.bind(function () {
+          var data = this.serializeData();
+          commands.execute('share:show', {
+            share: {
+              url: data.permalink,
+              tweetText: (data.title + ' ' + data.excerpt)
+            }
+          });
+        }, this))
+      } else {
+        this.setTranslation();
+      }
     },
 
     update: function (status) {
@@ -90,29 +96,37 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
     },
 
     onRender: function () {
-      if (this.acceptionFailed) {
-        this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
-          $(this).parent().remove();
-        });
+      if (this.perm) {
+        if (this.acceptionFailed) {
+          this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
+            $(this).parent().remove();
+          });
+        }
+
+        this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function () {
+          this.update('Publish')
+        }, this));
+
+        this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
+          this.update('Review')
+        }, this));
       }
-
-      this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function () {
-        this.update('Publish')
-      }, this));
-
-      this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
-        this.update('Review')
-      }, this));
     },
 
     serializeData: function () {
-      var data = this.serializeDataInitialize();
-      if (this.model) {
-        data = _.extend(data, this.model.toJSON());
-        commands.execute('header:render', data);
+      var data = {};
+      if (this.perm) {
+        data = this.serializeDataInitialize();
+        data.perm = this.perm;
+        if (this.model) {
+          data = _.extend(data, this.model.toJSON());
+          commands.execute('header:render', data);
+        }
+        data.accepted = this.accepted ? true : false;
+        data.acceptionFailed = this.acceptionFailed ? true : false;
+      } else {
+        data.trans = this.trans;
       }
-      data.accepted = this.accepted ? true : false;
-      data.acceptionFailed = this.acceptionFailed ? true : false;
       return data;
     }
   });

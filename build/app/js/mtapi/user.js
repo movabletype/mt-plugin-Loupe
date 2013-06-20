@@ -17,13 +17,23 @@ define(['js/mtapi', 'js/cache', 'js/models/perm', 'js/collections/perms'], funct
             console.log(perm);
           }
           if (!perm.error) {
-            var perms = perm.items;
-            user = _.extend({}, user, {
-              permissions: perms[0].permissions
-            });
+            var perms = perm.items,
+              systemPerm;
 
+            if (perms[0] && !perms[0].blog) {
+              // It's system level permissions if blog param is null
+              systemPerm = {
+                permissions: perms[0].permissions
+              };
+              perms = perms.slice(1);
+            } else {
+              systemPerm = {
+                permissions: null
+              }
+            }
+            user = _.extend({}, user, systemPerm);
             var permCollection = cache.set('user', 'perms', new PermCollection());
-            permCollection.set(permCollection.parse(perms.slice(1)));
+            permCollection.set(permCollection.parse(perms));
             dfd.resolve(user);
           } else {
             dfd.reject(perm);
