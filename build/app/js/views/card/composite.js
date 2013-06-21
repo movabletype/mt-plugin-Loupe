@@ -11,20 +11,22 @@ function (Marionette, commands, CardItemView) {
       }
     },
     handleReadmore: function (options) {
-      this.$el.find('.readmore').hammer(this.hammerOpts).on('tap', _.bind(function () {
+      this.$el.find('.readmore').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+        this.addTapClass(e.currentTarget);
         this.loadingReadmore = true;
         this.render();
         this.fetch(options);
       }, this));
     },
     handleItemViewNavigate: function () {
-      this.$el.hammer(this.hammerOpts).on('tap', 'a', function (e) {
+      this.$el.hammer(this.hammerOpts).on('tap', 'a', _.bind(function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var route = $(this).data('route') || '';
+        var route = $(e.currentTarget).data('route') || '';
+        this.addTapClass(e.currentTarget);
         commands.execute('router:navigate', route);
         return false;
-      });
+      }, this));
     },
     fetch: function (options) {
       options = options || {};

@@ -79,7 +79,7 @@ textarea, input {
     width: $content-max-width;
     height: $header-height;
     margin: 0 auto;
-    padding: 10px 0 9px;
+    padding: 0;
   }
   nav {
     position: relative;
@@ -91,17 +91,26 @@ textarea, input {
     left: 0;
     cursor: pointer;
   }
-  #share-button {
-    color: #444;
+  .share-button-container {
+    padding: 9px 0;
     position: absolute;
     top: 0;
     right: 0;
     cursor: pointer;
+  }
+  #share-button {
+    color: #444;
     padding: 5px 10px;
     background-color: #e0e0e0;
     border: 1px solid #cccccc;
     font-size: 30px;
     @include border-radius-with-pie(4px);
+    &.tapped {
+      background-color: #ccc;
+      &:before {
+        background-color: #ccc;
+      }
+    }
   }
   .header-title {
     font-size: 18px;
@@ -159,7 +168,6 @@ textarea, input {
   background-color: #e0e0e0;
   border: 1px solid #cccccc;
   border-radius: 4px;
-  color: #fff;
   text-align: center;
   font-size: 12px;
   line-height: 38px;
@@ -167,7 +175,6 @@ textarea, input {
   font-weight: bold;
   min-width: 50px;
   height: 40px;
-  position: absolute;
   padding: 0 7px 0 4px;
   border-left: 0 none;
   margin-left: 14px;
@@ -186,6 +193,19 @@ textarea, input {
     margin-top: 5px;
     margin-left: -16px;
     z-index: -1;
+  }
+}
+
+.header-button-container,
+.header-title {
+  padding: 10px 10px 9px 0;
+  &.tapped {
+    .header-button {
+      background-color: #ccc;
+      &:before {
+        background-color: #ccc;
+      }
+    }
   }
 }
 
@@ -424,7 +444,8 @@ textarea, input {
     width: 100%;
     min-width: 320px;
   }
-  #header #header-main {
+  #header .header-button-container,
+  #header .share-button-container {
     padding-left: 5px;
     padding-right: 5px;
   }

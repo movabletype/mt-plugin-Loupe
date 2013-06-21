@@ -29,13 +29,16 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
           }
         }, this));
 
-        this.$el.hammer(this.hammerOpts).on('tap', 'a', function (e) {
+        this.handleItemViewNavigate();
+
+        this.$el.hammer(this.hammerOpts).on('tap', 'a', _.bind(function (e) {
           e.preventDefault();
           e.stopPropagation();
-          var route = $(this).data('route') || '';
+          var route = $(e.currentTarget).data('route') || '';
+          this.addTapClass(e.currentTarget);
           commands.execute('router:navigate', route);
           return false;
-        });
+        }, this));
       }, this));
     },
 

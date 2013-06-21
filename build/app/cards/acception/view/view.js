@@ -103,11 +103,13 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
           });
         }
 
-        this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
           this.update('Publish')
         }, this));
 
-        this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
           this.update('Review')
         }, this));
       }

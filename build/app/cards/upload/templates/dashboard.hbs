@@ -1,5 +1,5 @@
 {{#if perm}}
-{{#unless FileInputNotSupported}}
+{{#if FileUploadSupport}}
 {{>js_views_card_partials_loading}}
 {{>js_views_card_partials_title}}
 
@@ -44,5 +44,5 @@
 </div>
 <div id="upload-file-uploading" class="upload-file button" style="display:none">{{#trans trans}}uploading...{{/trans}}</div>
 </form>
-{{/unless}}
+{{/if}}
 {{/if}}

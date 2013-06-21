@@ -76,7 +76,7 @@ define(function () {
       tap: true,
       tap_always: true,
       tap_max_distance: 10,
-      tap_max_touchtime: 250,
+      tap_max_touchtime: 1000,
       touch: false,
       transform: false
     };

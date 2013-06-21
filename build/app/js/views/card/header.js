@@ -22,11 +22,13 @@ function (CardItemView, template, device, commands) {
     },
 
     onRender: function () {
-      this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', function () {
+      this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', _.bind(function (e) {
+        this.addTapClass(e.currentTarget);
         commands.execute('router:navigate', '');
-      });
+      }, this));
 
-      this.ui.shareButton.hammer(device.options.hammer()).on('tap', _.bind(function () {
+      this.ui.shareButton.hammer(device.options.hammer()).on('tap', _.bind(function (e) {
+        this.addTapClass(e.currentTarget);
         commands.execute('card:' + this.card.id + ':share:show', '');
       }, this));
     },

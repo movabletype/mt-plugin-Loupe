@@ -75,21 +75,15 @@
     margin: 1rem 1rem 1.5rem;
     min-height: 2.469rem;
     background-color: $btn-basic-color;
-    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
+    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius($radius);
     @include transition-duration(0.1s);
     @include transition-timing-function(ease-in);
-    &:hover {
-      
-    }
-    &:active, &:hover:active{
+    &:hover {}
+    &.tapped, &:active, &:hover:active {
       top: 7px;
       background-color: darken($btn-basic-color, 2%);
-      @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
-    }
-    &.tapped {
-      background-color: #FFC452;
-      @include background-image(linear-gradient(#ffc452, #ffc452 92%, #ffc452 92%, #ffc452));
+      @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
   }
   .button-disabled {
@@ -112,12 +106,12 @@
   .contents-top-button {
     margin: 1rem 1rem 1.5rem;
     background-color: $btn-attention-color;
-    @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
+    @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius-with-pie(radius);
-    &:active, &:hover:active{
+    &.tapped, &:active, &:hover:active {
       top: 7px;
       background-color: darken($btn-attention-color, 2%);
-      @include box-shadow(0px 1px 0px 0px darken($btn-attention-color, 10%),inset 0px 1px 0px 0px rgba($white,0.5));
+      @include box-shadow(0px 1px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
   }
   .ok {
@@ -197,7 +191,7 @@
         padding: 10px;
         border-bottom: 1px solid #e6e6e6;
         @include pie-clearfix;
-        &:active{
+        &.tapped, &:active {
           @include background-image(linear-gradient(rgba($black, 0.15), rgba($black, 0.05) 5%));
         }
       }

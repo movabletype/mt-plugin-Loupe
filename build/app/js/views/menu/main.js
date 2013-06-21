@@ -38,14 +38,6 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
       this.$el.find('#menu-header').hammer(hammerOpts).on('tap', _.bind(function () {
         commands.execute('dashboard:toggle');
       }));
-
-      this.$el.find('.save-changes').hammer(hammerOpts).on('tap', _.bind(function () {
-        this.blogs.currentView.saveChagesHandler();
-      }, this));
-
-      this.$el.find('.close-menu').hammer(hammerOpts).on('tap', function () {
-        commands.execute('menu:toggle');
-      });
     }
   });
 });

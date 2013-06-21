@@ -16,9 +16,9 @@ function (mtapi, device, commands, CardItemView, template) {
     initialize: function () {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
       this.perm = this.userIsSystemAdmin() || this.userHasPermission('upload');
-      this.dashboardShowWithPermission(this.perm)
+      this.FileUploadSupport = this.checkSupport();
+      this.dashboardShowWithPermission(this.perm && this.FileUploadSupport)
         .done(_.bind(function () {
-        this.checkSupport();
         this.setTranslation();
       }, this))
     },
@@ -69,7 +69,12 @@ function (mtapi, device, commands, CardItemView, template) {
           }, this));
         }, this);
 
-        this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.ui.uploadButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
+        }, this));
+
+        this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
           this.ui.retryButton.remove();
           upload(this.errorImages);
         }, this));
@@ -86,9 +91,9 @@ function (mtapi, device, commands, CardItemView, template) {
 
     checkSupport: function () {
       if ((device.isIOS && device.version && device.version < 6.0) || (device.isWindowsPhone)) {
-        this.FileInputNotSupported = true;
+        return false;
       } else {
-        this.FileInputNotSupported = false;
+        return true;
       }
     },
 
@@ -97,7 +102,7 @@ function (mtapi, device, commands, CardItemView, template) {
       if (this.perm) {
         data = this.serializeDataInitialize();
         data.title = 'Media Upload';
-        data.FileInputNotSupported = this.FileInputNotSupported;
+        data.FileUploadSupport = this.FileUploadSupport;
         data.loading = false;
         data.uploadError = this.uploadError || [];
         data.uploading = this.uploading ? true : false;

@@ -13,22 +13,21 @@ $default-transition-duration: 0.3s;
 $default-transition-function: ease;
 $default-transition-delay: 0s;
 
-
 $content-max-width: 450px;
 $font-size: 16px;
 $radius: 0.488rem;
 
 /* Colors */
-$white: #fff;
-$black: #000;
-$bg-color: #E2E3E5;
-$card-background-color: #F3F3F5;
-$card-header-color: #3B9486;
-$card-border-color: #C2C3C5;
-$card-shadow-color: #A6A7AC;
-$btn-basic-color: #64A237;
-$btn-attention-color: #E94E1C;
-$count-background-color: #EFB02E;
+$white: white;
+$black: black;
+$bg-color: #e2e3e5;
+$card-background-color: #f3f3f5;
+$card-header-color: #3b9486;
+$card-border-color: #c2c3c5;
+$card-shadow-color: #a6a7ac;
+$btn-basic-color: #64a237;
+$btn-attention-color: #e94e1c;
+$count-background-color: #efb02e;
 
 @mixin hardware-accelerate-hack {
   -webkit-transform: translate3d(0, 0, 0);

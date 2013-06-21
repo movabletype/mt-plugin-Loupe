@@ -1,9 +1,9 @@
-define(['backbone.marionette', 'json2', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/menu/templates/blogs-list'],
+define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/trans', 'js/collections/blogs', 'js/mtapi/blogs', 'js/mtapi/blog', 'hbs!js/views/menu/templates/blogs-list'],
 
-function (Marionette, JSON, cache, device, commands, vent, Trans, Collection, getBlogsList, getBlog, template) {
+function (CardItemView, JSON, cache, device, commands, vent, Trans, Collection, getBlogsList, getBlog, template) {
   "use strict";
 
-  return Marionette.ItemView.extend({
+  return CardItemView.extend({
     serializeData: function () {
       var data = {};
 
@@ -251,9 +251,9 @@ function (Marionette, JSON, cache, device, commands, vent, Trans, Collection, ge
 
     onRender: function () {
       var that = this;
-      var hammerOpts = device.options.hammer();
 
-      this.$el.find('a').hammer(hammerOpts).on('tap', function (e) {
+      this.$el.find('a').hammer(this.hammerOpts).on('tap', function (e) {
+        that.addTapClass(e.currentTarget);
         var $this = $(this);
         if ($this.attr('href') === '#logout') {
           commands.execute('dashboard:toggle');
@@ -265,7 +265,8 @@ function (Marionette, JSON, cache, device, commands, vent, Trans, Collection, ge
         }
       });
 
-      this.$el.find('.blog-item-nav').hammer(hammerOpts).on('tap', function () {
+      this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', function () {
+        that.addTapClass(e.currentTarget);
         that.offset = parseInt($(this).data('offset'), 10) || 0;
         that.render();
       });

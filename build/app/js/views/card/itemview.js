@@ -67,9 +67,17 @@ function (Marionette, cache, commands, device, Trans) {
         }, this));
       }, this));
     },
+    addTapClass: function (el) {
+      var $el = $(el);
+      $el.addClass('tapped');
+      setTimeout(function () {
+        $el.removeClass('tapped');
+      }, 300);
+    },
     handleRefetch: function (options) {
       if (this.fetchError) {
-        this.$el.hammer(this.hammerOpts).on('tap', '.refetch', _.bind(function () {
+        this.$el.hammer(this.hammerOpts).on('tap', '.refetch', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
           this.loading = true;
           this.fetchError = false;
           this.render();

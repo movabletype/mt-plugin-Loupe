@@ -53,7 +53,7 @@ define([
       });
     },
 
-    navigatePage: function () {
+    navigatePage: function (e) {
       commands.execute('router:navigate', 'stats');
     },
 

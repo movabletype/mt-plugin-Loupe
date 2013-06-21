@@ -46,7 +46,8 @@ function (CardItemView, mtapi, commands, moment, momentLang, Model, template) {
 
     onRender: function () {
       if (this.entryIsPublished() && this.commentIsApproved()) {
-        this.ui.replyButton.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.ui.replyButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
           this.initial = false;
           this.form = true;
           this.body = false;
@@ -55,7 +56,8 @@ function (CardItemView, mtapi, commands, moment, momentLang, Model, template) {
           this.render();
         }, this));
 
-        this.ui.doReplyButton.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.ui.doReplyButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+          this.addTapClass(e.currentTarget);
           var body = this.ui.replyTextarea.val();
           var data = this.model.toJSON();
           if (body.length) {

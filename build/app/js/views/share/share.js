@@ -5,9 +5,7 @@ function (Marionette, template, device, commands, Trans) {
 
   return Marionette.ItemView.extend({
 
-    template: function (data) {
-      return template(data);
-    },
+    template: template,
 
     initialize: function (options) {
       this.share = options ? options.share : {};
@@ -21,7 +19,7 @@ function (Marionette, template, device, commands, Trans) {
     },
 
     onRender: function () {
-      this.$el.find('#share-close').hammer(device.options.hammer()).on('tap', _.bind(function () {
+      this.$el.find('#share-close').hammer(device.options.hammer()).on('tap', _.bind(function (e) {
         commands.execute('share:close');
       }, this));
     },
