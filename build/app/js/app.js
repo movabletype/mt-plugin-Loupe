@@ -34,7 +34,15 @@ function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Contro
 
     commands.setHandler('app:beforeTransition', _.bind(function () {
       $(document.body).addClass('onmove');
-      $('#app-building').show();
+      var $appBuilding = $('#app-building');
+      if (device.isAndroid || device.isWindowsPhone) {
+        var top = $(document.body).scrollTop();
+        $appBuilding.css({
+          top: top + 'px',
+          bottom: '-' + top + 'px'
+        });
+      }
+      $appBuilding.show();
     }, this));
 
     commands.setHandler('app:afterTransition', _.bind(function () {
