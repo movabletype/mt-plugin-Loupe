@@ -175,6 +175,7 @@
     .message-inner {
       display: table-cell;
       vertical-align: middle;
+      word-break: break-all;
     }
   }
   .card-item-list {
