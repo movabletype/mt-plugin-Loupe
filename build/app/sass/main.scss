@@ -61,7 +61,7 @@ textarea, input {
 
 #header {
   height: $header-height;
-  background-color: #e6e6e6;
+  background-color: $bg-color;
   position: absolute;
   color: #444;
   top: 0;
@@ -212,7 +212,7 @@ textarea, input {
   left: 0;
   right: 0;
   position: absolute;
-  background-color: #e6e6e6;
+  background-color: $bg-color;
   -webkit-overflow-scrolling: touch;
 }
 
