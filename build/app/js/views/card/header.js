@@ -24,6 +24,7 @@ function (CardItemView, template, device, commands) {
     onRender: function () {
       this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', _.bind(function (e) {
         this.addTapClass(e.currentTarget, function () {
+          commands.execute('app:beforeTransition');
           commands.execute('router:navigate', '');
         });
       }, this));

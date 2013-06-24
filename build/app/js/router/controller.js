@@ -29,16 +29,16 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
           var currentBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || null;
 
           var finalize = function (user, blog, blogs) {
-            if ($('#app-building').length) {
+            if (cache.get('app', 'initial')) {
               l10n.waitLoadCommon(function () {
-                $('#app-building').remove();
-                vent.trigger('app:building:after', {
+                commands.execute('app:buildMenu', {
                   userId: user.id,
                   blogId: blog.id,
                   user: user,
                   blog: blog,
                   blogs: blogs
                 });
+                cache.set('app', 'initial', false);
               });
             }
             callback({

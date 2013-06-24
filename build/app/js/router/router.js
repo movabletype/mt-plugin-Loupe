@@ -27,6 +27,7 @@ function (Marionette, commands) {
 
       commands.setHandler('router:navigate', function (dest) {
         if (dest !== null && dest !== undefined) {
+          commands.execute('app:beforeTransition');
           this.navigate(dest, true);
         }
       }, this);

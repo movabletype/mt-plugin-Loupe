@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
+define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout'],
 
-function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout) {
+function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout) {
   "use strict";
 
   var app = new Marionette.Application();
@@ -11,6 +11,7 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
   }
 
   app.addInitializer(function (options) {
+    cache.set('app', 'initial', true);
     this.cards = options.cards;
     var $body = $(document.body);
     if (device.platform) {
@@ -27,16 +28,24 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
         $body.addClass(device.browser + device.browserVersionStr);
       }
     }
-    vent.on('app:building:after', function (params) {
-      if (DEBUG) {
-        console.log('[vent:app:building:after]');
-      }
+    commands.setHandler('app:buildMenu', function (params) {
       app.menu.show(new MenuLayout(params));
     });
+
+    commands.setHandler('app:beforeTransition', _.bind(function () {
+      $(document.body).addClass('onmove');
+      $('#app-building').show();
+    }, this));
+
+    commands.setHandler('app:afterTransition', _.bind(function () {
+      $(document.body).removeClass('onmove');
+      $('#app-building').hide();
+    }, this));
 
     commands.setHandler('move:dashboard', function (params) {
       params.cards = app.cards;
       app.main.show(new DashboardLayout(params));
+      commands.execute('app:afterTransition');
     });
 
     _.each(app.cards, function (card) {
@@ -51,6 +60,7 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
               require([path + route.layout.replace(/\.js$/, '')], function (Layout) {
                 app.main.show(new Layout(params));
               });
+              commands.execute('app:afterTransition');
             } else {
               params = _.extend(params, {
                 viewHeader: route.header,
@@ -60,6 +70,7 @@ function (Backbone, Marionette, device, commands, vent, AppRouter, Controller, M
               });
               params.viewView = route.view;
               app.main.show(new CardLayout(params));
+              commands.execute('app:afterTransition');
             }
           });
         });

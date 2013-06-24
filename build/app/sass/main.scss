@@ -29,16 +29,11 @@ textarea, input {
 }
 
 #app-building {
+  @include loading-base;
+  background-color: $bg-color;
+  background-color: rgba($bg-color, 0.5);
   background-image: url("../assets/images/indicator-white.gif");
-  background-repeat: no-repeat;
-  background-size: 30px;
-  background-position: center center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 11;
+  z-index: 9999;
 }
 
 #app,
