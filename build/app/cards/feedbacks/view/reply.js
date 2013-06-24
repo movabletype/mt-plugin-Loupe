@@ -91,12 +91,12 @@ function (CardItemView, mtapi, commands, moment, momentLang, Model, template) {
                   this.replied = false;
                   this.body = body;
                   this.loading = false;
-                  this.error = true;
+                  this.error = resp.error && resp.error.message ? resp.error.message : 'request failed';
                   this.render();
                 }
               }, this));
             }
-          }));
+          }, this));
         }, this));
       }
     },
