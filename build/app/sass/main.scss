@@ -301,6 +301,9 @@ textarea, input {
       text-decoration: none;
       display: block;
       padding: 13px 20px;
+      &.tapped, &:active {
+        @include background-image(linear-gradient(rgba($white, 0.15), rgba($white, 0.05) 5%));
+      }
     }
     &.selected {
       a {

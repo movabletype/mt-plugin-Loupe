@@ -4,9 +4,6 @@
 @import "../../../sass/_helpers.scss";
 
 #card-feedbacks {
-  .content {
-    min-height: 266px;
-  }
   li {
     .item-asset {
       font-size: 50px;
@@ -76,14 +73,21 @@
   }
   #reply-button,
   #do-reply-button {
-    background-color: #66a434;
     cursor: pointer;
-    margin: 10px 0;
+    margin-left: 0;
+    margin-right: 0;
   }
   #reply-complete {
     background-color: #666;
-    @include background-image(linear-gradient(#666666, #666666 92%, #666666 92%, #666666));
-    margin: 10px 0;
+    @include box-shadow(0px 8px 0px 0px darken(#666, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    @include border-radius($radius);
+    &:hover {}
+    &.tapped, &:active, &:hover:active {
+      top: 0;
+      background-color: #666;
+    }
+    margin-left: 0;
+    margin-right: 0;
   }
   #reply-disabled-button {
     margin: 10px 0;

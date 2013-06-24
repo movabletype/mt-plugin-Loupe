@@ -250,26 +250,26 @@ function (CardItemView, JSON, cache, device, commands, vent, Trans, Collection, 
     },
 
     onRender: function () {
-      var that = this;
+      this.$el.find('a').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+        this.addTapClass(e.currentTarget, _.bind(function () {
+          var $link = $(e.currentTarget);
+          if ($link.attr('href') === '#logout') {
+            commands.execute('dashboard:toggle');
+          } else {
+            e.preventDefault();
+            e.stopPropagation();
+            this.selectBlogHandler($link.data('id'));
+            return false;
+          }
+        }, this));
+      }, this));
 
-      this.$el.find('a').hammer(this.hammerOpts).on('tap', function (e) {
-        that.addTapClass(e.currentTarget);
-        var $this = $(this);
-        if ($this.attr('href') === '#logout') {
-          commands.execute('dashboard:toggle');
-        } else {
-          e.preventDefault();
-          e.stopPropagation();
-          that.selectBlogHandler($(this).data('id'));
-          return false;
-        }
-      });
-
-      this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', function () {
-        that.addTapClass(e.currentTarget);
-        that.offset = parseInt($(this).data('offset'), 10) || 0;
-        that.render();
-      });
+      this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
+        this.addTapClass(e.currentTarget, _.bind(function () {
+          this.offset = parseInt($(this).data('offset'), 10) || 0;
+          this.render();
+        }, this));
+      }, this));
 
       $('#menu-blogs-list').scrollTop(0);
     }

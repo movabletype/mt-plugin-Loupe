@@ -35,8 +35,9 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
           e.preventDefault();
           e.stopPropagation();
           var route = $(e.currentTarget).data('route') || '';
-          this.addTapClass(e.currentTarget);
-          commands.execute('router:navigate', route);
+          this.addTapClass(e.currentTarget, function () {
+            commands.execute('router:navigate', route);
+          });
           return false;
         }, this));
       }, this));

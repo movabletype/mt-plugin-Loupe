@@ -12,10 +12,11 @@ function (Marionette, commands, CardItemView) {
     },
     handleReadmore: function (options) {
       this.$el.find('.readmore').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-        this.addTapClass(e.currentTarget);
-        this.loadingReadmore = true;
-        this.render();
-        this.fetch(options);
+        this.addTapClass(e.currentTarget, _.bind(function () {
+          this.loadingReadmore = true;
+          this.render();
+          this.fetch(options);
+        }, this));
       }, this));
     },
     handleItemViewNavigate: function () {
@@ -23,8 +24,9 @@ function (Marionette, commands, CardItemView) {
         e.preventDefault();
         e.stopPropagation();
         var route = $(e.currentTarget).data('route') || '';
-        this.addTapClass(e.currentTarget);
-        commands.execute('router:navigate', route);
+        this.addTapClass(e.currentTarget, function () {
+          commands.execute('router:navigate', route);
+        });
         return false;
       }, this));
     },

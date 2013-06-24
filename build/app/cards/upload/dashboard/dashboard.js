@@ -20,7 +20,7 @@ function (mtapi, device, commands, CardItemView, template) {
       this.dashboardShowWithPermission(this.perm && this.FileUploadSupport)
         .done(_.bind(function () {
         this.setTranslation();
-      }, this))
+      }, this));
     },
 
     onRender: function () {
@@ -74,9 +74,10 @@ function (mtapi, device, commands, CardItemView, template) {
         }, this));
 
         this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-          this.addTapClass(e.currentTarget);
-          this.ui.retryButton.remove();
-          upload(this.errorImages);
+          this.addTapClass(e.currentTarget, _.bind(function () {
+            this.ui.retryButton.remove();
+            upload(this.errorImages);
+          }, this));
         }, this));
 
         this.ui.uploadForm.on('change', function (e) {

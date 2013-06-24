@@ -12,7 +12,7 @@
         {{>cards_feedbacks_templates_content}}
       {{else}}
         {{#ifIs status eq="Approved"}}
-        <div class="ok contents-top-button button button-with-undo">
+        <div id="approved-button" class="ok contents-top-button button button-with-undo">
           <span class="button-icon icon-checkmark-circle"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}

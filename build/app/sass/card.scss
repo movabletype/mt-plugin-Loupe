@@ -50,6 +50,7 @@
   }
   .content {
     min-height: 300px;
+    height: 100%;
     position: relative;
     @include border-bottom-radius(8px);
     .no-item {
@@ -88,23 +89,18 @@
   }
   .button-disabled {
     color: #666;
-    background-color: #999;
-    @include background-image(linear-gradient(#999999, #999999 92%, #999999 92%, #999999));
-    &:hover {
-      background-color: #999;
-      @include background-image(linear-gradient(#999999, #999999 92%, #999999 92%, #999999));
+    background-color: $btn-disabled-color;
+    @include box-shadow(0 0 0 0 transparent, inset 0 0 0 0 transparent);
+    @include border-radius($radius);
+    &:hover {}
+    &.tapped, &:active, &:hover:active {
+      top: 0;
+      background-color: $btn-disabled-color;
+      @include box-shadow(0 0 0 0 transparent, inset 0 0 0 0 transparent);
     }
-    &.tapped {
-      background-color: #999;
-      @include background-image(linear-gradient(#999999, #999999 92%, #999999 92%, #999999));
-    }
-  }
-  .button-loading {
-    cursor: auto;
-    @include opacity(0.5);
   }
   .contents-top-button {
-    margin: 1rem 1rem 1.5rem;
+    margin: 1rem 0 1.5rem;
     background-color: $btn-attention-color;
     @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius-with-pie(radius);
@@ -119,12 +115,30 @@
     text-align: left;
   }
   .contents-top-button.ok {
-    background-color: #5d9b44;
-    @include background-image(linear-gradient(#5d9b44, #5d9b44 92%, #478235 92%, #527630));
+    background-color: $btn-basic-color;
+    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    @include border-radius($radius);
+    @include transition-duration(0.1s);
+    @include transition-timing-function(ease-in);
+    &:hover {}
+    &.tapped, &:active, &:hover:active {
+      top: 7px;
+      background-color: darken($btn-basic-color, 2%);
+      @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    }
   }
   .button-with-undo {
     cursor: auto;
     text-align: left;
+    @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    @include border-radius-with-pie(radius);
+    &.ok {
+      &:active, &:hover:active {
+        top: 0;
+        background-color: $btn-basic-color;
+        @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+      }
+    }
   }
   .button-icon {
     font-size: 20px;
@@ -148,6 +162,7 @@
     height: 100%;
     padding: 10px 15px;
     cursor: pointer;
+    line-height: 2.2rem;
   }
   .error {
     .message {

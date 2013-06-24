@@ -77,14 +77,16 @@ function (CardItemView, commands, template) {
       }
 
       this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-        this.addTapClass(e.currentTarget);
-        this.update('Approved');
+        this.addTapClass(e.currentTarget, _.bind(function () {
+          this.update('Approved');
+        }, this));
       }, this));
 
-      this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-        this.addTapClass(e.currentTarget);
-        this.update('Pending');
-      }, this))
+      this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
+        this.addTapClass($('#approved-button'), _.bind(function () {
+          this.update('Pending');
+        }, this));
+      }, this));
     },
 
     serializeData: function () {

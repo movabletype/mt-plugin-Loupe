@@ -54,7 +54,7 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
               tweetText: (data.title + ' ' + data.excerpt)
             }
           });
-        }, this))
+        }, this));
       } else {
         this.setTranslation();
       }
@@ -104,13 +104,15 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
         }
 
         this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-          this.addTapClass(e.currentTarget);
-          this.update('Publish')
+          this.addTapClass(e.currentTarget, _.bind(function () {
+            this.update('Publish');
+          }, this));
         }, this));
 
         this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-          this.addTapClass(e.currentTarget);
-          this.update('Review')
+          this.addTapClass(e.currentTarget, _.bind(function () {
+            this.update('Review');
+          }, this));
         }, this));
       }
     },

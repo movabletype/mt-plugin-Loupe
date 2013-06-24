@@ -67,9 +67,14 @@ function (Marionette, cache, commands, device, Trans) {
         }, this));
       }, this));
     },
-    addTapClass: function (el) {
+    addTapClass: function (el, callback) {
       var $el = $(el);
       $el.addClass('tapped');
+      setTimeout(function () {
+        if (callback) {
+          callback();
+        }
+      }, 100);
       setTimeout(function () {
         $el.removeClass('tapped');
       }, 300);
@@ -77,11 +82,12 @@ function (Marionette, cache, commands, device, Trans) {
     handleRefetch: function (options) {
       if (this.fetchError) {
         this.$el.hammer(this.hammerOpts).on('tap', '.refetch', _.bind(function (e) {
-          this.addTapClass(e.currentTarget);
-          this.loading = true;
-          this.fetchError = false;
-          this.render();
-          this.fetch(options);
+          this.addTapClass(e.currentTarget, _.bind(function () {
+            this.loading = true;
+            this.fetchError = false;
+            this.render();
+            this.fetch(options);
+          }, this));
         }, this));
       }
     },
