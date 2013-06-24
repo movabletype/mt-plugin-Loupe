@@ -4,6 +4,10 @@ function (Marionette, viewHeader, device, commands) {
   'use strict';
 
   return viewHeader.extend({
+    backButtonRoute: function () {
+      return this.card.id;
+    },
+
     serializeData: function () {
       var data = viewHeader.prototype.serializeData.apply(this);
       if (this.object) {

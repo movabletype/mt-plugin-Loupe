@@ -21,12 +21,20 @@ function (CardItemView, template, device, commands) {
       }, this));
     },
 
+    backButtonRoute: function () {
+      return ''
+    },
+
+    handleBackButton: function (e) {
+      this.addTapClass(e.currentTarget, _.bind(function () {
+        commands.execute('app:beforeTransition');
+        commands.execute('router:navigate', this.backButtonRoute());
+      }, this));
+    },
+
     onRender: function () {
       this.ui.backDashboardButton.hammer(device.options.hammer()).on('tap', _.bind(function (e) {
-        this.addTapClass(e.currentTarget, function () {
-          commands.execute('app:beforeTransition');
-          commands.execute('router:navigate', '');
-        });
+        this.handleBackButton(e);
       }, this));
 
       this.ui.shareButton.hammer(device.options.hammer()).on('tap', _.bind(function (e) {

@@ -50,34 +50,37 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
               item.num = num;
               selectedItems.push(item);
               var itemViewModel = this.collection.get(eid);
-              if (!itemViewModel) {
-                itemViewModel = new ItemViewModel({
-                  id: eid,
-                  blogId: this.blogId,
-                  num: num,
-                  pageviews: item.pageviews,
-                  unit: this.unit
-                });
 
-                itemViewModel.fetch({
-                  success: _.bind(function (resp) {
-                    this.collection.add(itemViewModel, {
-                      sort: true
-                    })
-                  }, this),
-                  error: _.bind(function () {
-                    if (DEBUG) {
-                      console.warn('could not get post ' + eid);
-                    }
-                    itemViewModel.set({
-                      title: item.title
-                    });
-                    this.collection.add(itemViewModel, {
-                      sort: true
-                    });
-                  }, this)
-                });
-              }
+              this.dfd.done(_.bind(function () {
+                if (!itemViewModel) {
+                  itemViewModel = new ItemViewModel({
+                    id: eid,
+                    blogId: this.blogId,
+                    num: num,
+                    pageviews: item.pageviews,
+                    unit: this.unit
+                  });
+
+                  itemViewModel.fetch({
+                    success: _.bind(function (resp) {
+                      this.collection.add(itemViewModel, {
+                        sort: true
+                      })
+                    }, this),
+                    error: _.bind(function () {
+                      if (DEBUG) {
+                        console.warn('could not get post ' + eid);
+                      }
+                      itemViewModel.set({
+                        title: item.title
+                      });
+                      this.collection.add(itemViewModel, {
+                        sort: true
+                      });
+                    }, this)
+                  });
+                }
+              }, this))
             }
           }, this);
           data.items = selectedItems;
@@ -120,6 +123,7 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
       this.collection = cache.get(this.blogId, 'toparticle_itemview_' + this.unit + '_collection') || cache.set(this.blogId, 'toparticle_itemview_' + this.unit + '_collection', new ItemViewCollection());
 
       this.setTranslation();
+      this.dfd = $.Deferred();
 
       if (!this.model.isSynced) {
         var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
@@ -144,6 +148,9 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
 
     onRender: function () {
       this.handleRefetch();
+      if (!this.loading && this.itemLoading) {
+        this.dfd.resolve();
+      }
     }
   });
 });
