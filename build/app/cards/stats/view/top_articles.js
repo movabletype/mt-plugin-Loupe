@@ -35,7 +35,14 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
         data = _.extend(data, this.model.toJSON());
         if (data.items && data.items.length) {
           var count = this.numberOfArticles;
-          _.each(data.items, function (item) {
+
+          var entries = _.filter(data.items, function (item) {
+            return item.entry && item.entry.id;
+          }) || [];
+
+          data.count = entries.length;
+
+          _.each(entries, function (item) {
             var eid = item.entry ? item.entry.id : null;
             if (count && eid) {
               count = count - 1;
