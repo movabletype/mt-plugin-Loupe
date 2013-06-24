@@ -272,7 +272,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'app/js/main.js': 'app/js/main.preprocess'
+          'app/js/main.js': 'app/preprocesses/main.preprocess'
         }
       },
       appcache: {
@@ -283,7 +283,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'build/manifest.appcache': 'app/etc/manifest.preprocess.appcache'
+          'build/manifest.appcache': 'app/preprocesses/manifest.preprocess.appcache'
         }
       }
     },

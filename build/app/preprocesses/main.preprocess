@@ -1,5 +1,5 @@
 require.config(
-<!-- @include require.config.json -->
+<!-- @include ../js/require.config.json -->
 );
 
 window.DEBUG = true;
