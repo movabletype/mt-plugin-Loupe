@@ -19,7 +19,7 @@
         <div class="body">{{sanitize body}}</div>
       {{else}}
         {{#ifIs status eq="Publish"}}
-        <div class="ok contents-top-button button button-with-undo">
+        <div id="published-button" class="ok contents-top-button button button-with-undo">
           <span class="button-icon icon-checkmark-circle"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}

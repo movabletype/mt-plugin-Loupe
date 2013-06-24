@@ -111,7 +111,7 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
         }, this));
 
         this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-          this.addTapClass(e.currentTarget, _.bind(function () {
+          this.addTapClass($('#published-button'), _.bind(function () {
             this.update('Review');
           }, this));
         }, this));
