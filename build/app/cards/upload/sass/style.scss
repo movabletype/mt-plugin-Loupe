@@ -21,6 +21,11 @@
       height: 100%;
       padding: 10px;
     }
+    @include transition-duration(0);
+    &.tapped, &:active, &:hover:active {
+      top: 0;
+      @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    }
   }
   .error .message {
     height: auto;
