@@ -31,11 +31,11 @@
   <div id="reply-textarea-container">
     {{#if error}}
     <div class="error">
-      <span class="message"><span class="message-inner">{{#trans trans}}replay failed{{/trans}}</span></span>
+      <span class="message"><span class="message-inner">{{#trans trans}}{{error}}{{/trans}}</span></span>
     </div>
     {{/if}}
     <textarea id="reply-textarea">{{body}}</textarea>
-    <div id="do-reply-button" class="button">{{#trans trans}}Reply{{/trans}}</div>
+    <div id="do-reply-button" class="button">{{#trans trans}}Post the reply{{/trans}}</div>
   </div>
   {{/if}}
   {{/if}}
