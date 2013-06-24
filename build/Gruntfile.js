@@ -159,7 +159,6 @@ module.exports = function (grunt) {
       afterBuild: [
           'build/build.txt',
           'build/css/*',
-          'build/etc',
           'build/index.html',
           'build/jade',
           'build/js/boot.js',
@@ -184,6 +183,7 @@ module.exports = function (grunt) {
           'build/js/vent.js',
           'build/js/views',
           'build/lib',
+          'build/preprocesses',
           'build/sass',
           'build/template',
           'build/templates',
