@@ -83,10 +83,11 @@ function (CardItemView, cache, device, commands, Trans, moment, momentLang, Coll
           this.model.set(this.model.parse(resp));
           this.render();
         }, this),
-        error: _.bind(function () {
+        error: _.bind(function (resp) {
           if (DEBUG) {
             console.log('failed update');
           }
+          this.error = resp.error && resp.error.message ? resp.error.message : 'Acception failed';
           this.loading = false;
           this.acceptionFailed = true;
           this.render();

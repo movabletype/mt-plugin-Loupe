@@ -3,7 +3,7 @@
   {{#if perm}}
     {{>js_views_card_partials_loading}}
     {{#if acceptionFailed}}
-        <div class="acception-failed error"><span class="message"><span class="message-inner">{{#trans trans}}Acception failed{{/trans}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
+        <div class="acception-failed error"><span class="message"><span class="message-inner">{{#trans trans}}{{error}}{{/trans}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
     {{/if}}
       {{#if fetchError}}
        <div class="error">

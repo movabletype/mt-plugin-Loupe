@@ -33,6 +33,9 @@
     right: 0;
     left: 0;
     z-index: 13;
+    .message {
+      height: 230px;
+    }
   }
   .content {
     min-height: 320px;
