@@ -36,20 +36,26 @@ function (Marionette, device, commands, template) {
       var $blognameInner = this.$el.find('#blogname-inner');
       var $loupeCircle = this.$el.find('#blogname-circle');
       var $blognameArrow = this.ui.blognameArrow;
-      var offset = $blognameInner.offset();
-      var width = $blognameInner.width();
-      $loupeCircle.offset({
-        left: offset.left - $loupeCircle.outerWidth(true)
-      })
-        .css({
-        display: 'block'
-      });
-      $blognameArrow.offset({
-        left: offset.left + width
-      })
-        .css({
-        display: 'block'
-      });
+      if ($blognameInner) {
+        var offset = $blognameInner.offset();
+        var width = $blognameInner.width();
+        if ($loupeCircle) {
+          $loupeCircle.offset({
+            left: offset.left - $loupeCircle.outerWidth(true)
+          })
+            .css({
+            display: 'block'
+          });
+        }
+        if ($blognameArrow) {
+          $blognameArrow.offset({
+            left: offset.left + width
+          })
+            .css({
+            display: 'block'
+          });
+        }
+      }
     },
 
     onRender: function () {
