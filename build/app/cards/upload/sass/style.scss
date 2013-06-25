@@ -36,6 +36,19 @@
     padding: 1em 0 1em;
     padding: 1rem 0 1.5rem;
   }
+  #upload-file-uploading .icon-loading{
+    color: $white;
+    font-size: 24px;
+    width: 24px;
+    display: block;
+    margin: 0 auto;
+    @each $vendor in -moz-,-webkit-,-ms-,-o-,null {
+      #{$vendor}animation-duration: 1s;
+      #{$vendor}animation-name: loading;
+      #{$vendor}animation-iteration-count: infinite;
+      #{$vendor}animation-timing-function: linear;
+    }
+  }
   .error .message {
     height: auto;
     padding: 0 1em;
@@ -64,4 +77,34 @@
     visibility: visible;
     margin: 10px;
   }
+}
+
+@-webkit-keyframes loading {
+  0% { -webkit-transform: rotate(360deg) }
+  50% { -webkit-transform: rotate(180deg) }
+  100% { -webkit-transform: rotate(0deg) }
+}
+
+@-moz-keyframes loading {
+  0% { -moz-transform: rotate(360deg) }
+  50% { -moz-transform: rotate(180deg) }
+  100% { -moz-transform: rotate(0deg) }
+}
+
+@-ms-keyframes loading {
+  0% { -ms-transform: rotate(360deg) }
+  50% { -ms-transform: rotate(180deg) }
+  100% { -ms-transform: rotate(0deg) }
+}
+
+@-o-keyframes loading {
+  0% { -o-transform: rotate(360deg) }
+  50% { -o-transform: rotate(180deg) }
+  100% { -o-transform: rotate(0deg) }
+}
+
+@keyframes loading {
+  0% { transform: rotate(360deg) }
+  50% { transform: rotate(180deg) }
+  100% { transform: rotate(0deg) }
 }
