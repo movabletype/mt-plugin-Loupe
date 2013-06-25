@@ -18,6 +18,7 @@ define(['backbone', 'moment', 'js/mtapi', 'cards/feedbacks/models/comments_model
 
       var params = {
         limit: options.limit,
+        entryStatus: 'Publish'
       }
 
       if (options.offset) {
