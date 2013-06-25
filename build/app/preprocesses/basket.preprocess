@@ -1,0 +1,30 @@
+<!-- @include ../lib/basket/basket.full.min.js -->
+
+(function () {
+  var el = document.getElementById('main-script'),
+    libPath;
+
+  if (el.dataset) {
+    libPath = el.dataset.base;
+  } else {
+    libPath = el.getAttribute('data-base');
+  }
+
+  basket.require({
+    url: libPath + '/js/vendor.js',
+    unique: <!-- @echo buildTime -->
+  }).then(function () {
+    basket.require({
+      url: libPath + '/js/template.js',
+      unique: <!-- @echo buildTime -->
+    }, {
+      url: libPath + '/js/card.js',
+      unique: <!-- @echo buildTime -->
+    }, {
+      url: libPath + '/js/app.js',
+      unique: <!-- @echo buildTime -->
+    }).then(function () {
+      <!-- @include ../js/boot.js -->
+    });
+  });
+})();

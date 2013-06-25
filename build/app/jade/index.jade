@@ -24,14 +24,10 @@ html(manifest=manifestFile)
       script(src='#{libPath}/ie/selectivizr/selectivizr-min.js')
       script(src='#{libPath}/ie/PIE/PIE_IE678_uncompressed.js')
 
-
     if dev
       script#main-script(data-mtapi='#{mtApiCGIPath}', data-base='#{libPath}', data-main='#{libPath}/js/main', src='#{libPath}/lib/require.js')
     else
-      script(src='#{libPath}/js/vendor.js')
-      script(src='#{libPath}/js/template.js')
-      script(src='#{libPath}/js/card.js')
-      script#main-script(data-mtapi='#{mtApiCGIPath}', data-base='#{libPath}', src='#{libPath}/js/app.js')
+      script#main-script(data-mtapi='#{mtApiCGIPath}', data-base='#{libPath}', src='#{libPath}/js/basket.js')
   body
     #container
       #menu

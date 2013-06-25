@@ -285,6 +285,28 @@ module.exports = function (grunt) {
         files: {
           'build/manifest.appcache': 'app/preprocesses/manifest.preprocess.appcache'
         }
+      },
+      basket: {
+        options: {
+          inline: true,
+          context: {
+            buildTime: Date.now()
+          }
+        },
+        files: {
+          'build/js/basket.js': 'app/preprocesses/basket.preprocess'
+        }
+      },
+      easeljs: {
+        options: {
+          inline: true,
+          context: {
+            buildTime: Date.now()
+          }
+        },
+        files: {
+          'app/lib/EaselJS/easeljs.wrap.js': 'app/preprocesses/easeljs.preprocess'
+        }
       }
     },
     connect: {
@@ -445,6 +467,29 @@ module.exports = function (grunt) {
         }
       }
     },
+    uglify: {
+      options: {
+        beautify: {
+          width: 1000000
+        },
+        compress: {
+          sequences: false,
+          global_defs: {
+            DEBUG: false,
+            Mock: false
+          },
+          unsafe: true
+        },
+        warnings: true,
+        mangle: true,
+        unsafe: true
+      },
+      basket: {
+        files: {
+          'build/js/basket.js': ['build/js/basket.js']
+        }
+      },
+    },
     requirejs: {
       test: {
         options: {
@@ -499,11 +544,11 @@ module.exports = function (grunt) {
               exclude: ['vendor']
             }, {
               name: 'app',
-              include: ['boot', 'js/trans'],
+              include: ['js/trans'],
               exclude: ['vendor', 'template']
             }, {
               name: 'card',
-              include: cardLibs.concat(cardTemplates),
+              include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
               exclude: ['vendor', 'template', 'app']
             }, {
               name: 'l10n/de',
@@ -594,6 +639,8 @@ module.exports = function (grunt) {
       'requirejs:build',
       'clean:afterBuild',
       'string-replace',
+      'preprocess:basket',
+      'uglify:basket',
       'copy:beforeConcat',
       'cssmin:build',
       'copy:build',
