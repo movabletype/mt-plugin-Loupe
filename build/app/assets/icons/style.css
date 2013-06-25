@@ -27,7 +27,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.icon-arrow-left, .icon-menu, .icon-checkmark, .icon-pen, .icon-user, .icon-arrow-right, .icon-cog, .icon-bubble, .icon-paper-plane, .icon-undo, .icon-share, .icon-twitter, .icon-cancel-circle, .icon-arrow-up, .icon-arrow-down, .icon-arrow-down-right, .icon-arrow-up-right, .icon-arrow-right-2, .icon-checkmark-circle {
+.icon-user, .icon-arrow-down-right, .icon-arrow-up-right, .icon-arrow-right, .icon-arrow-up, .icon-arrow-down, .icon-arrow, .icon-upload, .icon-undo-arrow, .icon-twitter, .icon-share, .icon-loading, .icon-comment, .icon-close, .icon-check, .icon-browser, .icon-arrow-left, .icon-upload-fail {
 	font-family: 'MTIcon';
 	speak: none;
 	font-style: normal;
@@ -37,60 +37,59 @@ you can use the generic selector below, but it's slower:
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 }
-.icon-arrow-left:before {
-	content: "\3c";
-}
-.icon-menu:before {
-	content: "\3d";
-}
-.icon-checkmark:before {
-	content: "\2713";
-}
-.icon-pen:before {
-	content: "\23";
-}
 .icon-user:before {
 	content: "\6f";
 }
-.icon-arrow-right:before {
-	content: "\3e";
-}
-.icon-cog:before {
-	content: "\2a";
-}
-.icon-bubble:before {
-	content: "\63";
-}
-.icon-paper-plane:before {
-	content: "\74";
-}
-.icon-undo:before {
-	content: "\21";
-}
-.icon-share:before {
-	content: "\22";
-}
-.icon-twitter:before {
-	content: "\24";
-}
-.icon-cancel-circle:before {
-	content: "\78";
-}
-.icon-arrow-up:before {
-	content: "\25b4";
-}
-.icon-arrow-down:before {
-	content: "\25be";
-}
 .icon-arrow-down-right:before {
-	content: "\e000";
+	content: "\64";
 }
 .icon-arrow-up-right:before {
-	content: "\e001";
+	content: "\75";
 }
-.icon-arrow-right-2:before {
-	content: "\e002";
+.icon-arrow-right:before {
+	content: "\3d";
 }
-.icon-checkmark-circle:before {
-	content: "\e003";
+.icon-arrow-up:before {
+	content: "\5e";
+}
+.icon-arrow-down:before {
+	content: "\62";
+}
+.icon-arrow:before {
+	content: "\3e";
+}
+.icon-upload:before {
+	content: "\23";
+}
+.icon-undo-arrow:before {
+	content: "\24";
+}
+.icon-twitter:before {
+	content: "\25";
+}
+.icon-share:before {
+	content: "\26";
+}
+.icon-loading:before {
+	content: "\27";
+}
+.icon-comment:before {
+	content: "\28";
+}
+.icon-close:before {
+	content: "\29";
+}
+.icon-check:before {
+	content: "\2a";
+}
+.icon-browser:before {
+	content: "\2b";
+}
+.icon-arrow-left:before {
+	content: "\3c";
+}
+.icon-upload-fail:before {
+	content: "\21";
+}
+;
 }

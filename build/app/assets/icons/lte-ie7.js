@@ -6,25 +6,24 @@ window.onload = function() {
 		el.innerHTML = '<span style="font-family: \'MTIcon\'">' + entity + '</span>' + html;
 	}
 	var icons = {
-			'icon-arrow-left' : '&#x3c;',
-			'icon-menu' : '&#x3d;',
-			'icon-checkmark' : '&#x2713;',
-			'icon-pen' : '&#x23;',
 			'icon-user' : '&#x6f;',
-			'icon-arrow-right' : '&#x3e;',
-			'icon-cog' : '&#x2a;',
-			'icon-bubble' : '&#x63;',
-			'icon-paper-plane' : '&#x74;',
-			'icon-undo' : '&#x21;',
-			'icon-share' : '&#x22;',
-			'icon-twitter' : '&#x24;',
-			'icon-cancel-circle' : '&#x78;',
-			'icon-arrow-up' : '&#x25b4;',
-			'icon-arrow-down' : '&#x25be;',
-			'icon-arrow-down-right' : '&#xe000;',
-			'icon-arrow-up-right' : '&#xe001;',
-			'icon-arrow-right-2' : '&#xe002;',
-			'icon-checkmark-circle' : '&#xe003;'
+			'icon-arrow-down-right' : '&#x64;',
+			'icon-arrow-up-right' : '&#x75;',
+			'icon-arrow-right' : '&#x3d;',
+			'icon-arrow-up' : '&#x5e;',
+			'icon-arrow-down' : '&#x62;',
+			'icon-arrow' : '&#x3e;',
+			'icon-upload' : '&#x23;',
+			'icon-undo-arrow' : '&#x24;',
+			'icon-twitter' : '&#x25;',
+			'icon-share' : '&#x26;',
+			'icon-loading' : '&#x27;',
+			'icon-comment' : '&#x28;',
+			'icon-close' : '&#x29;',
+			'icon-check' : '&#x2a;',
+			'icon-browser' : '&#x2b;',
+			'icon-arrow-left' : '&#x3c;',
+			'icon-upload-fail' : '&#x21;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
@@ -43,4 +42,4 @@ window.onload = function() {
 			addIcon(el, icons[c[0]]);
 		}
 	}
-};
+};};
