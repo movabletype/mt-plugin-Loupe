@@ -78,7 +78,7 @@ $count-background-color: #efb02e;
     width: 44px;
     height: 44px;
     margin-right: 10px;
-    @include border-radius-with-pie(100px);
+    @include border-radius(100px);
   }
   .circle-inner {
     border: 1px solid #dddddd;
@@ -88,7 +88,7 @@ $count-background-color: #efb02e;
     background-size: cover;
     width: 100%;
     height: 100%;
-    @include border-radius-with-pie(100px);
+    @include border-radius(100px);
   }
 }
 

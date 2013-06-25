@@ -29,7 +29,9 @@
 </div>
 {{/if}}
 {{#unless uploadError.length}}
+{{#unless uploadedImages.length}}
 <div class="upload-image icon-upload"></div>
+{{/unless}}
 {{/unless}}
 <div id="upload-file" class="button">
   <label for="upload-file-input">

@@ -1,3 +1,5 @@
+@import "_helpers";
+
 .ie8 {
   #app-building {
     -pie-background: url("assets/images/indicator-white.gif") no-repeat center center / 30px;
@@ -5,11 +7,28 @@
   #header {
     #header-main {
       background-color: transparent;
+      .circle, .circle-inner {
+        @include border-radius-with-pie(100px);
+        position: absolute;
+      }
     }
     #logo {
       .logo-inner {
         -pie-background: url("assets/images/sixapartkk_bigger.png") no-repeat center center / 105%;
       }
+    }
+  }
+  #menu-blogs-list {
+    .circle, .circle-inner {
+      @include border-radius-with-pie(100px);
+      position: absolute;
+    }
+  }
+  .header-button {
+    border: 1px solid #cccccc;
+    margin-left: 0;
+    &:before {
+      display: none;
     }
   }
   #app {

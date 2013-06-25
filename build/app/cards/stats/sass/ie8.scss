@@ -4,4 +4,14 @@
       min-height: 80px;
     }
   }
+  #stats-post {
+    .pageviews {
+      .label {
+        min-height: 18px;
+      }
+      .pageview {
+        min-height: 18px;
+      }
+    }
+  }
 }

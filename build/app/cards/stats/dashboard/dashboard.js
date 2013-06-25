@@ -126,9 +126,10 @@ define([
             test: 'canvas',
             type: 'morris.bar',
             data: graphData,
+            yLength: 1,
             chartColors: ['#fed563'],
-            gridLineColor: '#ffffff',
-            gridTextColor: '#ffffff',
+            gridLineColor: '#f3f3f5',
+            gridTextColor: '#f3f3f5',
             hideHover: 'always'
           },
           height: 170

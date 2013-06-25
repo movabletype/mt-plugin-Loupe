@@ -22,7 +22,7 @@ function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareV
 
     setShareHandler: function () {
       commands.setHandler('share:show', _.bind(function (options) {
-        this.$el.append('<section id="share">');
+        this.$el.append('<section id="share"></section>');
         this.addRegion('share', '#share');
         this.share.show(new ShareView(options));
       }, this));
