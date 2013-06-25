@@ -24,7 +24,7 @@
     "app": "js/app",
     "text": "lib/requirejs-text/text",
     "json": "lib/requirejs-plugins/src/json",
-    "easeljs": "lib/EaselJS/easeljs-0.6.1.min",
+    "easeljs": "lib/EaselJS/easeljs.wrap",
     "perf": "js/perf"
   },
   "shim": {
