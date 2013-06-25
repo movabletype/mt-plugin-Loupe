@@ -95,10 +95,14 @@ textarea, input {
   }
   #share-button {
     color: #444;
-    padding: 5px 10px;
+    padding: 5px 10px 5px 14px;
     background-color: #e0e0e0;
     border: 1px solid #cccccc;
-    font-size: 30px;
+    font-size: 20px;
+    line-height: 30px;
+    display: block;
+    width: 50px;
+    text-align: center;
     @include border-radius-with-pie(4px);
     &.tapped {
       background-color: #ccc;
@@ -406,7 +410,7 @@ textarea, input {
     position: absolute;
     right: 10px;
     top: 10px;
-    font-size: 50px;
+    font-size: 40px;
     cursor: pointer;
   }
   h1 {

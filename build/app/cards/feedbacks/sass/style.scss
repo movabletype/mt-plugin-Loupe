@@ -5,8 +5,11 @@
 
 #card-feedbacks {
   li {
+    a {
+      padding: 20px;
+    }
     .item-asset {
-      font-size: 50px;
+      font-size: 40px;
       color: #999;
       display: block;
       width: 100%;
@@ -79,7 +82,7 @@
   }
   #reply-complete {
     background-color: #666;
-    @include box-shadow(0px 8px 0px 0px darken(#666, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    @include box-shadow(0px 8px 0px 0px darken(#666666, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius($radius);
     &:hover {}
     &.tapped, &:active, &:hover:active {

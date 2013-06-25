@@ -156,7 +156,7 @@
   }
   .button-undo-inner {
     display: block;
-    font-size: 22px;
+    font-size: 18px;
     border-left: 1px solid #aed399;
     width: 100%;
     height: 100%;
@@ -188,6 +188,10 @@
       border-bottom: 1px solid white;
       position: relative;
       @include pie-clearfix;
+      .item-asset-container {
+        display: table-cell;
+        vertical-align: middle;
+      }
       .circle {
         &.image {
           background-color: transparent;

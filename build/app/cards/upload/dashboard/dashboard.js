@@ -49,7 +49,7 @@ function (mtapi, device, commands, CardItemView, template) {
               autoRenameIfExists: true
             },
               _.bind(function (resp) {
-              if (!resp.error) {
+              if (resp.error) {
                 dfd.resolve();
                 this.uploadedImages.push(resp);
               } else {

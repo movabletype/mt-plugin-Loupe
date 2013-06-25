@@ -13,7 +13,7 @@
       {{else}}
         {{#ifIs status eq="Approved"}}
         <div id="approved-button" class="ok contents-top-button button button-with-undo">
-          <span class="button-icon icon-checkmark-circle"></span>
+          <span class="button-icon icon-check"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}
               {{#trans trans}}Approved!{{/trans}}
@@ -21,7 +21,7 @@
               {{#trans trans}}Approved{{/trans}}
             {{/if}}
           {{#if commentApprovePerm}}
-          <span id="comment-undo" class="button-undo"><span class="button-undo-inner icon-undo"></span></span>
+          <span id="comment-undo" class="button-undo"><span class="button-undo-inner icon-undo-arrow"></span></span>
           </span>
           {{/if}}
         </div>

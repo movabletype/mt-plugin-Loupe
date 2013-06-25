@@ -30,7 +30,7 @@ define([
             } else if (this.diff > 0) {
               data.diffIcon = 'icon-arrow-up-right';
             } else {
-              data.diffIcon = 'icon-arrow-right-2';
+              data.diffIcon = 'icon-arrow-right';
             }
           }
         }

@@ -19,7 +19,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      padding: 10px;
+      padding: 1rem;
     }
     @include transition-duration(0);
     &.tapped, &:active, &:hover:active {
@@ -27,9 +27,29 @@
       @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
   }
+  .upload-image {
+    font-size: 70px;
+    color: #999;
+    text-align: center;
+    display: block;
+    padding: 1rem 0 1.5rem;
+  }
   .error .message {
     height: auto;
-    padding-bottom: 0;
+    padding: 0 1rem;
+    .message-inner {
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.5;
+      padding: 1rem;
+      margin: 1rem 1rem 1.5rem;
+      min-height: 2.469rem;
+      background-color: $btn-disabled-color;
+      @include border-radius($radius);
+      p {
+        margin: 0;
+      }
+    }
   }
 }
 

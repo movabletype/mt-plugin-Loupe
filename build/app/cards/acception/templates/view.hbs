@@ -20,14 +20,14 @@
       {{else}}
         {{#ifIs status eq="Publish"}}
         <div id="published-button" class="ok contents-top-button button button-with-undo">
-          <span class="button-icon icon-checkmark-circle"></span>
+          <span class="button-icon icon-check"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}
               {{#trans trans}}Published!{{/trans}}
             {{else}}
               {{#trans trans}}Published{{/trans}}
             {{/if}}
-            <span id="accept-undo" class="button-undo"><span class="button-undo-inner icon-undo"></span></span>
+            <span id="accept-undo" class="button-undo"><span class="button-undo-inner icon-undo-arrow"></span></span>
           </span>
         </div>
         <div class="title">{{title}}</div>

@@ -4,6 +4,8 @@
 {{>js_views_card_partials_title}}
 
 <div class="contents">
+<form id="upload-file-form" method="post" name="upload-file">
+  <input type="file" id="upload-file-input" accept="image/*"/>
 {{#each uploadedImages}}
 <div class="uploaded-image">
   <img src="{{this.url}}">
@@ -12,23 +14,23 @@
 </div>
 {{#if uploadError.length}}
 <div class="error">
+  <div class="upload-image icon-upload-fail"></div>
   <div class="message"><div class="message-inner">
   <p>{{#trans trans}}Failed uploading{{/trans}}</p>
   {{#each uploadError}}
-  <p>{{this.message}}</p>
+  <p>{{#if this}}{{this.message}}{{/if}}</p>
   {{/each}}
   </div></div>
 </div>
-{{/if}}
-<form id="upload-file-form" method="post" name="upload-file">
-  <input type="file" id="upload-file-input" accept="image/*"/>
-{{#if uploadError.length}}
 <div id="retry" class="upload-file button">
   <label for="upload-file-input">
   {{#trans trans}}retry{{/trans}}
   </label>
 </div>
 {{/if}}
+{{#unless uploadError.length}}
+<div class="upload-image icon-upload"></div>
+{{/unless}}
 <div id="upload-file" class="button">
   <label for="upload-file-input">
     {{#if uploadCompleted}}
