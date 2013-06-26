@@ -101,13 +101,14 @@
   .button-disabled {
     color: #666;
     background-color: $btn-disabled-color;
-    @include box-shadow(0px 0px 0px 0px transparent, inset 0px 0px 0px 0px transparent);
+    cursor: auto;
+    @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
     @include border-radius($radius);
     &:hover {}
     &.tapped, &:active, &:hover:active {
       top: 0;
       background-color: $btn-disabled-color;
-      @include box-shadow(0px 0px 0px 0px transparent, inset 0px 0px 0px 0px transparent);
+      @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
     }
   }
   .contents-top-button {
