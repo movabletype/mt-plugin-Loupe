@@ -17,6 +17,7 @@ function (mtapi, device, commands, CardItemView, template) {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
       this.perm = this.userIsSystemAdmin() || this.userHasPermission('upload');
       this.FileUploadSupport = this.checkSupport();
+      this.supportedFileAPI = this.checkFileAPISupport();
       this.isLabelNeeded = this.checkNeedLabel();
       this.dashboardShowWithPermission(this.perm && this.FileUploadSupport)
         .done(_.bind(function () {
@@ -30,8 +31,8 @@ function (mtapi, device, commands, CardItemView, template) {
           this.$el.parent().hide();
         }
 
-        var upload = _.bind(function (files) {
-          if (this.ui.uploadForm.val()) {
+        var upload = _.bind(function (files, retry) {
+          if (this.ui.uploadForm.val() || retry) {
             this.uploadedImages = [];
             this.uploadError = [];
             this.errorImages = [];
@@ -44,7 +45,8 @@ function (mtapi, device, commands, CardItemView, template) {
               dfds.push(dfd);
               mtapi.api.uploadAsset(this.blogId, {
                 file: file,
-                autoRenameIfExists: true
+                autoRenameIfExists: true,
+                bustCache: (new Date()).valueOf()
               },
                 _.bind(function (resp) {
                 if (!resp.error) {
@@ -80,12 +82,12 @@ function (mtapi, device, commands, CardItemView, template) {
         this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {
             this.ui.retryButton.remove();
-            upload(this.errorImages);
+            upload(this.errorImages, true);
           }, this));
         }, this));
 
         this.ui.uploadForm.on('change', function (e) {
-          if ((window.FileReader && device.platform !== 'windows-phone')) {
+          if (this.supportedFileAPI) {
             upload(e.target.files);
           } else {
             upload([$('#upload-file-input').get(0)]);
@@ -99,6 +101,14 @@ function (mtapi, device, commands, CardItemView, template) {
         return false;
       } else {
         return true;
+      }
+    },
+
+    checkFileAPISupport: function () {
+      if (window.FileReader && device.platform !== 'windows-phone') {
+        return true;
+      } else {
+        return false;
       }
     },
 
@@ -121,6 +131,7 @@ function (mtapi, device, commands, CardItemView, template) {
         data.uploading = this.uploading ? true : false;
         data.uploadCompleted = this.uploadCompleted ? true : false;
         data.uploadedImages = this.uploadedImages;
+        data.supportedFileAPI = this.supportedFileAPI;
         data.isLabelNeeded = this.isLabelNeeded;
       }
       data.perm = this.perm;

@@ -64,7 +64,7 @@
     padding: 0 1em;
     padding: 0 1rem;
     .message-inner {
-      color: #666;
+      color: $white;
       font-size: 1em;
       font-size: 1rem;
       line-height: 1.5;
@@ -76,7 +76,13 @@
       background-color: $btn-disabled-color;
       @include border-radius($radius);
       p {
+        padding-top: 10px;
         margin: 0;
+        text-align: left;
+      }
+      .error-heading {
+        padding-top: 0;
+        text-align: center;
       }
     }
   }

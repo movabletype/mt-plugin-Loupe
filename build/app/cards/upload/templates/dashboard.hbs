@@ -14,17 +14,17 @@
 <div class="error">
   <div class="upload-image icon-upload-fail"></div>
   <div class="message"><div class="message-inner">
-  <p>{{#trans trans}}Failed uploading{{/trans}}</p>
+  <p class="error-heading">{{#trans trans}}Failed uploading{{/trans}}</p>
   {{#each uploadError}}
   <p>{{#if this}}{{this.message}}{{/if}}</p>
   {{/each}}
   </div></div>
 </div>
+{{#if supportedFileAPI}}
 <div id="retry" class="upload-file button">
-  <label for="upload-file-input">
-  {{#trans trans}}retry{{/trans}}
-  </label>
+    {{#trans trans}}retry{{/trans}}
 </div>
+{{/if}}
 {{/if}}
 {{#unless uploadError.length}}
 {{#unless uploadedImages.length}}
