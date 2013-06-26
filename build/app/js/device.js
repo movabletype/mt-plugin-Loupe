@@ -28,6 +28,10 @@ define(function () {
       this.browser = 'ie';
       this.browserVersion = this.parseVersion(/(?:MSIE|IE)\s*([\.0-9]+)/);
       this.isIE8 = parseInt(this.browserVersion, 10) === 8;
+    } else if (/Firefox/.test(this.ua)) {
+      this.isFirefox = true;
+      this.browser = 'firefox';
+      this.browserVersion = this.parseVersion(/(?:Firefox\/)\s*([\.0-9]+)/);
     }
 
     var arr;

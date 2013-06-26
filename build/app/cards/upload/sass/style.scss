@@ -11,10 +11,12 @@
   }
   #upload-file-input {
     visibility: hidden;
+    position: absolute;
   }
   #upload-file {
+    display: block;
     padding: 0;
-    label {
+    .upload-file-input-inner {
       cursor: pointer;
       display: block;
       width: 100%;
@@ -22,31 +24,39 @@
       padding: 1em;
       padding: 1rem;
     }
-    @include transition-duration(0);
-    &.tapped, &:active, &:hover:active {
-      top: 0;
-      @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    }
   }
   .upload-image {
     font-size: 70px;
     color: #999;
     text-align: center;
     display: block;
-    padding: 1em 0 1em;
-    padding: 1rem 0 1.5rem;
+    padding: 0.5em 0 0.5em;
+    padding: 2.5rem 0 1.5rem;
   }
-  #upload-file-uploading .icon-loading{
-    color: $white;
-    font-size: 24px;
-    width: 24px;
-    display: block;
-    margin: 0 auto;
-    @each $vendor in -moz-,-webkit-,-ms-,-o-,null {
-      #{$vendor}animation-duration: 1s;
-      #{$vendor}animation-name: loading;
-      #{$vendor}animation-iteration-count: infinite;
-      #{$vendor}animation-timing-function: linear;
+  #upload-file-uploading {
+    display: none;
+    .loading-image {
+      color: $white;
+      font-size: 24px;
+      width: 24px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .now-uploading {
+    #upload-file {
+      display: none;
+    }
+    #upload-file-uploading {
+      display: block;
+      .loading-image {
+        @each $vendor in -moz-, -webkit-, -ms-, -o- {
+          #{$vendor}animation-duration: 1s;
+          #{$vendor}animation-name: loading;
+          #{$vendor}animation-iteration-count: infinite;
+          #{$vendor}animation-timing-function: linear;
+        }
+      }
     }
   }
   .error .message {
@@ -73,38 +83,78 @@
 }
 
 .ie8 {
-  #card-upload #upload-file-input {
-    visibility: visible;
-    margin: 10px;
+  #card-upload {
+    .upload-file-input-container {
+      text-align: center;
+    }
+    #upload-file-input {
+      visibility: visible;
+      position: static;
+      margin: 10px;
+    }
   }
 }
 
 @-webkit-keyframes loading {
-  0% { -webkit-transform: rotate(360deg) }
-  50% { -webkit-transform: rotate(180deg) }
-  100% { -webkit-transform: rotate(0deg) }
+  0% {
+    -webkit-transform: rotate(360deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
 }
+
 
 @-moz-keyframes loading {
-  0% { -moz-transform: rotate(360deg) }
-  50% { -moz-transform: rotate(180deg) }
-  100% { -moz-transform: rotate(0deg) }
+  0% {
+    -moz-transform: rotate(360deg);
+  }
+  50% {
+    -moz-transform: rotate(180deg);
+  }
+  100% {
+    -moz-transform: rotate(0deg);
+  }
 }
+
 
 @-ms-keyframes loading {
-  0% { -ms-transform: rotate(360deg) }
-  50% { -ms-transform: rotate(180deg) }
-  100% { -ms-transform: rotate(0deg) }
+  0% {
+    -ms-transform: rotate(360deg);
+  }
+  50% {
+    -ms-transform: rotate(180deg);
+  }
+  100% {
+    -ms-transform: rotate(0deg);
+  }
 }
+
 
 @-o-keyframes loading {
-  0% { -o-transform: rotate(360deg) }
-  50% { -o-transform: rotate(180deg) }
-  100% { -o-transform: rotate(0deg) }
+  0% {
+    -o-transform: rotate(360deg);
+  }
+  50% {
+    -o-transform: rotate(180deg);
+  }
+  100% {
+    -o-transform: rotate(0deg);
+  }
 }
 
+
 @keyframes loading {
-  0% { transform: rotate(360deg) }
-  50% { transform: rotate(180deg) }
-  100% { transform: rotate(0deg) }
+  0% {
+    transform: rotate(360deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }

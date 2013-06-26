@@ -127,7 +127,7 @@ define([
             type: 'morris.bar',
             data: graphData,
             yLength: 1,
-            chartColors: ['#fed563'],
+            chartColors: ['#55a038'],
             gridLineColor: '#f3f3f5',
             gridTextColor: '#f3f3f5',
             hideHover: 'always'

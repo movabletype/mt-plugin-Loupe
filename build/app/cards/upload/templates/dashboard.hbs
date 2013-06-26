@@ -5,13 +5,11 @@
 
 <form id="upload-file-form" method="post" name="upload-file">
 <div class="contents">
-  <input type="file" id="upload-file-input" accept="image/*"/>
 {{#each uploadedImages}}
 <div class="uploaded-image">
   <img src="{{this.url}}">
 </div>
 {{/each}}
-</div>
 {{#if uploadError.length}}
 <div class="error">
   <div class="upload-image icon-upload-fail"></div>
@@ -33,8 +31,14 @@
 <div class="upload-image icon-upload"></div>
 {{/unless}}
 {{/unless}}
+<div class="upload-file-input-container">
+  <input type="file" id="upload-file-input" accept="image/*"/>
+</div>
 <div id="upload-file" class="button">
+  {{#if isLabelNeeded}}
   <label for="upload-file-input">
+  {{/if}}
+  <span class="upload-file-input-inner">
     {{#if uploadCompleted}}
       {{#trans trans}}more upload{{/trans}}
     {{else}}
@@ -44,9 +48,15 @@
         {{#trans trans}}choose files{{/trans}}
       {{/if}}
     {{/if}}
+  </span>
+  {{#if isLabelNeeded}}
   </label>
+  {{/if}}
 </div>
-<div id="upload-file-uploading" class="upload-file button button-disabled" style="display:none"><span class="icon-loading"></span></div>
+<div id="upload-file-uploading" class="upload-file button button-disabled">
+  <span class="loading-image icon-loading"></span>
+</div>
+</div>
 </form>
 {{/if}}
 {{/if}}

@@ -67,8 +67,8 @@ function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Contro
             if (route.layout) {
               require([path + route.layout.replace(/\.js$/, '')], function (Layout) {
                 app.main.show(new Layout(params));
+                commands.execute('app:afterTransition');
               });
-              commands.execute('app:afterTransition');
             } else {
               params = _.extend(params, {
                 viewHeader: route.header,

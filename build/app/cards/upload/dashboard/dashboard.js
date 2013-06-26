@@ -17,6 +17,7 @@ function (mtapi, device, commands, CardItemView, template) {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
       this.perm = this.userIsSystemAdmin() || this.userHasPermission('upload');
       this.FileUploadSupport = this.checkSupport();
+      this.isLabelNeeded = this.checkNeedLabel();
       this.dashboardShowWithPermission(this.perm && this.FileUploadSupport)
         .done(_.bind(function () {
         this.setTranslation();
@@ -30,47 +31,50 @@ function (mtapi, device, commands, CardItemView, template) {
         }
 
         var upload = _.bind(function (files) {
-          this.uploadedImages = [];
-          this.uploadError = [];
-          this.errorImages = [];
-          this.uploading = true;
-          this.$el.find('#upload-file-uploading').css({
-            display: 'block'
-          });
-          this.$el.find('#upload-file').css({
-            display: 'none'
-          });
-          var dfds = [];
-          _.each(files, _.bind(function (file) {
-            var dfd = $.Deferred();
-            dfds.push(dfd);
-            mtapi.api.uploadAsset(this.blogId, {
-              file: file,
-              autoRenameIfExists: true
-            },
-              _.bind(function (resp) {
-              if (!resp.error) {
-                dfd.resolve();
-                this.uploadedImages.push(resp);
-              } else {
-                this.errorImages.push(file);
-                this.uploadError.push(resp.error);
-                dfd.reject();
-              }
+          if (this.ui.uploadForm.val()) {
+            this.uploadedImages = [];
+            this.uploadError = [];
+            this.errorImages = [];
+            this.uploading = true;
+            this.$el.addClass('now-uploading');
+
+            var dfds = [];
+            _.each(files, _.bind(function (file) {
+              var dfd = $.Deferred();
+              dfds.push(dfd);
+              mtapi.api.uploadAsset(this.blogId, {
+                file: file,
+                autoRenameIfExists: true
+              },
+                _.bind(function (resp) {
+                if (!resp.error) {
+                  dfd.resolve();
+                  this.uploadedImages.push(resp);
+                } else {
+                  this.errorImages.push(file);
+                  this.uploadError.push(resp.error);
+                  dfd.reject();
+                }
+                this.render();
+              }, this));
+            }, this));
+            $.when.apply(this, dfds).done(_.bind(function () {
+              this.uploadError = [];
+              this.uploadCompleted = true;
+            }, this)).always(_.bind(function () {
+              this.$el.removeClass('now-uploading');
+              this.uploading = false;
               this.render();
             }, this));
-          }, this));
-          $.when.apply(this, dfds).done(_.bind(function () {
-            this.uploadError = [];
-            this.uploadCompleted = true;
-          }, this)).always(_.bind(function () {
-            this.uploading = false;
-            this.render();
-          }, this));
+          }
         }, this);
 
         this.ui.uploadButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-          this.addTapClass(e.currentTarget);
+          this.addTapClass(e.currentTarget, _.bind(function () {
+            if (!this.isLabelNeeded) {
+              this.ui.uploadForm.click();
+            }
+          }, this));
         }, this));
 
         this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
@@ -98,6 +102,14 @@ function (mtapi, device, commands, CardItemView, template) {
       }
     },
 
+    checkNeedLabel: function () {
+      if (device.isIE && parseInt(device.browserVersion, 10) < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     serializeData: function () {
       var data = {};
       if (this.perm) {
@@ -109,6 +121,7 @@ function (mtapi, device, commands, CardItemView, template) {
         data.uploading = this.uploading ? true : false;
         data.uploadCompleted = this.uploadCompleted ? true : false;
         data.uploadedImages = this.uploadedImages;
+        data.isLabelNeeded = this.isLabelNeeded;
       }
       data.perm = this.perm;
       data.trans = this.trans;
