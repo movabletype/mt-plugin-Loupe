@@ -8,26 +8,26 @@ html(manifest=manifestFile)
     meta(name='msapplication-tap-highlight', content='no')
 
     title Loupe
-    link(rel='stylesheet', href='#{libPath}/assets/font/League-Gothic-fontfacekit/stylesheet.css')
-    link(rel='stylesheet', href='#{libPath}/assets/icons/style.css')
-    link(rel='stylesheet', href='#{libPath}/css/style.css')
+    link(rel='stylesheet', href!='#{libPath}/assets/font/League-Gothic-fontfacekit/stylesheet.css')
+    link(rel='stylesheet', href!='#{libPath}/assets/icons/style.css')
+    link(rel='stylesheet', href!='#{libPath}/css/style.css')
 
     if dev
-      script(src='#{mtApiPath}/app.js')
-      script(src='#{mtApiPath}/endpoints.js')
+      script(src!='#{mtApiPath}/app.js')
+      script(src!='#{mtApiPath}/endpoints.js')
     else
-      script(src='#{mtApiPath}/all.js')
+      script(src!='#{mtApiPath}/all.js')
 
     //if lte IE 8
-      script(src='#{libPath}/ie/console-polyfill/index.js')
-      script(src='#{libPath}/ie/html5shiv/html5shiv')
-      script(src='#{libPath}/ie/selectivizr/selectivizr-min.js')
-      script(src='#{libPath}/ie/PIE/PIE_IE678_uncompressed.js')
+      script(src!='#{libPath}/ie/console-polyfill/index.js')
+      script(src!='#{libPath}/ie/html5shiv/html5shiv')
+      script(src!='#{libPath}/ie/selectivizr/selectivizr-min.js')
+      script(src!='#{libPath}/ie/PIE/PIE_IE678_uncompressed.js')
 
     if dev
-      script#main-script(data-mtapi='#{mtApiCGIPath}', data-base='#{libPath}', data-main='#{libPath}/js/main', src='#{libPath}/lib/require.js')
+      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', data-main!='#{libPath}/js/main', src!='#{libPath}/lib/require.js')
     else
-      script#main-script(data-mtapi='#{mtApiCGIPath}', data-base='#{libPath}', src='#{libPath}/js/basket.js')
+      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', src!='#{libPath}/js/basket.js')
   body
     #container
       #menu

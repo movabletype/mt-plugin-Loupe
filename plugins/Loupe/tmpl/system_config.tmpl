@@ -1,0 +1,12 @@
+<mtapp:setting
+    id="loupe_status"
+    label="<__trans phrase="Status">">
+    <input type="checkbox" id="loupe_enabled" class="checkbox" name="enabled" value="1"<mt:if name="enabled"> checked="checked"</mt:if>/>
+    <label for="loupe_enabled"><__trans phrase="Enable Loupe"></label>
+</mtapp:setting>
+<mtapp:setting
+    id="loupe_url"
+    label="URL">
+    <mt:if name="support_directory_url"><mt:var name="support_directory_url"><mt:else><__trans phrase="(Support Directory URL)/"></mt:if>loupe/<input type="text" id="loupe_file" class="text path" name="file" value="<mt:var name="file">"/>
+</mtapp:setting>
+
