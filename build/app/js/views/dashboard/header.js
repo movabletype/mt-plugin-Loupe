@@ -43,18 +43,13 @@ function (Marionette, device, commands, template) {
           $loupeCircle.offset({
             left: offset.left - $loupeCircle.outerWidth(true)
           })
-            .css({
-            display: 'block'
-          });
         }
         if ($blognameArrow) {
           $blognameArrow.offset({
             left: offset.left + width
           })
-            .css({
-            display: 'block'
-          });
         }
+        this.$el.addClass('show');
       }
     },
 

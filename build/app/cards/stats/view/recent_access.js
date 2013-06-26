@@ -74,13 +74,16 @@ function (CardItemView, cache, commands, device, statsProvider, Model, Trans, te
           autoSized: false,
           pointSize: 6,
           barColor: "#efb330",
-          barBackgroundColor: "#353035",
+          barBackgroundColor: "#362c35",
           dateColor: "#444444",
           dateColorSaturday: "#4079e6",
           dateColorSunday: "#ec4b05",
+          dateLabelSize: 16,
+          labelSize: 22,
           labelColor: "#ffffff",
           showDate: true,
           barWidth: 40,
+          barMarginLeft: 35,
           barInterval: 10
         };
 

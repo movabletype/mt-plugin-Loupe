@@ -32,7 +32,7 @@ textarea, input {
   @include loading-base;
   background-color: $bg-color;
   background-color: rgba($bg-color, 0.5);
-  background-image: url("../assets/images/indicator-white.gif");
+  background-image: url("../assets/images/loading.gif");
   z-index: 9999;
 }
 
@@ -145,7 +145,7 @@ textarea, input {
     height: $header-inner-height;
     margin: 0;
   }
-  .icon-arrow-down {
+  #blogname-arrow {
     display: none;
     position: absolute;
     top: $header-padding-top;
@@ -160,6 +160,12 @@ textarea, input {
   .no-priviledges-error {
     text-align: center;
     margin: 100px 0;
+  }
+  .show {
+    #blogname-circle,
+    #blogname-arrow {
+      display: block;
+    }
   }
 }
 

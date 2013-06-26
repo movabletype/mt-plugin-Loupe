@@ -2,7 +2,7 @@
 
 .ie8 {
   #app-building {
-    -pie-background: url("assets/images/indicator-white.gif") no-repeat center center / 30px;
+    -pie-background: url("assets/images/loading.gif") no-repeat center center / 30px;
   }
   #header {
     #header-main {
@@ -10,11 +10,6 @@
       .circle, .circle-inner {
         @include border-radius-with-pie(100px);
         position: absolute;
-      }
-    }
-    #logo {
-      .logo-inner {
-        -pie-background: url("assets/images/sixapartkk_bigger.png") no-repeat center center / 105%;
       }
     }
   }

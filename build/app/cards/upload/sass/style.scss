@@ -35,12 +35,10 @@
   }
   #upload-file-uploading {
     display: none;
-    .loading-image {
-      color: $white;
-      font-size: 24px;
-      width: 24px;
-      display: block;
-      margin: 0 auto;
+    padding: 6px 0 0 0;
+    img {
+      width: 45px;
+      height: 45px;
     }
   }
   .now-uploading {
@@ -49,14 +47,6 @@
     }
     #upload-file-uploading {
       display: block;
-      .loading-image {
-        @each $vendor in -moz-, -webkit-, -ms-, -o- {
-          #{$vendor}animation-duration: 1s;
-          #{$vendor}animation-name: loading;
-          #{$vendor}animation-iteration-count: infinite;
-          #{$vendor}animation-timing-function: linear;
-        }
-      }
     }
   }
   .error .message {
@@ -98,69 +88,5 @@
       position: static;
       margin: 10px;
     }
-  }
-}
-
-@-webkit-keyframes loading {
-  0% {
-    -webkit-transform: rotate(360deg);
-  }
-  50% {
-    -webkit-transform: rotate(180deg);
-  }
-  100% {
-    -webkit-transform: rotate(0deg);
-  }
-}
-
-
-@-moz-keyframes loading {
-  0% {
-    -moz-transform: rotate(360deg);
-  }
-  50% {
-    -moz-transform: rotate(180deg);
-  }
-  100% {
-    -moz-transform: rotate(0deg);
-  }
-}
-
-
-@-ms-keyframes loading {
-  0% {
-    -ms-transform: rotate(360deg);
-  }
-  50% {
-    -ms-transform: rotate(180deg);
-  }
-  100% {
-    -ms-transform: rotate(0deg);
-  }
-}
-
-
-@-o-keyframes loading {
-  0% {
-    -o-transform: rotate(360deg);
-  }
-  50% {
-    -o-transform: rotate(180deg);
-  }
-  100% {
-    -o-transform: rotate(0deg);
-  }
-}
-
-
-@keyframes loading {
-  0% {
-    transform: rotate(360deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(0deg);
   }
 }

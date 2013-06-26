@@ -13,6 +13,13 @@
         margin-top: 0;
       }
     }
+    #dashboard {
+      .show {
+        #blogname-arrow {
+          display: none;
+        }
+      }
+    }
   }
   #app,
   #menu {

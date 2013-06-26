@@ -36,7 +36,7 @@ $count-background-color: #efb02e;
 
 @mixin loading-base {
   background-repeat: no-repeat;
-  background-size: 30px;
+  background-size: 45px 45px;
   background-position: center center;
   position: absolute;
   top: 0;
@@ -48,7 +48,7 @@ $count-background-color: #efb02e;
 @mixin loading-white {
   .loading,
   .content-loading {
-    background-image: url("../assets/images/indicator-white.gif");
+    background-image: url("../assets/images/loading.gif");
     @include loading-base;
     background-color: $card-background-color;
     background-color: rgba($card-background-color, 0.8);
@@ -59,7 +59,7 @@ $count-background-color: #efb02e;
 @mixin loading {
   .loading,
   .content-loading {
-    background-image: url("../assets/images/indicator.gif");
+    background-image: url("../assets/images/loading.gif");
     @include loading-base;
   }
 }
