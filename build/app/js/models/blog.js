@@ -4,7 +4,7 @@ define(['backbone', 'js/mtapi/blog'], function (Backbone, getBlog) {
       if (method === 'read') {
         var dfd = getBlog(this.id);
         dfd.done(options.success);
-        dfd.fail(options.error)
+        dfd.fail(options.error);
         return dfd;
       }
     }

@@ -6,7 +6,7 @@ define(['backbone', 'js/models/perm'], function (Backbone, Model) {
         return {
           id: res.blog.id,
           permissions: res.permissions
-        }
+        };
       });
     }
   });

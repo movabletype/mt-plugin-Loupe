@@ -97,7 +97,7 @@ function (Marionette, commands, Trans, getBlog, template) {
     onRender: function () {
       if (!this.buildOnlyOnce) {
         this.buildOnlyOnce = true;
-        this.prepareCards(this.options)
+        this.prepareCards(this.options);
       }
     }
   });

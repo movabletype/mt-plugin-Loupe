@@ -5,7 +5,7 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
 
   return Marionette.Layout.extend({
     serializeData: function () {
-      var data = {}
+      var data = {};
       data.user = this.user;
       return data;
     },

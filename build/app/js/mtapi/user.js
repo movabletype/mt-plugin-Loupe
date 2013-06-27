@@ -29,14 +29,14 @@ define(['js/mtapi', 'js/cache', 'js/models/perm', 'js/collections/perms'], funct
             } else {
               systemPerm = {
                 permissions: null
-              }
+              };
             }
             user = _.extend({}, user, systemPerm);
             var permCollection = cache.set('user', 'perms', new PermCollection());
             permCollection.set(permCollection.parse(perms));
             if (DEBUG) {
               console.log('user permissions');
-              console.log(user)
+              console.log(user);
             }
             dfd.resolve(user);
           } else {
