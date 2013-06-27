@@ -80,24 +80,35 @@ sub delete_html {
     }
 }
 
-sub make_support_directory_url {
+sub support_directory_url {
     my $app = MT->app;
     my $url = $app->support_directory_url;
     if ( $url !~ m!^https?://! ) {
         my $cgi_path = $app->config->CGIPath;
-        if ( $cgi_path =~ m!^(https?://[^/:]+)(:\d+)?/?! ) {
-            my $domain = $1;
-            if ( $url !~ /^\// ) {
-                $url = '/' . $url;
-            }
-            $url = $domain . $url;
+        my $domain;
+        if ( $cgi_path =~ m!^(https?://[^/]+)!i ) {
+            $domain = $1;
         }
         else {
-            $url = undef;
+            $domain
+                = 'http'
+                . ( $app->is_secure ? 's' : '' ) . '://'
+                . $ENV{'HTTP_HOST'};
         }
+        if ( $url !~ /^\// ) {
+            $url = '/' . $url;
+        }
+        $url = $domain . $url;
     }
     $url;
 }
+
+sub is_enabled {
+    my $hash = _plugin()->get_config_hash;
+    $hash->{enabled} && _get_fmgr()->exists( $hash->{html_path} );
+}
+
+sub official_site_url {$Loupe::Const::OFFICIAL_SITE_URL}
 
 {
     my $fmgr;
@@ -127,6 +138,16 @@ sub get_html_path {
     my $html_path
         = File::Spec->catfile( $app->support_directory_path, 'loupe', $file );
     File::Spec->rel2abs($html_path);
+}
+
+sub html_url {
+    my $support_dir = support_directory_url();
+    $support_dir =~ s/\/$//;
+    join '/',
+        (
+        $support_dir, 'loupe',
+        _plugin()->get_config_value('file') || $Loupe::Const::DEFAULT_HTML
+        );
 }
 
 sub _make_param {

@@ -28,6 +28,12 @@ my $plugin = MT::Plugin::Loupe->new(
         ),
         l10n_class => 'Loupe::L10N',
         registry   => {
+            applications => {
+                cms => {
+                    list_actions =>
+                        { author => '$Loupe::Loupe::App::list_actions' },
+                },
+            },
             callbacks => {
                 'MT::Config::post_save' =>
                     '$Loupe::Loupe::App::post_save_config',
@@ -73,7 +79,7 @@ sub config_template {
     my ( $param, $scope ) = @_;
 
     require Loupe;
-    $param->{support_directory_url} = Loupe->make_support_directory_url;
+    $param->{support_directory_url} = Loupe->support_directory_url;
 
     $self->SUPER::config_template( $param, $scope );
 }
