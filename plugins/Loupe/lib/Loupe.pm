@@ -37,9 +37,12 @@ sub create_html {
     my $html_dir = _get_html_dir($file);
     my $fmgr     = _get_fmgr();
     if ( !$fmgr->exists($html_dir) ) {
-        $fmgr->mkpath($html_dir)
-            or return $class->error(
-            _translate("Cannot create Loupe's HTML dir: ") . $fmgr->errstr );
+        if ( !$fmgr->mkpath($html_dir) ) {
+            my $msg = _translate("Cannot create Loupe's HTML directory: ")
+                . $fmgr->errstr;
+            _log( { msg => $msg, error => 1 } );
+            return $class->error($msg);
+        }
     }
 
     my $html_path = get_html_path($file);
@@ -47,15 +50,18 @@ sub create_html {
     my $param     = _make_param();
     if ( $fmgr->put_data( $tmpl->output($param), $html_path ) ) {
         _log(
-            _translate(
-                "Loupe's HTML file has been created: [_1].", $html_path
-            )
+            {   msg => _translate(
+                    "Loupe's HTML file has been created: [_1].", $html_path
+                )
+            }
         );
         return 1;
     }
     else {
-        return $class->error(
-            _translate("Cannot create Loupe's HTML file: ") . $fmgr->errstr );
+        my $msg
+            = _translate("Cannot create Loupe's HTML file: ") . $fmgr->errstr;
+        _log( { msg => $msg, error => 1 } );
+        return $class->error($msg);
     }
 }
 
@@ -70,15 +76,18 @@ sub delete_html {
 
     if ( $fmgr->delete($html_path) ) {
         _log(
-            _translate(
-                "Loupe's HTML file has been deleted: [_1].", $html_path
-            )
+            {   msg => _translate(
+                    "Loupe's HTML file has been deleted: [_1].", $html_path
+                )
+            }
         );
         return 1;
     }
     else {
-        return $class->error(
-            _translate("Cannot delete Loupe's HTML file: ") . $fmgr->errstr );
+        my $msg
+            = _translate("Cannot delete Loupe's HTML file: ") . $fmgr->errstr;
+        _log( { msg => $msg, error => 1 } );
+        return $class->error($msg);
     }
 }
 
@@ -176,14 +185,14 @@ sub _make_param {
 }
 
 sub _log {
-    my $msg = shift;
-    return unless $msg;
+    my $args = shift;
+    return unless $args && $args->{msg};
     my $app = MT->app;
     MT->log(
-        {   message   => $msg,
-            class     => 'system',
-            category  => 'loupe',
-            level     => MT::Log::INFO(),
+        {   message  => $args->{msg},
+            class    => 'system',
+            category => 'loupe',
+            level => ( $args->{error} ? MT::Log::ERROR() : MT::Log::INFO() ),
             author_id => $app->user->id,
             ip        => $app->remote_ip,
         }
