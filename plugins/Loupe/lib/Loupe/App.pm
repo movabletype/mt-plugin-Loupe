@@ -28,6 +28,9 @@ sub _send_welcome_mail {
     return $app->permission_denied()
         unless $app->user->is_superuser();
 
+    return $app->errtrans('Invalid request.')
+        unless $app->request_method eq 'POST';
+
     my $plugin = MT->component('Loupe');
     return $app->error(
         $plugin->translate(
