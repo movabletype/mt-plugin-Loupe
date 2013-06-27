@@ -22,7 +22,7 @@ function (CardItemView, template, device, commands) {
     },
 
     backButtonRoute: function () {
-      return ''
+      return '';
     },
 
     handleBackButton: function (e) {

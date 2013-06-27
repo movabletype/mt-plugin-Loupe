@@ -103,6 +103,13 @@ module.exports = function (grunt) {
     return '../../../' + filename.replace('app/', '');
   });
 
+  var jsHintFiles = ['app/js/app.js', 'app/js/main.js'];
+  grunt.util._.forEach(grunt.file.expand('app/js/*/**/*.js'), function (src) {
+    if (!/mock.js/.test(src)) {
+      jsHintFiles.push(src);
+    }
+  });
+
   // Project configuration.
   grunt.initConfig({
     jshint: {
@@ -118,7 +125,7 @@ module.exports = function (grunt) {
       },
       scripts: {
         files: {
-          src: ['app/js/app.js', 'app/js/main.js', 'app/js/*/**/*.js']
+          src: jsHintFiles
         }
       }
     },

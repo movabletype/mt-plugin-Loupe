@@ -80,7 +80,7 @@ function (CardItemView, JSON, cache, device, commands, vent, Trans, Collection, 
 
     template: template,
 
-    initialize: function (options) {
+    initialize: function () {
       CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
 
       this.currentBlogId = this.selectedBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || (this.blog && this.blog.id ? this.blog.id : null);

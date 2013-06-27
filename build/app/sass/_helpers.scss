@@ -22,13 +22,13 @@ $white: white;
 $black: black;
 $bg-color: #f6f5f4;
 $card-background-color: #f3f3f5;
-$card-header-color: #08C1AF;
+$card-header-color: #08c1af;
 $card-border-color: #c2c3c5;
 $card-shadow-color: #a6a7ac;
 $btn-basic-color: #8bcd4d;
 $btn-attention-color: #e94e1c;
 $btn-disabled-color: #999999;
-$count-background-color: #EBCF00;
+$count-background-color: #ebcf00;
 
 @mixin hardware-accelerate-hack {
   -webkit-transform: translate3d(0, 0, 0);

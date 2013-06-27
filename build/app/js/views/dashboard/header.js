@@ -42,12 +42,12 @@ function (Marionette, device, commands, template) {
         if ($loupeCircle) {
           $loupeCircle.offset({
             left: offset.left - $loupeCircle.outerWidth(true)
-          })
+          });
         }
         if ($blognameArrow) {
           $blognameArrow.offset({
             left: offset.left + width
-          })
+          });
         }
         this.$el.addClass('show');
       }
