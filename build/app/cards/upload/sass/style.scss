@@ -35,11 +35,14 @@
   }
   #upload-file-uploading {
     display: none;
-    padding: 6px 0 0 0;
-    img {
-      width: 45px;
-      height: 45px;
-    }
+    background-image: url("../assets/images/upload-loading.gif");
+    background-position: center center;
+    background-size: 45px 45px;
+    background-repeat: no-repeat;
+    -pie-background: url("../assets/images/upload-loading.gif") center center / 45px 45px;
+    height: 56px;
+    padding: 1em;
+    padding: 1rem;
   }
   .now-uploading {
     #upload-file {

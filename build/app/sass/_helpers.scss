@@ -52,6 +52,7 @@ $count-background-color: #EBCF00;
     @include loading-base;
     background-color: $card-background-color;
     background-color: rgba($card-background-color, 0.8);
+    -pie-background: url("../assets/images/loading.gif") no-repeat center center / 45px 45px;
     z-index: 13;
   }
 }

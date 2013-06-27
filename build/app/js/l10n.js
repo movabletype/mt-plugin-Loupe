@@ -35,11 +35,23 @@ define(function () {
 
   L10N.prototype.loadCommon = function () {
     var dfd = this.loadCommonDfd = $.Deferred();
+
+    var finalize = _.bind(function (lexicon) {
+      this.common = lexicon;
+      dfd.resolve(this);
+    }, this);
+
     if (this.userLang && !this.common) {
-      require([this.libPath + '/l10n/' + this.userLang + '.js'], _.bind(function (lexicon) {
-        this.common = lexicon;
-        dfd.resolve(this);
-      }, this));
+      if (window.basket !== undefined && window.buildTime !== undefined) {
+        basket.require({
+          url: this.libPath + '/l10n/' + this.userLang + '.js',
+          unique: window.buildTime
+        }).then(_.bind(function () {
+          require(['l10n/' + this.userLang], finalize);
+        }, this));
+      } else {
+        require([this.libPath + '/l10n/' + this.userLang], finalize);
+      }
     } else {
       dfd.resolve(this);
     }

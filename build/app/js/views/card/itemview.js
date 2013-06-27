@@ -119,8 +119,8 @@ function (Marionette, cache, commands, device, Trans) {
     serializeDataInitialize: function () {
       var data = {};
       if (this.l10n) {
-        var lang = this.l10n.userLang.split('-');
-        if (lang === 'us') {
+        var lang = this.l10n.userLang ? this.l10n.userLang : '';
+        if (lang === 'en-us') {
           lang = '';
         }
         data.lang = lang;

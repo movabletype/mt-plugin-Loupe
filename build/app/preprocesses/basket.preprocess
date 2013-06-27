@@ -1,6 +1,6 @@
 <!-- @include ../lib/basket/basket.full.min.js -->
 
-(function () {
+(function (global) {
   var el = document.getElementById('main-script'),
     libPath;
 
@@ -10,21 +10,23 @@
     libPath = el.getAttribute('data-base');
   }
 
+  global.buildTime = <!-- @echo buildTime -->;
+
   basket.require({
     url: libPath + '/js/vendor.js',
-    unique: <!-- @echo buildTime -->
+    unique: global.buildTime
   }).then(function () {
     basket.require({
       url: libPath + '/js/template.js',
-      unique: <!-- @echo buildTime -->
+      unique: global.buildTime
     }, {
       url: libPath + '/js/card.js',
-      unique: <!-- @echo buildTime -->
+      unique: global.buildTime
     }, {
       url: libPath + '/js/app.js',
-      unique: <!-- @echo buildTime -->
+      unique: global.buildTime
     }).then(function () {
       <!-- @include ../js/boot.js -->
     });
   });
-})();
+}(this));
