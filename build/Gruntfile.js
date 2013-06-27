@@ -95,7 +95,7 @@ module.exports = function (grunt) {
     }
   });
 
-  var testTarget = ['app/js/app.js', 'app/js/vent.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
+  var testTarget = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
 
   var settings = grunt.file.readJSON('settings.json');
 
@@ -292,6 +292,17 @@ module.exports = function (grunt) {
           'app/js/main.js': 'app/preprocesses/main.preprocess'
         }
       },
+      test: {
+        options: {
+          inline: true,
+          context: {
+            mock: true
+          }
+        },
+        files: {
+          'app/js/main.js': 'app/preprocesses/main.preprocess'
+        }
+      },
       appcache: {
         options: {
           inline: true,
@@ -344,16 +355,16 @@ module.exports = function (grunt) {
     },
     jasmine: {
       test: {
-        src: testTarget,
+        src: ['app'], //testTarget,
         options: {
           specs: specs,
-          helpers: helpers,
+          helpers: helpers.concat(['app/js/main.js']),
           host: 'http://localhost:9002/',
           outfile: '_SpecRunner.html',
           template: require('grunt-template-jasmine-requirejs'),
           templateOptions: {
             requireConfig: {
-              baseUrl: './app/',
+              baseUrl: 'app/',
               paths: requireConfig.paths,
               shim: requireConfig.shim,
               deps: requireConfig.deps,
@@ -367,7 +378,7 @@ module.exports = function (grunt) {
         src: testTarget,
         options: {
           specs: specs,
-          helpers: helpers,
+          helpers: helpers, //.concat(['app/js/main.js']),
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {
             coverage: 'test/coverage/coverage.json',
@@ -515,7 +526,7 @@ module.exports = function (grunt) {
           mainConfigFile: 'app/js/main.js',
           name: 'js/template',
           out: 'test/template.js',
-          include: ['lib/require', 'json!cards/stats/settings.json', 'json!cards/cards.json'].concat(hbsTemplates).concat(cardTemplates),
+          include: ['json!cards/cards.json', 'l10n/ja'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
           exclude: ['jquery', 'handlebars', 'hbs'],
           optimize: 'none',
           optimizeCss: 'none'
@@ -678,6 +689,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test', [
+      'preprocess:test',
       'requirejs:test',
       'jshint',
       'jasmine',
