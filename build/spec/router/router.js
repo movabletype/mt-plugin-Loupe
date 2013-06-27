@@ -3,7 +3,7 @@
 
     var AppRouter, Controller, router, controller, commands, cards;
 
-    var app = require('js/app');
+    var app = require('app');
     var mtapi = require('js/mtapi');
     AppRouter = require('js/router/router');
     Controller = require('js/router/controller');
@@ -12,8 +12,14 @@
     cards = [{
         "name": "test",
         "id": "test",
-        "dashboardView": "dashboard",
-        "viewView": "view"
+        "dashboard": {
+          "view": "dashboard/dashboard"
+        },
+        "routes": [{
+            "id": "view",
+            "view": "view/view",
+          }
+        ]
       }
     ];
 
@@ -27,12 +33,12 @@
     });
 
     it("route to test card", function () {
-      spyOn(controller, "moveCardPage_test");
+      spyOn(controller, "moveCardPage_testview");
       router = new AppRouter({
         controller: controller
       }, cards);
       router.navigate('test', true);
-      expect(controller.moveCardPage_test).toHaveBeenCalled();
+      expect(controller.moveCardPage_testview).toHaveBeenCalled();
     });
 
     it("route to dashboard", function () {
@@ -45,22 +51,22 @@
     });
 
     it("should not route unused cards", function () {
-      spyOn(controller, "moveCardPage_test");
+      spyOn(controller, "moveCardPage_testview");
       router = new AppRouter({
         controller: controller
       }, cards);
       router.navigate('test', true);
-      expect(controller.moveCardPage_test);
+      expect(controller.moveCardPage_testview);
 
       controller = new Controller({
         cards: cards
       });
-      spyOn(controller, "moveCardPage_test");
+      spyOn(controller, "moveCardPage_testview");
       router = new AppRouter({
         controller: controller
       }, [{}]);
       router.navigate('test', true);
-      expect(controller.moveCardPage_test).not.toHaveBeenCalled();
+      expect(controller.moveCardPage_testview).not.toHaveBeenCalled();
     });
 
     it("route to dashboard even thought no cards", function () {
@@ -73,7 +79,7 @@
     });
 
     it("router should listen navigate command and navigate it", function () {
-      spyOn(controller, "moveCardPage_test");
+      spyOn(controller, "moveCardPage_testview");
       router = new AppRouter({
         controller: controller
       }, cards);
@@ -81,7 +87,7 @@
         commands.execute('router:navigate', 'test');
       });
       runs(function () {
-        expect(controller.moveCardPage_test).toHaveBeenCalled();
+        expect(controller.moveCardPage_testview).toHaveBeenCalled();
       });
     });
 

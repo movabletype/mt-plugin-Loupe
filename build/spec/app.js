@@ -1,8 +1,8 @@
-describe("app", function () {
+describe("appeee", function () {
   'use strict';
 
   it("should be start", function () {
-    var app = require('js/app');
+    var app = require('app');
     expect('foobar').toEqual('foobar')
   });
 });

@@ -9,7 +9,6 @@ define(function () {
     var callback = null;
     args = Array.prototype.slice.call(args);
     args.unshift(name);
-    console.log(args);
     _.each(args, function (arg) {
       if (typeof arg === 'function') {
         callback = arg;
