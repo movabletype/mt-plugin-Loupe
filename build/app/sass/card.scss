@@ -89,7 +89,7 @@
     background-color: $btn-basic-color;
     @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius($radius);
-    @include transition-duration(0.1s);
+    @include transition-duration(0.05s);
     @include transition-timing-function(ease-in);
     &:hover {}
     &.tapped, &:active, &:hover:active {
