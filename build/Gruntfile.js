@@ -156,47 +156,51 @@ module.exports = function (grunt) {
     clean: {
       beforeCompass: ['app/css/style.css'],
       build: {
-          options: { force: true },
-          src: ['../mt-static/plugins/Loupe/*']
+        options: {
+          force: true
+        },
+        src: ['../mt-static/plugins/Loupe/*']
       },
       afterBuild: {
-          options: { force: true },
-          src: [
-              '../mt-static/plugins/Loupe/build.txt',
-              '../mt-static/plugins/Loupe/css/*',
-              '../mt-static/plugins/Loupe/index.html',
-              '../mt-static/plugins/Loupe/jade',
-              '../mt-static/plugins/Loupe/js/boot.js',
-              '../mt-static/plugins/Loupe/js/cache.js',
-              '../mt-static/plugins/Loupe/js/collections',
-              '../mt-static/plugins/Loupe/js/device.js',
-              '../mt-static/plugins/Loupe/js/models',
-              '../mt-static/plugins/Loupe/js/commands.js',
-              '../mt-static/plugins/Loupe/js/mtapi',
-              '../mt-static/plugins/Loupe/js/mtapi.js',
-              '../mt-static/plugins/Loupe/js/perf.js',
-              '../mt-static/plugins/Loupe/js/router',
-              '../mt-static/plugins/Loupe/js/main.js',
-              '../mt-static/plugins/Loupe/js/main.preprocess.js',
-              '../mt-static/plugins/Loupe/js/require.config.json',
-              '../mt-static/plugins/Loupe/js/l10n.js',
-              '../mt-static/plugins/Loupe/js/lib',
-              '../mt-static/plugins/Loupe/js/layouts',
-              '../mt-static/plugins/Loupe/js/require.js',
-              '../mt-static/plugins/Loupe/js/template',
-              '../mt-static/plugins/Loupe/js/trans.js',
-              '../mt-static/plugins/Loupe/js/vent.js',
-              '../mt-static/plugins/Loupe/js/views',
-              '../mt-static/plugins/Loupe/lib',
-              '../mt-static/plugins/Loupe/preprocesses',
-              '../mt-static/plugins/Loupe/sass',
-              '../mt-static/plugins/Loupe/template',
-              '../mt-static/plugins/Loupe/templates',
-              '../mt-static/plugins/Loupe/cards',
-              '../mt-static/plugins/Loupe/assets/icons/index.html',
-              '../mt-static/plugins/Loupe/assets/icons/license.txt',
-              '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
-          ]
+        options: {
+          force: true
+        },
+        src: [
+            '../mt-static/plugins/Loupe/build.txt',
+            '../mt-static/plugins/Loupe/css/*',
+            '../mt-static/plugins/Loupe/index.html',
+            '../mt-static/plugins/Loupe/jade',
+            '../mt-static/plugins/Loupe/js/boot.js',
+            '../mt-static/plugins/Loupe/js/cache.js',
+            '../mt-static/plugins/Loupe/js/collections',
+            '../mt-static/plugins/Loupe/js/device.js',
+            '../mt-static/plugins/Loupe/js/models',
+            '../mt-static/plugins/Loupe/js/commands.js',
+            '../mt-static/plugins/Loupe/js/mtapi',
+            '../mt-static/plugins/Loupe/js/mtapi.js',
+            '../mt-static/plugins/Loupe/js/perf.js',
+            '../mt-static/plugins/Loupe/js/router',
+            '../mt-static/plugins/Loupe/js/main.js',
+            '../mt-static/plugins/Loupe/js/main.preprocess.js',
+            '../mt-static/plugins/Loupe/js/require.config.json',
+            '../mt-static/plugins/Loupe/js/l10n.js',
+            '../mt-static/plugins/Loupe/js/lib',
+            '../mt-static/plugins/Loupe/js/layouts',
+            '../mt-static/plugins/Loupe/js/require.js',
+            '../mt-static/plugins/Loupe/js/template',
+            '../mt-static/plugins/Loupe/js/trans.js',
+            '../mt-static/plugins/Loupe/js/vent.js',
+            '../mt-static/plugins/Loupe/js/views',
+            '../mt-static/plugins/Loupe/lib',
+            '../mt-static/plugins/Loupe/preprocesses',
+            '../mt-static/plugins/Loupe/sass',
+            '../mt-static/plugins/Loupe/template',
+            '../mt-static/plugins/Loupe/templates',
+            '../mt-static/plugins/Loupe/cards',
+            '../mt-static/plugins/Loupe/assets/icons/index.html',
+            '../mt-static/plugins/Loupe/assets/icons/license.txt',
+            '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
+        ]
       },
       afterTest: ['template.js']
     },
@@ -430,7 +434,8 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/l10n/es.js': '../mt-static/plugins/Loupe/l10n/es.js',
           '../mt-static/plugins/Loupe/l10n/fr.js': '../mt-static/plugins/Loupe/l10n/fr.js',
           '../mt-static/plugins/Loupe/l10n/ja.js': '../mt-static/plugins/Loupe/l10n/ja.js',
-          '../mt-static/plugins/Loupe/l10n/nl.js': '../mt-static/plugins/Loupe/l10n/nl.js'
+          '../mt-static/plugins/Loupe/l10n/nl.js': '../mt-static/plugins/Loupe/l10n/nl.js',
+          '../mt-static/plugins/Loupe/l10n/en-us.js': '../mt-static/plugins/Loupe/l10n/en-us.js'
         }
       }
     },
@@ -494,7 +499,7 @@ module.exports = function (grunt) {
         files: {
           '../mt-static/plugins/Loupe/js/basket.js': ['../mt-static/plugins/Loupe/js/basket.js']
         }
-      },
+      }
     },
     requirejs: {
       test: {
@@ -578,7 +583,7 @@ module.exports = function (grunt) {
               exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja']
             }, {
               name: 'l10n/en-us',
-              include: langTemplates.nl,
+              include: langTemplates['en-us'],
               exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja', 'l10n/nl']
             }
           ],
