@@ -37,7 +37,9 @@ sub create_html {
     my $html_dir = _get_html_dir($file);
     my $fmgr     = _get_fmgr();
     if ( !$fmgr->exists($html_dir) ) {
-        $fmgr->mkpath($html_dir);
+        $fmgr->mkpath($html_dir)
+            or return $class->error(
+            _translate("Cannot create Loupe's HTML dir: ") . $fmgr->errstr );
     }
 
     my $html_path = get_html_path($file);
