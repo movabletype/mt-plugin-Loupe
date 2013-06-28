@@ -1,0 +1,85 @@
+<mtapp:widget
+    class="welcome-to-loupe"
+    label="<__trans phrase="Welcome to Loupe">"
+    can_close="1">
+<mt:setvarblock name="widget_header">
+</mt:setvarblock>
+<div id="widget-container">
+<mt:if name="is_administrator">
+    <p>
+        <__trans phrase="Thank you for installing Loupe. After setting up Loupe for only 20 seconds, you can check your blog easily with your smartphone. Please try.">
+    </p>
+    <div>
+    <mt:if name="loupe_is_enabled">
+        <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send welcome mail to users."></a>
+    <mt:else>
+        <a class="button" href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Plugin Setting"></a>
+    </mt:if>
+    </div>
+<mt:else>
+    <p>
+        <__trans phrase="Thank you for installing Loupe. If using Loupe, you can check your blog easily with your smartphone. Please try.">
+    </p>
+    <div>
+        <a href="javascript:void(0);" onclick="javascript:sendWelcomeMail(); return false;"><__trans phrase="Send welcome mail to yourself."></a>
+    </div>
+</mt:if>
+</div>
+</mtapp:widget>
+
+<mt:unless name="is_administrator">
+<script type="text/javascript">
+/* <![CDATA[ */
+function sendWelcomeMail() {
+    // remove old mesages
+    jQuery('div#content-header > #sent,#failed').remove();
+    // show overlay
+    jQuery('div.mt-dialog-overlay').show();
+    if ( jQuery('div#indicator').length == 0 ) {
+        createIndicator();
+    }
+    jQuery('div#indicator').show();
+    // wait for displaying overlay
+    setTimeout(function(){
+        // send mail
+        jQuery.ajax({
+            async: false,
+            type: 'POST',
+            timeout: 5000,
+            url: '<mt:var name="script_url">',
+            data: {
+                __mode: 'send_welcome_mail'
+            },
+            dataType: 'json',
+            success: function(data) {
+                var div;
+                if ( data['error'] ) {
+                    div = errorMessage( data['error']['message'] );
+                } else {
+                    div = successMessage();
+                }
+                jQuery('div#content-header').append(div);
+            },
+            error: function(data) {
+                var div = errorMessage();
+                jQuery('div#content-header').append(div);
+            }
+        });
+        // hide overlay
+        jQuery('div#indicator').hide();
+        jQuery('div.mt-dialog-overlay').hide();
+    },300);
+}
+function createIndicator() {
+    var div = '<div id="indicator" style="display: none; position: absolute; left: 50%; top: 50%; margin-left: -20px; margin-top: -20px;"><img src="<mt:var name="static_uri">images/indicator.gif"></div>';
+    jQuery('div#welcome_to_loupe div#widget-container').append(div);
+}
+function successMessage() {
+    return '<div id="sent" class="msg msg-info"><p class="msg-text"><__trans phrase="Sent welcome mail."></p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
+}
+function errorMessage(message) {
+    return '<div id="failed" class="msg msg-error"><p class="msg-text"><__trans phrase="Failed to be sent welcome mail: ">'+message+'</p></div>';
+}
+/* ]]> */
+</script>
+</mt:unless>
