@@ -13,6 +13,7 @@ my $plugin = MT::Plugin::Loupe->new(
         description =>
             '<MT_TRANS phrase="Loupe is the application for operating the user daily task easily.">',
         version                => $VERSION,
+        schema_version         => $VERSION,
         author_name            => 'Six Apart, Ltd.',
         author_link            => 'http://www.movabletype.org/',
         system_config_template => 'system_config.tmpl',
@@ -45,7 +46,8 @@ my $plugin = MT::Plugin::Loupe->new(
             callbacks => {
                 'MT::Config::post_save' =>
                     '$Loupe::Loupe::App::post_save_config',
-            }
+            },
+            upgrade_functions => '$Loupe::Loupe::Upgrade::upgrade_functions',
         },
     }
 );
