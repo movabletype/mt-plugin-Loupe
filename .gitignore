@@ -7,8 +7,8 @@ build/app/css/sass/*.css
 build/app/css/cards/*
 build/app/css/style.css
 build/app/template
-plugins/Loupe/tmpl/loupe.tmpl
-mt-static/*
+#plugins/Loupe/tmpl/loupe.tmpl
+#mt-static/*
 
 # bower directory which configured in .bowerc
 build/app/components
