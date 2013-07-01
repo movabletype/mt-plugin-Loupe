@@ -24,16 +24,16 @@ module.exports = function (grunt) {
       grunt.util._.forEach(fs.src, function (file) {
         var buf = grunt.file.read(file);
         var str = buf.toString();
-        str = str.match(/\{\{\#trans trans\}\}(.+?)\{\{\/trans\}\}/g);
+        str = str.match(/\{\{\#trans (?:..\/)*trans\}\}(.+?)\{\{\/trans\}\}/g);
         if (str && str.length) {
           if (options.findOnly) {
             grunt.util._.forEach(str, function (s) {
-              s = s.match(/\{\{\#trans trans\}\}(.+?)\{\{\/trans\}\}/)[1];
+              s = s.match(/\{\{\#trans (?:..\/)*trans\}\}(.+?)\{\{\/trans\}\}/)[1];
               grunt.log.writeln('"' + s + '" at ' + file);
             });
           } else {
             grunt.util._.forEach(str, function (s) {
-              s = s.match(/\{\{\#trans trans\}\}(.+?)\{\{\/trans\}\}/)[1];
+              s = s.match(/\{\{\#trans (?:..\/)*trans\}\}(.+?)\{\{\/trans\}\}/)[1];
               if (/\{\{.*\}\}/.test(s)) {
                 grunt.log.writeln('you need to add translations manually for value ' + s + ' at ' + file);
               } else {
