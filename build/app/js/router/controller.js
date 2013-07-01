@@ -119,7 +119,7 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
         }
         getUserAndBlogs(callback);
       } else {
-        mtapi.api.token(_.bind(function (res) {
+        mtapi.api.getToken(_.bind(function (res) {
           if (!res.error) {
             if (DEBUG) {
               console.log('[mtapi:token:success]');

@@ -44,13 +44,13 @@ define(function () {
     if (this.userLang && !this.common) {
       if (window.basket !== undefined && window.buildTime !== undefined) {
         basket.require({
-          url: this.libPath + '/l10n/' + this.userLang + '.js',
+          url: this.libPath + '/js/l10n/' + this.userLang + '.js',
           unique: window.buildTime
         }).then(_.bind(function () {
-          require(['l10n/' + this.userLang], finalize);
+          require(['json!l10n/' + this.userLang + '.json'], finalize);
         }, this));
       } else {
-        require([this.libPath + '/l10n/' + this.userLang], finalize);
+        require(['json!l10n/' + this.userLang + '.json'], finalize);
       }
     } else {
       dfd.resolve(this);

@@ -14,10 +14,9 @@ html(manifest=manifestFile)
     link(rel='stylesheet', href!='#{libPath}/css/style.css')
 
     if dev
-      script(src!='#{mtApiPath}/app.js')
-      script(src!='#{mtApiPath}/endpoints.js')
+      script(src!='#{mtApiPath}/mt-data-api.js')
     else
-      script(src!='#{mtApiPath}/all.js')
+      script(src!='#{mtApiPath}/mt-data-api.min.js')
 
     //if lte IE 8
       script(src!='#{libPath}/ie/console-polyfill/index.js')
