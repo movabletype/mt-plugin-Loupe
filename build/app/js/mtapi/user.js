@@ -11,7 +11,7 @@ define(['js/mtapi', 'js/cache', 'js/models/perm', 'js/collections/perms'], funct
         if (DEBUG) {
           console.log('get user data successfully');
         }
-        mtapi.api.listPermissions('me', function (perm) {
+        mtapi.api.listPermissionsForUser('me', function (perm) {
           if (DEBUG) {
             console.log('list permissions');
             console.log(perm);
