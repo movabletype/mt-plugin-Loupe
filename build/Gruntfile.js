@@ -9,6 +9,9 @@ module.exports = function (grunt) {
     }
   });
 
+
+  grunt.loadTasks('grunt_local_tasks');
+
   var requireConfig = grunt.file.readJSON('./app/js/require.config.json');
 
   var requireJSPaths = {
@@ -198,6 +201,7 @@ module.exports = function (grunt) {
             '../mt-static/plugins/Loupe/js/trans.js',
             '../mt-static/plugins/Loupe/js/vent.js',
             '../mt-static/plugins/Loupe/js/views',
+            '../mt-static/plugins/Loupe/l10n',
             '../mt-static/plugins/Loupe/lib',
             '../mt-static/plugins/Loupe/preprocesses',
             '../mt-static/plugins/Loupe/sass',
@@ -312,6 +316,11 @@ module.exports = function (grunt) {
         },
         files: {
           '../mt-static/plugins/Loupe/manifest.appcache': 'app/preprocesses/manifest.preprocess.appcache'
+        }
+      },
+      l10n: {
+        files: {
+          'app/l10n/ja.js': 'app/preprocesses/l10n/ja.preprocess'
         }
       },
       basket: {
@@ -448,12 +457,12 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/js/template.js': '../mt-static/plugins/Loupe/js/template.js',
           '../mt-static/plugins/Loupe/js/vendor.js': '../mt-static/plugins/Loupe/js/vendor.js',
           '../mt-static/plugins/Loupe/js/card.js': '../mt-static/plugins/Loupe/js/card.js',
-          '../mt-static/plugins/Loupe/l10n/de.js': '../mt-static/plugins/Loupe/l10n/de.js',
-          '../mt-static/plugins/Loupe/l10n/es.js': '../mt-static/plugins/Loupe/l10n/es.js',
-          '../mt-static/plugins/Loupe/l10n/fr.js': '../mt-static/plugins/Loupe/l10n/fr.js',
-          '../mt-static/plugins/Loupe/l10n/ja.js': '../mt-static/plugins/Loupe/l10n/ja.js',
-          '../mt-static/plugins/Loupe/l10n/nl.js': '../mt-static/plugins/Loupe/l10n/nl.js',
-          '../mt-static/plugins/Loupe/l10n/en-us.js': '../mt-static/plugins/Loupe/l10n/en-us.js'
+          '../mt-static/plugins/Loupe/js/l10n/de.js': '../mt-static/plugins/Loupe/js/l10n/de.js',
+          '../mt-static/plugins/Loupe/js/l10n/es.js': '../mt-static/plugins/Loupe/js/l10n/es.js',
+          '../mt-static/plugins/Loupe/js/l10n/fr.js': '../mt-static/plugins/Loupe/js/l10n/fr.js',
+          '../mt-static/plugins/Loupe/js/l10n/ja.js': '../mt-static/plugins/Loupe/js/l10n/ja.js',
+          '../mt-static/plugins/Loupe/js/l10n/nl.js': '../mt-static/plugins/Loupe/js/l10n/nl.js',
+          '../mt-static/plugins/Loupe/js/l10n/en-us.js': '../mt-static/plugins/Loupe/js/l10n/en-us.js'
         }
       }
     },
@@ -526,7 +535,7 @@ module.exports = function (grunt) {
           mainConfigFile: 'app/js/main.js',
           name: 'js/template',
           out: 'test/template.js',
-          include: ['json!cards/cards.json', 'l10n/ja'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
+          include: ['json!cards/cards.json', 'js/l10n/ja'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
           exclude: ['jquery', 'handlebars', 'hbs'],
           optimize: 'none',
           optimizeCss: 'none'
@@ -580,29 +589,29 @@ module.exports = function (grunt) {
               include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
               exclude: ['vendor', 'template', 'app']
             }, {
-              name: 'l10n/de',
+              name: 'js/l10n/de',
               include: langTemplates.de,
               exclude: ['vendor', 'template', 'app', 'card']
             }, {
-              name: 'l10n/es',
+              name: 'js/l10n/es',
               include: langTemplates.es,
-              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de']
+              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de']
             }, {
-              name: 'l10n/fr',
+              name: 'js/l10n/fr',
               include: langTemplates.fr,
-              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es']
+              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
             }, {
-              name: 'l10n/ja',
+              name: 'js/l10n/ja',
               include: langTemplates.ja,
-              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr']
+              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
             }, {
-              name: 'l10n/nl',
+              name: 'js/l10n/nl',
               include: langTemplates.nl,
-              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja']
+              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
             }, {
-              name: 'l10n/en-us',
+              name: 'js/l10n/en-us',
               include: langTemplates['en-us'],
-              exclude: ['vendor', 'template', 'app', 'card', 'l10n/de', 'l10n/es', 'l10n/fr', 'l10n/ja', 'l10n/nl']
+              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
             }
           ],
 
@@ -654,6 +663,49 @@ module.exports = function (grunt) {
             disableI18n: true
           }
         }
+      }
+    },
+    findTranslationStrings: {
+      core: {
+        files: [{
+            src: ['app/js/views/**/*.hbs'],
+            dir: 'app/l10n/'
+          }
+        ]
+      },
+      card: {
+        files: grunt.util._.map(grunt.file.expand({
+          filter: 'isDirectory'
+        }, 'app/cards/' + grunt.option('card')), function (dir) {
+          return {
+            src: [dir + '/**/*.hbs'],
+            dir: dir + '/l10n/',
+          }
+        }),
+        options: {
+          inherit: 'app/l10n/',
+          reset: grunt.option('reset')
+        }
+      },
+      cards: {
+        files: grunt.util._.map(grunt.file.expand({
+          filter: 'isDirectory'
+        }, 'app/cards/*'), function (dir) {
+          return {
+            src: [dir + '/**/*.hbs'],
+            dir: dir + '/l10n/',
+          }
+        }),
+        options: {
+          inherit: 'app/l10n/',
+          reset: grunt.option('reset')
+        }
+      },
+      options: {
+        comments: grunt.option('comments'),
+        findOnly: grunt.option('findOnly'),
+        copyStringsFromJa: grunt.option('copyStringsFromJa'),
+        langs: grunt.option('langs')
       }
     }
   });

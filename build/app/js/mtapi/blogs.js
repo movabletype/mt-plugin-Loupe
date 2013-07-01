@@ -2,7 +2,7 @@ define(['js/mtapi'], function (mtapi) {
   return function (userId, options) {
     var dfd = $.Deferred();
 
-    mtapi.api.listBlogs(userId, options, function (resp) {
+    mtapi.api.listBlogsForUser(userId, options, function (resp) {
       if (DEBUG) {
         console.log(resp);
       }

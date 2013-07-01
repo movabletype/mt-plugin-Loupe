@@ -19,7 +19,7 @@ function (Backbone, mtapi, moment) {
         dfd.done(options.success);
         dfd.fail(options.error);
 
-        mtapi.api.statsPageviewsForPath(options.blogId, params, _.bind(function (resp) {
+        mtapi.api.listStatsPageviewsForPath(options.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
               console.log('top articles');

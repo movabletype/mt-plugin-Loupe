@@ -15,26 +15,26 @@ function (Backbone, moment, mtapi) {
             endDate: moment().format()
           };
 
-        mtapi.api.statsPageviewsForDate(this.blogId, params, _.bind(function (resp) {
+        mtapi.api.listStatsPageviewsForDate(this.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
-              console.log('statsPageviewsForDate success in latest_page_view');
+              console.log('listStatsPageviewsForDate success in latest_page_view');
               console.log(resp);
             }
             dfd.resolve(resp);
           } else {
             if (DEBUG) {
-              console.log('statsPageviewsForDate fail in latest_page_view');
+              console.log('listStatsPageviewsForDate fail in latest_page_view');
               console.log(resp);
             }
             dfd.reject(resp);
           }
         }, this));
 
-        mtapi.api.statsVisitsForDate(this.blogId, params, _.bind(function (resp) {
+        mtapi.api.listStatsVisitsForDate(this.blogId, params, _.bind(function (resp) {
           if (!resp.error) {
             if (DEBUG) {
-              console.log('statsVisitsForDate success in latest_page_view');
+              console.log('listStatsVisitsForDate success in latest_page_view');
               console.log(resp);
             }
             this.isSynced = true;

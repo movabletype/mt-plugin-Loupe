@@ -11,7 +11,7 @@ define(['js/cache', 'js/mtapi'], function (cache, mtapi) {
         id: storedData
       });
     } else {
-      mtapi.api.statsProvider(blogId, {
+      mtapi.api.getStatsProvider(blogId, {
         'bustCache': (new Date()).valueOf()
       }, function (resp) {
         if (DEBUG) {
