@@ -32,7 +32,7 @@ sub widgets {
             singular => 1,
             set      => 'main',
             view     => 'user',
-            order => { user => 2 },
+            order => { user => 150 },
         },
     };
 }
