@@ -37,7 +37,7 @@
         {{else}}
           <div class="userpic no-image icon-user"></div>
         {{/if}}
-        <div class="display-name">{{#trans ../trans}}settings (currently logout){{/trans}}</div>
+        <div class="display-name">{{#trans ../trans}}Logout{{/trans}}</div>
       </a>
       {{/with}}
       {{/if}}
@@ -46,9 +46,9 @@
 </div>
 <div class="blog-item-nav-container">
 {{#ifIs prev exists=true}}
-  <div class="blog-item-nav blog-item-nav-prev" data-offset="{{prev}}"><span class="icon-arrow-left"></span>前の25件</div>
+  <div class="blog-item-nav blog-item-nav-prev" data-offset="{{prev}}"><span class="icon-arrow-left"></span>{{#trans trans}}previous{{/trans}}</div>
 {{/ifIs}}
 {{#ifIs totalResults gt=next}}
-  <div class="blog-item-nav blog-item-nav-next" data-offset="{{next}}">次の25件<span class="icon-arrow"></span></div>
+  <div class="blog-item-nav blog-item-nav-next" data-offset="{{next}}">{{#trans trans}}next{{/trans}}<span class="icon-arrow"></span></div>
 {{/ifIs}}
 </div>
