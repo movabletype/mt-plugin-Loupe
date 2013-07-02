@@ -1,3 +1,3 @@
-define(['backbone','backbone.wreqr'],function(Backbone){
+define(['backbone', 'backbone.wreqr'], function (Backbone) {
   return new Backbone.Wreqr.EventAggregator();
-})
+});

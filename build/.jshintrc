@@ -18,6 +18,8 @@
   "browser": true,
   "jquery": true,
   "globals": {
+    "basket": false,
+    "MT":false,
     "console": false,
     "define": false,
     "require": false,

@@ -106,9 +106,9 @@ module.exports = function (grunt) {
     return '../../../' + filename.replace('app/', '');
   });
 
-  var jsHintFiles = ['app/js/app.js', 'app/js/main.js'];
+  var jsHintFiles = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'];
   grunt.util._.forEach(grunt.file.expand('app/js/*/**/*.js'), function (src) {
-    if (!/mock.js/.test(src)) {
+    if (!/mock.js/.test(src) && src !== 'app/js/l10n/ja.js') {
       jsHintFiles.push(src);
     }
   });
@@ -679,8 +679,8 @@ module.exports = function (grunt) {
         }, 'app/cards/' + grunt.option('card')), function (dir) {
           return {
             src: [dir + '/**/*.hbs'],
-            dir: dir + '/l10n/',
-          }
+            dir: dir + '/l10n/'
+          };
         }),
         options: {
           inherit: 'app/l10n/',
@@ -693,8 +693,8 @@ module.exports = function (grunt) {
         }, 'app/cards/*'), function (dir) {
           return {
             src: [dir + '/**/*.hbs'],
-            dir: dir + '/l10n/',
-          }
+            dir: dir + '/l10n/'
+          };
         }),
         options: {
           inherit: 'app/l10n/',

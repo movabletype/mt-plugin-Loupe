@@ -10,6 +10,6 @@ define(['jquery'], function ($) {
   });
   return {
     api: api,
-    baseUrl: mtApiCGIPath,
-  }
+    baseUrl: mtApiCGIPath
+  };
 });
