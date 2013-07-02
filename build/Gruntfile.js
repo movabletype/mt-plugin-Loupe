@@ -707,6 +707,20 @@ module.exports = function (grunt) {
         copyStringsFromJa: grunt.option('copyStringsFromJa'),
         langs: grunt.option('langs')
       }
+    },
+    sassVars: {
+      dev: {
+        dest: 'app/sass/_sass_grunt_vars.scss',
+        options: {
+          pathToPIE: 'ie/PIE/PIE.htc'
+        }
+      },
+      build: {
+        dest: 'app/sass/_sass_grunt_vars.scss',
+        options: {
+          pathToPIE: '../../plugins/loupe/ie/PIE/PIE.htc'
+        }
+      }
     }
   });
 
@@ -716,6 +730,7 @@ module.exports = function (grunt) {
       'copy:prep',
       'clean:build',
       'clean:beforeCompass',
+      'sassVars:build',
       'compass',
       'requirejs:build',
       'clean:afterBuild',
@@ -735,6 +750,7 @@ module.exports = function (grunt) {
       'symlink:prep',
       'copy:prep',
       'jade:dev',
+      'sassVars:dev',
       'compass:dev',
       'copy:beforeConcat',
       'concat:dev'

@@ -8,6 +8,8 @@
 @import "compass/css3/user-interface";
 @import "compass/utilities/general/clearfix";
 
+@import "_sass_grunt_vars";
+
 $default-transition-property: all;
 $default-transition-duration: 0.3s;
 $default-transition-function: ease;
@@ -67,7 +69,7 @@ $count-background-color: #ebcf00;
 
 @mixin border-radius-with-pie($radius: $default-border-radius, $vertical-radius: false) {
   @include border-radius($radius, $vertical-radius);
-  behavior: url(ie/PIE/PIE.htc);
+  behavior: url($pathToPIE);
 }
 
 @mixin loupe-circle {

@@ -122,14 +122,14 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
         mtapi.api.getToken(_.bind(function (res) {
           if (!res.error) {
             if (DEBUG) {
-              console.log('[mtapi:token:success]');
+              console.log('getToken success');
               console.log(res);
             }
             this.token = res;
             getUserAndBlogs(callback);
           } else {
             if (DEBUG) {
-              console.log('[mtapi:token:error]');
+              console.log('getToken error');
               console.log(res.error);
               console.log('Move to Signin screen');
             }

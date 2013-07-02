@@ -16,13 +16,13 @@ html(manifest=manifestFile)
     if dev
       script(src!='#{mtApiPath}/mt-data-api.js')
     else
-      script(src!='#{mtApiPath}/mt-data-api.js')
+      script(src!='#{mtApiPath}/mt-data-api.min.js')
 
     //if lte IE 8
       script(src!='#{libPath}/ie/console-polyfill/index.js')
       script(src!='#{libPath}/ie/html5shiv/html5shiv')
       script(src!='#{libPath}/ie/selectivizr/selectivizr-min.js')
-      script(src!='#{libPath}/ie/PIE/PIE_IE678_uncompressed.js')
+      script(src!='#{libPath}/ie/PIE/PIE_IE678.js')
 
     if dev
       script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', data-main!='#{libPath}/js/main', src!='#{libPath}/lib/require.js')

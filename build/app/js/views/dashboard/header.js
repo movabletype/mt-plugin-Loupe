@@ -44,7 +44,7 @@ function (Marionette, device, commands, template) {
             left: offset.left - $loupeCircle.outerWidth(true)
           });
         }
-        if ($blognameArrow) {
+        if ($blognameArrow && offset) {
           $blognameArrow.offset({
             left: offset.left + width
           });
