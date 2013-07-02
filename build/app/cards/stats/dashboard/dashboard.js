@@ -99,10 +99,11 @@ define([
           v = visits[i];
           graphData.push({
             x: p.date,
-            y: p.pageviews,
-            y1: v.visits
+            y: v.visits,
+            y1: p.pageviews
           });
         }
+        console.log(graphData)
 
         var config = {
           type: 'easel.mix',
