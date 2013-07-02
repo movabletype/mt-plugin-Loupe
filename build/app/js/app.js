@@ -12,6 +12,7 @@ function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Contro
 
   app.addInitializer(function (options) {
     cache.set('app', 'initial', true);
+    this.initial = true;
     this.cards = options.cards;
     var $body = $(document.body);
     if (device.platform) {
