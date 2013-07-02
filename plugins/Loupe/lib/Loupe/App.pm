@@ -33,6 +33,7 @@ sub widgets {
             set      => 'main',
             view     => 'user',
             order => { user => 150 },
+            default => 1,
         },
     };
 }
