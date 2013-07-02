@@ -1,4 +1,4 @@
-define(function () {
+define(['moment'], function (moment) {
   'use strict';
 
   var Mock = function () {
@@ -22,8 +22,8 @@ define(function () {
     }
   };
 
-  Mock.prototype.token = function () {
-    this.base('token', {
+  Mock.prototype.getToken = function () {
+    this.base('getToken', {
       accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
       expiresIn: 3600
     }, arguments);
@@ -53,8 +53,8 @@ define(function () {
     }, arguments);
   };
 
-  Mock.prototype.listBlogs = function () {
-    this.base('listBlogs', {
+  Mock.prototype.listBlogsForUser = function () {
+    this.base('listBlogsForUser', {
       "totalResults": 2,
       "items": [{
           "name": "メモログ",
@@ -75,8 +75,8 @@ define(function () {
     }, arguments);
   };
 
-  Mock.prototype.listPermissions = function () {
-    this.base('listPermissions', {
+  Mock.prototype.listPermissionsForUser = function () {
+    this.base('listPermissionsForUser', {
       "totalResults": 8,
       "items": [{
           "permissions": ["administer", "create_blog", "create_website", "edit_templates", "manage_plugins", "view_log"],
@@ -96,71 +96,81 @@ define(function () {
     }, arguments);
   };
 
-  Mock.prototype.statsProvider = function () {
-    this.base('statsProvide', {
+  Mock.prototype.getStatsProvider = function () {
+    this.base('getStatsProvider', {
       id: "GoogleAnalytics"
     }, arguments);
   };
 
-  Mock.prototype.statsPageviewsForDate = function () {
-    this.base('statsPageviewsForDate', {
+  Mock.prototype.listStatsPageviewsForDate = function () {
+    var today = moment(),
+      getDate = function (num) {
+        return moment().subtract('days', parseInt(num, 10)).format("YYYY-MM-DD")
+      };
+
+    this.base('listStatsPageviewsForDate', {
       "totalResults": 7,
       "totals": {
-        "pageviews": "595"
+        "pageviews": "594400000"
       },
       "items": [{
-          "pageviews": "105",
-          "date": "2013-06-15"
+          "pageviews": "705000",
+          "date": getDate(6)
         }, {
-          "pageviews": "107",
-          "date": "2013-06-16"
+          "pageviews": "800440",
+          "date": getDate(5)
         }, {
-          "pageviews": "37",
-          "date": "2013-06-17"
+          "pageviews": "923456",
+          "date": getDate(4)
         }, {
-          "pageviews": "47",
-          "date": "2013-06-18"
+          "pageviews": "903030",
+          "date": getDate(3)
         }, {
-          "pageviews": "119",
-          "date": "2013-06-19"
+          "pageviews": "1039390",
+          "date": getDate(2)
         }, {
-          "pageviews": "127",
-          "date": "2013-06-20"
+          "pageviews": "450000",
+          "date": getDate(1)
         }, {
-          "pageviews": "53",
-          "date": "2013-06-21"
+          "pageviews": "530000",
+          "date": getDate(0)
         }
       ]
     }, arguments);
   };
 
-  Mock.prototype.statsVisitsForDate = function () {
-    this.base('statsVisitsForDate', {
+  Mock.prototype.listStatsVisitsForDate = function () {
+    var today = moment(),
+      getDate = function (num) {
+        today.subtract('days', parseInt(num, 10)).format("YYYY-MM-DD")
+      };
+
+    this.base('listStatsVisitsForDate', {
       "totalResults": 7,
       "totals": {
         "visits": "492"
       },
       "items": [{
-          "visits": "81",
-          "date": "2013-06-15"
+          "visits": "505000",
+          "date": getDate(6)
         }, {
-          "visits": "90",
-          "date": "2013-06-16"
+          "visits": "600440",
+          "date": getDate(5)
         }, {
-          "visits": "31",
-          "date": "2013-06-17"
+          "visits": "823456",
+          "date": getDate(4)
         }, {
-          "visits": "43",
-          "date": "2013-06-18"
+          "visits": "703030",
+          "date": getDate(3)
         }, {
-          "visits": "101",
-          "date": "2013-06-19"
+          "visits": "503939",
+          "date": getDate(2)
         }, {
-          "visits": "103",
-          "date": "2013-06-20"
+          "visits": "450000",
+          "date": getDate(1)
         }, {
-          "visits": "43",
-          "date": "2013-06-21"
+          "visits": "530000",
+          "date": getDate(0)
         }
       ]
     }, arguments);
@@ -338,8 +348,8 @@ define(function () {
     }, arguments);
   };
 
-  Mock.prototype.statsPageviewsForPath = function () {
-    this.base('statsPageviewsForPath', {
+  Mock.prototype.listStatsPageviewsForPath = function () {
+    this.base('listStatsPageviewsForPath', {
       "totalResults": 81,
       "totals": {
         "pageviews": "353"
