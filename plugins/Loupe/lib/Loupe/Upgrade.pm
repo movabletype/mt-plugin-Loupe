@@ -18,28 +18,19 @@ sub upgrade_functions {
 sub _add_welcome_to_loupe_widget {
     my $user    = shift;
     my $widgets = $user->widgets;
+    return 1 unless $widgets;
 
-    if ($widgets) {
-        foreach my $key ( keys %$widgets ) {
-            my @keys = split ':', $key;
-            if ( $keys[0] eq 'dashboard' && $keys[1] eq 'user' ) {
-                my @widget_keys = keys %{ $widgets->{$key} };
-                unless ( grep { $_ eq 'welcome_to_loupe' } @widget_keys ) {
-                    $widgets->{$key}->{'welcome_to_loupe'} = {
-                        order => 150,
-                        set   => 'main',
-                    };
-                }
+    foreach my $key ( keys %$widgets ) {
+        my @keys = split ':', $key;
+        if ( $keys[0] eq 'dashboard' && $keys[1] eq 'user' ) {
+            my @widget_keys = keys %{ $widgets->{$key} };
+            unless ( grep { $_ eq 'welcome_to_loupe' } @widget_keys ) {
+                $widgets->{$key}->{'welcome_to_loupe'} = {
+                    order => 150,
+                    set   => 'main',
+                };
             }
         }
-    }
-    else {
-        $widgets->{ 'dashboard:user:' . $user->id } = {
-            welcome_to_loupe => {
-                order => 150,
-                set   => 'main',
-            },
-        };
     }
 
     $user->widgets($widgets);
