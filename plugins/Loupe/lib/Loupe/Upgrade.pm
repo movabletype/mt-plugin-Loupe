@@ -8,7 +8,7 @@ sub upgrade_functions {
             priority => 4.1,
             updater  => {
                 type  => 'author',
-                label => 'Adding welcome to Loupe widget...',
+                label => 'Adding Loupe dashboard widget...',
                 code  => \&_add_welcome_to_loupe_widget,
             },
         },

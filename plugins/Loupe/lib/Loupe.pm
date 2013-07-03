@@ -22,7 +22,7 @@ sub is_valid_file_path {
     if ( $get_html_dir ne $html_dir ) {
         return $class->error(
             _translate(
-                "A directory of Loupe's HTML file is wrong: [_1].",
+                "The URL should not include any directory name: [_1]",
                 $get_html_dir
             )
         );
@@ -38,8 +38,7 @@ sub create_html {
     my $fmgr     = _get_fmgr();
     if ( !$fmgr->exists($html_dir) ) {
         if ( !$fmgr->mkpath($html_dir) ) {
-            my $msg = _translate("Cannot create Loupe's HTML directory: ")
-                . $fmgr->errstr;
+            my $msg = _translate("Could not create loupe directory: [_1]", $fmgr->errstr);
             _log( { msg => $msg, error => 1 } );
             return $class->error($msg);
         }
@@ -51,7 +50,7 @@ sub create_html {
     if ( $fmgr->put_data( $tmpl->output($param), $html_path ) ) {
         _log(
             {   msg => _translate(
-                    "Loupe's HTML file has been created: [_1].", $html_path
+                    "Loupe HTML file has been created: [_1]", $html_path
                 )
             }
         );
@@ -59,7 +58,7 @@ sub create_html {
     }
     else {
         my $msg
-            = _translate("Cannot create Loupe's HTML file: ") . $fmgr->errstr;
+            = _translate("Could not create Loupe HTML file: [_1]", $fmgr->errstr);
         _log( { msg => $msg, error => 1 } );
         return $class->error($msg);
     }
@@ -77,7 +76,7 @@ sub delete_html {
     if ( $fmgr->delete($html_path) ) {
         _log(
             {   msg => _translate(
-                    "Loupe's HTML file has been deleted: [_1].", $html_path
+                    "Loupe HTML file has been deleted: [_1]", $html_path
                 )
             }
         );
@@ -85,7 +84,7 @@ sub delete_html {
     }
     else {
         my $msg
-            = _translate("Cannot delete Loupe's HTML file: ") . $fmgr->errstr;
+            = _translate("Could not delete Loupe HTML file: [_1]", $fmgr->errstr);
         _log( { msg => $msg, error => 1 } );
         return $class->error($msg);
     }

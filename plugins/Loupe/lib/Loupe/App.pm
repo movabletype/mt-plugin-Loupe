@@ -42,11 +42,11 @@ sub widgets {
 sub list_actions {
     return {
         send_welcome_mail => {
-            label                   => 'Send welcome mail of Loupe',
+            label                   => 'Send invitation mail of Loupe',
             order                   => 100,
             continue_prompt_handler => sub {
                 MT->translate(
-                    'You are about to send email(s) to allow the selected user(s) to invite to Loupe. Do you wish to continue?'
+                    'Are you sure you want to send invitation mail to selected users?'
                 );
             },
             condition => sub {
@@ -71,7 +71,7 @@ sub _send_welcome_mail {
     my $plugin = MT->component('Loupe');
     return $app->error(
         $plugin->translate(
-            'Cannot send welcome mail because Loupe is not enabled.')
+            'Could not send a invitation mail because Loupe is not enabled.')
     ) unless Loupe->is_enabled;
 
     my @id = $app->param('id');
@@ -103,13 +103,13 @@ sub _send_mail_core {
                 id   => 'send_welcome_mail',
                 To   => $author->email,
                 From => $app->config('EmailAddressMain') || $app->user->email,
-                Subject => $plugin->translate('Welcome to Loupe.'),
+                Subject => $plugin->translate('Welcome to Loupe'),
             );
             my $body = $app->build_page_in_mem($tmpl);
             if ( MT::Mail->send( \%head, $body ) ) {
                 $res
                     = $plugin->translate(
-                    "A welcome mail of Loupe has been sent to [_3] for user  '[_1]' (user #[_2]).",
+                    "Loupe invitation mail has been sent to [_3] for user '[_1]' (user #[_2]).",
                     $author->name, $author->id, $author->email );
                 $app->log(
                     {   message  => $res,

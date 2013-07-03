@@ -8,7 +8,7 @@
   <p><__trans phrase="Thank you for installing Loupe!"></p>
 <mt:if name="loupe_is_enabled">
   <p><__trans phrase="Ready to use the Loupe. Why don't you use Loupe right now?"></p>
-  <p class="msg-text"><a href="javascript:void(0);" onclick="javascript:sendWelcomeMail(); return false;"><__trans phrase="Try to use the Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send notification mail to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></mt:if></p>
+  <p class="msg-text"><a href="javascript:void(0);" onclick="javascript:sendWelcomeMail(); return false;"><__trans phrase="Try to use the Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send invitation mail to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></mt:if></p>
 <mt:else>
   <mt:if name="is_administrator">
   <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
@@ -34,6 +34,9 @@
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: bold;
 	font-size: 14px;
+}
+#welcome_to_loupe .widget-header .widget-close-link{
+    background-color: #f3f3f3;
 }
 </style>
 
@@ -85,10 +88,10 @@ function createIndicator() {
     jQuery('div#welcome_to_loupe div#widget-container').append(div);
 }
 function successMessage( addr ) {
-    return '<div id="sent" class="msg msg-info"><p class="msg-text">' + trans("Sent the notification mail that contains the access URL of the Loupe to '[_1]'.", addr) + '</p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
+    return '<div id="sent" class="msg msg-info"><p class="msg-text">' + trans("Sent the invitation mail that contains the access URL of the Loupe to '[_1]'.", addr) + '</p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
 }
 function errorMessage(message) {
-    return '<div id="failed" class="msg msg-error"><p class="msg-text"><__trans phrase="Failed to send notification mail: ">'+message+'</p></div>';
+    return '<div id="failed" class="msg msg-error"><p class="msg-text"><__trans phrase="Failed to send invitation mail: ">'+message+'</p></div>';
 }
 /* ]]> */
 </script>
