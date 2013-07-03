@@ -86,17 +86,19 @@ sub _send_mail_core {
 
     require MT::Mail;
     my $plugin = MT->component('Loupe');
-    my $param  = {
-        loupe_html_url => Loupe->html_url,
-        loupe_site_url => Loupe->official_site_url,
-    };
-    my $tmpl = $plugin->load_tmpl( 'welcome_mail.tmpl', $param );
     my @msg_loop;
     my $error;
 
     foreach (@$ids) {
         my $author = MT::Author->load($_)
             or next;
+        my $param  = {
+            loupe_html_url => Loupe->html_url,
+            loupe_site_url => Loupe->official_site_url,
+            username       => $author->nickname,
+        };
+        my $tmpl = $plugin->load_tmpl( 'welcome_mail.tmpl', $param );
+
         my $res;
         if ( $author->email ) {
             my %head = (
