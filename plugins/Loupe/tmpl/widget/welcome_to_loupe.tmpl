@@ -5,29 +5,39 @@
 <mt:setvarblock name="widget_header">
 </mt:setvarblock>
 <div id="widget-container">
-<mt:if name="is_administrator">
-    <p>
-        <__trans phrase="Thank you for installing Loupe. After setting up Loupe for only 20 seconds, you can check your blog easily with your smartphone. Please try.">
-    </p>
-    <div>
-    <mt:if name="loupe_is_enabled">
-        <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send welcome mail to users."></a>
-    <mt:else>
-        <a class="button" href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Plugin Setting"></a>
-    </mt:if>
-    </div>
+  <p><__trans phrase="Thank you for installing Loupe!"></p>
+<mt:if name="loupe_is_enabled">
+  <p><__trans phrase="Ready to use the Loupe. Why don't you use Loupe right now?"></p>
+  <p class="msg-text"><a href="javascript:void(0);" onclick="javascript:sendWelcomeMail(); return false;"><__trans phrase="Try to use the Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send notification mail to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></mt:if></p>
 <mt:else>
-    <p>
-        <__trans phrase="Thank you for installing Loupe. If using Loupe, you can check your blog easily with your smartphone. Please try.">
-    </p>
-    <div>
-        <a href="javascript:void(0);" onclick="javascript:sendWelcomeMail(); return false;"><__trans phrase="Send welcome mail to yourself."></a>
-    </div>
+  <mt:if name="is_administrator">
+  <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
+  <p class="msg-text"><a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></p>
+  <mt:else>
+  <p><__trans phrase="Loupe is not able to use now. Please contact to System Administrator."></p>
+  </mt:if>
 </mt:if>
 </div>
 </mtapp:widget>
+<style>
+#welcome_to_loupe {
+	background-color: #f3f3f5;
+}
+#welcome_to_loupe .widget-header{
+	background: #3b9486;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3b9486), color-stop(80%, #3b9486), color-stop(100%, #348275));
+	background-image: -webkit-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+	background-image: -moz-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+	background-image: -o-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+	background-image: linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+	color: #fff;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+}
+</style>
 
-<mt:unless name="is_administrator">
+<mt:if name="loupe_is_enabled">
 <script type="text/javascript">
 /* <![CDATA[ */
 function sendWelcomeMail() {
@@ -56,7 +66,7 @@ function sendWelcomeMail() {
                 if ( data['error'] ) {
                     div = errorMessage( data['error']['message'] );
                 } else {
-                    div = successMessage();
+                    div = successMessage( data.result.to );
                 }
                 jQuery('div#content-header').append(div);
             },
@@ -74,12 +84,12 @@ function createIndicator() {
     var div = '<div id="indicator" style="display: none; position: absolute; left: 50%; top: 50%; margin-left: -20px; margin-top: -20px;"><img src="<mt:var name="static_uri">images/indicator.gif"></div>';
     jQuery('div#welcome_to_loupe div#widget-container').append(div);
 }
-function successMessage() {
-    return '<div id="sent" class="msg msg-info"><p class="msg-text"><__trans phrase="Sent welcome mail."></p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
+function successMessage( addr ) {
+    return '<div id="sent" class="msg msg-info"><p class="msg-text">' + trans("Sent the notification mail that contains the access URL of the Loupe to '[_1]'.", addr) + '</p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
 }
 function errorMessage(message) {
-    return '<div id="failed" class="msg msg-error"><p class="msg-text"><__trans phrase="Failed to be sent welcome mail: ">'+message+'</p></div>';
+    return '<div id="failed" class="msg msg-error"><p class="msg-text"><__trans phrase="Failed to send notification mail: ">'+message+'</p></div>';
 }
 /* ]]> */
 </script>
-</mt:unless>
+</mt:if>

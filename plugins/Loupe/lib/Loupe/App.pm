@@ -17,7 +17,7 @@ sub send_welcome_mail_to_yourself {
 
     my ( $msg_loop, $error ) = _send_mail_core( $app, [ $user->id ] );
 
-    $error ? $app->json_error(@$msg_loop) : $app->json_result();
+    $error ? $app->json_error(@$msg_loop) : $app->json_result( { to => $user->email } );
 }
 
 sub widgets {
