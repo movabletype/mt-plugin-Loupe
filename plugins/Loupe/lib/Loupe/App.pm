@@ -23,17 +23,18 @@ sub send_welcome_mail_to_yourself {
 sub widgets {
     my $app = MT->app;
     my $user = $app->user or return;
-    return if !$user->is_superuser && !Loupe->is_enabled;
     return {
         welcome_to_loupe => {
             label    => 'Welcome to Loupe',
             template => 'widget/welcome_to_loupe.tmpl',
-            handler  => sub { $_[2]->{loupe_is_enabled} = Loupe->is_enabled },
+            condition =>
+                sub { MT->app->user->is_superuser || Loupe->is_enabled },
+            handler => sub { $_[2]->{loupe_is_enabled} = Loupe->is_enabled },
             singular => 1,
             set      => 'main',
             view     => 'user',
-            order => { user => 150 },
-            default => 1,
+            order    => { user => 150 },
+            default  => 1,
         },
     };
 }
