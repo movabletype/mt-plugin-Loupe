@@ -21,10 +21,9 @@
   }
   .todays-pageviews {
     @include numeric-font;
-    font-size: 6rem;
+    font-size: 5.556rem;
     line-height: 1em;
     margin: 0 auto;
-    font-weight: bold;
     width: auto;
     text-align: center;
     .diff-icon {
@@ -41,7 +40,7 @@
   }
   header {
     text-align: center;
-    color: #fff;
+    color: $white;
     h1 {
       font-size: 1em;
       font-weight: normal;
@@ -62,13 +61,17 @@
 
 #recent-access {
   .content {
-    padding: 13px 10px 13px 6px;
+    padding: 1rem;
   }
   .css-graph-bar-count {
     @include numeric-font;
+    font-size: 1.5rem;
   }
   .css-graph-date {
     font-weight: bold;
+  }
+  .css-graph .css-graph-container:last-child .css-graph-bar-container {
+    margin-bottom: 0 !important;
   }
 }
 
@@ -123,35 +126,32 @@
       font-size: 45px;
       @include single-text-shadow(0px, 0px, 10px, rgba(0, 0, 0, 0.5));
     }
-    .item-title {
-      padding-right: 70px;
-    }
     .item-pageviews {
       position: absolute;
       color: #fff;
       top: 36px;
-      right: 30px;
+      right: 3.375rem;
       width: 50px;
-      padding: 5px 10px;
-      background-color: #47cdec;
-      border: 2px solid #20a7b7;
+      padding: 0.296rem 0.488rem;
+      background-color: $count-background-blue;
+      border: 2px solid darken($count-background-blue, 20%);
       text-align: center;
-      @include border-radius-with-pie(8px);
+      @include border-radius-with-pie($radius);
     }
   }
 }
 
 #stats-post {
   .pageviews {
-    color: #fff;
-    background-color: #47cdec;
-    border: 2px solid #20a7b7;
-    @include border-radius(8px);
+    color: $white;
+    background-color: $count-background-blue;
+    border: 2px solid darken($count-background-blue, 20%);
+    @include border-radius($radius);
     @include pie-clearfix;
     .label {
       display: block;
-      padding: 10px;
-      border-right: 1px solid #3ca0c5;
+      padding: 0.667rem 1rem;
+      border-right: 1px solid darken($count-background-blue, 20%);
       width: 170px;
       float: left;
       white-space: nowrap;
@@ -159,21 +159,23 @@
     }
     .pageview {
       display: block;
-      padding: 10px;
+      padding: 0.667rem 1rem;
       margin-left: 170px;
-      border-left: 1px solid #57e2f7;
+      border-left: 1px solid lighten($count-background-blue, 20%);
       min-height: 38px;
     }
   }
   .content {
-    padding: 10px 20px 30px;
+    padding: 1rem;
     min-height: 300px;
     position: relative;
   }
   .title {
     text-align: left;
-    padding: 10px 0 20px;
+    padding: 1rem 0;
     font-weight: bold;
+    font-size: 1.097rem;
+    line-height: 1.5;
   }
   .body {
     line-height: 1.8em;
@@ -183,6 +185,6 @@
   }
   .author-name {
     font-weight: bold;
-    margin-left: 10px;
+    margin-left: 1rem;
   }
 }

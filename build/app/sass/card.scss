@@ -116,8 +116,7 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
     }
   }
   .contents-top-button {
-    margin: 1em 0 1.5em;
-    margin: 1rem 0 1.5rem;
+    margin: 0 0 1.5rem;
     background-color: $btn-attention-color;
     @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius(radius);
@@ -239,7 +238,7 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
       .item-title {
         display: table-cell;
         vertical-align: middle;
-        padding: 0 2.25rem 0 0.667rem;
+        padding: 0 2.25rem 0 0.488rem;
       }
       .item-arrow {
         display: block;
