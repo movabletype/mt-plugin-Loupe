@@ -1,6 +1,4 @@
-require(['json!cards/cards.json'], function () {});
-
 Mock = true;
 DEBUG = true;
 
-require(['js/mtapi/mock'])
+require(['json!cards/cards.json', 'js/mtapi/mock', 'app', 'js/boot'])

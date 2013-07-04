@@ -159,7 +159,13 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
 
     initialize: function (options) {
       commands.setHandler('l10n', _.bind(function (callback) {
-        this.l10n.waitLoadCommon(callback);
+        if (this.l10n) {
+          this.l10n.waitLoadCommon(callback);
+        } else {
+          this.auth(_.bind(function () {
+            this.l10n.waitLoadCommon(callback);
+          }, this));
+        }
       }, this));
 
       var cards = options.cards;

@@ -22,6 +22,7 @@
     "moment.lang": "lib/moment/min/langs",
     "mtchart": "lib/chart-api/core/amd/mtchart.core.amd",
     "app": "js/app",
+    "boot": "js/boot",
     "text": "lib/requirejs-text/text",
     "json": "lib/requirejs-plugins/src/json",
     "easeljs": "lib/EaselJS/easeljs.wrap",

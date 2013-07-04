@@ -89,7 +89,7 @@ module.exports = function (grunt) {
   }, 'app/cards/**/*.js');
 
   var specs = [];
-  var helpers = ['test/template.js', 'test/helper.js'];
+  var helpers = ['app/lib/jquery/jquery-1.10.1.js', 'test/template.js', 'test/helper.js'];
   grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
@@ -99,7 +99,6 @@ module.exports = function (grunt) {
   });
 
   var testTarget = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
-
   var settings = grunt.file.readJSON('settings.json');
 
   var bulkSymlinkLinks = grunt.file.expand('app/cards/*/templates/helpers/*.js').map(function (filename) {
@@ -360,6 +359,12 @@ module.exports = function (grunt) {
           port: 9002,
           keepalive: true
         }
+      },
+      jasmine: {
+        options: {
+          hostname: 'localhost',
+          port: 9003
+        }
       }
     },
     jasmine: {
@@ -368,8 +373,9 @@ module.exports = function (grunt) {
         options: {
           specs: specs,
           helpers: helpers.concat(['app/js/main.js']),
-          host: 'http://localhost:9002/',
+          host: 'http://localhost:9003/',
           outfile: '_SpecRunner.html',
+          keepRunner: true,
           template: require('grunt-template-jasmine-requirejs'),
           templateOptions: {
             requireConfig: {
@@ -387,7 +393,8 @@ module.exports = function (grunt) {
         src: testTarget,
         options: {
           specs: specs,
-          helpers: helpers, //.concat(['app/js/main.js']),
+          helpers: helpers,
+          keepRunner: true,
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {
             coverage: 'test/coverage/coverage.json',
@@ -536,7 +543,8 @@ module.exports = function (grunt) {
           name: 'js/template',
           out: 'test/template.js',
           include: ['json!cards/cards.json', 'js/l10n/ja'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
-          exclude: ['jquery', 'handlebars', 'hbs'],
+          //exclude: ['handlebars', 'hbs'],
+          exclude: ['hbs'],
           optimize: 'none',
           optimizeCss: 'none'
         }
@@ -759,10 +767,17 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
       'preprocess:test',
       'requirejs:test',
-      'jshint',
+      'connect:jasmine',
       'jasmine',
-      'clean:afterTest',
-      'open:test'
+      'open:test',
+      'jshint'
+  ]);
+
+  grunt.registerTask('jasmineTest', [
+      'connect:jasmine',
+      'preprocess:test',
+      'requirejs:test',
+      'jasmine:test'
   ]);
 
   grunt.registerTask('none', []);
