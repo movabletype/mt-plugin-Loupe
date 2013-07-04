@@ -1,5 +1,9 @@
 @import "_helpers";
 
+/* Modular Scale 
+http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
+*/
+
 /* Card: */
 
 .card {
@@ -17,14 +21,13 @@
   header {
     border-bottom: 2px solid darken($card-header-color, 10%);
     color: #fff;
-    padding: 0.667em 0.667em 0;
-    padding: 0.667rem 0.667rem 0.488rem;
+    padding: 0.667rem 1rem 0.488rem;
     min-height: 2.469em;
     min-height: 2.469rem;
     @include border-top-radius(5px);
     @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
     background-color: $card-header-color;
-    @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 5%) 100%));
+    @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 2%) 100%));
     h1 {
       font-weight: normal;
       font-size: 1em;
@@ -162,7 +165,7 @@
   }
   .button-undo {
     position: absolute;
-    border-left: 1px solid #558130;
+    border-left: 1px solid darken($btn-basic-color, 10%);
     display: block;
     top: 0;
     right: 0;
@@ -171,7 +174,7 @@
   .button-undo-inner {
     display: block;
     font-size: 18px;
-    border-left: 1px solid #aed399;
+    border-left: 1px solid lighten($btn-basic-color, 20%);
     width: 100%;
     height: 100%;
     padding: 10px 15px;
@@ -223,8 +226,8 @@
         cursor: pointer;
         height: 100%;
         width: 100%;
-        padding: 10px;
-        border-bottom: 1px solid #e6e6e6;
+        padding: 1rem;
+        border-bottom: 1px solid $card-border-color;
         @include pie-clearfix;
         &.tapped, &:active {
           @include background-image(linear-gradient(rgba($black, 0.15), rgba($black, 0.05) 5%));
@@ -236,14 +239,15 @@
       .item-title {
         display: table-cell;
         vertical-align: middle;
-        padding-right: 25px;
+        padding: 0 2.25rem 0 0.667rem;
       }
       .item-arrow {
         display: block;
         position: absolute;
-        right: 10px;
-        top: 45%;
-        color: #e6e6e6;
+        right: 1rem;
+        top: 35%;
+        color: $card-arrow;
+        font-size: 2.25rem;
       }
     }
   }
