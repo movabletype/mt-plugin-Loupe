@@ -30,7 +30,7 @@ function (CardItemView, JSON, cache, device, commands, vent, Trans, Collection, 
             this.blogsLoading = false;
             this.blogs = [];
           } else {
-            if (!this.blogLoading) {
+            if (!this.error && this.blogsLoading) {
               this.blogsLoading = true;
               this.fetch();
             }
@@ -49,7 +49,8 @@ function (CardItemView, JSON, cache, device, commands, vent, Trans, Collection, 
           next: this.next,
           prev: prev,
           blogsLoading: this.blogsLoading ? true : false,
-          historiesLoading: this.historiesLoading ? true : false
+          historiesLoading: this.historiesLoading ? true : false,
+          error: this.error
         };
 
         data.histories = this.offset === 0 ? this.histories : [];
@@ -112,6 +113,18 @@ function (CardItemView, JSON, cache, device, commands, vent, Trans, Collection, 
             console.log('[menu:main:fetch:success]');
           }
           this.selectCurrentBlog();
+          this.blogsLoading = false;
+          this.render();
+        }, this),
+        error: _.bind(function (collection, resp) {
+          if (DEBUG) {
+            console.log('error on fetching');
+            console.log(resp);
+          }
+          this.error = resp ? resp.error : {
+            message: ''
+          };
+          this.blogsLoading = false;
           this.render();
         }, this),
         offset: parseInt(this.offset, 10) || 0,
