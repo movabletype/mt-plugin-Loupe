@@ -157,7 +157,7 @@ textarea, input {
       @include transform(rotate(180deg));
     }
   }
-  .no-priviledges-error {
+  .error-in-dashboard {
     text-align: center;
     margin: 100px 0;
   }
@@ -318,6 +318,11 @@ textarea, input {
         border-color: #ffb142;
         background-color: #ffb142;
       }
+    }
+    &.error {
+      padding: 13px;
+      display: block;
+      text-align: center;
     }
   }
   .blog-item-nav {
