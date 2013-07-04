@@ -1,5 +1,5 @@
 [{
-    "name": "stats",
+    "name": "Stats",
     "id": "stats",
     "dashboard": {
       "view": "dashboard/dashboard"
@@ -15,7 +15,7 @@
       }
     ]
   }, {
-    "name": "acception",
+    "name": "Acception",
     "id": "acception",
     "dashboard": {
       "view": "dashboard/dashboard"
@@ -28,13 +28,13 @@
       }
     ]
   }, {
-    "name": "upload",
+    "name": "Media Upload",
     "id": "upload",
     "dashboard": {
       "view": "dashboard/dashboard"
     }
   }, {
-    "name": "feedbacks",
+    "name": "Feedbacks",
     "id": "feedbacks",
     "dashboard": {
       "view": "dashboard/dashboard"

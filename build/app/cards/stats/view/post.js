@@ -97,12 +97,12 @@ function (CardItemView, cache, commands, device, moment, momentLang, statsProvid
       }
       var map = {
         day: "Today's",
-        week: "This week's",
-        month: "This month's",
-        year: "This year's"
+        week: "This Week's",
+        month: "This Month's",
+        year: "This Year's"
       }
 
-      data.label = map[this.unit] + ' access';
+      data.label = map[this.unit] + ' Access';
       if (data.pageviews === undefined) {
         data.pageviews = this.pageviews;
       }

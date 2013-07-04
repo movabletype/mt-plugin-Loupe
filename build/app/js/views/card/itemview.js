@@ -125,7 +125,7 @@ function (Marionette, cache, commands, device, Trans) {
         }
         data.lang = lang;
       }
-      data.name = this.card.id;
+      data.name = this.card.name;
       data.fetchError = this.fetchError;
       data.loading = this.loading;
       data.loadingReadmore = this.loadingReadmore;

@@ -14,7 +14,7 @@
 <div class="error">
   <div class="upload-image icon-upload-fail"></div>
   <div class="message"><div class="message-inner">
-  <p class="error-heading">{{#trans trans}}Failed uploading{{/trans}}</p>
+  <p class="error-heading">{{#trans trans}}Failed Uploading{{/trans}}</p>
   {{#each uploadError}}
   <p>{{#if this}}{{this.message}}{{/if}}</p>
   {{/each}}
@@ -22,7 +22,7 @@
 </div>
 {{#if supportedFileAPI}}
 <div id="retry" class="upload-file button">
-    {{#trans trans}}retry{{/trans}}
+    {{#trans trans}}Retry{{/trans}}
 </div>
 {{/if}}
 {{/if}}
@@ -40,12 +40,12 @@
   {{/if}}
   <span class="upload-file-input-inner">
     {{#if uploadCompleted}}
-      {{#trans trans}}more upload{{/trans}}
+      {{#trans trans}}More Upload{{/trans}}
     {{else}}
       {{#if error}}
-        {{#trans trans}}choose another files{{/trans}}
+        {{#trans trans}}Choose Another Files{{/trans}}
       {{else}}
-        {{#trans trans}}choose files{{/trans}}
+        {{#trans trans}}Choose Files{{/trans}}
       {{/if}}
     {{/if}}
   </span>

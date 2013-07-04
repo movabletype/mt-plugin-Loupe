@@ -15,7 +15,7 @@ define([
 
     serializeData: function () {
       var data = this.serializeDataInitialize();
-      data.title = "Today's page views";
+      data.title = "Today's Page Views";
 
       if (!this.loading) {
         data = _.extend({}, data, this.model.toJSON());
