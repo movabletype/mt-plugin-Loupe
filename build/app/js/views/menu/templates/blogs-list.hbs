@@ -20,6 +20,11 @@
   <div class="loading"></div>
   {{/if}}
   <ul>
+  {{#if error}}
+    <li class="blog-item error">
+      {{error.message}}
+    </li>
+  {{/if}}
   {{#each blogs}}
     <li data-id="{{id}}" class="blog-item{{#if this.selected}} selected{{/if}}">
       <a href="#" data-id="{{id}}">

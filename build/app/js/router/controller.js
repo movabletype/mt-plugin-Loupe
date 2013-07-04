@@ -58,8 +58,9 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
 
             blogSuccess = _.bind(function (blogModel) {
               finalize(user, blogModel.toJSON());
-            }, this),
-            blogError = _.bind(function (blogModel) {
+            }, this);
+
+            blogError = _.bind(function (blogModel, resp) {
               if (DEBUG) {
                 console.log('get blog fail');
                 console.log(blogModel);
@@ -69,7 +70,7 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
                 commands.execute('move:dashboard', data);
               };
               finalize(user, {
-                error: blogModel.error
+                error: resp.error
               });
             }, this);
 
@@ -85,18 +86,32 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
               });
             }
           } else {
-            blogError = _.bind(function (resp) {
+            blogError = _.bind(function (collection, resp) {
               if (DEBUG) {
                 console.log('get blog list fail');
                 console.log(resp);
               }
               cache.clear('user', 'blogs');
+              callback = function (data) {
+                data = data || {};
+                commands.execute('move:dashboard', data);
+              };
+              finalize(user, {
+                error: resp.error
+              });
             }, this);
 
             blogSuccess = _.bind(function (blogCollection) {
               var blogs = blogCollection.toJSON();
-              blog = blogs.length ? blogs[0] : null;
-              finalize(user, blog, blogs);
+              if (blogs.length) {
+                finalize(user, blogs[0], blogs);
+              } else {
+                blogError(blogCollection, {
+                  error: {
+                    message: 'You have no blog to show in Loupe'
+                  }
+                });
+              }
             }, this);
 
             if (blogCollection.length) {
