@@ -42,7 +42,7 @@ sub widgets {
 sub list_actions {
     return {
         send_welcome_mail => {
-            label                   => 'Send invitation mail of Loupe',
+            label                   => 'Send Loupe invitation mail',
             order                   => 100,
             continue_prompt_handler => sub {
                 MT->translate(
