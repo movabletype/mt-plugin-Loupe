@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'hbs!js/views/dashboard/templates/main'],
+define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'js/views/card/itemview', 'hbs!js/views/dashboard/templates/main'],
 
-function (Marionette, commands, Trans, getBlog, template) {
+function (Marionette, commands, Trans, getBlog, CardItemView, template) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -25,11 +25,12 @@ function (Marionette, commands, Trans, getBlog, template) {
           _.forEach(this.cards, function (card) {
             var dashboard = card.dashboard;
             if (dashboard) {
-              var id = card.id;
+              var id = card.id,
+                that = this,
+                path = 'cards/' + id + '/';
+
               $('<section id="card-' + id + '" class="card"></section>').appendTo(this.el);
               this.addRegion(id, "#card-" + id);
-              var that = this;
-              var path = 'cards/' + id + '/';
 
               if (DEBUG) {
                 var dfd = $.Deferred();
@@ -48,8 +49,9 @@ function (Marionette, commands, Trans, getBlog, template) {
                   })));
                 });
               } else if (dashboard.template) {
-                var match = dashboard.template.match(/^(.*)\.(.*)$/);
-                var type, filename;
+                var match = dashboard.template.match(/^(.*)\.(.*)$/),
+                  type, filename;
+
                 if (match[2] === 'hbs') {
                   type = 'hbs';
                   filename = match[1];
@@ -58,17 +60,20 @@ function (Marionette, commands, Trans, getBlog, template) {
                   filename = match[0];
                 }
 
-                var script = dashboard.data ? [path + dashboard.data.replace(/\.js$/, '')] : [];
-                var requirements = [type + '!' + path + filename].concat(script);
+                var script = dashboard.data ? [path + dashboard.data.replace(/\.js$/, '')] : [],
+                  templatePath = type + '!' + path + filename,
+                  requirements = [templatePath].concat(script);
 
-                require(requirements, function (template, data) {
-                  if (type === 'hbs') {
-                    template = template(data);
-                  } else {
-                    template = _.template(template, data);
-                  }
-                  var View = Marionette.ItemView.extend({
-                    template: template
+                require(requirements, function (template, templateData) {
+                  template = type === 'hbs' ? template : templatePath;
+                  templateData = templateData ? templateData : {};
+                  var View = CardItemView.extend({
+                    template: template,
+                    serializeData: function () {
+                      var data = this.serializeDataInitialize();
+                      data = _.extend(data, templateData)
+                      return data;
+                    }
                   });
 
                   that[id].show(new View(_.extend(that.options, {
