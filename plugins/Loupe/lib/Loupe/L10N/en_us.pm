@@ -1,6 +1,7 @@
-# Movable Type (r) (C) 2006-2013 Six Apart, Ltd. All Rights Reserved.
-# This code cannot be redistributed without permission from www.sixapart.com.
-# For more information, consult your Movable Type license.
+# This program is distributed under the terms of
+# The MIT License (MIT)
+#
+# Copyright (c) 2013 Six Apart, Ltd.
 #
 # $Id$
 
