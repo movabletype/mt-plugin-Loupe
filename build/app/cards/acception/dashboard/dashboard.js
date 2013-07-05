@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/trans', 'js/views/card/composite', 'cards/acception/models/collection', 'cards/acception/dashboard/itemview', 'hbs!cards/acception/templates/dashboard'],
+define(['backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/trans', 'template/helpers/trans', 'js/views/card/composite', 'cards/acception/models/collection', 'cards/acception/dashboard/itemview', 'hbs!cards/acception/templates/dashboard'],
 
-function (Marionette, cache, device, commands, Trans, CardCompositeView, Collection, ItemView, template) {
+function (Marionette, cache, device, commands, Trans, translation, CardCompositeView, Collection, ItemView, template) {
   "use strict";
 
   return CardCompositeView.extend({
@@ -55,7 +55,24 @@ function (Marionette, cache, device, commands, Trans, CardCompositeView, Collect
           if (data.count > this.collection.length) {
             data.showMoreButton = true;
           }
-          data.items = this.collection.toJSON();
+          if (data.count === 0) {
+            if (this.trans) {
+              var item = {
+                id: null,
+                assets: [{
+                    url: cache.get('app', 'staticPath') + '/cards/acception/assets/welcome.png'
+                  }
+                ],
+                title: translation(this.trans, 'welcome to Loupe! - this card lists the posts waiting for acception')
+              }
+              data.items = [];
+              for (var i = 0; i < 3; i++) {
+                data.items.push(item);
+              }
+            }
+          } else {
+            data.items = this.collection.toJSON();
+          }
         }
       }
       return data;

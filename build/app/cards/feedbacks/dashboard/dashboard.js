@@ -1,6 +1,6 @@
-define(['js/cache', 'js/device', 'js/commands', 'js/trans', 'cards/feedbacks/models/comments_collection', 'hbs!cards/feedbacks/templates/dashboard', 'cards/feedbacks/dashboard/comments_itemview', 'js/views/card/composite'],
+define(['js/cache', 'js/device', 'js/commands', 'js/trans', 'template/helpers/trans', 'cards/feedbacks/models/comments_collection', 'hbs!cards/feedbacks/templates/dashboard', 'cards/feedbacks/dashboard/comments_itemview', 'js/views/card/composite'],
 
-function (cache, device, commands, Trans, CommentsCollection, template, commentsItemView, CardCompositeView) {
+function (cache, device, commands, Trans, translation, CommentsCollection, template, commentsItemView, CardCompositeView) {
   "use strict";
 
   return CardCompositeView.extend({
@@ -16,6 +16,16 @@ function (cache, device, commands, Trans, CommentsCollection, template, comments
         data.count = parseInt(this.collection.totalResults, 10);
         if (data.count > this.collection.length) {
           data.showMoreButton = true
+        }
+        if (data.count === 0) {
+          var item = {
+            id: null,
+            body: translation(this.trans, 'welcome to Loupe! - this card lists the new comments')
+          };
+          data.items = [];
+          for (var i = 0; i < 3; i++) {
+            data.items.push(item);
+          }
         }
       }
       return data;

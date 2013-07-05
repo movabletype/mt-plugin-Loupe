@@ -3,6 +3,14 @@
   {{>js_views_card_partials_loading}}
   {{>js_views_card_partials_fetchError}}
   {{>js_views_card_partials_noItem}}
-  <ul id="feedback-comments-list" class="card-item-list"></ul>
+  <ul id="feedback-comments-list" class="card-item-list">
+    {{#unless fetchError}}{{#unless loading}}{{#unless count}}
+      {{#each items}}
+      <li class="sample-item">
+      {{>cards_feedbacks_templates_dashboardItemview}}
+      </li>
+      {{/each}}
+    {{/unless}}{{/unless}}{{/unless}}
+  </ul>
   {{>js_views_card_partials_readmore}}
 </div>

@@ -29,7 +29,8 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
           var currentBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || null;
 
           var finalize = function (user, blog, blogs) {
-            if (cache.get('app', 'initial')) {
+            var initialBuild = cache.get('app', 'initial')
+            if (initialBuild || initialBuild === null) {
               l10n.waitLoadCommon(function () {
                 commands.execute('app:buildMenu', {
                   userId: user.id,

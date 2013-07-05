@@ -66,12 +66,17 @@
       display: table;
       height: 300px;
       width: 100%;
+      position: absolute;
+      background-color: $card-background-color;
+      background-color: rgba($card-background-color, 0.8);
+      z-index: 10;
     }
     .no-item-inner {
       display: table-cell;
       vertical-align: middle;
       padding: 20px;
       text-align: center;
+      text-shadow: 1px 1px 0 $white;
     }
   }
   .button {

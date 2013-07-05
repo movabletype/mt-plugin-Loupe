@@ -1,4 +1,4 @@
-<a data-route="feedbacks/comments/{{blog.id}}/{{this.id}}">
+<a {{#if this.id}}data-route="feedbacks/comments/{{blog.id}}/{{this.id}}"{{/if}}>
   <span class="item-content">
     <span class="item-asset-container">
       <span class="item-asset icon-comment"></span>
