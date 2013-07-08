@@ -17,13 +17,16 @@ sub send_welcome_mail_to_yourself {
         unless $app->request_method eq 'POST' && Loupe->is_enabled;
 
     my $user = $app->user or return;
+    my $commenter_blog_id = $app->_is_commenter($user);
     return $app->permission_denied
         unless $user->is_superuser
-        || MT::Permission->count( { author_id => $user->id } );
+        || ( defined($commenter_blog_id) && $commenter_blog_id <= 0 );
 
     my ( $msg_loop, $error ) = _send_mail_core( $app, [ $user->id ] );
 
-    $error ? $app->json_error(@$msg_loop) : $app->json_result( { to => $user->email } );
+    $error
+        ? $app->json_error(@$msg_loop)
+        : $app->json_result( { to => $user->email } );
 }
 
 sub widgets {
@@ -98,7 +101,7 @@ sub _send_mail_core {
     foreach (@$ids) {
         my $author = MT::Author->load($_)
             or next;
-        my $param  = {
+        my $param = {
             loupe_html_url => Loupe->html_url,
             loupe_site_url => Loupe->official_site_url,
             username       => $author->nickname,

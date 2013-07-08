@@ -33,12 +33,20 @@ my $ichikawa = MT::Test::Permission->make_author(
     email    => 'miuchi+ichikawa@sixapart.com',
 );
 
-my $editor = MT::Role->load( { name => 'Editor' } );
+my $ukawa = MT::Test::Permission->make_author(
+    name     => 'ukawa',
+    nickname => 'Saburo Ukawa',
+    email    => 'miuchi+ukawa@sixapart.com',
+);
+
+my $editor    = MT::Role->load( { name => 'Editor' } );
+my $commenter = MT::Role->load( { name => 'Commenter' } );
 
 my $website = MT::Website->load;
 
 require MT::Association;
-MT::Association->link( $aikawa, $editor, $website );
+MT::Association->link( $aikawa, $editor,    $website );
+MT::Association->link( $ukawa,  $commenter, $website );
 
 $ENV{HTTP_HOST} = 'localhost';
 
@@ -73,6 +81,7 @@ my ( $app, $out );
         { user => $admin,    ok => 1 },
         { user => $aikawa,   ok => 1 },
         { user => $ichikawa, ok => 0 },
+        { user => $ukawa,    ok => 0 },
     );
 
     foreach my $test (@suite) {
