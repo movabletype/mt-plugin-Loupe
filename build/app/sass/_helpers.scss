@@ -31,6 +31,7 @@ $btn-basic-color: #8bcd4d;
 $btn-attention-color: #e94e1c;
 $btn-disabled-color: #999999;
 $count-background-color: #ebcf00;
+$count-background-blue: #47cdec;
 $card-arrow: lighten($black, 75%);
 
 @mixin hardware-accelerate-hack {
@@ -98,4 +99,5 @@ $card-arrow: lighten($black, 75%);
 
 @mixin numeric-font {
   font-family: 'LeagueGothicRegular','Helvetica Neue',sans-serif;
+  font-weight: normal;
 }

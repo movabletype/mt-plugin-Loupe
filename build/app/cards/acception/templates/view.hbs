@@ -14,8 +14,8 @@
       {{#ifIs status eq="Review"}}
         <div id="accept-button" class="contents-top-button button">{{#trans trans}}Accept{{/trans}}</div>
         <div class="title">{{title}}</div>
-        <div class="date">{{formatDate date lang}}</div>
-        <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
+        <p><span class="date">{{formatDate date lang}}</span><br>
+        <span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
         <div class="body">{{sanitize body}}</div>
       {{else}}
         {{#ifIs status eq="Publish"}}
@@ -31,8 +31,8 @@
           </span>
         </div>
         <div class="title">{{title}}</div>
-        <div class="date">{{formatDate date lang}}</div>
-        <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
+        <p><span class="date">{{formatDate date lang}}</span><br>
+        <span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
         <div class="body">{{sanitize body}}</div>
         {{/ifIs}}
       {{/ifIs}}
