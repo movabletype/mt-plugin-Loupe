@@ -38,9 +38,9 @@ function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareV
     onRender: function () {
       this.$el.addClass('container');
 
-      var that = this;
-      var id = this.card.id;
-      var path = 'cards/' + id + '/';
+      var that = this,
+        id = this.card.id,
+        path = 'cards/' + id + '/';
 
       if (DEBUG) {
         require(['perf'], function (perf) {
@@ -70,8 +70,9 @@ function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareV
           that.main.show(new View(that.options));
         });
       } else {
-        var match = this.viewTemplate.match(/^(.*)\.(.*)$/);
-        var type, filename;
+        var match = this.viewTemplate.match(/^(.*)\.(.*)$/),
+          type, filename;
+
         if (match[2] === 'hbs') {
           type = 'hbs';
           filename = match[1];
@@ -79,20 +80,19 @@ function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareV
           type = 'text';
           filename = match[0];
         }
-        var script = this.viewData ? [path + this.viewData.replace(/\.js$/, '')] : [];
-        var requirements = [type + '!' + path + filename].concat(script);
+        var script = this.viewData ? [path + this.viewData.replace(/\.js$/, '')] : [],
+          templatePath = type + '!' + path + filename,
+          requirements = [templatePath].concat(script);
 
-        require(requirements, function (template, data) {
-          if (type === 'hbs') {
-            template = template(data);
-          } else {
-            template = _.template(template, data);
-          }
+        require(requirements, function (template, templateData) {
+          template = type === 'hbs' ? template : templatePath;
+          templateData = templateData || {};
           var View = CardItemView.extend({
             template: template,
-            initialize: function () {
-              CardItemView.prototype.initialize.apply(this, Array.prototype.slice.call(arguments));
-              this.setTranslation();
+            serializeData: function () {
+              var data = this.serializeDataInitialize();
+              data = _.extend(data, templateData);
+              return data;
             }
           });
           that.main.show(new View(that.options));

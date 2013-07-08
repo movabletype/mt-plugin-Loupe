@@ -2,7 +2,7 @@
     {{>js_views_card_partials_loading}}
     {{>js_views_card_partials_fetchError}}
     {{#if acceptionFailed}}
-      <div class="acception-failed error"><span class="message"><span class="message-inner">{{error.message}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
+      <div class="acception-failed error"><span class="message"><span class="message-inner">{{error.message}}</span></span><div class="close-me button">{{#trans trans}}Close{{/trans}}</div></div>
     {{/if}}
     {{#if status}}
       {{#ifIs status eq="Pending"}}

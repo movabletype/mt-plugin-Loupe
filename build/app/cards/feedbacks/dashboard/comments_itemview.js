@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'cards/feedbacks/models/comments_model', 'hbs!cards/feedbacks/templates/comments_item_views'],
+define(['backbone.marionette', 'cards/feedbacks/models/comments_model', 'hbs!cards/feedbacks/templates/dashboardItemview'],
 
 function (Marionette, Model, template) {
   "use strict";

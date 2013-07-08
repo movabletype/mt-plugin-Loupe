@@ -1,3 +1,9 @@
+# This program is distributed under the terms of
+# The MIT License (MIT)
+#
+# Copyright (c) 2013 Six Apart, Ltd.
+#
+# $Id$
 package Loupe::Upgrade;
 use strict;
 use warnings;
@@ -8,7 +14,7 @@ sub upgrade_functions {
             priority => 4.1,
             updater  => {
                 type  => 'author',
-                label => 'Adding welcome to Loupe widget...',
+                label => 'Adding Loupe dashboard widget...',
                 code  => \&_add_welcome_to_loupe_widget,
             },
         },

@@ -4,7 +4,15 @@
   {{>js_views_card_partials_fetchError}}
   {{>js_views_card_partials_loading}}
   {{>js_views_card_partials_noItem}}
-  <ul id="acceptions-list" class="card-item-list" {{#if fetchError}}style="display:none"{{/if}}></ul>
+  <ul id="acceptions-list" class="card-item-list" {{#if fetchError}}style="display:none"{{/if}}>
+    {{#unless fetchError}}{{#unless loading}}{{#unless count}}
+      {{#each items}}
+      <li class="sample-item">
+      {{>cards_acception_templates_dashboardItemview}}
+      </li>
+      {{/each}}
+    {{/unless}}{{/unless}}{{/unless}}
+  </ul>
   {{>js_views_card_partials_readmore}}
 </div>
 {{/if}}

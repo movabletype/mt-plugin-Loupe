@@ -15,7 +15,7 @@ define([
 
     serializeData: function () {
       var data = this.serializeDataInitialize();
-      data.title = "Today's page views";
+      data.title = "Today's Page Views";
 
       if (!this.loading) {
         data = _.extend({}, data, this.model.toJSON());
@@ -32,6 +32,16 @@ define([
             } else {
               data.diffIcon = 'icon-arrow-right';
             }
+          }
+        } else {
+          if (this.providerIsNotAvailable) {
+            data.pageviews = {
+              items: [{
+                  pageviews: 770000
+                }
+              ]
+            };
+            data.diffIcon = 'icon-arrow-up-right';
           }
         }
         data.today = (new Date()).valueOf();
@@ -53,7 +63,7 @@ define([
       });
     },
 
-    navigatePage: function (e) {
+    navigatePage: function () {
       commands.execute('router:navigate', 'stats');
     },
 
@@ -87,14 +97,15 @@ define([
     onRender: function () {
       this.handleRefetch();
 
-      if (this.model.isSynced) {
-        var data = this.model.toJSON(),
-          pageviews = data.pageviews.items,
-          visits = data.visits.items,
-          graphData = [],
-          p, v;
+      var data, pageviews, visits, graphData = [],
+        p, v, i, len, config, range;
 
-        for (var i = 0, len = pageviews.length; i < len; i++) {
+      if (this.model.isSynced) {
+        data = this.model.toJSON();
+        pageviews = data.pageviews.items;
+        visits = data.visits.items;
+
+        for (i = 0, len = pageviews.length; i < len; i++) {
           p = pageviews[i];
           v = visits[i];
           graphData.push({
@@ -103,9 +114,8 @@ define([
             y1: p.pageviews
           });
         }
-        console.log(graphData)
 
-        var config = {
+        config = {
           type: 'easel.mix',
           data: graphData,
           yLength: 2,
@@ -136,12 +146,14 @@ define([
           height: 170
         };
 
-        var range = {
+        range = {
           length: 7,
           unit: 'daily'
         };
 
         new ChartAPI.Graph(config, range).trigger('APPEND_TO', this.$el.find('#stats-dashboard-graph'));
+      } else if (this.providerIsNotAvailable) {
+        this.$el.find('#stats-dashboard-graph').append('<img src="' + cache.get('app', 'staticPath') + '/cards/stats/assets/welcome.png" class="stats-welcome" height="170">')
       }
     }
   });

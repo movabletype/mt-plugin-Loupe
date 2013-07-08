@@ -57,6 +57,20 @@
   .graph-element {
     margin: 0 auto;
   }
+  .provider-is-not-available {
+    height: 100%;
+    padding: 0;
+    text-shadow: 1px 1px 0 $white;
+  }
+  .provider-is-not-available-container {
+    position: absolute;
+    z-index: 10;
+    background-color: $card-background-color;
+    background-color: rgba($card-background-color, 0.8);
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
 }
 
 #recent-access {
@@ -179,6 +193,7 @@
   }
   .body {
     line-height: 1.8em;
+    margin-top: 1em;
     img {
       max-width: 100%;
     }

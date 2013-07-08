@@ -1,4 +1,4 @@
-<a data-route="acception/{{blog.id}}/{{this.id}}">
+<a {{#if this.id}}data-route="acception/{{blog.id}}/{{this.id}}"{{/if}}>
   <span class="item-content">
     <span class="item-asset-container">
     {{#if this.assets.length}}

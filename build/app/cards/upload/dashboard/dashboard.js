@@ -124,7 +124,7 @@ function (mtapi, device, commands, CardItemView, template) {
       var data = {};
       if (this.perm) {
         data = this.serializeDataInitialize();
-        data.title = 'Media Upload';
+        data.title = data.name;
         data.FileUploadSupport = this.FileUploadSupport;
         data.loading = false;
         data.uploadError = this.uploadError || [];

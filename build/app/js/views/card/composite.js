@@ -23,10 +23,12 @@ function (Marionette, commands, CardItemView) {
       this.$el.hammer(this.hammerOpts).on('tap', 'a', _.bind(function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var route = $(e.currentTarget).data('route') || '';
-        this.addTapClass(e.currentTarget, function () {
-          commands.execute('router:navigate', route);
-        });
+        var route = $(e.currentTarget).data('route') || null;
+        if (route) {
+          this.addTapClass(e.currentTarget, function () {
+            commands.execute('router:navigate', route);
+          });
+        }
         return false;
       }, this));
     },

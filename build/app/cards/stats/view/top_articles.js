@@ -89,7 +89,7 @@ function (CardCompositeView, cache, commands, device, momemt, momentLang, statsP
 
       data.providerIsNotAvailable = this.providerIsNotAvailable ? true : false;
       data.itemLoading = this.itemLoading ? true : false;
-      data.title = 'Top 3 of the ' + this.unit;
+      data.title = 'Top 3 of The ' + this.unit;
       data.unit = this.unit;
 
       return data;

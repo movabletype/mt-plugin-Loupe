@@ -21,6 +21,16 @@
         }
       }
     }
+    &.sample-item {
+      .circle.image {
+        border-color: transparent;
+        background-size: 75px;
+        margin-right: 2px;
+        .circle-inner {
+          border-color: transparent;
+        }
+      }
+    }
   }
 }
 

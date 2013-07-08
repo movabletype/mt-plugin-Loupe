@@ -1,3 +1,9 @@
+# This program is distributed under the terms of
+# The MIT License (MIT)
+#
+# Copyright (c) 2013 Six Apart, Ltd.
+#
+# $Id$
 package MT::Plugin::Loupe;
 use strict;
 use warnings;
@@ -5,7 +11,7 @@ use base qw( MT::Plugin );
 
 use Loupe::Const;
 
-our $VERSION = '1.00';
+our $VERSION = '1.0';
 
 my $plugin = MT::Plugin::Loupe->new(
     {   id   => 'Loupe',

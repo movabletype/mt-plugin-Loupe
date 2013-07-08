@@ -1,3 +1,9 @@
+# This program is distributed under the terms of
+# The MIT License (MIT)
+#
+# Copyright (c) 2013 Six Apart, Ltd.
+#
+# $Id$
 package Loupe::App;
 use strict;
 use warnings;
@@ -17,23 +23,24 @@ sub send_welcome_mail_to_yourself {
 
     my ( $msg_loop, $error ) = _send_mail_core( $app, [ $user->id ] );
 
-    $error ? $app->json_error(@$msg_loop) : $app->json_result();
+    $error ? $app->json_error(@$msg_loop) : $app->json_result( { to => $user->email } );
 }
 
 sub widgets {
     my $app = MT->app;
     my $user = $app->user or return;
-    return if !$user->is_superuser && !Loupe->is_enabled;
     return {
         welcome_to_loupe => {
             label    => 'Welcome to Loupe',
             template => 'widget/welcome_to_loupe.tmpl',
-            handler  => sub { $_[2]->{loupe_is_enabled} = Loupe->is_enabled },
+            condition =>
+                sub { MT->app->user->is_superuser || Loupe->is_enabled },
+            handler => sub { $_[2]->{loupe_is_enabled} = Loupe->is_enabled },
             singular => 1,
             set      => 'main',
             view     => 'user',
-            order => { user => 150 },
-            default => 1,
+            order    => { user => 150 },
+            default  => 1,
         },
     };
 }
@@ -41,11 +48,11 @@ sub widgets {
 sub list_actions {
     return {
         send_welcome_mail => {
-            label                   => 'Send welcome mail of Loupe',
+            label                   => 'Send Loupe invitation mail',
             order                   => 100,
             continue_prompt_handler => sub {
                 MT->translate(
-                    'You are about to send email(s) to allow the selected user(s) to invite to Loupe. Do you wish to continue?'
+                    'Are you sure you want to send invitation mail to selected users?'
                 );
             },
             condition => sub {
@@ -70,7 +77,7 @@ sub _send_welcome_mail {
     my $plugin = MT->component('Loupe');
     return $app->error(
         $plugin->translate(
-            'Cannot send welcome mail because Loupe is not enabled.')
+            'Could not send a invitation mail because Loupe is not enabled.')
     ) unless Loupe->is_enabled;
 
     my @id = $app->param('id');
@@ -85,30 +92,32 @@ sub _send_mail_core {
 
     require MT::Mail;
     my $plugin = MT->component('Loupe');
-    my $param  = {
-        loupe_html_url => Loupe->html_url,
-        loupe_site_url => Loupe->official_site_url,
-    };
-    my $tmpl = $plugin->load_tmpl( 'welcome_mail.tmpl', $param );
     my @msg_loop;
     my $error;
 
     foreach (@$ids) {
         my $author = MT::Author->load($_)
             or next;
+        my $param  = {
+            loupe_html_url => Loupe->html_url,
+            loupe_site_url => Loupe->official_site_url,
+            username       => $author->nickname,
+        };
+        my $tmpl = $plugin->load_tmpl( 'welcome_mail.tmpl', $param );
+
         my $res;
         if ( $author->email ) {
             my %head = (
                 id   => 'send_welcome_mail',
                 To   => $author->email,
                 From => $app->config('EmailAddressMain') || $app->user->email,
-                Subject => $plugin->translate('Welcome to Loupe.'),
+                Subject => $plugin->translate('Welcome to Loupe'),
             );
             my $body = $app->build_page_in_mem($tmpl);
             if ( MT::Mail->send( \%head, $body ) ) {
                 $res
                     = $plugin->translate(
-                    "A welcome mail of Loupe has been sent to [_3] for user  '[_1]' (user #[_2]).",
+                    "Loupe invitation mail has been sent to [_3] for user '[_1]' (user #[_2]).",
                     $author->name, $author->id, $author->email );
                 $app->log(
                     {   message  => $res,

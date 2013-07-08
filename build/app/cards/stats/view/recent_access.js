@@ -8,7 +8,7 @@ function (CardItemView, cache, commands, device, statsProvider, Model, Trans, te
 
     serializeData: function () {
       var data = this.serializeDataInitialize();
-      data.title = 'Access in last week';
+      data.title = 'Access In Last Week';
 
       if (!this.loading) {
         data = _.extend(data, this.model.toJSON());
