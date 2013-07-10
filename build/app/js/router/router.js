@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'js/commands'],
-
-function (Marionette, commands) {
+define(['backbone.marionette', 'js/commands'], function (Marionette, commands) {
   'use strict';
 
   var appRoutes = {
@@ -12,6 +10,7 @@ function (Marionette, commands) {
   return Marionette.AppRouter.extend({
     appRoutes: appRoutes,
     initialize: function (options, cards) {
+      var reservedRoutes = _.keys(appRoutes);
       _.forEach(cards, function (card) {
         if (card.id) {
           var controller = options.controller;
@@ -19,7 +18,11 @@ function (Marionette, commands) {
             _.each(card.routes, function (route) {
               var routeName = route.route ? card.id + '/' + route.route : card.id;
               var routeMethodName = 'moveCardPage_' + card.id + route.id;
-              this.route(routeName, routeMethodName, _.bind(controller[routeMethodName], controller));
+              if (_.contains(reservedRoutes, routeName)) {
+                console.log('card ID "' + card.id + '" is about to use reserved route, "' + routeName + '". you must change this route');
+              } else {
+                this.route(routeName, routeMethodName, _.bind(controller[routeMethodName], controller));
+              }
             }, this);
           }
         }
