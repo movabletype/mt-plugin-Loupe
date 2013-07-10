@@ -284,7 +284,8 @@ module.exports = function (grunt) {
         options: {
           inline: true,
           context: {
-            mock: grunt.option('mock') || false
+            mock: grunt.option('mock') || false,
+            failAuth: grunt.option('failAuth') || false
           }
         },
         files: {

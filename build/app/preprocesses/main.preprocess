@@ -4,5 +4,6 @@ require.config(
 
 window.DEBUG = true;
 window.Mock = <!-- @echo mock -->;
+window.MockFailAuth = <!-- @echo failAuth -->;
 
 require(['js/boot'<!-- @if mock -->,'js/mtapi/mock'<!-- @endif -->], function () {});
