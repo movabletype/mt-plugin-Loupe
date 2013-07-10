@@ -212,10 +212,8 @@ function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollectio
     },
     authorizationCallback: function () {
       var route = window.sessionStorage.getItem('routeCache') || '';
-      this.auth(function () {
-        window.sessionStorage.removeItem('routeCache');
-        commands.execute('router:navigate', route);
-      });
+      window.sessionStorage.removeItem('routeCache');
+      commands.execute('router:navigate', route);
     }
   });
 });
