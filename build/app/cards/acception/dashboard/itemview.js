@@ -1,11 +1,9 @@
-define(['backbone.marionette', 'cards/acception/models/model', 'hbs!cards/acception/templates/dashboardItemview'],
+define(['backbone.marionette', 'hbs!cards/acception/templates/dashboardItemview'],
 
-function (Marionette, Model, template) {
+function (Marionette, template) {
   "use strict";
   return Marionette.ItemView.extend({
     tagName: 'li',
-    template: function (data) {
-      return template(data);
-    }
+    template: template
   });
 });

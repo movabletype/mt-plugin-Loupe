@@ -2,14 +2,10 @@
   <div class="content">
   {{#if perm}}
     {{>js_views_card_partials_loading}}
+    {{>js_views_card_partials_fetchError}}
     {{#if acceptionFailed}}
         <div class="acception-failed error"><span class="message"><span class="message-inner">{{#trans trans}}{{error}}{{/trans}}</span></span><div class="close-me button">{{#trans trans}}Close{{/trans}}</div></div>
     {{/if}}
-      {{#if fetchError}}
-       <div class="error">
-        <span class="message"><span class="message-inner">{{#trans trans}}Failed Fetching Data{{/trans}}</span></span>
-        </div>
-       {{/if}}
     {{#if id}}
       {{#ifIs status eq="Review"}}
         <div id="accept-button" class="contents-top-button button">{{#trans trans}}Accept{{/trans}}</div>
@@ -23,7 +19,7 @@
           <span class="button-icon icon-check"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}
-              {{#trans trans}}Published!{{/trans}}
+              {{#trans trans}}Completed Publishing{{/trans}}
             {{else}}
               {{#trans trans}}Published{{/trans}}
             {{/if}}
@@ -38,9 +34,7 @@
       {{/ifIs}}
     {{/if}}
   {{else}}
-    <div class="error"><span class="message"><span class="message-inner">
-    {{#trans trans}}User has no permission for this card{{/trans}}
-    </span></span></div>
+    {{>js_views_card_partials_noPermission}}
   {{/if}}
   </div>
 </section>

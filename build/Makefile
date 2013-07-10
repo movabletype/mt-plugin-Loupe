@@ -23,3 +23,6 @@ dev:
 build:
 	-make dev
 	-grunt build
+
+l10n:
+	-grunt makeL10N:concat

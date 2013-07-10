@@ -9,7 +9,6 @@ module.exports = function (grunt) {
     }
   });
 
-
   grunt.loadTasks('grunt_local_tasks');
 
   var requireConfig = grunt.file.readJSON('./app/js/require.config.json');
@@ -35,7 +34,6 @@ module.exports = function (grunt) {
     "template": "js/template",
     "card": "js/card"
   };
-
 
   var jasminPathsCoverage = grunt.util._.clone(requireConfig.paths);
   grunt.util._.forIn(jasminPathsCoverage, function (v, k) {
@@ -176,41 +174,41 @@ module.exports = function (grunt) {
           force: true
         },
         src: [
-            '../mt-static/plugins/Loupe/build.txt',
-            '../mt-static/plugins/Loupe/css/*',
-            '../mt-static/plugins/Loupe/index.html',
-            '../mt-static/plugins/Loupe/jade',
-            '../mt-static/plugins/Loupe/js/boot.js',
-            '../mt-static/plugins/Loupe/js/cache.js',
-            '../mt-static/plugins/Loupe/js/collections',
-            '../mt-static/plugins/Loupe/js/device.js',
-            '../mt-static/plugins/Loupe/js/models',
-            '../mt-static/plugins/Loupe/js/commands.js',
-            '../mt-static/plugins/Loupe/js/mtapi',
-            '../mt-static/plugins/Loupe/js/mtapi.js',
-            '../mt-static/plugins/Loupe/js/perf.js',
-            '../mt-static/plugins/Loupe/js/router',
-            '../mt-static/plugins/Loupe/js/main.js',
-            '../mt-static/plugins/Loupe/js/main.preprocess.js',
-            '../mt-static/plugins/Loupe/js/require.config.json',
-            '../mt-static/plugins/Loupe/js/l10n.js',
-            '../mt-static/plugins/Loupe/js/lib',
-            '../mt-static/plugins/Loupe/js/layouts',
-            '../mt-static/plugins/Loupe/js/require.js',
-            '../mt-static/plugins/Loupe/js/template',
-            '../mt-static/plugins/Loupe/js/trans.js',
-            '../mt-static/plugins/Loupe/js/vent.js',
-            '../mt-static/plugins/Loupe/js/views',
-            '../mt-static/plugins/Loupe/l10n',
-            '../mt-static/plugins/Loupe/lib',
-            '../mt-static/plugins/Loupe/preprocesses',
-            '../mt-static/plugins/Loupe/sass',
-            '../mt-static/plugins/Loupe/template',
-            '../mt-static/plugins/Loupe/templates',
-            '../mt-static/plugins/Loupe/cards',
-            '../mt-static/plugins/Loupe/assets/icons/index.html',
-            '../mt-static/plugins/Loupe/assets/icons/license.txt',
-            '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
+          '../mt-static/plugins/Loupe/build.txt',
+          '../mt-static/plugins/Loupe/css/*',
+          '../mt-static/plugins/Loupe/index.html',
+          '../mt-static/plugins/Loupe/jade',
+          '../mt-static/plugins/Loupe/js/boot.js',
+          '../mt-static/plugins/Loupe/js/cache.js',
+          '../mt-static/plugins/Loupe/js/collections',
+          '../mt-static/plugins/Loupe/js/device.js',
+          '../mt-static/plugins/Loupe/js/models',
+          '../mt-static/plugins/Loupe/js/commands.js',
+          '../mt-static/plugins/Loupe/js/mtapi',
+          '../mt-static/plugins/Loupe/js/mtapi.js',
+          '../mt-static/plugins/Loupe/js/perf.js',
+          '../mt-static/plugins/Loupe/js/router',
+          '../mt-static/plugins/Loupe/js/main.js',
+          '../mt-static/plugins/Loupe/js/main.preprocess.js',
+          '../mt-static/plugins/Loupe/js/require.config.json',
+          '../mt-static/plugins/Loupe/js/l10n.js',
+          '../mt-static/plugins/Loupe/js/lib',
+          '../mt-static/plugins/Loupe/js/layouts',
+          '../mt-static/plugins/Loupe/js/require.js',
+          '../mt-static/plugins/Loupe/js/template',
+          '../mt-static/plugins/Loupe/js/trans.js',
+          '../mt-static/plugins/Loupe/js/vent.js',
+          '../mt-static/plugins/Loupe/js/views',
+          '../mt-static/plugins/Loupe/l10n',
+          '../mt-static/plugins/Loupe/lib',
+          '../mt-static/plugins/Loupe/preprocesses',
+          '../mt-static/plugins/Loupe/sass',
+          '../mt-static/plugins/Loupe/template',
+          '../mt-static/plugins/Loupe/templates',
+          '../mt-static/plugins/Loupe/cards',
+          '../mt-static/plugins/Loupe/assets/icons/index.html',
+          '../mt-static/plugins/Loupe/assets/icons/license.txt',
+          '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
         ]
       },
       afterTest: ['template.js']
@@ -218,32 +216,29 @@ module.exports = function (grunt) {
     copy: {
       prep: {
         files: [{
-            expand: true,
-            src: ['app/lib/chart-api/mtchart.css'],
-            dest: 'app/css/lib/',
-            flatten: true
-          }
-        ]
+          expand: true,
+          src: ['app/lib/chart-api/mtchart.css'],
+          dest: 'app/css/lib/',
+          flatten: true
+        }]
       },
       build: {
         files: [{
-            expand: true,
-            cwd: 'app/',
-            src: ['cards/**/assets/**'],
-            dest: '../mt-static/plugins/Loupe',
-            filter: 'isFile'
-          }
-        ]
+          expand: true,
+          cwd: 'app/',
+          src: ['cards/**/assets/**'],
+          dest: '../mt-static/plugins/Loupe',
+          filter: 'isFile'
+        }]
       },
       beforeConcat: {
         files: [{
-            expand: true,
-            cwd: 'app/',
-            src: ['cards/**/*.css'],
-            dest: 'app/css',
-            filter: 'isFile'
-          }
-        ]
+          expand: true,
+          cwd: 'app/',
+          src: ['cards/**/*.css'],
+          dest: 'app/css',
+          filter: 'isFile'
+        }]
       }
     },
     symlink: {
@@ -273,9 +268,9 @@ module.exports = function (grunt) {
       },
       css: {
         files: [
-            'app/sass/*.scss',
-            'app/cards/*/**.scss',
-            'app/cards/*/*/**.scss'
+          'app/sass/*.scss',
+          'app/cards/*/**.scss',
+          'app/cards/*/*/**.scss'
         ],
         tasks: ['clean:beforeCompass', 'compass:dev', 'copy:beforeConcat', 'concat', 'cssmin']
       },
@@ -441,16 +436,15 @@ module.exports = function (grunt) {
       build: {
         options: {
           replacements: [{
-              pattern: /([,;])define\(/ig,
-              replacement: '$1\ndefine('
-            }, {
-              pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
-              replacement: ''
-            }, {
-              pattern: /;(require\(\["app"\])/,
-              replacement: ';\n$1'
-            }
-          ]
+            pattern: /([,;])define\(/ig,
+            replacement: '$1\ndefine('
+          }, {
+            pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
+            replacement: ''
+          }, {
+            pattern: /;(require\(\["app"\])/,
+            replacement: ';\n$1'
+          }]
         },
         files: {
           '../mt-static/plugins/Loupe/js/app.js': '../mt-static/plugins/Loupe/js/app.js',
@@ -549,71 +543,70 @@ module.exports = function (grunt) {
           paths: requireJSPaths,
           dir: "../mt-static/plugins/Loupe",
           modules: [{
-              name: 'vendor',
-              include: [
-                  "requireLib",
-                  "jquery",
-                  "jquery.hammer",
-                  "jquery.smartresize",
-                  "jquery.smartscroll",
-                  "underscore",
-                  "backbone",
-                  "backbone.localStorage",
-                  "backbone.wreqr",
-                  "backbone.babysitter",
-                  "backbone.marionette",
-                  "text",
-                  "json",
-                  "hbs",
-                  "handlebars",
-                  "i18nprecompile",
-                  "json2",
-                  "moment",
-                  "moment.lang",
-                  "eve",
-                  "raphael",
-                  "morris",
-                  "easeljs",
-                  "mtchart"
-              ]
-            }, {
-              name: 'template',
-              include: hbsTemplates,
-              exclude: ['vendor']
-            }, {
-              name: 'app',
-              include: ['js/trans'],
-              exclude: ['vendor', 'template']
-            }, {
-              name: 'card',
-              include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
-              exclude: ['vendor', 'template', 'app']
-            }, {
-              name: 'js/l10n/de',
-              include: langTemplates.de,
-              exclude: ['vendor', 'template', 'app', 'card']
-            }, {
-              name: 'js/l10n/es',
-              include: langTemplates.es,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de']
-            }, {
-              name: 'js/l10n/fr',
-              include: langTemplates.fr,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
-            }, {
-              name: 'js/l10n/ja',
-              include: langTemplates.ja,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
-            }, {
-              name: 'js/l10n/nl',
-              include: langTemplates.nl,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
-            }, {
-              name: 'js/l10n/en-us',
-              include: langTemplates['en-us'],
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
-            }
-          ],
+            name: 'vendor',
+            include: [
+              "requireLib",
+              "jquery",
+              "jquery.hammer",
+              "jquery.smartresize",
+              "jquery.smartscroll",
+              "underscore",
+              "backbone",
+              "backbone.localStorage",
+              "backbone.wreqr",
+              "backbone.babysitter",
+              "backbone.marionette",
+              "text",
+              "json",
+              "hbs",
+              "handlebars",
+              "i18nprecompile",
+              "json2",
+              "moment",
+              "moment.lang",
+              "eve",
+              "raphael",
+              "morris",
+              "easeljs",
+              "mtchart"
+            ]
+          }, {
+            name: 'template',
+            include: hbsTemplates,
+            exclude: ['vendor']
+          }, {
+            name: 'app',
+            include: ['js/trans'],
+            exclude: ['vendor', 'template']
+          }, {
+            name: 'card',
+            include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
+            exclude: ['vendor', 'template', 'app']
+          }, {
+            name: 'js/l10n/de',
+            include: langTemplates.de,
+            exclude: ['vendor', 'template', 'app', 'card']
+          }, {
+            name: 'js/l10n/es',
+            include: langTemplates.es,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de']
+          }, {
+            name: 'js/l10n/fr',
+            include: langTemplates.fr,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
+          }, {
+            name: 'js/l10n/ja',
+            include: langTemplates.ja,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
+          }, {
+            name: 'js/l10n/nl',
+            include: langTemplates.nl,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
+          }, {
+            name: 'js/l10n/en-us',
+            include: langTemplates['en-us'],
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
+          }],
 
           skipDirOptimize: true,
           removeCombined: false,
@@ -665,18 +658,17 @@ module.exports = function (grunt) {
         }
       }
     },
-    findTranslationStrings: {
+    makeL10N: {
       core: {
         files: [{
-            src: ['app/js/views/**/*.hbs'],
-            dir: 'app/l10n/'
-          }
-        ]
+          src: ['app/js/views/**/*.hbs'],
+          dir: 'app/l10n/'
+        }]
       },
-      card: {
+      cards: {
         files: grunt.util._.map(grunt.file.expand({
           filter: 'isDirectory'
-        }, 'app/cards/' + grunt.option('card')), function (dir) {
+        }, 'app/cards/' + (grunt.option('card') || '*')), function (dir) {
           return {
             src: [dir + '/**/*.hbs'],
             dir: dir + '/l10n/'
@@ -687,25 +679,39 @@ module.exports = function (grunt) {
           reset: grunt.option('reset')
         }
       },
-      cards: {
-        files: grunt.util._.map(grunt.file.expand({
-          filter: 'isDirectory'
-        }, 'app/cards/*'), function (dir) {
-          return {
-            src: [dir + '/**/*.hbs'],
-            dir: dir + '/l10n/'
-          };
-        }),
+      concat: {
+        files: [{
+          src: ['app/js/views/**/*.hbs'],
+          dir: 'app/l10n/'
+        }].concat(
+          grunt.util._.map(grunt.file.expand({
+            filter: 'isDirectory'
+          }, 'app/cards/' + (grunt.option('card') || '*')), function (dir) {
+            return {
+              src: [dir + '/**/*.hbs'],
+              dir: dir + '/l10n/'
+            };
+          })),
         options: {
           inherit: 'app/l10n/',
-          reset: grunt.option('reset')
+          reset: grunt.option('reset'),
+          concat: true
         }
       },
       options: {
         comments: grunt.option('comments'),
         findOnly: grunt.option('findOnly'),
-        copyStringsFromJa: grunt.option('copyStringsFromJa'),
         langs: grunt.option('langs')
+      }
+    },
+    extendJSON: {
+      l10n: {
+        files: grunt.util._.map(langs, function (lang) {
+          return {
+            src: [(grunt.option('rootPath') ? grunt.option('rootPath') + '/' : '') + '**/' + lang + '.json'],
+            dest: lang + '.json'
+          };
+        })
       }
     },
     sassVars: {
@@ -725,44 +731,44 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-      'preprocess:prep',
-      'symlink:prep',
-      'copy:prep',
-      'clean:build',
-      'clean:beforeCompass',
-      'sassVars:build',
-      'compass',
-      'requirejs:build',
-      'clean:afterBuild',
-      'string-replace',
-      'preprocess:basket',
-      'uglify:basket',
-      'copy:beforeConcat',
-      'cssmin:build',
-      'copy:build',
-      'jade:build',
-      'copy:beforeConcat',
-      'concat:dev'
+    'preprocess:prep',
+    'symlink:prep',
+    'copy:prep',
+    'clean:build',
+    'clean:beforeCompass',
+    'sassVars:build',
+    'compass',
+    'requirejs:build',
+    'clean:afterBuild',
+    'string-replace',
+    'preprocess:basket',
+    'uglify:basket',
+    'copy:beforeConcat',
+    'cssmin:build',
+    'copy:build',
+    'jade:build',
+    'copy:beforeConcat',
+    'concat:dev'
   ]);
 
   grunt.registerTask('dev', [
-      'preprocess:prep',
-      'symlink:prep',
-      'copy:prep',
-      'jade:dev',
-      'sassVars:dev',
-      'compass:dev',
-      'copy:beforeConcat',
-      'concat:dev'
+    'preprocess:prep',
+    'symlink:prep',
+    'copy:prep',
+    'jade:dev',
+    'sassVars:dev',
+    'compass:dev',
+    'copy:beforeConcat',
+    'concat:dev'
   ]);
 
   grunt.registerTask('test', [
-      'preprocess:test',
-      'requirejs:test',
-      'jshint',
-      'jasmine',
-      'clean:afterTest',
-      'open:test'
+    'preprocess:test',
+    'requirejs:test',
+    'jshint',
+    'jasmine',
+    'clean:afterTest',
+    'open:test'
   ]);
 
   grunt.registerTask('none', []);
