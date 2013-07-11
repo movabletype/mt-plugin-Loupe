@@ -14,19 +14,20 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
       cache.set('app', 'initial', true);
       this.initial = true;
       this.cards = options.cards;
+      this.device = device;
       var $body = $(document.body);
-      if (device.platform) {
-        $body.addClass(device.platform);
-        if (device.version) {
-          $body.addClass(device.platform + device.versionShortStr);
-          $body.addClass(device.platform + device.versionStr);
+      if (this.device.platform) {
+        $body.addClass(this.device.platform);
+        if (this.device.version) {
+          $body.addClass(this.device.platform + this.device.versionShortStr);
+          $body.addClass(this.device.platform + this.device.versionStr);
         }
       }
-      if (device.browser) {
-        $body.addClass(device.browser);
-        if (device.browserVersion) {
-          $body.addClass(device.browser + device.browserVersionShortStr);
-          $body.addClass(device.browser + device.browserVersionStr);
+      if (this.device.browser) {
+        $body.addClass(this.device.browser);
+        if (this.device.browserVersion) {
+          $body.addClass(this.device.browser + this.device.browserVersionShortStr);
+          $body.addClass(this.device.browser + this.device.browserVersionStr);
         }
       }
       commands.setHandler('app:buildMenu', function (params) {
@@ -36,7 +37,7 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
       commands.setHandler('app:beforeTransition', _.bind(function () {
         $(document.body).addClass('onmove');
         var $appBuilding = $('#app-building');
-        if (device.isAndroid || device.isWindowsPhone) {
+        if (this.device.isAndroid || this.device.isWindowsPhone) {
           var top = $(document.body).scrollTop();
           $appBuilding.css({
             top: top + 'px',

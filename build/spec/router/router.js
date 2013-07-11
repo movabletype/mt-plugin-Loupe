@@ -4,7 +4,6 @@
     var AppRouter, Controller, router, controller, commands, cards;
 
     var app = require('app');
-    var mtapi = require('js/mtapi');
     AppRouter = require('js/router/router');
     Controller = require('js/router/controller');
     commands = require('js/commands');
@@ -17,19 +16,17 @@
         },
         "routes": [{
             "id": "view",
-            "view": "view/view",
+            "view": "view/view"
           }
         ]
       }
     ];
 
-    beforeEach(function () {
-      app.start({
-        cards: cards
-      });
-      controller = new Controller({
-        cards: cards
-      });
+    app.start({
+      cards: cards
+    });
+    controller = new Controller({
+      cards: cards
     });
 
     it("route to test card", function () {
