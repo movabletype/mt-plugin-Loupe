@@ -144,13 +144,13 @@ module.exports = function (grunt) {
         options: {
           sassDir: 'app',
           cssDir: 'app/css',
-          specify: ['app/sass/*.scss', 'app/cards/*/*.scss', 'app/cards/*/sass/*.scss']
+          specify: ['app/sass/*.scss', 'app/sass/*.sass', 'app/cards/*/*.scss', 'app/cards/*/*.sass', 'app/cards/*/sass/*.scss', 'app/cards/*/sass/*.sass']
         }
       }
     },
     concat: {
       dev: {
-        src: ['app/css/*/**/*.css'],
+        src: ['app/css/*/**/*.css', 'app/cards/css/**/*.css'],
         dest: 'app/css/style.css'
       }
     },
@@ -269,13 +269,16 @@ module.exports = function (grunt) {
       css: {
         files: [
           'app/sass/*.scss',
+          'app/sass/*.sass',
           'app/cards/*/**.scss',
-          'app/cards/*/*/**.scss'
+          'app/cards/*/**.sass',
+          'app/cards/*/*/**.scss',
+          'app/cards/*/*/**.sass'
         ],
         tasks: ['clean:beforeCompass', 'compass:dev', 'copy:beforeConcat', 'concat', 'cssmin']
       },
       ie: {
-        files: ['app/ie/sass/*.scss'],
+        files: ['app/ie/sass/*.scss', 'app/ie/sass/*.sass'],
         tasks: ['compass:ie']
       }
     },
@@ -415,8 +418,19 @@ module.exports = function (grunt) {
       }
     },
     'sass-convert': {
-      files: {
-        src: ['app/sass/*.scss', 'app/cards/**/*.scss']
+      scss: {
+        files: [{
+          src: ['app/sass/*.scss', 'app/cards/**/*.scss']
+        }]
+      },
+      sass: {
+        files: [{
+          src: ['app/sass/*.sass', 'app/cards/**/*.sass']
+        }],
+        options: {
+          from: 'sass',
+          to: 'sass'
+        }
       }
     },
     htmlmin: {
