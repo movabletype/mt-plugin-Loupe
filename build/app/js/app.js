@@ -61,7 +61,7 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
       commands.setHandler('app:error', _.bind(function (params) {
         app.main.show(new DashboardLayout(params));
         commands.execute('app:afterTransition');
-      }))
+      }));
 
       _.each(app.cards, function (card) {
         if (card.routes && card.routes.length) {

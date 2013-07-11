@@ -100,7 +100,7 @@ define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'js/v
           }, this));
         } else {
           this.trans = new Trans();
-          this.render()
+          this.render();
         }
       },
 
