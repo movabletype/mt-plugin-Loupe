@@ -195,7 +195,9 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
 
       initialize: function (options) {
         commands.setHandler('l10n', _.bind(function (callback) {
-          this.l10n.waitLoadCommon(callback);
+          if (this.l10n) {
+            this.l10n.waitLoadCommon(callback);
+          }
         }, this));
 
         var cards = options.cards;
