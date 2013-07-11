@@ -1,9 +1,9 @@
 {
-  "name": "Loupe",
+  "name": "loupe",
   "version": "0.1.0",
   "description": "user mode application",
   "main": "Gruntfile.js",
-  "repository": "",
+  "repository": "git@github.com:movabletype/mt-plugin-Loupe.git",
   "author": "Six Apart",
   "devDependencies": {
     "matchdep": "~0.1.1",
