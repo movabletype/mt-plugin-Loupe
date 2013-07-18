@@ -151,12 +151,20 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
               if (DEBUG) {
                 console.log('getToken error');
                 console.log(res.error);
-                console.log('Move to Signin screen');
               }
               if (authRetry < 5) {
-                authRetry = parseInt(authRetry, 10) + 1;
-                window.sessionStorage.setItem('authRetry', authRetry);
-                this.authorization();
+                if (res.error && parseInt(res.error.code, 10) === 0 && res.error.message) {
+                  // error handling for SPDY, case https://movabletype.fogbugz.com/default.asp?110201
+                  commands.execute('app:error', {
+                    blog: {
+                      res.error
+                    }
+                  });
+                } else {
+                  authRetry = parseInt(authRetry, 10) + 1;
+                  window.sessionStorage.setItem('authRetry', authRetry);
+                  this.authorization();
+                }
               } else {
                 if (DEBUG) {
                   console.log('user retries login for ' + authRetry + ' times, so giving up login');
