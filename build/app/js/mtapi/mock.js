@@ -27,6 +27,13 @@ define(['moment'], function (moment) {
           message: 'Authentication Error'
         }
       }, arguments);
+    } else if (window.Mock && window.MockFailAuthSPDY) {
+      this.base('getToken', {
+        error: {
+          code: 0,
+          message: 'Communication Error'
+        }
+      }, arguments);
     } else {
       this.base('getToken', {
         accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",

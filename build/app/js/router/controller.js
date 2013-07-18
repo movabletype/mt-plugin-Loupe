@@ -157,7 +157,9 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
                   // error handling for SPDY, case https://movabletype.fogbugz.com/default.asp?110201
                   commands.execute('app:error', {
                     blog: {
-                      res.error
+                      error: {
+                        message: res.error.message
+                      }
                     }
                   });
                 } else {

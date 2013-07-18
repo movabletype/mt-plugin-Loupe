@@ -287,7 +287,8 @@ module.exports = function (grunt) {
           inline: true,
           context: {
             mock: grunt.option('mock') || false,
-            failAuth: grunt.option('failAuth') || false
+            failAuth: grunt.option('failAuth') || false,
+            failAuthSPDY: grunt.option('failAuthSPDY') || false
           }
         },
         files: {
@@ -314,11 +315,6 @@ module.exports = function (grunt) {
         },
         files: {
           '../mt-static/plugins/Loupe/manifest.appcache': 'app/preprocesses/manifest.preprocess.appcache'
-        }
-      },
-      l10n: {
-        files: {
-          'app/l10n/ja.js': 'app/preprocesses/l10n/ja.preprocess'
         }
       },
       basket: {
