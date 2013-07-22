@@ -135,68 +135,41 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           }
           getUserAndBlogs(callback);
         } else {
-          var authRetry = window.sessionStorage.getItem('authRetry') || 0;
-          var res = mtapi.api.getTokenData();
-          if (res) {
-            if (!res.error) {
-              if (DEBUG) {
-                console.log('getTokenData success');
-                console.log(res);
-              }
-              if (window.sessionStorage.getItem('authRetry') !== undefined) {
-                window.sessionStorage.removeItem('authRetry');
-              }
-              this.token = res;
-              getUserAndBlogs(callback);
-            } else {
-              if (DEBUG) {
-                console.log('getToken error');
-                console.log(res.error);
-              }
-              if (authRetry < 5) {
-                if (res.error && parseInt(res.error.code, 10) === 0 && res.error.message) {
-                  // error handling for SPDY, case https://movabletype.fogbugz.com/default.asp?110201
-                  commands.execute('app:error', {
-                    blog: {
-                      error: {
-                        message: res.error.message
-                      }
-                    }
-                  });
-                } else {
-                  authRetry = parseInt(authRetry, 10) + 1;
-                  window.sessionStorage.setItem('authRetry', authRetry);
-                  this.authenticate();
-                }
-              } else {
-                if (DEBUG) {
-                  console.log('user retries login for ' + authRetry + ' times, so giving up login');
-                }
-                window.sessionStorage.removeItem('authRetry');
-                commands.execute('app:error', {
-                  blog: {
-                    error: {
-                      message: 'Login was failed by some reason'
-                    }
-                  }
-                });
-              }
+          var resp = mtapi.api.getTokenData();
+          if (resp) {
+            if (DEBUG) {
+              console.log('getTokenData success');
+              console.log(resp);
             }
+            if (window.sessionStorage.getItem('routeCache') !== undefined) {
+              window.sessionStorage.removeItem('routeCache');
+            }
+            if (window.sessionStorage.getItem('authRetry') !== undefined) {
+              window.sessionStorage.removeItem('authRetry');
+            }
+            this.token = resp;
+            getUserAndBlogs(callback);
           } else {
             // assume user have never been authorized
             this.authenticate();
           }
         }
       },
+
       login: function () {
         commands.execute('move:login');
       },
+
       authenticate: function () {
         var hash = location.href.lastIndexOf('#'),
           route = hash !== -1 ? location.href.slice(hash + 1) : '';
 
-        window.sessionStorage.setItem('routeCache', route);
-        commands.execute('router:navigate', 'login');
+        if (route !== 'login') {
+          window.sessionStorage.setItem('routeCache', route);
+          commands.execute('router:navigate', 'login');
+        } else {
+          this.login();
+        }
       },
 
       logout: function () {
@@ -219,6 +192,43 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
 
         commands.setHandler('authorizationCallback', _.bind(function () {
           this.authorizationCallback();
+        }, this));
+
+        mtapi.api.on('authorizationRequired', _.bind(function (resp) {
+          if (DEBUG) {
+            console.log('getTokenData error');
+            console.log(resp.error);
+          }
+          var authRetry = window.sessionStorage.getItem('authRetry') || 0;
+          if (authRetry < 1) {
+            if (resp.error && parseInt(resp.error.code, 10) === 0 && resp.error.message) {
+              // error handling for SPDY, case https://movabletype.fogbugz.com/default.asp?110201
+              commands.execute('app:error', {
+                blog: {
+                  error: {
+                    message: resp.error.message
+                  }
+                }
+              });
+            } else {
+              authRetry = parseInt(authRetry, 10) + 1;
+              window.sessionStorage.setItem('authRetry', authRetry);
+              this.authenticate();
+            }
+          } else {
+            if (DEBUG) {
+              console.log('user retries login for ' + authRetry + ' times, so giving up login');
+            }
+            var message = 'authorizationRequired error occured over time for some reason';
+            window.sessionStorage.removeItem('authRetry');
+            commands.execute('app:error', {
+              blog: {
+                error: {
+                  message: message
+                }
+              }
+            });
+          }
         }, this));
 
         var cards = options.cards;
@@ -255,7 +265,6 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
       },
       authorizationCallback: function () {
         var route = window.sessionStorage.getItem('routeCache') || '';
-        window.sessionStorage.removeItem('routeCache');
         commands.execute('router:navigate', route);
       }
     });

@@ -16,6 +16,12 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
         options = options || {};
         this.username = options.username;
         this.password = options.password;
+
+        commands.setHandler('login:error', _.bind(function (error) {
+          commands.execute('app:afterTransition');
+          this.loginError = error;
+          this.render();
+        }, this));
       },
 
       authenticate: function () {
@@ -44,7 +50,7 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
               console.log(resp.error);
             }
             commands.execute('app:afterTransition');
-            this.loginError = resp.error.message || 'Login authencation was failed by some reason';
+            this.loginError = resp.error.message || 'Login authencation was failed for some reason';
             this.render();
           }
         }, this));

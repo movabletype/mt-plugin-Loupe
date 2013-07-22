@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboard/templates/header'],
-
-function (Marionette, device, commands, template) {
+define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboard/templates/header'], function (Marionette, device, commands, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -44,7 +42,7 @@ function (Marionette, device, commands, template) {
             left: offset.left - $loupeCircle.outerWidth(true)
           });
         }
-        if ($blognameArrow && offset) {
+        if ($blognameArrow && offset && 'offset' in $blognameArrow) {
           $blognameArrow.offset({
             left: offset.left + width
           });

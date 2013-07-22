@@ -1,7 +1,9 @@
 define(['moment'], function (moment) {
   'use strict';
 
-  var Mock = function () {};
+  var Mock = function () {
+    this.callbacks = {};
+  };
 
   Mock.prototype.base = function (name, resp, args) {
     var callback = null;
@@ -22,18 +24,18 @@ define(['moment'], function (moment) {
 
   Mock.prototype.getToken = function () {
     if (window.Mock && window.MockFailAuth) {
-      this.base('getToken', {
+      this.trigger('authorizationRequired', this.base('getToken', {
         error: {
           message: 'Authentication Error'
         }
-      }, arguments);
+      }, arguments));
     } else if (window.Mock && window.MockFailAuthSPDY) {
-      this.base('getToken', {
+      this.trigger('authorizationRequired', this.base('getToken', {
         error: {
           code: 0,
           message: 'Communication Error'
         }
-      }, arguments);
+      }, arguments));
     } else {
       this.base('getToken', {
         accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
@@ -42,26 +44,24 @@ define(['moment'], function (moment) {
     }
   };
 
-  Mock.prototype.getTokenData = function () {
-    if (window.Mock && window.MockFailAuth) {
-      return this.base('getTokenData', {
-        error: {
-          message: 'Authentication Error'
-        }
-      }, arguments);
-    } else if (window.Mock && window.MockFailAuthSPDY) {
-      return this.base('getTokenData', {
-        error: {
-          code: 0,
-          message: 'Communication Error'
-        }
-      }, arguments);
-    } else {
-      return this.base('getTokenData', {
-        accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
-        expiresIn: 3600
-      }, arguments);
+  Mock.prototype.on = function (key, callback) {
+    this.callbacks[key] = this.callbacks[key] || [];
+    this.callbacks[key].push(callback);
+  };
+
+  Mock.prototype.trigger = function (key, resp) {
+    if (this.callbacks[key]) {
+      _.forEach(this.callbacks[key], function (callback) {
+        callback(resp);
+      });
     }
+  };
+
+  Mock.prototype.getTokenData = function () {
+    return {
+      accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
+      expiresIn: 3600
+    };
   };
 
   Mock.prototype.authenticate = function (params) {
@@ -70,7 +70,7 @@ define(['moment'], function (moment) {
         error: {
           message: 'Invalid Login'
         }
-      }, arguments)
+      }, arguments);
     } else {
       this.base('authenticate', {
         accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
@@ -88,16 +88,24 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.getUser = function () {
-    this.base('getUser', {
-      displayName: "yyamaguchi",
-      email: "yyamaguchi@sixapart.com",
-      id: "1",
-      language: "ja",
-      name: "yyamaguchi",
-      updatable: true,
-      url: "",
-      userpicUrl: ""
-    }, arguments);
+    var args = arguments;
+
+    if (window.Mock && (window.MockFailAuth || window.MockFailAuthSPDY)) {
+      this.getToken();
+    } else {
+      this.getToken(_.bind(function () {
+        this.base('getUser', {
+          displayName: "yyamaguchi",
+          email: "yyamaguchi@sixapart.com",
+          id: "1",
+          language: "ja",
+          name: "yyamaguchi",
+          updatable: true,
+          url: "",
+          userpicUrl: ""
+        }, args);
+      }, this));
+    }
   };
 
   Mock.prototype.getBlog = function (id) {
