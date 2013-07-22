@@ -98,7 +98,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
       onRender: function () {
         if (this.perm) {
           if (this.acceptionFailed) {
-            this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
+            this.$el.find('.acception-failed .close-me').hammer(this.hammerOpts).on('tap', function () {
               $(this).parent().remove();
             });
           }

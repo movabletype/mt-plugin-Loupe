@@ -42,6 +42,46 @@ define(['moment'], function (moment) {
     }
   };
 
+  Mock.prototype.getTokenData = function () {
+    if (window.Mock && window.MockFailAuth) {
+      return this.base('getTokenData', {
+        error: {
+          message: 'Authentication Error'
+        }
+      }, arguments);
+    } else if (window.Mock && window.MockFailAuthSPDY) {
+      return this.base('getTokenData', {
+        error: {
+          code: 0,
+          message: 'Communication Error'
+        }
+      }, arguments);
+    } else {
+      return this.base('getTokenData', {
+        accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
+        expiresIn: 3600
+      }, arguments);
+    }
+  };
+
+  Mock.prototype.authenticate = function (params) {
+    if (params && params.username === 'invalid') {
+      this.base('authenticate', {
+        error: {
+          message: 'Invalid Login'
+        }
+      }, arguments)
+    } else {
+      this.base('authenticate', {
+        accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
+        sessionId: "3GYAWFZJTQYhrXG9mcXBdG3mVwAtrma4bnYrqALy",
+        expiresIn: 3600,
+        remember: true,
+        startTime: (new Date()).valueOf()
+      }, arguments);
+    }
+  };
+
   Mock.prototype.getAuthorizationUrl = function (redirectURL) {
     var mtApiCGIPath = $('#main-script').data('mtapi');
     return this.base('getAuthorizationUrl', mtApiCGIPath + "/v1/authorization?clientId=loupe&redirectUrl=" + redirectURL, arguments);

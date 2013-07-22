@@ -20,7 +20,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
             if (DEBUG) {
               console.log(user);
             }
-            this.authorization();
+            this.authenticate();
           }, this));
 
           dfd.done(_.bind(function (user) {
@@ -136,10 +136,11 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           getUserAndBlogs(callback);
         } else {
           var authRetry = window.sessionStorage.getItem('authRetry') || 0;
-          mtapi.api.getToken(_.bind(function (res) {
+          var res = mtapi.api.getTokenData();
+          if (res) {
             if (!res.error) {
               if (DEBUG) {
-                console.log('getToken success');
+                console.log('getTokenData success');
                 console.log(res);
               }
               if (window.sessionStorage.getItem('authRetry') !== undefined) {
@@ -165,7 +166,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
                 } else {
                   authRetry = parseInt(authRetry, 10) + 1;
                   window.sessionStorage.setItem('authRetry', authRetry);
-                  this.authorization();
+                  this.authenticate();
                 }
               } else {
                 if (DEBUG) {
@@ -181,15 +182,21 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
                 });
               }
             }
-          }, this));
+          } else {
+            // assume user have never been authorized
+            this.authenticate();
+          }
         }
       },
-      authorization: function () {
+      login: function () {
+        commands.execute('move:login');
+      },
+      authenticate: function () {
         var hash = location.href.lastIndexOf('#'),
           route = hash !== -1 ? location.href.slice(hash + 1) : '';
 
         window.sessionStorage.setItem('routeCache', route);
-        location.replace(mtapi.api.getAuthorizationUrl(location.href));
+        commands.execute('router:navigate', 'login');
       },
 
       logout: function () {
@@ -199,7 +206,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           delete this.token;
           cache.clearAll();
           vent.trigger('after:logout');
-          commands.execute('router:navigate', '');
+          commands.execute('router:navigate', 'login');
         }, this));
       },
 
@@ -208,6 +215,10 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           if (this.l10n) {
             this.l10n.waitLoadCommon(callback);
           }
+        }, this));
+
+        commands.setHandler('authorizationCallback', _.bind(function () {
+          this.authorizationCallback();
         }, this));
 
         var cards = options.cards;

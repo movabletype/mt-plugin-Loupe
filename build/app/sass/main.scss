@@ -450,6 +450,62 @@ textarea, input {
   }
 }
 
+#login {
+  header h1 {
+    text-indent: -9999px;
+    background: url("../assets/images/login-banner.png") no-repeat center center;
+    background-size: contain;
+    min-height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .card {
+    width: 94%;
+    max-width: 450px;
+    margin: 0 auto;
+    .content {
+      .login-field {
+        padding-bottom: 1em;
+        padding-bottom: 1rem;
+      }
+      .login-label {
+        display: block;
+        margin-bottom: 0.1em;
+        margin-bottom: 0.1rem;
+      }
+      .login-input {
+        -webkit-appearance: none;
+        width: 100%;
+        border: 2px solid $card-border-color;
+        @include single-box-shadow(lighten($card-border-color, 10%), 0, 1px, 1px, 0, inset);
+        padding: 0.5em;
+        @include border-radius(4px);
+      }
+      .button {
+        margin-left: 0;
+        margin-right: 0;
+      }
+      min-height: 0;
+      padding: 2em 1em 1em 1em;
+      padding: 2rem 1rem 1rem 1rem;
+    }
+  }
+  .login-error {
+    background-color: rgba(240, 240, 240, 0.95);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 13;
+    padding: 1em;
+    padding: 1rem;
+    .message {
+      height: 147px;
+    }
+  }
+}
+
 @media screen and (max-width: $content-max-width) {
   #header #header-main,
   #main,
