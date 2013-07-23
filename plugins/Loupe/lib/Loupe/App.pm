@@ -22,7 +22,8 @@ sub send_welcome_mail_to_yourself {
         unless $user->is_superuser
         || ( defined($commenter_blog_id) && $commenter_blog_id <= 0 );
 
-    my ( $msg_loop, $error ) = _send_mail_core( $app, [ $user->id ] );
+    require Loupe::Mail;
+    my ( $msg_loop, $error ) = Loupe::Mail->send( $app, [ $user->id ] );
 
     $error
         ? $app->json_error(@$msg_loop)
@@ -84,80 +85,11 @@ sub _send_welcome_mail {
     ) unless Loupe->is_enabled;
 
     my @id = $app->param('id');
-    my ($msg_loop) = _send_mail_core( $app, \@id );
+    require Loupe::Mail;
+    my ($msg_loop) = Loupe::Mail->send( $app, \@id );
 
     $plugin->load_tmpl( 'welcome_mail_result.tmpl',
         { message_loop => $msg_loop, return_url => $app->return_uri } );
-}
-
-sub _send_mail_core {
-    my ( $app, $ids ) = @_;
-
-    require MT::Mail;
-    my $plugin = MT->component('Loupe');
-    my @msg_loop;
-    my $error;
-
-    foreach (@$ids) {
-        my $author = MT::Author->load($_)
-            or next;
-        my $param = {
-            loupe_html_url => Loupe->html_url,
-            loupe_site_url => Loupe->official_site_url,
-            username       => $author->nickname,
-        };
-        my $tmpl = $plugin->load_tmpl( 'welcome_mail.tmpl', $param );
-
-        my $res;
-        if ( $author->email ) {
-            my %head = (
-                id   => 'send_welcome_mail',
-                To   => $author->email,
-                From => $app->config('EmailAddressMain') || $app->user->email,
-                Subject => $plugin->translate('Welcome to Loupe'),
-            );
-            my $body = $app->build_page_in_mem($tmpl);
-            if ( MT::Mail->send( \%head, $body ) ) {
-                $res
-                    = $plugin->translate(
-                    "Loupe invitation mail has been sent to [_3] for user '[_1]' (user #[_2]).",
-                    $author->name, $author->id, $author->email );
-                $app->log(
-                    {   message  => $res,
-                        level    => MT::Log::INFO(),
-                        class    => 'system',
-                        category => 'loupe'
-                    }
-                );
-            }
-            else {
-                $error = 1;
-                $res   = $plugin->translate(
-                    "Error sending e-mail ([_1]); Please fix the problem, then "
-                        . "try again to recover your password.",
-                    MT::Mail->errstr
-                );
-                $app->log(
-                    {   message  => $res,
-                        level    => MT::Log::ERROR(),
-                        class    => 'system',
-                        category => 'loupe',
-                    }
-                );
-            }
-        }
-        else {
-            $error = 1;
-            $res
-                = $plugin->translate(
-                "User '[_1]' (user #[_2]) does not have email address",
-                $author->name, $author->id );
-        }
-
-        push @msg_loop, { message => $res };
-    }
-
-    return ( \@msg_loop, $error );
 }
 
 sub post_save_config {
