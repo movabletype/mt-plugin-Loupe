@@ -124,6 +124,7 @@ sub _create_png_part {
         attributes => {
             content_type => 'image/png',
             name         => $name . '.png',
+            disposition  => 'inline',
         },
         body => Loupe::Mail::StaticResource->$name(),
     );
@@ -141,8 +142,8 @@ sub _create_plain_part {
     my $mime = Email::MIME->create(
         attributes => {
             content_type => 'text/plain',
-            charset      => 'ISO-2022-JP',
-            encoding     => '7bit',
+            charset      => 'UTF-8',
+            encoding     => 'base64',
         },
         body_str => do {
             my $tmpl
@@ -161,7 +162,7 @@ sub _create_html_part {
     my $mime = Email::MIME->create(
         attributes => {
             content_type => 'text/html',
-            charset      => 'ISO-2022-JP',
+            charset      => 'UTF-8',
             encoding     => 'base64',
         },
         body_str => do {
