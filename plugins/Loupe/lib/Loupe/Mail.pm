@@ -124,7 +124,6 @@ sub _create_png_part {
         attributes => {
             content_type => 'image/png',
             name         => $name . '.png',
-            disposition  => 'inline',
         },
         body => Loupe::Mail::StaticResource->$name(),
     );
