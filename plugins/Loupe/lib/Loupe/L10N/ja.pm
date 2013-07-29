@@ -83,7 +83,7 @@ use vars qw( %Lexicon );
     'Thank you for installing Loupe!' =>
         'Loupeをインストールしていただき、ありがとうございます!',
     q{Ready to use the Loupe. Why don't you use Loupe right now?} =>
-        q{Loupeは利用可能です。早速、使ってみますせんか？},
+        q{Loupeは利用可能です。早速、使ってみませんか？},
     'Try to use the Loupe!'          => 'Loupeを使う',
     'Send invitation mail to users.' => 'Loupeの招待状を送信する',
     'Configure the Loupe'            => 'Loupeの設定',
