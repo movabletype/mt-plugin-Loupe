@@ -3,7 +3,6 @@ describe("app", function () {
 
   var app, commands, cache, AppRouter, Controller, cards;
 
-  $(document.body).append('<div id="container"><div id="menu"></div><div id="app"></div></div><div id="app-building"></div>');
   require('js/boot');
 
   app = require('app');

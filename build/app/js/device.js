@@ -2,7 +2,11 @@ define(function () {
   'use strict';
 
   var Device = function () {
-    this.ua = navigator.userAgent;
+    if (DEBUG) {
+      this.ua = window.Mock.userAgent || navigator.userAgent;
+    } else {
+      this.ua = navigator.userAgent;
+    }
 
     this.parseVersion = function (expression) {
       var version = this.ua.match(expression);

@@ -299,7 +299,7 @@ module.exports = function (grunt) {
         options: {
           inline: true,
           context: {
-            mock: true
+            mock: "{}"
           }
         },
         files: {

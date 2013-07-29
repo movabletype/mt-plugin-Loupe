@@ -30,6 +30,8 @@
     "expect":false,
     "spyOn": false,
     "runs":false,
-    "waitFor":false
+    "waitsFor":false,
+    "beforeEach":false,
+    "Mock":false
   }
 }
