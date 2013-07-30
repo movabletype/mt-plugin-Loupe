@@ -3,21 +3,54 @@ describe("app", function () {
 
   var app, commands, cache, AppRouter, Controller, cards;
 
-  require('js/boot');
+  // require('js/boot');
 
-  app = require('app');
   commands = require('js/commands');
   cache = require('js/cache');
   AppRouter = require('js/router/router');
   Controller = require('js/router/controller');
   cards = require('json!cards/cards.json');
 
+  var Marionette = require('backbone.marionette');
+  var Backbone = require('backbone');
+
   beforeEach(function () {
     commands.execute('router:navigate', '')
   })
 
   it("should be start", function () {
-    expect(app.initial).toBe(true);
+    require.undef('app');
+
+    var flag = false;
+    runs(require(['app'], function (appInstance) {
+      app = appInstance;
+
+      new AppRouter({
+        controller: new Controller({
+          cards: cards
+        })
+      }, cards);
+
+      var $mainScript = $('#main-script'),
+        mtApiCGIPath = $mainScript.data('mtapi');
+
+      cache.set('app', 'staticPath', $mainScript.data('base'));
+
+      app.start({
+        cards: cards,
+        mtApiCGIPath: mtApiCGIPath
+      });
+
+      flag = true;
+    }));
+
+    waitsFor(function () {
+      return flag;
+    }, 'required failed', 10000);
+
+    runs(function () {
+      expect(app.initial).toBe(true);
+    })
   });
 
   it("app:buildMenu", function () {

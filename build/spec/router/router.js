@@ -9,18 +9,16 @@
     commands = require('js/commands');
 
     cards = [{
-        "name": "test",
-        "id": "test",
-        "dashboard": {
-          "view": "dashboard/dashboard"
-        },
-        "routes": [{
-            "id": "view",
-            "view": "view/view"
-          }
-        ]
-      }
-    ];
+      "name": "test",
+      "id": "test",
+      "dashboard": {
+        "view": "dashboard/dashboard"
+      },
+      "routes": [{
+        "id": "view",
+        "view": "view/view"
+      }]
+    }];
 
     app.start({
       cards: cards
@@ -98,6 +96,7 @@
       });
       runs(function () {
         expect(controller.moveDashboard).not.toHaveBeenCalled();
+        commands.execute('router:navigate', '');
       });
     });
   });

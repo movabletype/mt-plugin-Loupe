@@ -87,7 +87,7 @@ module.exports = function (grunt) {
   }, 'app/cards/**/*.js');
 
   var specs = [];
-  var helpers = ['app/lib/jquery/jquery-1.10.1.js', 'test/template.js', 'test/helper.js'];
+  var helpers = ['app/lib/jquery/jquery-1.10.1.js', 'test/template.js', 'test/jasmine.helper.js'];
   grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
@@ -109,6 +109,7 @@ module.exports = function (grunt) {
       jsHintFiles.push(src);
     }
   });
+
 
   // Project configuration.
   grunt.initConfig({
@@ -388,7 +389,7 @@ module.exports = function (grunt) {
         src: testTarget,
         options: {
           specs: specs,
-          helpers: helpers,
+          helpers: helpers.concat(['test/coverage.helper.js']),
           keepRunner: true,
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {

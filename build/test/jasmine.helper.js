@@ -1,4 +1,4 @@
-Mock = true;
+Mock = {};
 DEBUG = true;
 
 require(['jquery'], function ($) {

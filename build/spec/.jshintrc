@@ -32,6 +32,7 @@
     "runs":false,
     "waitsFor":false,
     "beforeEach":false,
+    "afterEach":false,
     "Mock":false
   }
 }
