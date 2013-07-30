@@ -25,7 +25,8 @@
     "text": "lib/requirejs-text/text",
     "json": "lib/requirejs-plugins/src/json",
     "easeljs": "lib/EaselJS/easeljs.wrap",
-    "perf": "js/perf"
+    "perf": "js/perf",
+    "basket": "lib/basket/basket.full.min"
   },
   "shim": {
     "underscore": {
