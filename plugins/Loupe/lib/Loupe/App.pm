@@ -22,12 +22,17 @@ sub send_welcome_mail_to_yourself {
         unless $user->is_superuser
         || ( defined($commenter_blog_id) && $commenter_blog_id <= 0 );
 
+    my $to_email_address = $app->param('to_email_address')
+        or return $app->json_error(
+        { message => 'Please enter a valid email address.' } );
     require Loupe::Mail;
-    my ( $msg_loop, $error ) = Loupe::Mail->send( $app, [ $user->id ] );
+    my ( $msg_loop, $error )
+        = Loupe::Mail->send( $app,
+        [ { id => $user->id, email => $to_email_address } ] );
 
     $error
         ? $app->json_error(@$msg_loop)
-        : $app->json_result( { to => $user->email } );
+        : $app->json_result( { to => $to_email_address || $user->email } );
 }
 
 sub widgets {
@@ -39,7 +44,12 @@ sub widgets {
             template => 'widget/welcome_to_loupe.tmpl',
             condition =>
                 sub { MT->app->user->is_superuser || Loupe->is_enabled },
-            handler => sub { $_[2]->{loupe_is_enabled} = Loupe->is_enabled },
+            handler => sub {
+                my $app = shift;
+                my ( $tmpl, $param ) = @_;
+                $param->{user_email} = $app->user->email || '';
+                $param->{loupe_is_enabled} = Loupe->is_enabled;
+            },
             singular => 1,
             set      => 'main',
             view     => 'user',

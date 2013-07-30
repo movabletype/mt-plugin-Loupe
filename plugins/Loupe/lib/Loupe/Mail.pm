@@ -21,9 +21,12 @@ sub send {
     my @msg_loop;
     my $error;
 
-    foreach (@$ids) {
-        my $author = MT::Author->load($_)
+    foreach my $id (@$ids) {
+        my $author_id = ref($id) ? $id->{id} : $id;
+        my $author = MT::Author->load($author_id)
             or next;
+        my $author_email = ref($id) ? $id->{email} : $author->email;
+
         my $param = {
             loupe_html_url => Loupe->html_url,
             loupe_site_url => Loupe->official_site_url,
@@ -31,13 +34,13 @@ sub send {
         };
 
         my $res;
-        if ( $author->email ) {
+        if ($author_email) {
             my $mail = _create_multipart_mail( $app, $param );
             my $body = $mail->body_raw;
             my %head = (
                 'Content-Type' => $mail->content_type,
                 id             => 'send_welcome_mail',
-                To             => $author->email,
+                To             => $author_email,
                 From => $app->config('EmailAddressMain') || $app->user->email,
                 Subject => $plugin->translate('Welcome to Loupe'),
             );
@@ -45,7 +48,7 @@ sub send {
                 $res
                     = $plugin->translate(
                     "Loupe invitation mail has been sent to [_3] for user '[_1]' (user #[_2]).",
-                    $author->name, $author->id, $author->email );
+                    $author->name, $author_id, $author_email );
                 $app->log(
                     {   message  => $res,
                         level    => MT::Log::INFO(),
@@ -75,7 +78,7 @@ sub send {
             $res
                 = $plugin->translate(
                 "User '[_1]' (user #[_2]) does not have email address",
-                $author->name, $author->id );
+                $author->name, $author_id );
         }
 
         push @msg_loop, { message => $res };
