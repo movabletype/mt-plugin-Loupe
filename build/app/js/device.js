@@ -4,9 +4,12 @@ define(function () {
   var Device = function () {
     if (DEBUG) {
       this.ua = window.Mock.userAgent || navigator.userAgent;
+      this.appName = window.Mock.appName || navigator.appName;
     } else {
       this.ua = navigator.userAgent;
+      this.appName = navigator.appName;
     }
+    this.product = navigator.product;
 
     this.parseVersion = function (expression) {
       var version = this.ua.match(expression);
@@ -22,16 +25,25 @@ define(function () {
       this.isIOS = true;
       this.platform = 'ios';
       this.version = this.parseVersion(/(?:iPhone|iPad|iPod).*OS\s([_0-9]+)/);
-    } else if (navigator.appName === 'Microsoft Internet Explorer') {
+    } else if (this.appName === 'Microsoft Internet Explorer') {
       if (/Windows Phone/.test(this.ua)) {
         this.isWindowsPhone = true;
         this.platform = 'windows-phone';
-        this.version = this.parseVersion(/Windows Phone\s*([\.0-9]+)/);
+        this.version = this.parseVersion(/Windows Phone\s*(?:OS\s)?([\.0-9]+)/);
       }
       this.isIE = true;
       this.browser = 'ie';
       this.browserVersion = this.parseVersion(/(?:MSIE|IE)\s*([\.0-9]+)/);
       this.isIE8 = parseInt(this.browserVersion, 10) === 8;
+    } else if (/Trident/.test(this.ua)) {
+      if (/Windows Phone/.test(this.ua)) {
+        this.isWindowsPhone = true;
+        this.platform = 'windows-phone';
+        this.version = this.parseVersion(/Windows Phone\s*(?:OS\s)?([\.0-9]+)/);
+      }
+      this.isIE = true;
+      this.browser = 'ie';
+      this.browserVersion = this.parseVersion(/(?:rv:)\s*([\.0-9]+)/);
     } else if (/Firefox/.test(this.ua)) {
       this.isFirefox = true;
       this.browser = 'firefox';
@@ -49,9 +61,11 @@ define(function () {
     }
 
     if (this.browser) {
-      arr = this.browserVersion.toString().split('.');
-      this.browserVersionStr = arr.length === 1 ? arr.concat(['0']).join('-') : arr.join('-');
-      this.browserVersionShortStr = arr[0];
+      if (this.browserVersion) {
+        arr = this.browserVersion.toString().split('.');
+        this.browserVersionStr = arr.length === 1 ? arr.concat(['0']).join('-') : arr.join('-');
+        this.browserVersionShortStr = arr[0];
+      }
     } else {
       this.browserVersionStr = '';
       this.browserVersionShortStr = '';
