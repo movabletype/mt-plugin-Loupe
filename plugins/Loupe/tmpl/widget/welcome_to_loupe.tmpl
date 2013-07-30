@@ -5,64 +5,62 @@
 <mt:setvarblock name="widget_header">
 </mt:setvarblock>
 <div id="widget-container">
-  <p><__trans phrase="Thank you for installing Loupe!"></p>
+    <p><__trans phrase="Thank you for installing Loupe!"></p>
 <mt:if name="loupe_is_enabled">
-  <p><__trans phrase="Ready to use the Loupe. Why don't you use Loupe right now?"></p>
-  <p class="msg-text"><a id="open-dialog-link" href="javascript:void(0);" onclick="return false;"><__trans phrase="Try to use the Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send invitation mail to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></mt:if></p>
+    <p><__trans phrase="Ready to use the Loupe. Why don't you use Loupe right now?"></p>
+    <p class="msg-text"><a id="open-dialog-link" href="javascript:void(0);" onclick="return false;"><__trans phrase="Try to use the Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send invitation mail to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></mt:if></p>
 <mt:else>
-  <mt:if name="is_administrator">
-  <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
-  <p class="msg-text"><a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></p>
-  <mt:else>
-  <p><__trans phrase="Loupe is not able to use now. Please contact to System Administrator."></p>
-  </mt:if>
+    <mt:if name="is_administrator">
+    <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
+    <p class="msg-text"><a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></p>
+    <mt:else>
+    <p><__trans phrase="Loupe is not able to use now. Please contact to System Administrator."></p>
+    </mt:if>
 </mt:if>
 </div>
 </mtapp:widget>
 
 <div id="invitation-email-dialog">
-  <mtapp:statusmsg
-     id="email_sent_error"
-     class="error"
-     can_close="0">
-  </mtapp:statusmsg>
-
-  <form id="email_form">
-    <mtapp:setting
-       id="to_email_address"
-       label="<__trans phrase="Send Mail To">"
-       label_class="top-label"
-       hint="<__trans phrase="The email address that should receive an invitation email from Movable Type.">"
-       show_hint="1">
-      <input type="text" name="to_email_address" id="to-email-address" class="text full" <mt:if name="user_email">value="<mt:var name="user_email">"</mt:if>/>
-    </mtapp:setting>
-
-    <span class="indicator"><img alt="<__trans phrase="Loading..." escape="js">" src="<mt:var name="static_uri">images/indicator.white.gif" /></span>
-    <div class="dialog actions-bar">
-      <button
-         type="submit"
-         class="action primary button">
-        <__trans phrase="Send">
-      </button>
-    </div>
-  </form>
+<mtapp:statusmsg
+    id="email_sent_error"
+    class="error"
+    can_close="0">
+</mtapp:statusmsg>
+    <form id="email_form">
+<mtapp:setting
+    id="to_email_address"
+    label="<__trans phrase="Send Mail To">"
+    label_class="top-label"
+    hint="<__trans phrase="The email address that should receive an invitation email from Movable Type.">"
+    show_hint="1">
+        <input type="text" name="to_email_address" id="to-email-address" class="text full" <mt:if name="user_email">value="<mt:var name="user_email">"</mt:if>/>
+</mtapp:setting>
+        <span class="indicator"><img alt="<__trans phrase="Loading..." escape="js">" src="<mt:var name="static_uri">images/indicator.white.gif" /></span>
+        <div class="dialog actions-bar">
+            <button
+                type="submit"
+                class="action primary button">
+                <__trans phrase="Send">
+            </button>
+        </div>
+    </form>
 </div>
 
-<style>
+<style type="text/css">
 #welcome_to_loupe {
-	background-color: #f3f3f5;
+    background-color: #f3f3f5;
 }
 #welcome_to_loupe .widget-header{
-	background: #3b9486;
-	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3b9486), color-stop(80%, #3b9486), color-stop(100%, #348275));
-	background-image: -webkit-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
-	background-image: -moz-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
-	background-image: -o-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
-	background-image: linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
-	color: #fff;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	font-weight: bold;
-	font-size: 14px;
+    background: #3b9486;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3b9486), color-stop(80%, #3b9486), color-stop(100%, #348275));
+    background-image: -webkit-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    background-image: -moz-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    background-image: -o-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    background-image: linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    color: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
 }
 #welcome_to_loupe .widget-header .widget-close-link{
     background-color: #f3f3f3;
@@ -71,6 +69,7 @@
     z-index: 2500;
 }
 </style>
+
 <mt:if name="loupe_is_enabled">
 <script type="text/javascript">
 /* <![CDATA[ */
