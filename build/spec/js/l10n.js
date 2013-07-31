@@ -11,7 +11,7 @@ describe("l10n", function () {
   });
 
   beforeEach(function () {
-    var base = window.requireBaseUrl ? 'spec' : 'spec'
+    var base = window.jasmineHostname ? 'http://' + window.jasmineHostname + '/spec' : 'spec';
     $('body').append('<div id="main-script" data-base="' + base + '" >');
   });
 
@@ -22,7 +22,7 @@ describe("l10n", function () {
     runs(function () {
       l10n.loadCommonDfd.done(function () {
         flag = true;
-      })
+      });
     });
 
     waitsFor(function () {
@@ -37,48 +37,46 @@ describe("l10n", function () {
 
     runs(function () {
       require.undef('json!l10n/en-us.json');
-    })
+    });
   });
 
-  if (!window.requireBaseUrl) {
-    it("load Common with basket.js", function () {
-      var flag = false;
-      var flag2 = false;
-      var l10n;
+  it("load Common with basket.js", function () {
+    var flag = false;
+    var flag2 = false;
+    var l10n;
 
-      runs(require(['basket'], function () {
-        flag = true;
-      }));
+    runs(require(['basket'], function () {
+      flag = true;
+    }));
 
-      waitsFor(function () {
-        return flag;
-      }, 'failed to load basket.js', 3000);
+    waitsFor(function () {
+      return flag;
+    }, 'failed to load basket.js', 3000);
 
-      runs(function () {
-        spyOn(window.basket, 'require').andCallThrough();
-        l10n = new L10N('en-us');
-        l10n.loadCommonDfd.done(function () {
-          flag2 = true;
-        });
+    runs(function () {
+      spyOn(window.basket, 'require').andCallThrough();
+      l10n = new L10N('en-us');
+      l10n.loadCommonDfd.done(function () {
+        flag2 = true;
       });
+    });
 
-      waitsFor(function () {
-        return flag2;
-      }, 'failed load common l10n', 3000);
+    waitsFor(function () {
+      return flag2;
+    }, 'failed load common l10n', 3000);
 
-      runs(function () {
-        expect(l10n.common).toBeDefined();
-        expect(l10n.common).not.toBeNull();
-        expect(window.basket.require).toHaveBeenCalled();
-        expect(l10n.common.bar).toEqual('baz');
-        window.basket = undefined;
-        require.undef('basket');
-        require.undef('json!l10n/en-us.json');
-        $('script[src$="basket.full.min.js"]').remove();
-        $('script[defer]').remove();
-      })
-    })
-  }
+    runs(function () {
+      expect(l10n.common).toBeDefined();
+      expect(l10n.common).not.toBeNull();
+      expect(window.basket.require).toHaveBeenCalled();
+      expect(l10n.common.bar).toEqual('baz');
+      window.basket = undefined;
+      require.undef('basket');
+      require.undef('json!l10n/en-us.json');
+      $('script[src$="basket.full.min.js"]').remove();
+      $('script[defer]').remove();
+    });
+  });
 
   afterEach(function () {
     $('#main-script').remove();

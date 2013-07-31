@@ -117,6 +117,7 @@ module.exports = function (grunt) {
       options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
+          es5: true,
           unused: false,
           evil: true
         },
@@ -353,13 +354,39 @@ module.exports = function (grunt) {
         options: {
           hostname: 'localhost',
           port: 9002,
-          keepalive: true
+          keepalive: true,
+          middleware: function (connect, options) {
+            return [
+              function (req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', '*');
+                next();
+              },
+              // Serve static files.
+              connect.static(options.base),
+              // Make empty directories browsable.
+              connect.directory(options.base)
+            ];
+          }
         }
       },
       jasmine: {
         options: {
           hostname: 'localhost',
-          port: 9003
+          port: 9003,
+          middleware: function (connect, options) {
+            return [
+              function (req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', '*');
+                next();
+              },
+              // Serve static files.
+              connect.static(options.base),
+              // Make empty directories browsable.
+              connect.directory(options.base)
+            ];
+          }
         }
       }
     },

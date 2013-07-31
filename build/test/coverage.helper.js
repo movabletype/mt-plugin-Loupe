@@ -1,1 +1,1 @@
-requireBaseUrl = '.grunt/grunt-contrib-jasmine/app/';
+jasmineHostname = 'localhost:9002';
