@@ -2,6 +2,14 @@ define(function () {
   'use strict';
 
   var Device = function () {
+    this.getNavigator();
+    this.detectDevice();
+    this.generateVersionStr();
+
+    this.touch = 'ontouchstart' in window;
+  };
+
+  Device.prototype.getNavigator = function () {
     if (DEBUG) {
       this.ua = window.Mock.userAgent || navigator.userAgent;
       this.appName = window.Mock.appName || navigator.appName;
@@ -10,13 +18,15 @@ define(function () {
       this.appName = navigator.appName;
     }
     this.product = navigator.product;
+  };
 
-    this.parseVersion = function (expression) {
-      var version = this.ua.match(expression);
-      version = (version && version[1]) ? (parseFloat(version[1].replace('_', '.'), 10) || null) : null;
-      return version;
-    };
+  Device.prototype.parseVersion = function (expression) {
+    var version = this.ua.match(expression);
+    version = (version && version[1]) ? (parseFloat(version[1].replace('_', '.'), 10) || null) : null;
+    return version;
+  };
 
+  Device.prototype.detectDevice = function () {
     if (/Android/.test(this.ua)) {
       this.isAndroid = true;
       this.platform = 'android';
@@ -49,7 +59,9 @@ define(function () {
       this.browser = 'firefox';
       this.browserVersion = this.parseVersion(/(?:Firefox\/)\s*([\.0-9]+)/);
     }
+  };
 
+  Device.prototype.generateVersionStr = function () {
     var arr;
     if (this.version) {
       arr = this.version.toString().split('.');
@@ -70,8 +82,6 @@ define(function () {
       this.browserVersionStr = '';
       this.browserVersionShortStr = '';
     }
-
-    this.touch = 'ontouchstart' in window;
   };
 
   Device.prototype.options = {};
