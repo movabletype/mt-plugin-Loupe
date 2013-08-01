@@ -97,6 +97,7 @@ describe("l10n", function () {
 
     runs(function () {
       spyOn(window.basket, 'require').andCallThrough();
+      require.undef('json!l10n/en-us.json');
       l10n = new L10N('en-us');
       l10n.loadCommonDfd.done(function () {
         flag2 = true;
@@ -152,6 +153,54 @@ describe("l10n", function () {
       expect(l10n.foobar).not.toBeNull();
       expect(l10n.get('foobar', 'baz')).toEqual('pux');
     });
+  });
+
+  it("When user has already loaded partial l10n, imediately return deferred object", function () {
+    var l10n,
+      dfd, dfd2,
+      flag, flag2, flag3;
+
+    l10n = new L10N('ja');
+    runs(function () {
+      l10n.loadCommonDfd.done(function () {
+        flag = true;
+      });
+    });
+
+    waitsFor(function () {
+      return flag;
+    }, 'failed load common l10n', 3000);
+
+    runs(function () {
+      dfd = l10n.load('/spec/cards/foobar', 'foobar');
+      dfd.done(function () {
+        flag2 = true;
+      });
+    });
+
+    waitsFor(function () {
+      return flag2;
+    }, 'failed load partial l10n', 3000);
+
+    runs(function () {
+      expect(l10n.foobar).toBeDefined();
+      expect(l10n.foobar).not.toBeNull();
+      expect(l10n.get('foobar', 'baz')).toEqual('pux');
+      spyOn(window, 'require').andCallThrough();
+      dfd2 = l10n.load('/spec/cards/foobar', 'foobar');
+      dfd2.done(function () {
+        flag3 = true;
+      });
+    });
+
+    waitsFor(function () {
+      return flag3;
+    }, 'failed load partial l10n', 3000);
+
+    runs(function () {
+      expect(l10n.get('foobar', 'baz')).toEqual('pux');
+      expect(window.require).not.toHaveBeenCalled();
+    })
   });
 
   it("load parial l10n failed then return empy object", function () {

@@ -146,6 +146,36 @@ describe("device", function () {
         ua: 'Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 620)'
       }
     },
+    'ie': {
+      '8.0': {
+        browser: 'ie',
+        browserVersion: 8.0,
+        browserVersionStr: '8-0',
+        browserVersionShortStr: '8',
+        ua: 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; .NET4.0E)'
+      },
+      '9.0': {
+        browser: 'ie',
+        browserVersion: 9.0,
+        browserVersionStr: '9-0',
+        browserVersionShortStr: '9',
+        ua: 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C)'
+      },
+      '10.0': {
+        browser: 'ie',
+        browserVersion: 10.0,
+        browserVersionStr: '10-0',
+        browserVersionShortStr: '10',
+        ua: 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Win64; x64; Trident/6.0; .NET4.0E; .NET4.0C; Tablet PC 2.0)'
+      },
+      '11.0': {
+        browser: 'ie',
+        browserVersion: 11.0,
+        browserVersionStr: '11-0',
+        browserVersionShortStr: '11',
+        ua: 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; rv:11.0) like Gecko'
+      }
+    },
     'firefox': {
       '22': {
         browser: 'firefox',
@@ -320,6 +350,43 @@ describe("device", function () {
         expect(device.version).toEqual(dv.version);
         expect(device.versionShortStr).toEqual(dv.versionShortStr);
         expect(device.versionStr).toEqual(dv.versionStr);
+        expect(device.browser).toEqual('ie');
+        expect(device.browserVersion).toEqual(dv.browserVersion);
+        expect(device.browserVersionShortStr).toEqual(dv.browserVersionShortStr);
+        expect(device.browserVersionStr).toEqual(dv.browserVersionStr);
+      });
+    });
+  });
+  $.each(['8.0', '9.0', '10.0', '11.0'], function (i, ver) {
+    it("ie " + ver, function () {
+      var dv = uaList.ie[ver];
+      window.Mock.userAgent = dv.ua;
+      if (parseInt(ver, 10) < 11) {
+        window.Mock.appName = 'Microsoft Internet Explorer';
+      } else {
+        window.Mock.appName = 'Netscape';
+      }
+
+      var flag = false;
+      runs(require(['js/device'], function () {
+        flag = true;
+      }));
+
+      waitsFor(function () {
+        return flag;
+      }, 'required failed', 10000);
+
+      runs(function () {
+        var device = require('js/device');
+        expect(device.ua).toEqual(dv.ua);
+        expect(device.isAndroid).not.toBeDefined();
+        expect(device.isIOS).not.toBeDefined();
+        expect(device.isWindowsPhone).not.toBeDefined();
+        expect(device.isFirefox).not.toBeDefined();
+        expect(device.platform).not.toBeDefined();
+        expect(device.version).not.toBeDefined();
+        expect(device.versionShortStr).toEqual('');
+        expect(device.versionStr).toEqual('');
         expect(device.browser).toEqual('ie');
         expect(device.browserVersion).toEqual(dv.browserVersion);
         expect(device.browserVersionShortStr).toEqual(dv.browserVersionShortStr);
