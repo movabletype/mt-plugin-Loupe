@@ -290,7 +290,8 @@ module.exports = function (grunt) {
           context: {
             mock: grunt.option('mock') || false,
             failAuth: grunt.option('failAuth') || false,
-            failAuthSPDY: grunt.option('failAuthSPDY') || false
+            failAuthSPDY: grunt.option('failAuthSPDY') || false,
+            userLang: grunt.option('userLang')
           }
         },
         files: {
@@ -377,7 +378,7 @@ module.exports = function (grunt) {
           middleware: function (connect, options) {
             return [
               function (req, res, next) {
-                res.setHeader('Access-Control-Allow-Origin', '*');
+                //res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Methods', '*');
                 next();
               },
@@ -417,6 +418,7 @@ module.exports = function (grunt) {
         options: {
           specs: specs,
           helpers: helpers.concat(['test/coverage.helper.js']),
+          host: 'http://localhost:9002/',
           keepRunner: true,
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {

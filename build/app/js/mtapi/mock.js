@@ -23,13 +23,13 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.getToken = function () {
-    if (window.Mock && window.MockFailAuth) {
+    if (window.Mock.failAuth) {
       this.trigger('authorizationRequired', this.base('getToken', {
         error: {
           message: 'Authentication Error'
         }
       }, arguments));
-    } else if (window.Mock && window.MockFailAuthSPDY) {
+    } else if (window.Mock.failAuthSPDY) {
       this.trigger('authorizationRequired', this.base('getToken', {
         error: {
           code: 0,
@@ -89,8 +89,12 @@ define(['moment'], function (moment) {
 
   Mock.prototype.getUser = function () {
     var args = arguments;
+    var language = window.Mock.userLang || 'ja';
+    if (language === 'null') {
+      language = null;
+    }
 
-    if (window.Mock && (window.MockFailAuth || window.MockFailAuthSPDY)) {
+    if (window.Mock.failAuth || window.Mock.failAuthSPDY) {
       this.getToken();
     } else {
       this.getToken(_.bind(function () {
@@ -98,7 +102,7 @@ define(['moment'], function (moment) {
           displayName: "yyamaguchi",
           email: "yyamaguchi@sixapart.com",
           id: "1",
-          language: "ja",
+          language: language,
           name: "yyamaguchi",
           updatable: true,
           url: "",

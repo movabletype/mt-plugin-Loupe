@@ -3,7 +3,7 @@ define(function () {
 
   var L10N = function (userLang) {
     this.libPath = $('#main-script').data('base') || '.';
-    this.userLang = userLang || null;
+    this.userLang = userLang || 'en-us';
     this.lexicon = {};
     this.loadCommon();
   };
@@ -41,17 +41,29 @@ define(function () {
       dfd.resolve(this);
     }, this);
 
-    if (this.userLang && !this.common) {
+    var errorHandler = _.bind(function () {
+      if (DEBUG) {
+        console.log('error occurred in loading common l10n file (user language is ' + this.userLang + '), so load as en-us instead');
+      }
+      this.userLang = 'en-us';
+      loadCommonL10N();
+    }, this);
+
+    var loadCommonL10N = _.bind(function (err) {
       if (window.basket !== undefined && window.buildTime !== undefined) {
         basket.require({
           url: this.libPath + '/js/l10n/' + this.userLang + '.js',
           unique: window.buildTime
         }).then(_.bind(function () {
-          require(['json!l10n/' + this.userLang + '.json'], finalize);
+          require(['json!l10n/' + this.userLang + '.json'], finalize, err);
         }, this));
       } else {
-        require(['json!l10n/' + this.userLang + '.json'], finalize);
+        require(['json!l10n/' + this.userLang + '.json'], finalize, err);
       }
+    }, this);
+
+    if (this.userLang && !this.common) {
+      loadCommonL10N(errorHandler);
     } else {
       dfd.resolve(this);
     }
