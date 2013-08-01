@@ -57,7 +57,7 @@ describe("app", function () {
 
     var user = cache.get('user', 'user'),
       blogs = cache.get('user', 'blogs'),
-      blog = blogs.models[0];
+      blog = blogs.models[0] || null;
 
     var params = {
       userId: user.id,
