@@ -138,7 +138,7 @@ describe("l10n", function () {
     }, 'failed load common l10n', 3000);
 
     runs(function () {
-      dfd = l10n.load('/spec/cards/foobar', 'foobar');
+      dfd = l10n.load('/spec/cards/l10n', 'l10n');
       dfd.done(function () {
         flag2 = true;
       });
@@ -149,9 +149,9 @@ describe("l10n", function () {
     }, 'failed load partial l10n', 3000);
 
     runs(function () {
-      expect(l10n.foobar).toBeDefined();
-      expect(l10n.foobar).not.toBeNull();
-      expect(l10n.get('foobar', 'baz')).toEqual('pux');
+      expect(l10n.l10n).toBeDefined();
+      expect(l10n.l10n).not.toBeNull();
+      expect(l10n.get('l10n', 'baz')).toEqual('pux');
     });
   });
 
@@ -172,7 +172,7 @@ describe("l10n", function () {
     }, 'failed load common l10n', 3000);
 
     runs(function () {
-      dfd = l10n.load('/spec/cards/foobar', 'foobar');
+      dfd = l10n.load('/spec/cards/l10n', 'l10n');
       dfd.done(function () {
         flag2 = true;
       });
@@ -183,11 +183,11 @@ describe("l10n", function () {
     }, 'failed load partial l10n', 3000);
 
     runs(function () {
-      expect(l10n.foobar).toBeDefined();
-      expect(l10n.foobar).not.toBeNull();
-      expect(l10n.get('foobar', 'baz')).toEqual('pux');
+      expect(l10n.l10n).toBeDefined();
+      expect(l10n.l10n).not.toBeNull();
+      expect(l10n.get('l10n', 'baz')).toEqual('pux');
       spyOn(window, 'require').andCallThrough();
-      dfd2 = l10n.load('/spec/cards/foobar', 'foobar');
+      dfd2 = l10n.load('/spec/cards/l10n', 'l10n');
       dfd2.done(function () {
         flag3 = true;
       });
@@ -198,7 +198,7 @@ describe("l10n", function () {
     }, 'failed load partial l10n', 3000);
 
     runs(function () {
-      expect(l10n.get('foobar', 'baz')).toEqual('pux');
+      expect(l10n.get('l10n', 'baz')).toEqual('pux');
       expect(window.require).not.toHaveBeenCalled();
     })
   });
@@ -220,7 +220,7 @@ describe("l10n", function () {
     }, 'failed load common l10n', 3000);
 
     runs(function () {
-      dfd = l10n.load('/spec/cards/notfound', 'foobar');
+      dfd = l10n.load('/spec/cards/notfound', 'l10n');
       dfd.done(function () {
         flag2 = true;
       });
@@ -231,9 +231,9 @@ describe("l10n", function () {
     }, 'failed load partial l10n', 3000);
 
     runs(function () {
-      expect(l10n.foobar).toBeDefined();
-      expect(l10n.foobar).not.toBeNull();
-      expect(l10n.foobar).toEqual({});
+      expect(l10n.l10n).toBeDefined();
+      expect(l10n.l10n).not.toBeNull();
+      expect(l10n.l10n).toEqual({});
     });
   });
 

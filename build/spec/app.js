@@ -11,12 +11,9 @@ describe("app", function () {
   Controller = require('js/router/controller');
   cards = require('json!cards/cards.json');
 
-  var Marionette = require('backbone.marionette');
-  var Backbone = require('backbone');
-
   beforeEach(function () {
-    commands.execute('router:navigate', '')
-  })
+    commands.execute('router:navigate', '');
+  });
 
   it("should be start", function () {
     require.undef('app');
@@ -50,26 +47,56 @@ describe("app", function () {
 
     runs(function () {
       expect(app.initial).toBe(true);
-    })
+    });
   });
 
   it("app:buildMenu", function () {
+    require.undef('app');
 
-    var user = cache.get('user', 'user'),
-      blogs = cache.get('user', 'blogs'),
-      blog = blogs.models[0] || null;
+    var flag = false;
+    runs(require(['app'], function (appInstance) {
+      app = appInstance;
 
-    var params = {
-      userId: user.id,
-      blogId: blog.id,
-      user: user,
-      blogs: blogs,
-      blog: blog
-    };
+      new AppRouter({
+        controller: new Controller({
+          cards: cards
+        })
+      }, cards);
 
-    spyOn(app.menu, 'show').andCallThrough();
-    commands.execute('app:buildMenu', params);
-    expect(app.menu.show).toHaveBeenCalled();
+      var $mainScript = $('#main-script'),
+        mtApiCGIPath = $mainScript.data('mtapi');
+
+      cache.set('app', 'staticPath', $mainScript.data('base'));
+
+      app.start({
+        cards: cards,
+        mtApiCGIPath: mtApiCGIPath
+      });
+
+      flag = true;
+    }));
+
+    waitsFor(function () {
+      return flag;
+    }, 'required failed', 10000);
+
+    runs(function () {
+      var user = cache.get('user', 'user'),
+        blogs = cache.get('user', 'blogs'),
+        blog = (blogs && blogs.models) ? blogs.models[0] : null;
+
+      var params = {
+        userId: user.id,
+        blogId: blog.id,
+        user: user,
+        blogs: blogs,
+        blog: blog
+      };
+
+      spyOn(app.menu, 'show').andCallThrough();
+      commands.execute('app:buildMenu', params);
+      expect(app.menu.show).toHaveBeenCalled();
+    });
   });
 
   it("toggled onmove class in body before and after transition", function () {
@@ -84,7 +111,7 @@ describe("app", function () {
   });
 
   it("android has scrollTop before transition", function () {
-    var $appBuilding, device, flag, style;
+    var $appBuilding, style;
     var deviceBak = _.clone(app.device);
     app.device = {
       isAndroid: true
