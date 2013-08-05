@@ -104,11 +104,20 @@ define(['moment'], function (moment) {
     }
 
     if (window.Mock.failAuth || window.Mock.failAuthSPDY) {
-      this.getToken();
+      return this.getToken();
+    } else if (window.Mock.returnFailRequest) {
+      return this.getToken(_.bind(function () {
+        return this.base('getUser', {
+          error: {
+            message: window.Mock.returnFailRequest
+          }
+        }, args);
+      }, this));
     } else {
       var item;
       if (window.Mock.throwUserItem) {
         item = window.Mock.throwUserItem;
+        item.language = language || item.language;
       } else {
         item = {
           displayName: "yyamaguchi",
@@ -196,10 +205,18 @@ define(['moment'], function (moment) {
       }];
     }
 
-    return this.base('listPermissionsForUser', {
-      "totalResults": items.length,
-      "items": items
-    }, arguments);
+    if (window.Mock.failPermission) {
+      return this.base('listPermissionsForUser', {
+        "error": {
+          message: window.Mock.failPermission
+        }
+      }, arguments);
+    } else {
+      return this.base('listPermissionsForUser', {
+        "totalResults": items.length,
+        "items": items
+      }, arguments);
+    }
   };
 
   Mock.prototype.getStatsProvider = function () {
