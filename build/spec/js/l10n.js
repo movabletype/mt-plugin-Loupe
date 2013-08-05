@@ -471,6 +471,45 @@ describe("l10n", function () {
     });
   });
 
+  it("When user language is unknown one in Loupe, load en-us as a fallback with basket.js", function () {
+    var flag = false;
+    var flag2 = false;
+    var l10n;
+
+    runs(require(['basket'], function () {
+      flag = true;
+    }));
+
+    waitsFor(function () {
+      return flag;
+    }, 'failed to load basket.js', 3000);
+
+    runs(function () {
+      spyOn(window.basket, 'require').andCallThrough();
+      require.undef('json!l10n/en-us.json');
+      l10n = new L10N('unknownLanguage2');
+      l10n.loadCommonDfd.done(function () {
+        flag2 = true;
+      });
+    });
+
+    waitsFor(function () {
+      return flag2;
+    }, 'failed load common l10n', 3000);
+
+    runs(function () {
+      expect(l10n.common).toBeDefined();
+      expect(l10n.common).not.toBeNull();
+      expect(window.basket.require).toHaveBeenCalled();
+      expect(l10n.get('common', 'bar')).toEqual('baz');
+      window.basket = undefined;
+      require.undef('basket');
+      require.undef('json!l10n/en-us.json');
+      $('script[src$="basket.full.min.js"]').remove();
+      $('script[defer]').remove();
+    });
+  });
+
   afterEach(function () {
     $('#main-script').remove();
   });
