@@ -8,10 +8,13 @@ describe("mtapi", function () {
     });
     waitsFor(function () {
       return flag;
-    });
+    }, 'timeout error on requiring js/mtapi/entry', 3000);
   });
 
   describe("entry", function () {
+    beforeEach(function () {
+      window.Mock.alwaysFail = null;
+    });
 
     it("get entry", function () {
       var Entry = require('js/mtapi/entry');
@@ -37,7 +40,7 @@ describe("mtapi", function () {
 
       waitsFor(function () {
         return flag;
-      });
+      }, 'timeout error on getting entry', 3000);
 
       runs(function () {
         expect(entry).toBeDefined();
@@ -74,7 +77,7 @@ describe("mtapi", function () {
 
       waitsFor(function () {
         return flag;
-      });
+      }, 'timeout error on getting entry and failed', 3000);
 
       runs(function () {
         expect(dfd.fail).toHaveBeenCalled();
