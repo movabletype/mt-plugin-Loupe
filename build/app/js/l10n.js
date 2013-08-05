@@ -56,7 +56,7 @@ define(function () {
           unique: window.buildTime
         }).then(_.bind(function () {
           require(['json!l10n/' + this.userLang + '.json'], finalize, err);
-        }, this));
+        }, this), err);
       } else {
         require(['json!l10n/' + this.userLang + '.json'], finalize, err);
       }
