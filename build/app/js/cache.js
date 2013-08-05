@@ -15,7 +15,9 @@ define(function () {
       if (!key) {
         delete cache[id];
       } else {
-        delete cache[id][key];
+        if (cache[id]) {
+          delete cache[id][key];
+        }
       }
     },
     clearAll: function () {

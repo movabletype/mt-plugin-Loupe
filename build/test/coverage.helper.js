@@ -1,1 +1,1 @@
-jasmineHostname = 'localhost:9002';
+window.jasmineHostname = 'localhost:9002';

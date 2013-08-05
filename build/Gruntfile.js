@@ -97,6 +97,8 @@ module.exports = function (grunt) {
   });
 
   var testTarget = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
+  testTarget = grunt.util._.without(testTarget, 'app/js/mtapi/mock.js');
+
   var settings = grunt.file.readJSON('settings.json');
 
   var bulkSymlinkLinks = grunt.file.expand('app/cards/*/templates/helpers/*.js').map(function (filename) {
@@ -212,7 +214,8 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
         ]
       },
-      afterTest: ['template.js']
+      afterTest: ['template.js'],
+      beforeCoverage: ['.grunt/grunt-contrib-jasmine']
     },
     copy: {
       prep: {
@@ -393,7 +396,7 @@ module.exports = function (grunt) {
     },
     jasmine: {
       test: {
-        src: ['app'], //testTarget,
+        src: ['app'],
         options: {
           specs: specs,
           helpers: helpers.concat(['app/js/main.js']),
@@ -577,7 +580,7 @@ module.exports = function (grunt) {
           mainConfigFile: 'app/js/main.js',
           name: 'js/template',
           out: 'test/template.js',
-          include: ['json!cards/cards.json', 'js/l10n/ja'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
+          include: ['json!cards/cards.json', 'js/l10n/ja', 'js/mtapi/mock'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
           //exclude: ['handlebars', 'hbs'],
           exclude: ['hbs'],
           optimize: 'none',
@@ -812,6 +815,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test', [
+    'clean:beforeCoverage',
     'preprocess:test',
     'requirejs:test',
     'connect:jasmine',
