@@ -33,20 +33,20 @@ define(['moment'], function (moment) {
 
   Mock.prototype.getToken = function () {
     if (window.Mock.failAuth) {
-      this.trigger('authorizationRequired', this.base('getToken', {
+      return this.trigger('authorizationRequired', this.base('getToken', {
         error: {
           message: 'Authentication Error'
         }
       }, arguments));
     } else if (window.Mock.failAuthSPDY) {
-      this.trigger('authorizationRequired', this.base('getToken', {
+      return this.trigger('authorizationRequired', this.base('getToken', {
         error: {
           code: 0,
           message: 'Communication Error'
         }
       }, arguments));
     } else {
-      this.base('getToken', {
+      return this.base('getToken', {
         accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
         expiresIn: 3600
       }, arguments);
@@ -67,10 +67,14 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.getTokenData = function () {
-    return {
-      accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
-      expiresIn: 3600
-    };
+    if (window.Mock.getTokenDataIsNull) {
+      return null
+    } else {
+      return {
+        accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
+        expiresIn: 3600
+      };
+    }
   };
 
   Mock.prototype.authenticate = function (params) {
@@ -141,11 +145,15 @@ define(['moment'], function (moment) {
     if (window.Mock.throwBlogItem) {
       item = window.Mock.throwBlogItem;
       item.id = id ? id : item.id;
+    } else if (window.Mock.failBlogItem) {
+      item = {
+        error: {
+          message: window.Mock.failBlogItem
+        }
+      }
     } else {
       item = {
-        archiveUrl: "http://memolog.org/",
         class: "blog",
-        description: "",
         id: (id || "2"),
         name: "メモログ",
         url: "http://memolog.org/"
@@ -155,32 +163,39 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.listBlogsForUser = function () {
-    var items;
+    var items, resp;
 
     if (window.Mock.throwBlogListItems) {
       items = window.Mock.throwBlogListItems;
+      resp = {
+        "totalResults": items.length,
+        "items": items
+      }
+    } else if (window.Mock.failBlogListItems) {
+      resp = {
+        error: {
+          message: window.Mock.failBlogListItems
+        }
+      }
     } else {
       items = [{
         "name": "メモログ",
         "url": "http://memolog.org/",
-        "archiveUrl": "http://memolog.org/",
         "id": "1",
         "class": "blog",
-        "description": ""
       }, {
         "name": "First Website",
         "url": "http://memolog.org/",
-        "archiveUrl": "http://memolog.org/",
         "id": "2",
         "class": "website",
-        "description": ""
       }];
+      resp = {
+        "totalResults": items.length,
+        "items": items
+      }
     }
 
-    return this.base('listBlogsForUser', {
-      "totalResults": items.length,
-      "items": items
-    }, arguments);
+    return this.base('listBlogsForUser', resp, arguments);
   };
 
   Mock.prototype.listPermissionsForUser = function () {

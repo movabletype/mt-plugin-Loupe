@@ -22,3 +22,13 @@ function requireModuleAndWait(path) {
 function resetMock() {
   window.Mock = {};
 }
+
+function undefRequireModule(path) {
+  require.undef(path);
+  $('script[src$="' + path + '.js"]').remove();
+}
+
+function reRequireModule(path) {
+  undefRequireModule(path);
+  requireModuleAndWait(path);
+}

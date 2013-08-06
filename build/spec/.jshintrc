@@ -18,6 +18,7 @@
   "browser": true,
   "jquery": true,
   "globals": {
+    "Backbone":false,
     "basket": false,
     "MT":false,
     "console": false,
@@ -33,6 +34,11 @@
     "waitsFor":false,
     "beforeEach":false,
     "afterEach":false,
-    "Mock":false
+    "Mock":false,
+    "requireModuleAndWait":false,
+    "resetMock":false,
+    "undefRequireModule":false,
+    "reRequireModule":false,
+    "jasmine":false
   }
 }
