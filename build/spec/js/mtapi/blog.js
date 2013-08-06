@@ -8,9 +8,7 @@ describe("mtapi", function () {
       window.Mock.throwBlogItem = {
         "name": "Blog 1",
         "url": "http://memolog.org/blog1",
-        "archiveUrl": "http://memolog.org/blog1",
         "class": "blog",
-        "description": "description"
       };
 
 
@@ -33,9 +31,7 @@ describe("mtapi", function () {
         expect(blog.id).toEqual(1);
         expect(blog.name).toEqual('Blog 1');
         expect(blog.url).toEqual('http://memolog.org/blog1');
-        expect(blog.archiveUrl).toEqual('http://memolog.org/blog1');
         expect(blog.class).toEqual('blog');
-        expect(blog.description).toEqual('description');
       });
     });
 

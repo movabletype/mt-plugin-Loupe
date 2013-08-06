@@ -15,10 +15,8 @@ describe("blogs", function () {
         items.push({
           "name": "Blog " + id,
           "url": "http://memolog.org/blog" + id,
-          "archiveUrl": "http://memolog.org/blog" + id,
           "id": id,
-          "class": "blog",
-          "description": "description"
+          "class": "blog"
         });
       }
 
@@ -45,10 +43,8 @@ describe("blogs", function () {
         expect(blog).toBeDefined();
         expect(blog.name).toEqual("Blog 1");
         expect(blog.url).toEqual("http://memolog.org/blog1");
-        expect(blog.archiveUrl).toEqual("http://memolog.org/blog1");
         expect(blog.id).toEqual("1");
         expect(blog.class).toEqual("blog");
-        expect(blog.description).toEqual("description");
         window.Mock.throwBlogListItems = null;
       });
     });

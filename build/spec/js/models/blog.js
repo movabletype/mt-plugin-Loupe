@@ -13,9 +13,7 @@ describe("models", function () {
     it("new blog model", function () {
       var flag;
       var item = window.Mock.throwBlogItem = {
-        archiveUrl: "http://memolog.org/",
         class: "blog",
-        description: "DESCRIPTION",
         name: "メモログ",
         url: "http://memolog.org/"
       };
