@@ -115,7 +115,8 @@ define([
 
         new ChartAPI.Graph(config, range).trigger('APPEND_TO', this.$el.find('#stats-dashboard-graph'));
       } else if (this.providerIsNotAvailable) {
-        this.$el.find('#stats-dashboard-graph').append('<img src="' + cache.get('app', 'staticPath') + '/cards/stats/assets/welcome.png" class="stats-welcome" height="170">')
+        var staticPath = cache.get('app', 'staticPath') || cache.set('app', 'staticPath', $('#main-script').data('base'))
+        this.$el.find('#stats-dashboard-graph').append('<img src="' + staticPath + '/cards/stats/assets/welcome.png" class="stats-welcome" height="170">')
       }
     },
 
