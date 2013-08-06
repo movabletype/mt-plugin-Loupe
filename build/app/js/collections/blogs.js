@@ -21,6 +21,7 @@ define(['backbone', 'js/mtapi/blogs', 'js/models/blog'], function (Backbone, get
         params.limit = parseInt(options.limit, 10) || 25;
       }
 
+      params.fields = 'id,name,class,url';
       var getBlogList = getBlogsList(options.userId, params);
 
       getBlogList.done(function (resp) {

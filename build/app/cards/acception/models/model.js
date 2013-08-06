@@ -15,7 +15,9 @@ define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
       dfd.fail(options.error);
 
       if (method === 'read') {
-        mtapi.api.getEntry(blogId, this.id, callback);
+        mtapi.api.getEntry(blogId, this.id, {
+          fields: 'author,blog,categories,id,status,title,body,permalink,date,excerpt'
+        }, callback);
       } else if (method === 'update') {
         var entry = model.toJSON();
         entry.status = options.status || entry.status;

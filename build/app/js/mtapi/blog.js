@@ -1,8 +1,8 @@
 define(['js/mtapi'], function (mtapi) {
-  return function (blogId) {
+  return function (blogId, options) {
     var dfd = $.Deferred();
 
-    mtapi.api.getBlog(blogId, function (resp) {
+    mtapi.api.getBlog(blogId, options, function (resp) {
       if (DEBUG) {
         console.log(resp);
       }
