@@ -5,7 +5,9 @@ define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
         var dfd = $.Deferred();
         dfd.done(options.success);
         dfd.fail(options.error);
-        mtapi.api.listPermissions('me', this.id, function (resp) {
+        mtapi.api.listPermissionsForUser('me', {
+          blogIds: this.id
+        }, function (resp) {
           if (!resp.error) {
             dfd.resolve(resp);
           } else {
