@@ -806,6 +806,7 @@ describe("router", function () {
           flag = true;
         }, 1000);
       });
+
       var Controller, controller, flag;
       Controller = require('js/router/controller');
       controller = new Controller();
@@ -823,6 +824,206 @@ describe("router", function () {
         expect(controller.authenticate).toHaveBeenCalled();
       });
     });
+
+    it("error shown when authRetry is over 1 time", function () {
+      sessionStorage.setItem('authRetry', 1);
+      window.Mock.failAuth = true;
+
+      var commandsOrig = require('js/commands');
+      var command = _.clone(commandsOrig);
+      var appError = jasmine.createSpy('appError');
+      var resp, flag;
+
+      command.execute = function (co, data) {
+        commandsOrig.execute.call(commandsOrig, co, data);
+        if (co === 'app:error') {
+          appError();
+          resp = data;
+          flag = true;
+        }
+      };
+
+      undefRequireModule('js/commands');
+      define('js/commands', [], function () {
+        return command;
+      });
+
+      var Controller, controller, flag;
+      reRequireModule('js/router/controller');
+      runs(function () {
+        Controller = require('js/router/controller');
+        controller = new Controller();
+        controller.auth();
+      });
+
+      waitsFor(function () {
+        return flag;
+      }, 'listen authorizationRequired', 3000);
+
+      runs(function () {
+        expect(sessionStorage.getItem('authRetry')).toBeNull();
+        expect(appError).toHaveBeenCalled();
+        expect(resp).toBeDefined();
+        expect(resp.blog.error.message).toEqual('authorizationRequired error occured over time for some reason');
+        require.undef('js/commands');
+        requireModuleAndWait('js/commands');
+      });
+    });
+
+    it("error shown immediately when commicate error occurred", function () {
+      sessionStorage.removeItem('authRetry');
+      window.Mock.failAuthSPDY = true;
+
+      var commandsOrig = require('js/commands');
+      var command = _.clone(commandsOrig);
+      var appError = jasmine.createSpy('appError');
+      var resp, flag;
+
+      command.execute = function (co, data) {
+        commandsOrig.execute.call(commandsOrig, co, data);
+        if (co === 'app:error') {
+          appError();
+          resp = data;
+          flag = true;
+        }
+      };
+
+      undefRequireModule('js/commands');
+      define('js/commands', [], function () {
+        return command;
+      });
+
+      var Controller, controller;
+      reRequireModule('js/router/controller');
+      runs(function () {
+        Controller = require('js/router/controller');
+        controller = new Controller();
+        controller.auth();
+      });
+
+      waitsFor(function () {
+        return flag;
+      }, 'listen authorizationRequired', 3000);
+
+      runs(function () {
+        expect(sessionStorage.getItem('authRetry')).toBeNull();
+        expect(appError).toHaveBeenCalled();
+        expect(resp).toBeDefined();
+        expect(resp.blog.error.message).toEqual('Communication Error');
+        require.undef('js/commands');
+        requireModuleAndWait('js/commands');
+      });
+    });
+
+    it("generate method for card's route handling and generated method should go through auth", function () {
+      var cards = [{
+        "name": "Stats",
+        "id": "stats",
+        "dashboard": {
+          "view": "dashboard/dashboard"
+        },
+        "routes": [{
+          "id": "view",
+          "view": "view/layout"
+        }, {
+          "id": "post",
+          "route": ":blog_id/:id/:unit",
+          "view": "view/post",
+          "header": "view/post_header"
+        }]
+      }];
+
+      var mtapi = require('js/mtapi');
+      mtapi.api.callbacks = {};
+
+      var commandsOrig = require('js/commands');
+      var command = _.clone(commandsOrig);
+      var commandExec = jasmine.createSpy('commandExec');
+      var resp, flag;
+
+      command.execute = function (co, data) {
+        commandsOrig.execute.call(commandsOrig, co, data);
+        if (co === 'move:cardView:stats:view') {
+          commandExec();
+          resp = data;
+          flag = true;
+        }
+      };
+
+      undefRequireModule('js/commands');
+      define('js/commands', [], function () {
+        return command;
+      });
+
+      var Controller, controller;
+      reRequireModule('js/router/controller');
+
+      runs(function () {
+        Controller = require('js/router/controller');
+        controller = new Controller({
+          cards: cards
+        });
+        spyOn(controller, 'auth').andCallThrough()
+        expect(controller.moveCardPage_statsview).toBeDefined();
+        expect(controller.moveCardPage_statspost).toBeDefined();
+
+        controller.moveCardPage_statsview();
+      });
+
+      waitsFor(function () {
+        return flag;
+      }, 'authenticate for cards', 3000);
+
+      runs(function () {
+        expect(controller.auth).toHaveBeenCalled();
+        expect(commandExec).toHaveBeenCalled();
+        require.undef('js/commands');
+        requireModuleAndWait('js/commands');
+      })
+    });
+
+    it("authorizationCallback", function () {
+      sessionStorage.setItem('routeCache', 'stats');
+
+      var commandsOrig = require('js/commands');
+      var command = _.clone(commandsOrig);
+      var commandExec = jasmine.createSpy('commandExec');
+      var resp, flag;
+
+      command.execute = function (co, data) {
+        commandsOrig.execute.call(commandsOrig, co, data);
+        if (co === 'router:navigate') {
+          commandExec();
+          resp = data;
+          flag = true;
+        }
+      };
+
+      undefRequireModule('js/commands');
+      define('js/commands', [], function () {
+        return command;
+      });
+
+      var Controller, controller;
+      reRequireModule('js/router/controller');
+
+      runs(function () {
+        Controller = require('js/router/controller');
+        controller = new Controller();
+        controller.authorizationCallback();
+      });
+
+      waitsFor(function () {
+        return flag;
+      }, 'command execute', 3000);
+
+      runs(function () {
+        expect(commandExec).toHaveBeenCalled();
+        expect(resp).toEqual('stats');
+        require.undef('js/commands');
+        requireModuleAndWait('js/commands');
+      })
+    })
   });
 
   afterEach(function () {
