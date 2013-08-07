@@ -848,7 +848,7 @@ describe("router", function () {
         return command;
       });
 
-      var Controller, controller, flag;
+      var Controller, controller;
       reRequireModule('js/router/controller');
       runs(function () {
         Controller = require('js/router/controller');
@@ -963,7 +963,7 @@ describe("router", function () {
         controller = new Controller({
           cards: cards
         });
-        spyOn(controller, 'auth').andCallThrough()
+        spyOn(controller, 'auth').andCallThrough();
         expect(controller.moveCardPage_statsview).toBeDefined();
         expect(controller.moveCardPage_statspost).toBeDefined();
 
@@ -979,7 +979,7 @@ describe("router", function () {
         expect(commandExec).toHaveBeenCalled();
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
-      })
+      });
     });
 
     it("authorizationCallback", function () {
@@ -1022,8 +1022,8 @@ describe("router", function () {
         expect(resp).toEqual('stats');
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
-      })
-    })
+      });
+    });
   });
 
   afterEach(function () {
