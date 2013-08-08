@@ -215,7 +215,7 @@ module.exports = function (grunt) {
         ]
       },
       afterTest: ['template.js'],
-      beforeCoverage: ['.grunt/grunt-contrib-jasmine']
+      beforeCoverage: ['.grunt/grunt-contrib-jasmine', 'app/test/coverage']
     },
     copy: {
       prep: {

@@ -1,16 +1,14 @@
-define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/card/header', 'js/views/share/share'],
-
-function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareView) {
+define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/views/card/templates/layout', 'js/views/card/header', 'js/views/share/share'], function (Marionette, CardItemView, commands, template, CommonHeaderView, ShareView) {
   "use strict";
 
   return Marionette.Layout.extend({
     initialize: function (options) {
       this.options = options;
       this.card = options.card;
-      this.viewHeader = options.viewHeader || this.card.viewHeader;
-      this.viewView = options.viewView || this.card.viewView;
-      this.viewTemplate = options.viewTemplate || this.card.viewTemplate;
-      this.viewData = options.viewData || this.card.viewData;
+      this.viewHeader = options.viewHeader;
+      this.viewView = options.viewView;
+      this.viewTemplate = options.viewTemplate;
+      this.viewData = options.viewData;
     },
 
     template: template,

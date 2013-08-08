@@ -11,7 +11,8 @@ require(['json!cards/cards.json', 'js/mtapi/mock', 'app', 'js/boot']);
 
 function requireModuleAndWait(path) {
   var flag;
-  require([path], function () {
+  path = typeof path === 'string' ? [path] : path
+  require(path, function () {
     flag = true;
   });
   waitsFor(function () {
@@ -24,11 +25,15 @@ function resetMock() {
 }
 
 function undefRequireModule(path) {
-  require.undef(path);
-  $('script[src$="' + path + '.js"]').remove();
+  path = typeof path === 'string' ? [path] : path;
+  _.forEach(path, function (p) {
+    require.undef(p);
+    $('script[src$="' + p + '.js"]').remove();
+  });
 }
 
 function reRequireModule(path) {
+  path = typeof path === 'string' ? [path] : path;
   undefRequireModule(path);
   requireModuleAndWait(path);
 }

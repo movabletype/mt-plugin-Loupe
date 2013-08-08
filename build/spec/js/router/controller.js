@@ -229,11 +229,16 @@ describe("router", function () {
       var Controller = require('js/router/controller');
       var controller = new Controller();
 
-      spyOn(controller, 'authenticate').andCallThrough();
+      var origFunc = controller.authenticate;
+      var flag;
+      spyOn(controller, 'authenticate').andCallFake(function () {
+        origFunc.apply(controller, arguments);
+        flag = true;
+      })
       controller.auth();
 
       waitsFor(function () {
-        return (/login/).test(location.href);
+        return flag;
       }, 'move login screen', 3000);
 
       runs(function () {

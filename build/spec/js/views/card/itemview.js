@@ -2,8 +2,7 @@ describe("views", function () {
   'use strict';
 
   beforeEach(function () {
-    requireModuleAndWait('js/views/card/itemview');
-    requireModuleAndWait('js/models/entry');
+    requireModuleAndWait(['js/views/card/itemview', 'js/models/entry']);
   });
 
   describe("card/itemview", function () {
@@ -81,7 +80,7 @@ describe("views", function () {
       });
 
       it("show Dashboard block with permission", function () {
-        var $el = $('<section id="card-' + itemView.card.id + '" class="card"></section>').appendTo($('#main'));
+        var $el = $('<section id="card-' + itemView.card.id + '" class="card"></section>').appendTo($('#app'));
         $el.hide();
 
         var flag;
@@ -105,7 +104,7 @@ describe("views", function () {
       });
 
       it("hide Dashboard block with no permission", function () {
-        var $el = $('<section id="card-' + itemView.card.id + '" class="card"></section>').appendTo($('#main'));
+        var $el = $('<section id="card-' + itemView.card.id + '" class="card"></section>').appendTo($('#app'));
         $el.hide();
         $el.show();
 
@@ -270,7 +269,7 @@ describe("views", function () {
     });
 
     it("addTapClass", function () {
-      var $el = $('<div id="addtapclass"></div>').appendTo($('#main'));
+      var $el = $('<div id="addtapclass"></div>').appendTo($('#app'));
       var flag, hasClass;
       itemView.addTapClass($el, function () {
         hasClass = $el.hasClass('tapped');

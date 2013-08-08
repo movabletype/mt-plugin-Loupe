@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'hbs!js/views/share/templates/share', 'js/device', 'js/commands', 'js/trans'],
-
-function (Marionette, template, device, commands, Trans) {
+define(['backbone.marionette', 'hbs!js/views/share/templates/share', 'js/device', 'js/commands', 'js/trans'], function (Marionette, template, device, commands, Trans) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -25,7 +23,7 @@ function (Marionette, template, device, commands, Trans) {
     },
 
     serializeData: function () {
-      var data = this.share;
+      var data = this.share || {};
       data.tweetUrl = data.url;
       data.tweetText = $('<div>').html(data.tweetText).text();
       if ((data.tweetUrl + data.tweetText).length > 140) {

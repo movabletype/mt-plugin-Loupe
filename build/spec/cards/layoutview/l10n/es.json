@@ -1,0 +1,5 @@
+{
+  "baz": "pux",
+  "[quant,_1,hour,hours] from now": "hace [quant,_1,hora,horas]",
+  "set complete ([quant,_1,file] in [_2] seconds)": "conjunto completo ([quant,_1,fichero] en [_2] segundos)"
+}
