@@ -22,7 +22,7 @@ define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'js/v
           commands.execute('l10n', _.bind(function (l10n) {
             this.trans = new Trans(l10n);
             var cardsDfds = [];
-            if (this.cards.length) {
+            if (this.cards && this.cards.length) {
               _.forEach(this.cards, function (card) {
                 var dashboard = card.dashboard;
                 if (dashboard) {
