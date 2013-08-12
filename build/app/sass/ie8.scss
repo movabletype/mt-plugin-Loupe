@@ -2,7 +2,7 @@
 
 .ie8 {
   #app-building {
-    -pie-background: url("assets/images/loading.gif") no-repeat center center / 30px;
+    background-image: url("assets/images/loading-small.gif");
   }
   #header {
     #header-main {
@@ -32,5 +32,15 @@
         overflow: hidden;
       }
     }
+  }
+  #login {
+    header h1 {
+      background: url("../assets/images/logo-circle-small.png") no-repeat center center;
+    }
+  }
+  .card {
+    header: {
+      min-height: 24px;
+    };
   }
 }

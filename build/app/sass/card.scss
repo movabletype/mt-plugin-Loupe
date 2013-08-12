@@ -1,6 +1,6 @@
 @import "_helpers";
 
-/* Modular Scale 
+/* Modular Scale
 http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
 */
 
@@ -21,8 +21,8 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
   header {
     border-bottom: 2px solid darken($card-header-color, 10%);
     color: #fff;
+    padding: 10px 16px 7px;
     padding: 0.667rem 1rem 0.488rem;
-    min-height: 2.469em;
     min-height: 2.469rem;
     @include border-top-radius(5px);
     @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
