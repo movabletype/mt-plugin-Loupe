@@ -1,14 +1,15 @@
 describe("views", function () {
   'use strict';
 
-  describe("dashboard/main", function () {
-    var Main, main, initData;
-    var Controller, controller;
+  var Main, main, initData;
+  var Controller, controller;
+  var commandsOrig, commands, commandSpy, flagAfterL10N;
 
-    var commandsOrig = require('js/commands');
-    var commands = _.clone(commandsOrig);
-    var commandSpy = jasmine.createSpy('commandSpy');
-    var flagAfterL10N;
+  beforeEach(function () {
+    commandsOrig = require('js/commands');
+    commands = _.clone(commandsOrig);
+    commandSpy = jasmine.createSpy('commandSpy');
+
     commands.execute = function (co, data) {
       if (co === 'l10n') {
         if (controller) {
@@ -27,7 +28,9 @@ describe("views", function () {
     });
 
     reRequireModule(['js/router/controller', 'js/views/dashboard/main', 'js/views/card/itemview']);
+  });
 
+  describe("dashboard/main", function () {
     var initialize = function (cards, noUser) {
       Controller = require('js/router/controller');
       controller = new Controller({

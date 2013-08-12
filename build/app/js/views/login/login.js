@@ -24,6 +24,8 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
         }, this));
       },
 
+      timeout: 15000,
+
       authenticate: function () {
         commands.execute('app:beforeTransition');
         this.username = this.ui.username.val();
@@ -33,7 +35,7 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
           commands.execute('app:afterTransition');
           this.loginError = 'Timeout Error';
           this.render();
-        }, this), 15000);
+        }, this), this.timeout);
 
         mtapi.api.authenticate({
           username: this.username,

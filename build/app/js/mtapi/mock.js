@@ -24,10 +24,20 @@ define(['moment'], function (moment) {
       }
     }
 
-    if (callback) {
-      callback(resp);
+    if (window.Mock.slowResponse) {
+      setTimeout(function () {
+        if (callback) {
+          callback(resp);
+        } else {
+          return resp;
+        }
+      }, parseInt(window.Mock.slowResponse, 10));
     } else {
-      return resp;
+      if (callback) {
+        callback(resp);
+      } else {
+        return resp;
+      }
     }
   };
 
@@ -78,21 +88,33 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.authenticate = function (params) {
-    if (params && params.username === 'invalid') {
-      this.base('authenticate', {
-        error: {
-          message: 'Invalid Login'
-        }
-      }, arguments);
-    } else {
-      this.base('authenticate', {
-        accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
-        sessionId: "3GYAWFZJTQYhrXG9mcXBdG3mVwAtrma4bnYrqALy",
-        expiresIn: 3600,
-        remember: true,
-        startTime: (new Date()).valueOf()
-      }, arguments);
+    var resp = {
+      accessToken: "YUilse0FLzaHYDVbG4pTl9TtUmAUgkrFBNuordXV",
+      sessionId: "3GYAWFZJTQYhrXG9mcXBdG3mVwAtrma4bnYrqALy",
+      expiresIn: 3600,
+      remember: true,
+      startTime: (new Date()).valueOf()
+    };
+
+    var invalid = {
+      error: {
+        message: 'Invalid Login'
+      }
     }
+
+    if (params && params.username === 'invalid') {
+      resp = invalid;
+    } else if (window.Mock.authOnly) {
+      var args = window.Mock.authOnly.split(/,/);
+      if (params.username !== args[0] && params.password !== args[1]) {
+        resp = invalid;
+      }
+    } else if (window.Mock.customAuthError !== undefined) {
+      resp = invalid;
+      invalid.error.message = window.Mock.customAuthError;
+    }
+
+    return this.base('authenticate', resp, arguments);
   };
 
   Mock.prototype.getAuthorizationUrl = function (redirectURL) {
