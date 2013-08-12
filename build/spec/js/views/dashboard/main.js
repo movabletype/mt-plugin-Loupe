@@ -29,8 +29,6 @@ describe("views", function () {
     reRequireModule(['js/router/controller', 'js/views/dashboard/main', 'js/views/card/itemview']);
 
     var initialize = function (cards, noUser) {
-      var flag;
-
       Controller = require('js/router/controller');
       controller = new Controller({
         cards: cards
@@ -43,8 +41,6 @@ describe("views", function () {
         });
         var dataClone = _.clone(initData);
         if (noUser) {
-          console.log('fofo')
-          console.log(dataClone)
           dataClone.user = null;
         }
         main = new Main(dataClone);
@@ -67,11 +63,11 @@ describe("views", function () {
           return origFunc.call(controller.l10n, fakePath, namespace);
         });
       });
-    }
+    };
 
     beforeEach(function () {
       flagAfterL10N = null;
-    })
+    });
 
     it("prepare cards with view", function () {
       var cardSpy = jasmine.createSpy('cardSpy');
@@ -83,7 +79,7 @@ describe("views", function () {
           },
           render: function () {}
         });
-      })
+      });
 
       var cards = [{
         "name": "Dashboard Test",
@@ -96,7 +92,7 @@ describe("views", function () {
       initialize(cards);
 
       waitsFor(function () {
-        return cardSpy.calls && cardSpy.calls.length
+        return cardSpy.calls && cardSpy.calls.length;
       }, 'cardSpy called', 3000);
 
       runs(function () {
@@ -113,10 +109,10 @@ describe("views", function () {
         var s = t.template(function (e, t, s) {
           s = s || e.helpers;
           cardSpy();
-          return '<div id="dashboardtest-template"></div>'
+          return '<div id="dashboardtest-template"></div>';
         });
         t.registerPartial("cards_dashboardtest_dashboard_template", s);
-        return s
+        return s;
       });
 
       var cards = [{
@@ -130,7 +126,7 @@ describe("views", function () {
       initialize(cards);
 
       waitsFor(function () {
-        return cardSpy.calls && cardSpy.calls.length
+        return cardSpy.calls && cardSpy.calls.length;
       }, 'cardSpy called', 3000);
 
       runs(function () {
@@ -164,7 +160,7 @@ describe("views", function () {
       initialize(cards);
 
       waitsFor(function () {
-        return cardSpy.calls && cardSpy.calls.length
+        return cardSpy.calls && cardSpy.calls.length;
       }, 'cardSpy called', 3000);
 
       runs(function () {
@@ -183,7 +179,7 @@ describe("views", function () {
           },
           render: function () {}
         });
-      })
+      });
 
       var cards = [{
         "name": "Dashboard Test",
@@ -196,7 +192,7 @@ describe("views", function () {
       initialize(cards, true);
 
       waitsFor(function () {
-        return main.render.calls && main.render.calls.length
+        return main.render.calls && main.render.calls.length;
       }, 'cardSpy called', 3000);
 
       runs(function () {
@@ -209,6 +205,7 @@ describe("views", function () {
 
     afterEach(function () {
       main.$el.remove();
-    })
+      reRequireModule(['js/commands']);
+    });
   });
 });
