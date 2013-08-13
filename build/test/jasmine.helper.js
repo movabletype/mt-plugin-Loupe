@@ -3,7 +3,7 @@ DEBUG = true;
 
 require(['jquery'], function ($) {
   $(document.body).append('<div id="container"><div id="menu"></div><div id="app"></div></div><div id="app-building"></div>');
-})
+});
 
 require(['json!cards/cards.json', 'js/mtapi/mock', 'app', 'js/boot']);
 
@@ -11,7 +11,7 @@ require(['json!cards/cards.json', 'js/mtapi/mock', 'app', 'js/boot']);
 
 function requireModuleAndWait(path) {
   var flag;
-  path = typeof path === 'string' ? [path] : path
+  path = typeof path === 'string' ? [path] : path;
   require(path, function () {
     flag = true;
   });
@@ -36,4 +36,60 @@ function reRequireModule(path) {
   path = typeof path === 'string' ? [path] : path;
   undefRequireModule(path);
   requireModuleAndWait(path);
+}
+
+function initCommands(commandSpies, spyTarget, controller) {
+  spyTarget = spyTarget || ['command'];
+  reRequireModule(['js/commands']);
+  //  commandSpies = jasmine.createSpyObj('commandSpies', spyTarget);
+  var flag;
+  runs(function () {
+    var commandsOrig = require('js/commands');
+    var commands = _.clone(commandsOrig);
+    commands.execute = function (command, data) {
+      if (command === 'l10n' && controller) {
+        controller.l10n.waitLoadCommon(data);
+      } else {
+        commandsOrig.execute.apply(commandsOrig, arguments);
+      }
+      if (commandSpies[command]) {
+        commandSpies[command](data);
+      }
+    };
+    undefRequireModule('js/commands');
+    window.define('js/commands', [], function () {
+      return commands;
+    });
+  });
+}
+
+function initController(Controller, controller, callback, cards) {
+  var options = cards ? {
+    cards: cards
+  } : {};
+  Controller = require('js/router/controller');
+  controller = new Controller(options);
+  controller.auth(function (data) {
+    data = _.extend({}, data);
+    if (cards && cards.length) {
+      data.card = cards[0];
+    }
+    callback(data);
+  });
+};
+
+function fakeCardPath(controller) {
+  var origFunc = controller.l10n.load;
+  spyOn(controller.l10n, 'load').andCallFake(function (path, namespace) {
+    return origFunc.call(controller.l10n, '/spec/' + path, namespace);
+  });
+};
+
+function backToDashboard($el, initData) {
+  if ($el) {
+    $el.remove();
+  }
+  runs(function () {
+    require('js/commands').execute('move:dashboard', initData);
+  });
 }

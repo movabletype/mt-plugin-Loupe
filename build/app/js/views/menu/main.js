@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/views/menu/blogs-list', 'hbs!js/views/menu/templates/main'],
-
-function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListView, template) {
+define(['backbone.marionette', 'json2', 'js/device', 'js/commands', 'js/mtapi/blogs', 'js/mtapi/blog', 'js/views/menu/blogs-list', 'hbs!js/views/menu/templates/main'], function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListView, template) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -25,7 +23,7 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
       this.user = options.user;
     },
 
-    hanldeToggle: function () {
+    handleToggle: function () {
       this.ui.menuHeaderArrow.toggleClass('rotate');
     },
 
@@ -33,7 +31,7 @@ function (Marionette, JSON, device, commands, getBlogsList, getBlog, BlogsListVi
       var hammerOpts = device.options.hammer();
       this.blogs.show(new BlogsListView(this.options));
 
-      commands.setHandler('menu:header:toggle', _.bind(this.hanldeToggle, this));
+      commands.setHandler('menu:header:toggle', _.bind(this.handleToggle, this));
 
       this.$el.find('#menu-header').hammer(hammerOpts).on('tap', _.bind(function () {
         commands.execute('dashboard:toggle');

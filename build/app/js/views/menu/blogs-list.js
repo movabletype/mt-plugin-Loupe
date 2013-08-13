@@ -26,7 +26,7 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
             this.blogsLoading = false;
             this.blogs = blogs.slice(this.offset, this.next);
           } else {
-            if (totalResults !== undefined && totalResults < this.offset + this.histories.length) {
+            if (totalResults !== undefined && totalResults <= this.offset + this.histories.length) {
               this.blogsLoading = false;
               this.blogs = [];
             } else {
@@ -146,10 +146,10 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
         this.selectCurrentBlog(this.selectedBlogId);
         $blogList.find('.selected').removeClass('selected');
         $blogList.find('[data-id=' + this.selectedBlogId + ']').addClass('selected');
-        this.saveChagesHandler();
+        this.saveChangesHandler();
       },
 
-      saveChagesHandler: function () {
+      saveChangesHandler: function () {
         if (DEBUG) {
           console.log('switching blog from ' + this.currentBlogId + ' to ' + this.selectedBlogId);
         }
@@ -233,13 +233,14 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
               });
             };
 
-            _.each(this.histories, function (history) {
+            this.histories = _.map(this.histories, function (history) {
               var blog = findBlog(blogs.items, history);
               if (blog) {
                 history = blog;
               } else {
                 history.remove = true;
               }
+              return history;
             });
 
             this.histories = _.reject(this.histories, function (history) {
@@ -279,7 +280,8 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
 
         this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {
-            this.offset = parseInt($(this).data('offset'), 10) || 0;
+            this.offset = parseInt($(e.currentTarget).data('offset'), 10) || 0;
+            this.blogsLoading = true;
             this.render();
           }, this));
         }, this));

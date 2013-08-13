@@ -184,7 +184,7 @@ define(['moment'], function (moment) {
     return this.base('getBlog', item, arguments);
   };
 
-  Mock.prototype.listBlogsForUser = function () {
+  Mock.prototype.listBlogsForUser = function (userId, options) {
     var items, resp, len;
 
     if (window.Mock.throwBlogListItems) {
@@ -201,6 +201,7 @@ define(['moment'], function (moment) {
         }
       }
     } else {
+      len = 5;
       items = [{
         "name": "メモログ",
         "url": "http://memolog.org/",
@@ -212,10 +213,65 @@ define(['moment'], function (moment) {
         "id": "2",
         "class": "website",
       }];
+
+      var id;
+      for (var i = 2; i < len; i++) {
+        id = (i + 1).toString();
+        items.push({
+          "name": "Blog " + id,
+          "url": "http://memolog.org/blog" + id,
+          "id": id,
+          "class": "blog"
+        });
+      }
       resp = {
         "totalResults": items.length,
         "items": items
       }
+    }
+
+    if (options && resp.items) {
+      if (options.includeIds) {
+        var includeIds = options.includeIds.split(/,/);
+        var includedItems = [];
+        _.each(resp.items, function (item) {
+          var len = includeIds.length;
+          var flag = false;
+          for (i = 0; i < len; i++) {
+            if (includeIds[i] == item.id) {
+              flag = true;
+              break;
+            }
+          }
+          if (flag) {
+            includedItems.push(item);
+          }
+        });
+        resp.items = includedItems;
+      }
+
+      if (options.excludeIds) {
+        var excludeIds = options.excludeIds.split(/,/);
+        var excludedItems = [];
+        _.each(resp.items, function (item) {
+          var len = excludeIds.length;
+          var flag = false;
+          for (i = 0; i < len; i++) {
+            if (excludeIds[i] == item.id) {
+              flag = true;
+              break;
+            }
+          }
+          if (!flag) {
+            excludedItems.push(item);
+          }
+        });
+        resp.items = excludedItems;
+      }
+
+      var limit = options.limit || 25;
+      var offset = options.offset || 0;
+      resp.items = resp.items.slice(offset, offset + limit);
     }
 
     return this.base('listBlogsForUser', resp, arguments);

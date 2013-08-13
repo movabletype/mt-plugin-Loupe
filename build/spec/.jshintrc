@@ -39,6 +39,8 @@
     "resetMock":false,
     "undefRequireModule":false,
     "reRequireModule":false,
-    "jasmine":false
+    "jasmine":false,
+    "initCommands":false,
+    "initController":false
   }
 }
