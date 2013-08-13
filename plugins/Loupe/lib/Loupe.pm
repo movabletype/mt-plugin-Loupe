@@ -44,7 +44,8 @@ sub create_html {
     my $fmgr     = _get_fmgr();
     if ( !$fmgr->exists($html_dir) ) {
         if ( !$fmgr->mkpath($html_dir) ) {
-            my $msg = _translate("Could not create loupe directory: [_1]", $fmgr->errstr);
+            my $msg = _translate( "Could not create Loupe directory: [_1]",
+                $fmgr->errstr );
             _log( { msg => $msg, error => 1 } );
             return $class->error($msg);
         }
@@ -63,8 +64,8 @@ sub create_html {
         return 1;
     }
     else {
-        my $msg
-            = _translate("Could not create Loupe HTML file: [_1]", $fmgr->errstr);
+        my $msg = _translate( "Could not create Loupe HTML file: [_1]",
+            $fmgr->errstr );
         _log( { msg => $msg, error => 1 } );
         return $class->error($msg);
     }
@@ -89,8 +90,8 @@ sub delete_html {
         return 1;
     }
     else {
-        my $msg
-            = _translate("Could not delete Loupe HTML file: [_1]", $fmgr->errstr);
+        my $msg = _translate( "Could not delete Loupe HTML file: [_1]",
+            $fmgr->errstr );
         _log( { msg => $msg, error => 1 } );
         return $class->error($msg);
     }

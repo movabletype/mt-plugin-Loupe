@@ -16,15 +16,15 @@ use vars qw( %Lexicon );
 %Lexicon = (
 
 ## plugins/Loupe/Loupe.pl
-    'Loupe is the application for operating the user daily task easily.' =>
-        'Loupe を使えば、Movable Type へログインをしなくても、あなたのブログの状態を即座に確認することができます。',
+    'Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics.' =>
+        'Loupe は、スマートフォンに最適化された、まったく新しい Movable Type への入り口です。Loupe を使えば、Movable Type へログインをすることなく、承認待ちの記事やコメントを承認したり、画像のアップロードを行ったり、あなたのサイトの状態を即座に確認することが出来ます。',
 
 ## plugins/Loupe/lib/Loupe.pm
     'Loupe\'s HTML file name must not be blank.' =>
         'HTMLファイル名は必須です。',
     'The URL should not include any directory name: [_1]' =>
         'URLにはディレクトリ名を含めることはできません: [_1]',
-    'Could not create loupe directory: [_1]' =>
+    'Could not create Loupe directory: [_1]' =>
         'loupeディレクトリを作成することができません: [_1]',
     'Loupe HTML file has been created: [_1]' =>
         'LoupeのHTMLファイルを作成しました: [_1]',
@@ -36,14 +36,14 @@ use vars qw( %Lexicon );
         'LoupeのHTMLファイルを削除することができませんでした: [_1]',
 
 ## plugins/Loupe/lib/Loupe/App.pm
-    'Are you sure you want to send invitation mail to selected users?' =>
+    'Are you sure you want to send an invitation email to selected users?' =>
         'Loupeの招待状を選択されたユーザーに送信してもよろしいですか？',
     'Could not send a invitation mail because Loupe is not enabled.' =>
         'Loupeが無効になっているため、招待状を送信できません。',
     'Welcome to Loupe' => 'ようこそ、Loupeへ',
     'Loupe invitation mail has been sent to [_3] for user \'[_1]\' (user #[_2]).'
         => 'Loupeの招待状をユーザー \'[_3]\'のメールアドレス \'[_1]\'に送信しました。 (ユーザー: [_2])',
-    'Send Loupe invitation mail' => 'Loupeの招待状を送信する',
+    'Send Loupe invitation email' => 'Loupeの招待状を送信する',
 
 ## plugins/Loupe/lib/Loupe/Upgrade.pm
     'Adding Loupe dashboard widget...' =>
@@ -82,18 +82,18 @@ use vars qw( %Lexicon );
 ## plugins/Loupe/tmpl/widget/welcome_to_loupe.tmpl
     'Thank you for installing Loupe!' =>
         'Loupeをインストールしていただき、ありがとうございます!',
-    q{Ready to use the Loupe. Why don't you use Loupe right now?} =>
+    q{Ready to use Loupe. Why don't you try Loupe right now?} =>
         q{Loupeは利用可能です。早速、使ってみませんか？},
-    'Try to use the Loupe!'          => 'Loupeを使う',
-    'Send invitation mail to users.' => 'Loupeの招待状を送信する',
-    'Configure the Loupe'            => 'Loupeの設定',
+    'Try using Loupe!'          => 'Loupeを使う',
+    'Send invitation email to users.' => 'Loupeの招待状を送信する',
+    'Configure Loupe'            => 'Loupeの設定',
     'Loupe can be used without complex configuration, you can get started immediately.'
         => 'Loupeは、難しい設定をしなくても簡単に、すぐに利用することができます。',
-    'Loupe is not able to use now. Please contact to System Administrator.'
-        => 'Loupeは現在利用できません。システム管理者に連絡してください。',
+    'Loupe cannot be used now. Please contact your Movable Type System Administrator.'
+        => 'Loupeは、設定されていないため、利用できません。システム管理者に連絡してください。',
     'Failed to send invitation mail: ' =>
         'Loupeの招待メールを送信できませんでした:',
-    'Sent the invitation mail that contains the access URL of the Loupe to \'[_1]\'.'
+    'Sent the invitation email containing the access URL for Loupe to \'[_1]\'.'
         => 'Loupeのアクセス先URLを記載した招待メールを \'[_1]\' に送信しました。',
 
 );

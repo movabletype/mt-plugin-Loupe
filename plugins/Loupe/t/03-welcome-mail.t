@@ -222,7 +222,7 @@ my ( $app, $out );
         $out = delete $app->{__test_output};
 
         if ( $test->{ok} ) {
-            ok( $out =~ m/Send welcome mail of Loupe/,
+            ok( $out =~ m/Send Loupe welcome email/,
                 'Welcome mail has been sent.'
             );
 

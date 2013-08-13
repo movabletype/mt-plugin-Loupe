@@ -7,14 +7,14 @@
 <div id="widget-container">
     <p><__trans phrase="Thank you for installing Loupe!"></p>
 <mt:if name="loupe_is_enabled">
-    <p><__trans phrase="Ready to use the Loupe. Why don't you use Loupe right now?"></p>
-    <p class="msg-text"><a id="open-dialog-link" href="javascript:void(0);" onclick="return false;"><__trans phrase="Try to use the Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send invitation mail to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></mt:if></p>
+    <p><__trans phrase="Ready to use Loupe. Why don't you try Loupe right now?"></p>
+    <p class="msg-text"><a id="open-dialog-link" href="javascript:void(0);" onclick="return false;"><__trans phrase="Try using Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send invitation email to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure Loupe"></a></mt:if></p>
 <mt:else>
     <mt:if name="is_administrator">
     <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
-    <p class="msg-text"><a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure the Loupe"></a></p>
+    <p class="msg-text"><a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure Loupe"></a></p>
     <mt:else>
-    <p><__trans phrase="Loupe is not able to use now. Please contact to System Administrator."></p>
+    <p><__trans phrase="Loupe cannot be used now. Please contact your Movable Type System Administrator."></p>
     </mt:if>
 </mt:if>
 </div>
@@ -114,7 +114,7 @@
                 jQuery('#email_sent_error p').text( data.error.message );
                 jQuery('#email_sent_error').show();
             } else if( data.result ) {
-                var div = '<div id="sent" class="msg msg-info"><p class="msg-text">' + trans("Sent the invitation mail that contains the access URL of the Loupe to '[_1]'.", data.result.to) + '</p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
+                var div = '<div id="sent" class="msg msg-info"><p class="msg-text">' + trans("Sent the invitation email containing the access URL for Loupe to '[_1]'.", data.result.to) + '</p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
                 jQuery('div#content-header').append(div);
                 jQuery('#invitation-email-dialog').dialog('close');
 

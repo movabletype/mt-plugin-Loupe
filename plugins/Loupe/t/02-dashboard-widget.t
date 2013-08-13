@@ -85,9 +85,9 @@ subtest 'Plugin setting is configured' => sub {
         my $links
             = quotemeta '<a href="'
             . $app->uri
-            . '?__mode=list&_type=author&blog_id=0">Send invitation mail to users.</a> | <a href="'
+            . '?__mode=list&_type=author&blog_id=0">Send invitation email to users.</a> | <a href="'
             . $app->uri
-            . '?__mode=cfg_plugins&blog_id=0">Configure the Loupe</a>';
+            . '?__mode=cfg_plugins&blog_id=0">Configure Loupe</a>';
         ok( $out =~ m/$links/, 'Widget has links' );
     };
 
@@ -106,9 +106,9 @@ subtest 'Plugin setting is configured' => sub {
         my $links
             = quotemeta '<a href="'
             . $app->uri
-            . '?__mode=list&_type=author&blog_id=0">Send invitation mail to users.</a> | <a href="'
+            . '?__mode=list&_type=author&blog_id=0">Send invitation email to users.</a> | <a href="'
             . $app->uri
-            . '?__mode=cfg_plugins&blog_id=0">Configure the Loupe</a>';
+            . '?__mode=cfg_plugins&blog_id=0">Configure Loupe</a>';
         ok( $out !~ m/$links/, 'Widget does not have links' );
     };
 

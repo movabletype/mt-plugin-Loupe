@@ -20,7 +20,7 @@ sub send_welcome_mail_to_yourself {
     my $commenter_blog_id = $app->_is_commenter($user);
     return $app->permission_denied
         unless $user->is_superuser
-        || ( defined($commenter_blog_id) && $commenter_blog_id <= 0 );
+            || ( defined($commenter_blog_id) && $commenter_blog_id <= 0 );
 
     my $to_email_address = $app->param('to_email_address')
         or return $app->json_error(
@@ -62,11 +62,11 @@ sub widgets {
 sub list_actions {
     return {
         send_welcome_mail => {
-            label                   => 'Send Loupe invitation mail',
+            label                   => 'Send Loupe invitation email',
             order                   => 100,
             continue_prompt_handler => sub {
                 MT->translate(
-                    'Are you sure you want to send invitation mail to selected users?'
+                    'Are you sure you want to send an invitation email to selected users?'
                 );
             },
             condition => sub {
