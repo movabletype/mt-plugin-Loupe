@@ -127,6 +127,8 @@ define(['moment'], function (moment) {
     var language = window.Mock.userLang || 'ja';
     if (language === 'null') {
       language = null;
+    } else if (language === 'undefined') {
+      language = 'ja';
     }
 
     if (window.Mock.failAuth || window.Mock.failAuthSPDY) {

@@ -6,7 +6,7 @@ define(['backbone.marionette', 'hbs!js/views/share/templates/share', 'js/device'
     template: template,
 
     initialize: function (options) {
-      this.share = options ? options.share : {};
+      this.share = options && options.share ? options.share : {};
       this.$el.addClass('share-inner');
 
       this.trans = null;
@@ -23,7 +23,7 @@ define(['backbone.marionette', 'hbs!js/views/share/templates/share', 'js/device'
     },
 
     serializeData: function () {
-      var data = this.share || {};
+      var data = _.clone(this.share || {});
       data.tweetUrl = data.url;
       data.tweetText = $('<div>').html(data.tweetText).text();
       if ((data.tweetUrl + data.tweetText).length > 140) {
