@@ -3,20 +3,17 @@ define(function () {
 
   var Device = function () {
     this.getNavigator();
-    this.detectDevice();
+    this.detectOS();
+    this.detectBrowser();
     this.generateVersionStr();
+    this.generateBrowserVersionStr();
 
     this.touch = 'ontouchstart' in window;
   };
 
   Device.prototype.getNavigator = function () {
-    if (DEBUG) {
-      this.ua = window.Mock.userAgent || navigator.userAgent;
-      this.appName = window.Mock.appName || navigator.appName;
-    } else {
-      this.ua = navigator.userAgent;
-      this.appName = navigator.appName;
-    }
+    this.ua = navigator.userAgent;
+    this.appName = navigator.appName;
     this.product = navigator.product;
   };
 
@@ -26,39 +23,34 @@ define(function () {
     return version;
   };
 
-  Device.prototype.detectDevice = function () {
+  Device.prototype.detectOS = function () {
     if (/Android/.test(this.ua)) {
       this.isAndroid = true;
       this.platform = 'android';
-      this.version = this.parseVersion(/Android\s*([\.0-9]+)/);
+      this.expression = /Android\s*([\.0-9]+)/;
     } else if (/iPhone|iPad|iPod/.test(this.ua)) {
       this.isIOS = true;
       this.platform = 'ios';
-      this.version = this.parseVersion(/(?:iPhone|iPad|iPod).*OS\s([_0-9]+)/);
-    } else if (this.appName === 'Microsoft Internet Explorer') {
-      if (/Windows Phone/.test(this.ua)) {
-        this.isWindowsPhone = true;
-        this.platform = 'windows-phone';
-        this.version = this.parseVersion(/Windows Phone\s*(?:OS\s)?([\.0-9]+)/);
-      }
+      this.expression = /(?:iPhone|iPad|iPod).*OS\s([_0-9]+)/;
+    } else if (/Windows Phone/.test(this.ua)) {
+      this.isWindowsPhone = true;
+      this.platform = 'windows-phone';
+      this.expression = /Windows Phone\s*(?:OS\s)?([\.0-9]+)/;
+    }
+    this.version = this.parseVersion(this.expression);
+  };
+
+  Device.prototype.detectBrowser = function () {
+    if (/Trident/.test(this.ua)) {
       this.isIE = true;
       this.browser = 'ie';
-      this.browserVersion = this.parseVersion(/(?:MSIE|IE)\s*([\.0-9]+)/);
-      this.isIE8 = parseInt(this.browserVersion, 10) === 8;
-    } else if (/Trident/.test(this.ua)) {
-      if (/Windows Phone/.test(this.ua)) {
-        this.isWindowsPhone = true;
-        this.platform = 'windows-phone';
-        this.version = this.parseVersion(/Windows Phone\s*(?:OS\s)?([\.0-9]+)/);
-      }
-      this.isIE = true;
-      this.browser = 'ie';
-      this.browserVersion = this.parseVersion(/(?:rv:)\s*([\.0-9]+)/);
+      this.expressionBrowser = /(?:(?:MSIE|IE)|(?:(?:rv:)))\s*([\.0-9]+)/;
     } else if (/Firefox/.test(this.ua)) {
       this.isFirefox = true;
       this.browser = 'firefox';
-      this.browserVersion = this.parseVersion(/(?:Firefox\/)\s*([\.0-9]+)/);
+      this.expressionBrowser = /(?:Firefox\/)\s*([\.0-9]+)/;
     }
+    this.browserVersion = this.parseVersion(this.expressionBrowser);
   };
 
   Device.prototype.generateVersionStr = function () {
@@ -71,13 +63,14 @@ define(function () {
       this.versionStr = '';
       this.versionShortStr = '';
     }
+  };
 
-    if (this.browser) {
-      if (this.browserVersion) {
-        arr = this.browserVersion.toString().split('.');
-        this.browserVersionStr = arr.length === 1 ? arr.concat(['0']).join('-') : arr.join('-');
-        this.browserVersionShortStr = arr[0];
-      }
+  Device.prototype.generateBrowserVersionStr = function () {
+    var arr;
+    if (this.browser && this.browserVersion) {
+      arr = this.browserVersion.toString().split('.');
+      this.browserVersionStr = arr.concat(['0']).slice(0, 2).join('-');
+      this.browserVersionShortStr = arr[0];
     } else {
       this.browserVersionStr = '';
       this.browserVersionShortStr = '';

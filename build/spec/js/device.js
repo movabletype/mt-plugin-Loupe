@@ -187,9 +187,20 @@ describe("device", function () {
     }
   };
 
+  var device = require('js/device');
+  var origFunc = device.getNavigator;
+  var Device = device.constructor;
+  Device.prototype.getNavigator = function () {
+    origFunc.apply(this);
+    this.ua = window.Mock.userAgent;
+    this.appName = window.Mock.appName;
+  };
+
   beforeEach(function () {
-    require.undef('js/device');
-    $('script[src$="app/js/device.js"]').remove();
+    undefRequireModule('js/device');
+    window.define('js/device', [], function () {
+      return new Device();
+    });
     window.Mock.appName = null;
   });
 
@@ -209,17 +220,18 @@ describe("device", function () {
 
       runs(function () {
         var device = require('js/device');
+        console.log(device)
         expect(device.ua).toEqual(dv.ua);
         expect(device.isAndroid).toBe(true);
-        expect(device.isIOS).not.toBeDefined();
-        expect(device.isWindowsPhone).not.toBeDefined();
-        expect(device.isFirefox).not.toBeDefined();
+        expect(device.isIOS).toBeFalsy();
+        expect(device.isWindowsPhone).toBeFalsy();
+        expect(device.isFirefox).toBeFalsy();
         expect(device.platform).toEqual('android');
         expect(device.version).toEqual(dv.version);
         expect(device.versionShortStr).toEqual(dv.versionShortStr);
         expect(device.versionStr).toEqual(dv.versionStr);
-        expect(device.browser).not.toBeDefined();
-        expect(device.browserVersion).not.toBeDefined();
+        expect(device.browser).toBeFalsy();
+        expect(device.browserVersion).toBeNull();
         expect(device.browserVersionShortStr).toEqual('');
         expect(device.browserVersionStr).toEqual('');
       });
@@ -243,16 +255,16 @@ describe("device", function () {
       runs(function () {
         var device = require('js/device');
         expect(device.ua).toEqual(dv.ua);
-        expect(device.isAndroid).not.toBeDefined();
+        expect(device.isAndroid).toBeFalsy();
         expect(device.isIOS).toBe(true);
-        expect(device.isWindowsPhone).not.toBeDefined();
-        expect(device.isFirefox).not.toBeDefined();
+        expect(device.isWindowsPhone).toBeFalsy();
+        expect(device.isFirefox).toBeFalsy();
         expect(device.platform).toEqual('ios');
         expect(device.version).toEqual(dv.version);
         expect(device.versionShortStr).toEqual(dv.versionShortStr);
         expect(device.versionStr).toEqual(dv.versionStr);
-        expect(device.browser).not.toBeDefined();
-        expect(device.browserVersion).not.toBeDefined();
+        expect(device.browser).toBeFalsy();
+        expect(device.browserVersion).toBeNull();
         expect(device.browserVersionShortStr).toEqual('');
         expect(device.browserVersionStr).toEqual('');
       });
@@ -276,16 +288,16 @@ describe("device", function () {
       runs(function () {
         var device = require('js/device');
         expect(device.ua).toEqual(dv.ua);
-        expect(device.isAndroid).not.toBeDefined();
+        expect(device.isAndroid).toBeFalsy();
         expect(device.isIOS).toBe(true);
-        expect(device.isWindowsPhone).not.toBeDefined();
-        expect(device.isFirefox).not.toBeDefined();
+        expect(device.isWindowsPhone).toBeFalsy();
+        expect(device.isFirefox).toBeFalsy();
         expect(device.platform).toEqual('ios');
         expect(device.version).toEqual(dv.version);
         expect(device.versionShortStr).toEqual(dv.versionShortStr);
         expect(device.versionStr).toEqual(dv.versionStr);
-        expect(device.browser).not.toBeDefined();
-        expect(device.browserVersion).not.toBeDefined();
+        expect(device.browser).toBeFalsy();
+        expect(device.browserVersion).toBeNull();
         expect(device.browserVersionShortStr).toEqual('');
         expect(device.browserVersionStr).toEqual('');
       });
@@ -309,16 +321,16 @@ describe("device", function () {
       runs(function () {
         var device = require('js/device');
         expect(device.ua).toEqual(dv.ua);
-        expect(device.isAndroid).not.toBeDefined();
+        expect(device.isAndroid).toBeFalsy();
         expect(device.isIOS).toBe(true);
-        expect(device.isWindowsPhone).not.toBeDefined();
-        expect(device.isFirefox).not.toBeDefined();
+        expect(device.isWindowsPhone).toBeFalsy();
+        expect(device.isFirefox).toBeFalsy();
         expect(device.platform).toEqual('ios');
         expect(device.version).toEqual(dv.version);
         expect(device.versionShortStr).toEqual(dv.versionShortStr);
         expect(device.versionStr).toEqual(dv.versionStr);
-        expect(device.browser).not.toBeDefined();
-        expect(device.browserVersion).not.toBeDefined();
+        expect(device.browser).toBeFalsy();
+        expect(device.browserVersion).toBeNull();
         expect(device.browserVersionShortStr).toEqual('');
         expect(device.browserVersionStr).toEqual('');
       });
@@ -342,10 +354,10 @@ describe("device", function () {
       runs(function () {
         var device = require('js/device');
         expect(device.ua).toEqual(dv.ua);
-        expect(device.isAndroid).not.toBeDefined();
-        expect(device.isIOS).not.toBeDefined();
+        expect(device.isAndroid).toBeFalsy();
+        expect(device.isIOS).toBeFalsy();
         expect(device.isWindowsPhone).toBe(true);
-        expect(device.isFirefox).not.toBeDefined();
+        expect(device.isFirefox).toBeFalsy();
         expect(device.platform).toEqual('windows-phone');
         expect(device.version).toEqual(dv.version);
         expect(device.versionShortStr).toEqual(dv.versionShortStr);
@@ -379,12 +391,12 @@ describe("device", function () {
       runs(function () {
         var device = require('js/device');
         expect(device.ua).toEqual(dv.ua);
-        expect(device.isAndroid).not.toBeDefined();
-        expect(device.isIOS).not.toBeDefined();
-        expect(device.isWindowsPhone).not.toBeDefined();
-        expect(device.isFirefox).not.toBeDefined();
-        expect(device.platform).not.toBeDefined();
-        expect(device.version).not.toBeDefined();
+        expect(device.isAndroid).toBeFalsy();
+        expect(device.isIOS).toBeFalsy();
+        expect(device.isWindowsPhone).toBeFalsy();
+        expect(device.isFirefox).toBeFalsy();
+        expect(device.platform).toBeFalsy();
+        expect(device.version).toBeFalsy();
         expect(device.versionShortStr).toEqual('');
         expect(device.versionStr).toEqual('');
         expect(device.browser).toEqual('ie');
@@ -411,12 +423,12 @@ describe("device", function () {
       runs(function () {
         var device = require('js/device');
         expect(device.ua).toEqual(dv.ua);
-        expect(device.isAndroid).not.toBeDefined();
-        expect(device.isIOS).not.toBeDefined();
-        expect(device.isWindowsPhone).not.toBeDefined();
+        expect(device.isAndroid).toBeFalsy();
+        expect(device.isIOS).toBeFalsy();
+        expect(device.isWindowsPhone).toBeFalsy();
         expect(device.isFirefox).toBe(true);
-        expect(device.platform).not.toBeDefined();
-        expect(device.version).not.toBeDefined();
+        expect(device.platform).toBeFalsy();
+        expect(device.version).toBeFalsy();
         expect(device.versionShortStr).toEqual('');
         expect(device.versionStr).toEqual('');
         expect(device.browser).toEqual('firefox');
