@@ -99,4 +99,37 @@
         commands.execute('router:navigate', '');
       });
     });
+
+    it("reserved route", function () {
+      var spy = jasmine.createSpy('spy');
+      spyOn(controller, 'logout');
+
+      define('cards/logout/view', function () {
+        return function () {
+          return spy;
+        }
+      });
+
+      cards = [{
+        "name": "logout",
+        "id": "logout",
+        "routes": [{
+          "id": "view",
+          "view": "view"
+        }]
+      }];
+
+      router = new AppRouter({
+        controller: controller
+      }, cards);
+
+      runs(function () {
+        commands.execute('router:navigate', 'logout');
+      });
+
+      runs(function () {
+        expect(controller.logout).toHaveBeenCalled();
+        expect(spy).not.toHaveBeenCalled();
+      });
+    });
   });

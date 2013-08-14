@@ -13,7 +13,7 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
     app.addInitializer(function (options) {
       cache.set('app', 'initial', true);
       this.initial = true;
-      this.cards = options.cards;
+      this.cards = options && options.cards ? options.cards : [];
       this.device = device;
       var $body = $(document.body);
       if (this.device.platform) {
