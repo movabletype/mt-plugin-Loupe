@@ -82,6 +82,18 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
       text-shadow: 1px 1px 0 $white;
     }
   }
+  .message{
+    background: #dcdcdc;
+    background: rgba(127,127,127,0.20);
+    border: 1px solid #979797;
+    box-shadow: 0px 1px 0px 0px #fff, inset 0px 1px 2px 0px rgba(0,0,0,0.20);
+    padding: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #666;
+    @include border-radius($radius);
+  }
   .button {
     position: relative;
     cursor: pointer;
