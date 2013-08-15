@@ -462,7 +462,7 @@ define(['moment'], function (moment) {
     }, arguments);
   };
 
-  Mock.prototype.listEntries = function () {
+  Mock.prototype.listEntries = function (blogId, options) {
     var items, len;
     if (window.Mock.throwListEntryItems) {
       len = window.Mock.throwListEntryItemsLength
@@ -568,6 +568,11 @@ define(['moment'], function (moment) {
         "createdDate": "2013-06-11T17:52:23\u002b09:00",
         "more": ""
       }];
+    }
+
+    if (options) {
+      var limit = options.limit ? options.limit : 25;
+      items = items.slice(0, limit);
     }
 
     this.base('listEntries', {

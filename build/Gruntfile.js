@@ -88,7 +88,7 @@ module.exports = function (grunt) {
 
   var specs = [];
   var helpers = ['app/lib/jquery/jquery-1.10.1.js', 'test/template.js', 'test/jasmine.helper.js'];
-  grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/*.js')), function (src) {
+  grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/**/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
     } else {

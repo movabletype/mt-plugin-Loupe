@@ -36,7 +36,7 @@ describe("js", function () {
               cardLayoutOrig.prototype.initialize.apply(this, arguments);
               cardLayoutSpy(options);
             }
-          })
+          });
         });
 
         var menuLayoutOrig = require('js/views/menu/layout');
@@ -47,7 +47,7 @@ describe("js", function () {
               menuLayoutOrig.prototype.initialize.apply(this, arguments);
               menuLayoutSpy(options);
             }
-          })
+          });
         });
 
         var loginViewOrig = require('js/views/login/login');
@@ -71,7 +71,7 @@ describe("js", function () {
             }
           });
         });
-      })
+      });
 
       runs(function () {
         reRequireModule(['js/app', 'js/router/controller']);
@@ -280,13 +280,12 @@ describe("js", function () {
     describe("handlers", function () {
       var spy;
       var app;
-      var commands;
 
       beforeEach(function () {
         reRequireDevice();
 
         runs(function () {
-          spy = jasmine.createSpy('spy')
+          spy = jasmine.createSpy('spy');
           app = require('js/app');
           spyOn(app.menu, 'show');
           app.addInitializer(spy);
@@ -336,11 +335,11 @@ describe("js", function () {
           $('body').attr('class', '');
           $('#app-building').attr('style', '');
           reRequireDevice();
-        })
+        });
 
         var spy;
         runs(function () {
-          spy = jasmine.createSpy('spy')
+          spy = jasmine.createSpy('spy');
           app = require('js/app');
           app.addInitializer(spy);
           app.start();
@@ -376,7 +375,7 @@ describe("js", function () {
           var commands = require('js/commands');
           count = commandSpies['move:login'].callCount;
           commands.execute('move:login', initData);
-        })
+        });
 
         waitsFor(function () {
           return commandSpies['move:login'].callCount > count;
@@ -396,7 +395,7 @@ describe("js", function () {
           var commands = require('js/commands');
           count = commandSpies['app:error'].callCount;
           commands.execute('app:error', initData);
-        })
+        });
 
         waitsFor(function () {
           return commandSpies['app:error'].callCount > count;
@@ -409,5 +408,10 @@ describe("js", function () {
         });
       });
     });
+  });
+
+  afterEach(function () {
+    resetMock();
+    reRequireModule(['js/commands', 'js/app']);
   });
 });
