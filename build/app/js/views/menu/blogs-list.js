@@ -182,7 +182,8 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
       },
 
       getRecentBlogHistory: function () {
-        return JSON.parse(localStorage.getItem('recentBlogHistory')) || [];
+        var str = localStorage.getItem('recentBlogHistory') || '[]';
+        return JSON.parse(str);
       },
 
       setRecentBlogHistory: function (blog) {
