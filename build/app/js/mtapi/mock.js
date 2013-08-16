@@ -572,7 +572,8 @@ define(['moment'], function (moment) {
 
     if (options) {
       var limit = options.limit ? options.limit : 25;
-      items = items.slice(0, limit);
+      var offset = options.offset ? options.offset : 0;
+      items = items.slice(offset, offset + limit);
     }
 
     this.base('listEntries', {

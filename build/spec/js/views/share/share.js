@@ -16,7 +16,6 @@ describe("views", function () {
     runs(function () {
       initController(Controller, controller, function (data) {
         initData = data;
-        console.log(initData)
         Share = require('js/views/share/share');
       });
     });
@@ -107,6 +106,10 @@ describe("views", function () {
   });
 
   afterEach(function () {
+    resetMock();
+    var cache = require('js/cache');
+    cache.clear('user', 'user');
+    cache.clear(initData.blogId);
     reRequireModule(['js/commands', 'js/router/controller']);
   });
 });

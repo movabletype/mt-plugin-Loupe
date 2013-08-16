@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'js/commands', 'js/views/card/itemview'],
-
-function (Marionette, commands, CardItemView) {
+define(['backbone.marionette', 'js/commands', 'js/views/card/itemview'], function (Marionette, commands, CardItemView) {
   "use strict";
 
   var cardCompositeViewProto = _.extend({}, CardItemView.cardItemViewProto, {
@@ -42,6 +40,7 @@ function (Marionette, commands, CardItemView) {
           this.loading = false;
           this.loadingReadmore = false;
           this.fetchError = false;
+          this.fetchErrorOption = null;
           if (options.successCallback) {
             options.successCallback();
           }
@@ -51,6 +50,7 @@ function (Marionette, commands, CardItemView) {
           this.loading = false;
           this.loadingReadmore = false;
           this.fetchError = true;
+          this.fetchErrorOption = options;
           if (options.errorCallback) {
             options.errorCallback();
           }
