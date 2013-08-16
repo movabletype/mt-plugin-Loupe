@@ -52,33 +52,6 @@
       display: block;
     }
   }
-  .error .message {
-    height: auto;
-    padding: 0 1em;
-    padding: 0 1rem;
-    .message-inner {
-      color: $white;
-      font-size: 1em;
-      font-size: 1rem;
-      line-height: 1.5;
-      padding: 1em;
-      padding: 1rem;
-      margin: 1em 1em 0;
-      margin: 1rem 1rem 1.5rem;
-      min-height: 2.469rem;
-      background-color: $btn-disabled-color;
-      @include border-radius($radius);
-      p {
-        padding-top: 10px;
-        margin: 0;
-        text-align: left;
-      }
-      .error-heading {
-        padding-top: 0;
-        text-align: center;
-      }
-    }
-  }
 }
 
 .ie8 {
