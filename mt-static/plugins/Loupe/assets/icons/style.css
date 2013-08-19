@@ -91,5 +91,3 @@ you can use the generic selector below, but it's slower:
 .icon-upload-fail:before {
 	content: "\21";
 }
-;
-}
