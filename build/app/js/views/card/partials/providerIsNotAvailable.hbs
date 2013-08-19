@@ -1,7 +1,9 @@
 {{#if providerIsNotAvailable}}
-<div class="error provider-is-not-available-container">
-  <span class="no-item provider-is-not-available">
-    <span class="no-item-inner">{{#trans trans}}Analytics service is not enabled{{/trans}}</span>
-  </span>
+<div class="no-item error overlay">
+  <div class="error-inner overlay-inner">
+    <span class="overlay-content">
+      <span class="overlay-content-inner">{{#trans trans}}Analytics service is not enabled{{/trans}}</span>
+    </span>
+  </div>
 </div>
 {{/if}}

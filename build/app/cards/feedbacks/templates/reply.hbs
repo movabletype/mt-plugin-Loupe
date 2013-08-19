@@ -4,38 +4,48 @@
   {{#if initial}}
   <div id="reply-container">
     <div class="reply-button-container">
-      <div id="reply-button" class="button">{{#trans trans}}Reply{{/trans}}</div>
+      <div class="button-container">
+        <div id="reply-button" class="button">{{#trans trans}}Reply{{/trans}}</div>
+      </div>
     </div>
   </div>
   {{else}}
   {{#if replied}}
   <div id="reply-container">
     <div class="reply-button-container">
-      <div id="reply-button" class="button">{{#trans trans}}Another Comment{{/trans}}</div>
+      <div class="button-container">
+        <div id="reply-button" class="button">{{#trans trans}}Another Comment{{/trans}}</div>
+      </div>
     </div>
   </div>
   <div id="reply-textarea-container">
-    <div id="reply-complete" class="ok contents-top-button button">
-      <span class="button-icon icon-check"></span>
-      <span id="accepted" class="button-label">{{#trans trans}}Posted comment successfully{{/trans}}</span>
+    <div id="reply-complete" class="message">
+      <div class="message-inner">
+        <span class="button-icon icon-check"></span>
+        <span id="accepted">{{#trans trans}}Posted comment successfully{{/trans}}</span>
+      </div>
     </div>
     <div>{{body}}</div>
   </div>
   {{/if}}
   {{#if form}}
   <div id="reply-container">
-    <div class="reply-button-container">
-      <div id="reply-disabled-button" class="button button-disabled">{{#trans trans}}Reply{{/trans}}</div>
+    <div class="reply-button-container button-container button-container-disabled">
+      <div id="reply-disabled-button" class="button">{{#trans trans}}Reply{{/trans}}</div>
     </div>
   </div>
   <div id="reply-textarea-container">
     {{#if error}}
     <div class="error">
-      <span class="message"><span class="message-inner">{{#trans trans}}{{error}}{{/trans}}</span></span>
+      <span class="message">
+        <span class="message-inner">{{#trans trans}}{{error}}{{/trans}}</span>
+      </span>
     </div>
     {{/if}}
     <textarea id="reply-textarea">{{body}}</textarea>
-    <div id="do-reply-button" class="button">{{#trans trans}}Post The Reply{{/trans}}</div>
+    <div class="button-container">
+      <div id="do-reply-button" class="button">{{#trans trans}}Post The Reply{{/trans}}</div>
+    </div>
   </div>
   {{/if}}
   {{/if}}

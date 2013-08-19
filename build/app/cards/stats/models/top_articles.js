@@ -1,6 +1,4 @@
-define(['backbone', 'js/mtapi', 'moment'],
-
-function (Backbone, mtapi, moment) {
+define(['backbone', 'js/mtapi', 'moment'], function (Backbone, mtapi, moment) {
   return Backbone.Model.extend({
     isSynced: false,
     sync: function (method, model, options) {

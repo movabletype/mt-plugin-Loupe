@@ -2,17 +2,30 @@
     {{>js_views_card_partials_loading}}
     {{>js_views_card_partials_fetchError}}
     {{#if acceptionFailed}}
-      <div class="acception-failed error"><span class="message"><span class="message-inner">{{error.message}}</span></span><div class="close-me button">{{#trans trans}}Close{{/trans}}</div></div>
+      <div class="approve-failed error overlay with-button">
+        <div class="overlay-inner">
+          <span class="message overlay-content">
+            <span class="message-inner overlay-content-inner">{{error.message}}</span>
+          </span>
+          <div class="button-container">
+            <div class="close-me button">{{#trans trans}}Close{{/trans}}</div>
+          </div>
+        </div>
+      </div>
     {{/if}}
     {{#if status}}
       {{#ifIs status eq="Pending"}}
         {{#if commentApprovePerm}}
-        <div id="accept-button" class="contents-top-button button">{{#trans trans}}Approve{{/trans}}</div>
+        <div id="approve" class="button-container button-container-caution button-container-top">
+          <div class="button">
+            <div class="button-inner">{{#trans trans}}Approve{{/trans}}</div>
+          </div>
+        </div>
         {{/if}}
         {{>cards_feedbacks_templates_content}}
       {{else}}
         {{#ifIs status eq="Approved"}}
-        <div id="approved-button" class="ok contents-top-button button button-with-undo">
+        <div class="button-container button-container-undo button-container-top">
           <span class="button-icon icon-check"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}
@@ -21,7 +34,8 @@
               {{#trans trans}}Approved{{/trans}}
             {{/if}}
           {{#if commentApprovePerm}}
-          <span id="comment-undo" class="button-undo"><span class="button-undo-inner icon-undo-arrow"></span></span>
+          <span id="comment-undo" class="button-undo">
+            <span class="button-undo-inner icon-undo-arrow"></span>
           </span>
           {{/if}}
         </div>

@@ -60,9 +60,9 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
 
       onRender: function () {
         if (this.loginError) {
-          this.$el.find('.close-me').hammer(this.hammerOpts).on('tap', function () {
-            $(this).parent().remove();
-          });
+          this.$el.find('.close-me').hammer(this.hammerOpts).on('tap', _.bind(function () {
+            this.$el.find('.login-error').remove();
+          }, this));
         }
 
         this.$el.find('.login-input').on('keypress', _.bind(function (e) {

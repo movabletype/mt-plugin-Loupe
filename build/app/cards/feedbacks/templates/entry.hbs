@@ -1,19 +1,23 @@
 <header>
 <h1>{{#trans trans}}The Post Commented{{/trans}}</h1>
 </header>
-  <div class="content">
-    {{>js_views_card_partials_fetchError}}
-    {{>js_views_card_partials_loading}}
-    {{#if id}}
-    {{#ifIs status eq="Publish"}}
-      <div class="title">{{title}}</div>
-      <p><span class="date">{{formatDate date lang}}</span><br>
-      <span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
-      <div class="body">{{sanitize body}}</div>
-    {{else}}
-    <div class="error">
-      <span class="message"><span class="message-inner">{{#trans trans}}The post is not published{{/trans}}</span></span>
+<div class="content">
+  {{>js_views_card_partials_fetchError}}
+  {{>js_views_card_partials_loading}}
+  {{#if id}}
+  {{#ifIs status eq="Publish"}}
+    <div class="title">{{title}}</div>
+    <p><span class="date">{{formatDate date lang}}</span><br>
+    <span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
+    <div class="body">{{sanitize body}}</div>
+  {{else}}
+  <div class="error overlay">
+    <div class="overlay-inner">
+      <span class="message overlay-content">
+        <span class="message-inner overlay-content-inner">{{#trans trans}}The post is not published{{/trans}}</span>
+      </span>
     </div>
-    {{/ifIs}}
-    {{/if}}
   </div>
+  {{/ifIs}}
+  {{/if}}
+</div>

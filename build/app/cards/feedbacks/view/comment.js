@@ -10,7 +10,7 @@ define(['js/views/card/itemview',
       template: template,
 
       ui: {
-        button: '#accept-button',
+        button: '#approve',
         undo: '#comment-undo'
       },
 
@@ -72,9 +72,9 @@ define(['js/views/card/itemview',
 
       onRender: function () {
         if (this.acceptionFailed) {
-          this.$el.find('.acception-failed .close-me').hammer().on('tap', function () {
-            $(this).parent().remove();
-          });
+          this.$el.find('.close-me').hammer().on('tap', _.bind(function () {
+            this.$el.find('.overlay').remove();
+          }, this));
         }
 
         this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
@@ -84,7 +84,7 @@ define(['js/views/card/itemview',
         }, this));
 
         this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
-          this.addTapClass($('#approved-button'), _.bind(function () {
+          this.addTapClass(this.$el.find('.button-container-undo'), _.bind(function () {
             this.update('Pending');
           }, this));
         }, this));

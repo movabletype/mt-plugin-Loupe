@@ -125,6 +125,7 @@ define(['backbone.marionette', 'js/cache', 'js/commands', 'js/device', 'js/trans
         data.lang = lang;
       }
       data.name = this.card.name;
+      data.id = this.card.id;
       data.fetchError = this.fetchError;
       data.loading = this.loading;
       data.loadingReadmore = this.loadingReadmore;

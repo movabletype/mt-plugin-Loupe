@@ -1,6 +1,7 @@
 <section id="stats-post" class="card">
   <div class="content">
   {{>js_views_card_partials_loading}}
+  {{>js_views_card_partials_fetchError}}
   {{#if id}}
     {{#ifIs status eq="Publish"}}
     <div class="pageviews">
@@ -12,12 +13,6 @@
     <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
     <div class="body">{{sanitize body}}</div>
     {{/ifIs}}
-  {{else}}
-    {{#if error}}
-      <div class="error-message">
-        {{#trans trans}}Failed fetching the post data{{/trans}}
-      </div>
-    {{/if}}
   {{/if}}
   </div>
 </section>

@@ -54,20 +54,20 @@ define(['js/views/card/itemview',
                     path: path,
                     success: _.bind(function (resp) {
                       this.loading = false;
-                      this.error = false;
+                      this.fetchError = false;
                       this.pageviews = resp.toJSON().items[0] ? resp.toJSON().items[0].pageviews : 0;
                       this.render();
                     }, this),
                     error: _.bind(function () {
                       this.loading = false;
-                      this.error = true;
+                      this.fetchError = true;
                       this.render();
                     }, this)
                   });
                 }
               }, this),
               error: _.bind(function () {
-                this.error = true;
+                this.fetchError = true;
                 this.loading = false;
                 this.render();
               }, this)
@@ -84,6 +84,10 @@ define(['js/views/card/itemview',
             }
           });
         }, this))
+      },
+
+      onRender: function () {
+        this.handleRefetch();
       },
 
       serializeData: function () {

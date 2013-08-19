@@ -7,7 +7,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
       template: template,
 
       ui: {
-        button: '#accept-button',
+        button: '#accept',
         undo: '#accept-undo'
       },
 
@@ -86,7 +86,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
             if (DEBUG) {
               console.log('failed update');
             }
-            this.error = resp.error && resp.error.message ? resp.error.message : 'Acception failed';
+            this.error = (resp.error && resp.error.message) ? resp.error.message : 'Acception failed';
             this.loading = false;
             this.acceptionFailed = true;
             this.render();
@@ -98,9 +98,9 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
       onRender: function () {
         if (this.perm) {
           if (this.acceptionFailed) {
-            this.$el.find('.acception-failed .close-me').hammer(this.hammerOpts).on('tap', function () {
-              $(this).parent().remove();
-            });
+            this.$el.find('.close-me').hammer(this.hammerOpts).on('tap', _.bind(function () {
+              this.$el.find('.overlay').remove();
+            }, this));
           }
 
           this.ui.button.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
@@ -110,7 +110,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
           }, this));
 
           this.ui.undo.hammer(this.hammerOpts).on('tap', _.bind(function () {
-            this.addTapClass($('#published-button'), _.bind(function () {
+            this.addTapClass(this.$el.find('.button-container-undo'), _.bind(function () {
               this.update('Review');
             }, this));
           }, this));
@@ -133,6 +133,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
         } else {
           data.trans = this.trans;
         }
+        data.error = this.error;
         return data;
       }
     });

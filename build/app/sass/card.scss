@@ -66,99 +66,53 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
     position: relative;
     @include border-bottom-radius(8px);
     .no-item {
-      display: table;
-      height: 300px;
-      width: 100%;
-      position: absolute;
       background-color: $card-background-color;
       background-color: rgba($card-background-color, 0.8);
-      z-index: 10;
-    }
-    .no-item-inner {
-      display: table-cell;
-      vertical-align: middle;
-      padding: 20px;
-      text-align: center;
-      text-shadow: 1px 1px 0 $white;
+      .overlay-content-inner {
+        text-shadow: 1px 1px 0 $white;
+      }
     }
   }
-  .message {
-    background: #dcdcdc;
-    background: rgba(127, 127, 127, 0.2);
-    border: 1px solid #979797;
-    box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
-    margin: 0 1em;
-    margin: 0 1rem;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #666;
-    display: block;
-    @include border-radius($radius);
-  }
-  .fetch-error {
-    background-color: #f0f0f0;
-    background-color: rgba(240, 240, 240, 0.95);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 13;
-    .fetch-error-message {
-      width: 100%;
-      height: 200px;
-      text-align: center;
-      padding: 20px;
-      display: table;
-    }
-    .fetch-error-message-inner {
-      display: table-cell;
-      vertical-align: middle;
-      word-break: break-all;
-    }
-  }
-  .button {
+  .button-container {
     position: relative;
+    color: #fff;
+    background-color: $btn-basic-color;
     cursor: pointer;
     text-align: center;
     font-size: 1em;
     font-size: 1rem;
     line-height: 1.5;
-    color: #fff;
-    padding: 1em;
-    padding: 1rem;
-    margin: 1em 1em 1.5em;
-    margin: 1rem 1rem 1.5rem;
-    min-height: 2.469rem;
-    background-color: $btn-basic-color;
+    margin: 1em 0 1.5em;
+    margin: 1rem 0 1.5rem;
     @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius($radius);
     @include transition-duration(0.05s);
     @include transition-timing-function(ease-in);
-    &:hover {}
+    .button {
+      padding: 1em;
+      padding: 1rem;
+      min-height: 2.469rem;
+      display: block;
+    }
     &.tapped, &:active, &:hover:active {
       top: 7px;
       background-color: darken($btn-basic-color, 2%);
       @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
   }
-  .button-disabled {
+  .button-container-disabled {
     color: #666;
     background-color: $btn-disabled-color;
     cursor: auto;
     @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
     @include border-radius($radius);
-    &:hover {}
     &.tapped, &:active, &:hover:active {
       top: 0;
       background-color: $btn-disabled-color;
       @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
     }
   }
-  .contents-top-button {
-    margin: 0 0 1.5rem;
+  .button-container-caution {
     background-color: $btn-attention-color;
     @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     @include border-radius(radius);
@@ -168,60 +122,46 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
       @include box-shadow(0px 1px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
   }
-  .ok {
+  .button-container-top{
+    margin: 0 0 1.5em;
+    margin: 0 0 1.5rem;
+  }
+  .button-container-undo {
     cursor: auto;
     text-align: left;
-  }
-  .contents-top-button.ok {
-    background-color: $btn-basic-color;
-    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    @include border-radius($radius);
-    @include transition-duration(0.1s);
-    @include transition-timing-function(ease-in);
-    &:hover {}
-    &.tapped, &:active, &:hover:active {
-      top: 7px;
-      background-color: darken($btn-basic-color, 2%);
-      @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+    padding: 1em;
+    padding: 1rem;
+    min-height: 2.469rem;
+    &:active, &:hover:active {
+      top: 0;
+      background-color: $btn-basic-color;
+      @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
-  }
-  .button-with-undo {
-    cursor: auto;
-    text-align: left;
-    @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    @include border-radius(radius);
-    &.ok {
-      &:active, &:hover:active {
-        top: 0;
-        background-color: $btn-basic-color;
-        @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-      }
+    .button-icon {
+      font-size: 20px;
+      margin-right: 5px;
+      display: inline-block;
+      vertical-align: top;
     }
-  }
-  .button-icon {
-    font-size: 20px;
-    margin-right: 5px;
-    display: inline-block;
-    vertical-align: top;
-  }
-  .button-undo {
-    position: absolute;
-    border-left: 1px solid darken($btn-basic-color, 10%);
-    display: block;
-    top: 0;
-    right: 0;
-    height: 100%;
-  }
-  .button-undo-inner {
-    display: block;
-    font-size: 18px;
-    border-left: 1px solid lighten($btn-basic-color, 20%);
-    width: 100%;
-    height: 100%;
-    padding: 10px 15px;
-    cursor: pointer;
-    line-height: 2.2em;
-    line-height: 2.2rem;
+    .button-undo {
+      position: absolute;
+      border-left: 1px solid darken($btn-basic-color, 10%);
+      display: block;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+    .button-undo-inner {
+      display: block;
+      font-size: 18px;
+      border-left: 1px solid lighten($btn-basic-color, 20%);
+      width: 100%;
+      height: 100%;
+      padding: 10px 15px;
+      cursor: pointer;
+      line-height: 2.2em;
+      line-height: 2.2rem;
+    }
   }
   .card-item-list {
     list-style: none;

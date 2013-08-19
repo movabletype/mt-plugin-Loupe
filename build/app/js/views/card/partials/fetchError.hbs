@@ -1,9 +1,13 @@
 {{#if fetchError}}
-<div class="fetch-error error">
-  <div class="fetch-error-message">
-    <div class="fetch-error-message-inner">{{#trans trans}}Failed Fetching Data{{/trans}}</div>
+<div class="fetch-error overlay error with-button">
+  <div class="overlay-inner">
+    <div class="overlay-content message">
+      <div class="overlay-content-inner message-inner">{{#trans trans}}Failed Fetching Data{{/trans}}</div>
+    </div>
+    <div class="button-container">
+      <div class="refetch button">{{#trans trans}}Re-Fetch Data{{/trans}}</div>
+    </div>
   </div>
-  <div class="refetch button">{{#trans trans}}Re-Fetch Data{{/trans}}</div>
 </div>
 {{/if}}
 

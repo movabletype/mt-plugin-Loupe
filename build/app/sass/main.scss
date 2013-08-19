@@ -167,6 +167,12 @@ textarea, input {
       display: block;
     }
   }
+  .button-container {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 }
 
 .header-button {
@@ -481,28 +487,61 @@ textarea, input {
         padding: 0.5em;
         @include border-radius(4px);
       }
-      .button {
-        margin-left: 0;
-        margin-right: 0;
-      }
       min-height: 0;
       padding: 2em 1em 1em 1em;
       padding: 2rem 1rem 1rem 1rem;
     }
   }
-  .login-error {
-    background-color: rgba(240, 240, 240, 0.95);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 13;
+}
+
+.message {
+  border: 1px solid #979797;
+  box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  margin: 0 1em;
+  margin: 0 1rem;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #666;
+  display: block;
+  @include border-radius($radius);
+  .message-inner {
+    background: #dcdcdc;
+    background: rgba(127, 127, 127, 0.2);
     padding: 1em;
     padding: 1rem;
-    .message {
-      height: 147px;
+    word-break: break-all;
+    display: block;
+  }
+}
+
+.overlay {
+  background-color: rgba($card-background-color, 0.95);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 13;
+  padding: 1em;
+  padding: 1rem;
+  .overlay-inner {
+    height: 100%;
+  }
+  /* often used with .message */
+  .overlay-content {
+    display: table;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    .overlay-content-inner {
+      display: table-cell;
+      vertical-align: middle;
     }
+  }
+  &.with-button .overlay-content {
+    height: 66.666666%;
   }
 }
 

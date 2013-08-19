@@ -1,7 +1,9 @@
 {{#unless fetchError}}
 {{#if showMoreButton}}
-<div id="{{name}}-readmore" class="readmore button {{#if loadingReadmore}}button-loading{{/if}}">
-  {{#trans trans}}Read More{{/trans}}
+<div id="{{id}}-readmore" class="readmore button-container">
+  <div class="button {{#if loadingReadmore}}button-loading{{/if}}">
+    {{#trans trans}}Read More{{/trans}}
+  </div>
 </div>
 {{/if}}
 {{/unless}}

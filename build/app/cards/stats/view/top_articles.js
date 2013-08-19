@@ -109,13 +109,13 @@ define(['js/views/card/composite',
           limit: 10,
           success: _.bind(function () {
             this.loading = false;
-            this.error = false;
+            this.fetchError = false;
             this.itemLoading = true;
             this.render();
           }, this),
           error: _.bind(function () {
             this.loading = false;
-            this.error = true;
+            this.fetchError = true;
             this.render();
           }, this)
         });
