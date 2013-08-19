@@ -2,10 +2,7 @@
 
 # ignore auto copied/generated files
 build/app/index.html
-build/app/css/lib/*.css
-build/app/css/sass/*.css
-build/app/css/cards/*
-build/app/css/style.css
+build/app/css/*
 build/app/template
 build/app/sass/_sass_grunt_vars.scss
 #plugins/Loupe/tmpl/loupe.tmpl
