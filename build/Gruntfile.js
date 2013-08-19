@@ -112,6 +112,12 @@ module.exports = function (grunt) {
     }
   });
 
+  var csses = grunt.file.expand({
+    cwd: 'app'
+  }, 'css/*/**/*.css').concat(grunt.file.expand({
+    cwd: 'app'
+  }, 'cards/css/**/*.css'));
+
 
   // Project configuration.
   grunt.initConfig({
@@ -246,12 +252,22 @@ module.exports = function (grunt) {
       }
     },
     symlink: {
+      options: {
+        overwrite: true
+      },
       prep: {
         target: 'js/template',
         link: 'app/template',
-        options: {
-          overwrite: true
-        }
+      },
+      prep2: {
+        // help for sass file editing (need to consider better solution...)
+        target: '../assets/',
+        link: 'app/css/assets',
+      },
+      prep3: {
+        // help for sass file editing (need to consider better solution...)
+        target: '../../../assets/',
+        link: 'app/css/cards/upload/assets',
       },
       bulkSymlink: {
         target: grunt.option('bulkSymlinkTarget'),
@@ -263,7 +279,7 @@ module.exports = function (grunt) {
       prep: {
         targets: bulkSymlinkLinks,
         dir: 'app/js/template/helpers/'
-      }
+      },
     },
     watch: {
       index: {
@@ -527,7 +543,8 @@ module.exports = function (grunt) {
             mtApiCGIPath: settings.mtApiCGIPath,
             mtApiPath: settings.mtApiPath,
             libPath: '.',
-            manifestFile: null
+            manifestFile: null,
+            csses: csses
           }
         },
         files: {
@@ -789,7 +806,7 @@ module.exports = function (grunt) {
     'clean:build',
     'clean:beforeCompass',
     'sassVars:build',
-    'compass',
+    'compass:dev',
     'requirejs:build',
     'clean:afterBuild',
     'string-replace',
@@ -800,18 +817,21 @@ module.exports = function (grunt) {
     'copy:build',
     'jade:build',
     'copy:beforeConcat',
-    'concat:dev'
+    'concat:dev',
+    'jade:dev'
   ]);
 
   grunt.registerTask('dev', [
     'preprocess:prep',
     'symlink:prep',
     'copy:prep',
-    'jade:dev',
     'sassVars:dev',
     'compass:dev',
     'copy:beforeConcat',
-    'concat:dev'
+    'symlink:prep2',
+    'symlink:prep3',
+    'concat:dev',
+    'jade:dev'
   ]);
 
   grunt.registerTask('test', [

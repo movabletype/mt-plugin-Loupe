@@ -13,7 +13,12 @@ html(manifest=manifestFile)
 
     link(rel='stylesheet', href!='#{libPath}/assets/font/League-Gothic-fontfacekit/stylesheet.css')
     link(rel='stylesheet', href!='#{libPath}/assets/icons/style.css')
-    link(rel='stylesheet', href!='#{libPath}/css/style.css')
+
+    if dev
+      each val in csses
+        link(rel='stylesheet', href!='#{libPath}/#{val}')
+    else
+      link(rel='stylesheet', href!='#{libPath}/css/style.css')
 
     if dev
       script(src!='#{mtApiPath}/mt-data-api.js')
