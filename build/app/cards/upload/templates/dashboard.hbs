@@ -31,11 +31,11 @@
   <div class="upload-file-input-container">
     <input type="file" id="upload-file-input" accept="image/*"/>
   </div>
-  <div id="upload-file" class="button-container">
+  <div id="upload-file" class="button-container with-icon">
     {{#if isLabelNeeded}}
     <label for="upload-file-input">
     {{/if}}
-    <span class="button">
+    <span class="button-icon icon-plus"></span><span class="button">
       {{#if uploadCompleted}}
         {{#trans trans}}More Upload{{/trans}}
       {{else}}

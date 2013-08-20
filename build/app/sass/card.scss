@@ -126,6 +126,14 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
     margin: 0 0 1.5em;
     margin: 0 0 1.5rem;
   }
+  .button-container.with-icon {
+    .button-icon, .button {
+      display: inline-block;
+      vertical-align: middle;
+      padding: 1em 0;
+      padding: 1rem 0;
+    }
+  }
   .button-container-undo {
     cursor: auto;
     text-align: left;

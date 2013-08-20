@@ -24,6 +24,15 @@
     padding: 0.5em 0 0.5em;
     padding: 2.5rem 0 1.5rem;
   }
+  #upload-file {
+    .button-icon, .button {
+      line-height: 24px;
+    }
+    .button-icon {
+      font-size: 24px;
+      margin-left: -24px;
+    }
+  }
   #upload-file-uploading {
     display: none;
     background-image: url("../assets/images/upload-loading.gif");
