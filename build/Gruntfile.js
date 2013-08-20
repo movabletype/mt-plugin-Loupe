@@ -217,7 +217,9 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/cards',
           '../mt-static/plugins/Loupe/assets/icons/index.html',
           '../mt-static/plugins/Loupe/assets/icons/license.txt',
-          '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
+          '../mt-static/plugins/Loupe/assets/icons/Read Me.txt',
+          '../mt-static/plugins/Loupe/assets/icons/MTIcon.json',
+          '../mt-static/plugins/Loupe/assets/icons/svg'
         ]
       },
       afterTest: ['template.js'],
