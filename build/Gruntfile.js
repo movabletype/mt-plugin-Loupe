@@ -117,7 +117,9 @@ module.exports = function (grunt) {
   }, 'css/*/**/*.css').concat(grunt.file.expand({
     cwd: 'app'
   }, 'cards/css/**/*.css'));
-
+  csses = grunt.util._.reject(csses, function (css) {
+    return /assets\//.test(css);
+  });
 
   // Project configuration.
   grunt.initConfig({
@@ -171,7 +173,7 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      beforeCompass: ['app/css/style.css'],
+      beforeCompass: ['app/css/style.css', 'app/css/assets', 'app/css/**/assets'],
       build: {
         options: {
           force: true
@@ -820,7 +822,9 @@ module.exports = function (grunt) {
     'jade:build',
     'copy:beforeConcat',
     'concat:dev',
-    'jade:dev'
+    'jade:dev',
+    'symlink:prep2',
+    'symlink:prep3'
   ]);
 
   grunt.registerTask('dev', [
@@ -828,12 +832,13 @@ module.exports = function (grunt) {
     'symlink:prep',
     'copy:prep',
     'sassVars:dev',
+    'clean:beforeCompass',
     'compass:dev',
     'copy:beforeConcat',
-    'symlink:prep2',
-    'symlink:prep3',
     'concat:dev',
-    'jade:dev'
+    'jade:dev',
+    'symlink:prep2',
+    'symlink:prep3'
   ]);
 
   grunt.registerTask('test', [
