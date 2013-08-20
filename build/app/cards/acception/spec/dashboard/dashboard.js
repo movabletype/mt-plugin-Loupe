@@ -95,7 +95,7 @@ describe("acception", function () {
           "status": "Review",
           "title": "title" + id,
           "body": "body" + id,
-          "permalink": "http://172.17.3.216/foo/bar/" + id + ".html",
+          "permalink": "http://memolog.org/foo/bar/" + id + ".html",
           "date": moment().subtract(len - i).format(),
           "excerpt": "excerpt" + id
         });

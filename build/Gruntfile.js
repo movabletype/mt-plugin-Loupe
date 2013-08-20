@@ -118,7 +118,7 @@ module.exports = function (grunt) {
     cwd: 'app'
   }, 'cards/css/**/*.css'));
   csses = grunt.util._.reject(csses, function (css) {
-    return /assets\//.test(css);
+    return (/assets\//).test(css);
   });
 
   // Project configuration.
@@ -127,7 +127,7 @@ module.exports = function (grunt) {
       options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
-          es5: true,
+          es5: false,
           unused: false,
           evil: true
         },
@@ -261,17 +261,17 @@ module.exports = function (grunt) {
       },
       prep: {
         target: 'js/template',
-        link: 'app/template',
+        link: 'app/template'
       },
       prep2: {
         // help for sass file editing (need to consider better solution...)
         target: '../assets/',
-        link: 'app/css/assets',
+        link: 'app/css/assets'
       },
       prep3: {
         // help for sass file editing (need to consider better solution...)
         target: '../../../assets/',
-        link: 'app/css/cards/upload/assets',
+        link: 'app/css/cards/upload/assets'
       },
       bulkSymlink: {
         target: grunt.option('bulkSymlinkTarget'),
@@ -283,7 +283,7 @@ module.exports = function (grunt) {
       prep: {
         targets: bulkSymlinkLinks,
         dir: 'app/js/template/helpers/'
-      },
+      }
     },
     watch: {
       index: {
