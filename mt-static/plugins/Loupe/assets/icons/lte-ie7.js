@@ -16,14 +16,15 @@ window.onload = function() {
 			'icon-upload' : '&#x23;',
 			'icon-undo-arrow' : '&#x24;',
 			'icon-twitter' : '&#x25;',
-			'icon-share' : '&#x26;',
-			'icon-loading' : '&#x27;',
 			'icon-comment' : '&#x28;',
 			'icon-close' : '&#x29;',
 			'icon-check' : '&#x2a;',
 			'icon-browser' : '&#x2b;',
 			'icon-arrow-left' : '&#x3c;',
-			'icon-upload-fail' : '&#x21;'
+			'icon-upload-fail' : '&#x21;',
+			'icon-share' : '&#x26;',
+			'icon-loading' : '&#x27;',
+			'icon-plus' : '&#x22;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
@@ -42,4 +43,4 @@ window.onload = function() {
 			addIcon(el, icons[c[0]]);
 		}
 	}
-};};
+};
