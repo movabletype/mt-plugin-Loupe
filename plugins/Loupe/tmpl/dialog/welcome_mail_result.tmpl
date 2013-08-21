@@ -1,0 +1,31 @@
+<mt:setvar name="page_title" value="<__trans phrase="Send Loupe welcome email">">
+<mt:include name="dialog/header.tmpl">
+
+<mt:unless name="message_loop">
+  <mtapp:statusmsg
+     id="message-loop"
+     class="info">
+    <__trans phrase="No users were selected to process.">
+  </mtapp:statusmsg>
+<mt:else>
+
+<ul>
+<mt:loop name="message_loop">
+  <li><mt:var name="message"></li>
+</mt:loop>
+</ul>
+</mt:unless>
+
+<div class="actions-bar">
+  <form action="" method="get" onsubmit="return false">
+    <button
+       type="submit"
+       accesskey="x"
+       class="cancel button mt-close-dialog"
+       title="<__trans phrase="Close (x)">">
+      <__trans phrase="Close"></button>
+  </form>
+</div>
+
+<mt:include name="dialog/footer.tmpl">
+

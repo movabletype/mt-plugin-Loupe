@@ -9,4 +9,10 @@
     label="URL">
     <mt:var name="support_directory_url">loupe/<input type="text" id="loupe_file" class="text path" name="file" value="<mt:var name="file">"/>
 </mtapp:setting>
+<mt:if name="enabled">
+    <mtapp:setting
+        id="loupe_invitation_email">
+        <button onclick="jQuery.fn.mtDialog.open('<mt:var name="script_url">?__mode=dialog_invitation_email'); return false;"><__trans phrase="Send invitation email"></button>
+    </mtapp:setting>
+</mt:if>
 

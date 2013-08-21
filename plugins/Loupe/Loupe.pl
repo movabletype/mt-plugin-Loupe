@@ -37,6 +37,14 @@ my $plugin = MT::Plugin::Loupe->new(
         registry   => {
             applications => {
                 cms => {
+                    methods => {
+                        dialog_invitation_email => {
+                            code => '$Loupe::Loupe::App::dialog_invitation_email',
+                        },
+                        send_invitation_email => {
+                            code => '$Loupe::Loupe::App::send_invitation_email',
+                        },
+                    },
                     widgets => '$Loupe::Loupe::App::widgets',
                     list_actions =>
                         { author => '$Loupe::Loupe::App::list_actions' },
