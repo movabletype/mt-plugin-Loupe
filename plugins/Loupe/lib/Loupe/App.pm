@@ -43,7 +43,7 @@ sub widgets {
             label    => 'Welcome to Loupe',
             template => 'widget/welcome_to_loupe.tmpl',
             condition =>
-                sub { MT->app->user->is_superuser || Loupe->is_enabled },
+                sub { MT->app->user->is_superuser && !Loupe->is_enabled },
             handler => sub {
                 my $app = shift;
                 my ( $tmpl, $param ) = @_;

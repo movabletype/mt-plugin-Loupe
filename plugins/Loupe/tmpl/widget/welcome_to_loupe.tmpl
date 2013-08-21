@@ -6,47 +6,10 @@
 </mt:setvarblock>
 <div id="widget-container">
     <p><__trans phrase="Thank you for installing Loupe!"></p>
-<mt:if name="loupe_is_enabled">
-    <p><__trans phrase="Ready to use Loupe. Why don't you try Loupe right now?"></p>
-    <p class="msg-text"><a id="open-dialog-link" href="javascript:void(0);" onclick="return false;"><__trans phrase="Try using Loupe!"></a><mt:if name="is_administrator"> | <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send invitation email to users."></a> | <a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure Loupe"></a></mt:if></p>
-<mt:else>
-    <mt:if name="is_administrator">
     <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
     <p class="msg-text"><a href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Configure Loupe"></a></p>
-    <mt:else>
-    <p><__trans phrase="Loupe cannot be used now. Please contact your Movable Type System Administrator."></p>
-    </mt:if>
-</mt:if>
 </div>
 </mtapp:widget>
-
-<mt:if name="loupe_is_enabled">
-<div id="invitation-email-dialog">
-<mtapp:statusmsg
-    id="email_sent_error"
-    class="error"
-    can_close="0">
-</mtapp:statusmsg>
-    <form id="email_form">
-<mtapp:setting
-    id="to_email_address"
-    label="<__trans phrase="Send Mail To">"
-    label_class="top-label"
-    hint="<__trans phrase="The email address that should receive an invitation email from Movable Type.">"
-    show_hint="1">
-        <input type="text" name="to_email_address" id="to-email-address" class="text full" <mt:if name="user_email">value="<mt:var name="user_email">"</mt:if>/>
-</mtapp:setting>
-        <span class="indicator"><img alt="<__trans phrase="Loading..." escape="js">" src="<mt:var name="static_uri">images/indicator.white.gif" /></span>
-        <div class="dialog actions-bar">
-            <button
-                type="submit"
-                class="action primary button">
-                <__trans phrase="Send">
-            </button>
-        </div>
-    </form>
-</div>
-</mt:if>
 
 <style type="text/css">
 #welcome_to_loupe {
@@ -77,63 +40,3 @@
 }
 </style>
 
-<mt:if name="loupe_is_enabled">
-<script type="text/javascript">
-/* <![CDATA[ */
-    jQuery('#invitation-email-dialog').dialog({
-        bgiframe: true,
-        title: '<__trans phrase="Send Invitation Mail">',
-        autoOpen: false,
-        width: 450,
-        close: function(event) {
-            jQuery('div.mt-dialog-overlay').hide();
-        }
-    });
-    jQuery('#email_form').submit(function() {
-        jQuery('#email_sent_error').hide();
-        jQuery('div#content-header > #sent').remove();
-
-        var postData = {};
-        jQuery('#sys_conf').find('input:visible').each(function(){
-            var $this = jQuery(this);
-            if ( $this.attr('type') == "checkbox" ) {
-                if ( $this.is(':checked') )
-                    postData[$this.attr('name')] = $this.val();
-            } else {
-                postData[$this.attr('name')] = $this.val();
-            }
-        });
-        postData['__mode'] = "send_welcome_mail";
-        postData['magic_token'] = "<mt:var name="magic_token">";
-        postData['to_email_address'] = jQuery('#to-email-address').val();
-
-        jQuery('#email_form div.actions-bar').hide();
-        jQuery('span.indicator').show();
-        jQuery.post('<mt:var name="script_url">', postData, function( data ) {
-            if( data.error ) {
-                jQuery('#email_sent_error p').text( data.error.message );
-                jQuery('#email_sent_error').show();
-            } else if( data.result ) {
-                var div = '<div id="sent" class="msg msg-info"><p class="msg-text">' + trans("Sent the invitation email containing the access URL for Loupe to '[_1]'.", data.result.to) + '</p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
-                jQuery('div#content-header').append(div);
-                jQuery('#invitation-email-dialog').dialog('close');
-
-            }
-            jQuery('span.indicator').hide();
-            jQuery('#email_form div.actions-bar').show();
-        });
-        return false;
-    });
-    jQuery('a#open-dialog-link').click(function() {
-        jQuery('div.mt-dialog-overlay').show();
-
-        jQuery('span.indicator').hide();
-        jQuery('#email_sent').hide();
-        jQuery('#email_sent_error').hide();
-        jQuery('#invitation-email-dialog').dialog('open');
-
-        return false;
-    });
-/* ]]> */
-</script>
-</mt:if>
