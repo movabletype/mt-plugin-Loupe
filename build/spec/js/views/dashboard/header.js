@@ -167,6 +167,15 @@ describe("views", function () {
         expect($blognameArrow.hasClass('rotate')).toBe(false);
       });
     });
+
+    it("no blog", function () {
+      var data = _.clone(initData);
+      data.blog = null;
+      header = new Header(data);
+      header.render();
+      console.log(header.$el.html())
+      expect(header.$el.find('#blogname').text()).toMatch(/Loupe/);
+    })
   });
 
   afterEach(function () {

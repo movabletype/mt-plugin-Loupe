@@ -1,4 +1,4 @@
-describe("blogs", function () {
+describe("collections", function () {
   'use strict';
 
   describe("blogs", function () {

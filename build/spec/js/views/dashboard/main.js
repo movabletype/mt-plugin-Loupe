@@ -205,6 +205,23 @@ describe("views", function () {
       });
     });
 
+    it("show nothing with error", function () {
+      var data = _.clone(initData);
+      data.blog = {
+        error: 'some error occured'
+      };
+      main = new Main(data);
+      spyOn(main, 'render').andCallThrough();
+      main.render();
+
+      waitsFor(function () {
+        return main.render.callCount === 2
+      }, 'render', 3000);
+
+      runs(function () {
+        expect(main.$el.find('.error-in-dashboard').length).toBeTruthy();
+      })
+    })
 
     afterEach(function () {
       main.$el.remove();
