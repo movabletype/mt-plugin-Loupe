@@ -34,10 +34,10 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboa
       var $blognameInner = this.$el.find('#blogname-inner');
       var $loupeCircle = this.$el.find('#blogname-circle');
       var $blognameArrow = this.ui.blognameArrow;
-      if ($blognameInner) {
+      if ($blognameInner.length) {
         var offset = $blognameInner.offset();
         var width = $blognameInner.width();
-        if ($loupeCircle) {
+        if ($loupeCircle && $loupeCircle.offset && offset) {
           $loupeCircle.offset({
             left: offset.left - $loupeCircle.outerWidth(true)
           });
@@ -64,12 +64,8 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboa
 
     serializeData: function () {
       var data = {};
-      if (this.blog) {
-        data.blog = this.blog;
-        if (!this.blog.name) {
-          data.blog.name = 'Loupe';
-        }
-      }
+      data.blog = this.blog || {};
+      data.blog.name = data.blog.name || 'Loupe';
       return data;
     }
   });

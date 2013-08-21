@@ -314,7 +314,8 @@ module.exports = function (grunt) {
             mock: grunt.option('mock') || false,
             failAuth: grunt.option('failAuth') || false,
             failAuthSPDY: grunt.option('failAuthSPDY') || false,
-            userLang: grunt.option('userLang')
+            userLang: grunt.option('userLang'),
+            blogLength: grunt.option('blogLength')
           }
         },
         files: {

@@ -265,6 +265,9 @@ textarea, input {
     .loading {
       background-color: #282828;
       background-color: rgba(40, 40, 40, 0.9);
+      position: static;
+      background-position: center 15px;
+      height: 78px;
       z-index: 100;
     }
     .histories {
@@ -275,9 +278,6 @@ textarea, input {
     }
     .blogs {
       position: relative;
-      .loading {
-        background-position: center 100px;
-      }
     }
     @include loupe-circle;
   }
@@ -349,6 +349,15 @@ textarea, input {
     &:hover {
       color: #ff6633;
     }
+  }
+  .blog-item-nav-icon,
+  .blog-item-nav-label {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .blog-item-nav-icon {
+    font-size: 20px;
+    padding: 2px;
   }
   #menu-header {
     background-color: #625362;

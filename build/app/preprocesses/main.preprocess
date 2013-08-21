@@ -8,6 +8,7 @@ if(window.Mock){
   window.Mock.failAuth = <!-- @echo failAuth -->;
   window.Mock.failAuthSPDY = <!-- @echo failAuthSPDY -->;
   window.Mock.userLang = '<!-- @echo userLang -->';
+  window.Mock.throwBlogListItemsLength = <!-- @echo blogLength -->;
 }
 
 require(['js/boot'<!-- @if mock -->,'js/mtapi/mock'<!-- @endif -->], function () {});

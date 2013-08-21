@@ -202,8 +202,24 @@ define(['moment'], function (moment) {
           message: window.Mock.failBlogListItems
         }
       }
+    } else if (window.Mock.throwBlogListItemsLength || window.Mock.throwBlogListItemsLength === 0) {
+      len = parseInt(window.Mock.throwBlogListItemsLength, 10) || 0;
+      var id;
+      items = [];
+      for (var i = 0; i < len; i++) {
+        id = (i + 1).toString();
+        items.push({
+          "name": "Blog " + id,
+          "url": "http://memolog.org/blog" + id,
+          "id": id,
+          "class": "blog"
+        });
+      }
+      resp = {
+        "totalResults": len || items.length,
+        "items": items
+      }
     } else {
-      len = 5;
       items = [{
         "name": "メモログ",
         "url": "http://memolog.org/",
@@ -216,16 +232,6 @@ define(['moment'], function (moment) {
         "class": "website",
       }];
 
-      var id;
-      for (var i = 2; i < len; i++) {
-        id = (i + 1).toString();
-        items.push({
-          "name": "Blog " + id,
-          "url": "http://memolog.org/blog" + id,
-          "id": id,
-          "class": "blog"
-        });
-      }
       resp = {
         "totalResults": items.length,
         "items": items

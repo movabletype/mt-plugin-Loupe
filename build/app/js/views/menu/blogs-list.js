@@ -8,60 +8,37 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
         var data = {};
 
         if (this.trans) {
-          var blogs = this.collection.toJSON() || [],
-            totalResults = this.collection.totalResults,
-            prev;
 
-          this.histories = this.histories || [];
-          this.offset = parseInt(this.offset, 10) || 0;
-          this.offset = this.offset < 0 ? 0 : this.offset;
-
-          if (this.offset !== 0) {
-            prev = (this.offset - 25 < -1) ? 0 : this.offset - 25;
-          }
-
-          this.next = this.offset === 0 ? this.offset + 25 - this.histories.length : this.offset + 25;
-
-          if (blogs.length > this.offset) {
-            this.blogsLoading = false;
-            this.blogs = blogs.slice(this.offset, this.next);
+          if (this.offset === 0) {
+            this.next = this.offset + 25 - this.histories.length;
+            this.prev = null;
+            data.histories = this.histories;
           } else {
-            if (totalResults !== undefined && totalResults <= this.offset + this.histories.length) {
-              this.blogsLoading = false;
-              this.blogs = [];
-            } else {
-              if (!this.error && this.blogsLoading) {
-                this.blogsLoading = true;
-                this.fetch();
-              }
-            }
+            this.next = this.offset + 25;
+            this.prev = Math.max(0, this.offset - 25);
+            data.histories = [];
           }
 
-          if (!this.blogsLoading && !this.historiesLoading) {
-            this.selectCurrentBlog();
-          }
+          this.blogs = this.collection.toJSON() || [];
+          this.blogs = (this.blogs.length > this.offset) ? this.blogs.slice(this.offset, this.next) : [];
 
-          data = {
-            totalResults: parseInt(this.collection.totalResults, 10),
+          data = _.extend(data, {
+            totalResults: parseInt(this.collection.totalResults, 10) || 0,
             blogs: this.blogs,
             user: this.user,
             trans: this.trans,
             next: this.next,
-            prev: prev,
+            prev: this.prev,
             blogsLoading: this.blogsLoading ? true : false,
             historiesLoading: this.historiesLoading ? true : false,
             error: this.error
-          };
-
-          data.histories = this.offset === 0 ? this.histories : [];
+          });
         }
-
         return data;
       },
 
       selectCurrentBlog: function (target) {
         target = parseInt((target || this.currentBlogId), 10);
-        this.histories = this.getRecentBlogHistory() || [];
 
         var selectBlog = _.bind(function (blog) {
           if (parseInt(blog.id, 10) === target) {
@@ -86,18 +63,29 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
 
         this.currentBlogId = this.selectedBlogId = parseInt(localStorage.getItem('currentBlogId'), 10) || (this.blog && this.blog.id ? this.blog.id : null);
 
-        this.offset = 0;
         this.blogsLoading = true;
+        this.collection = cache.get('user', 'blogs') || null;
 
-        this.collection = cache.get('user', 'blogs') || cache.set('user', 'blogs', new Collection());
-
+        this.histories = this.getRecentBlogHistory() || [];
         this.historiesLoading = true;
+
+        this.offset = 0;
+        this.prev = null;
+        this.next = this.offset + 25 - this.histories.length;
+
         this.refetchBlogHistoryData();
 
-        this.trans = null;
         commands.execute('l10n', _.bind(function (l10n) {
           this.trans = new Trans(l10n);
-          this.render();
+          if (this.collection && this.collection.totalResults > this.offset && this.collection.length >= this.offset) {
+            this.blogsLoading = false;
+            this.selectCurrentBlog(this.currentBlogId);
+            this.render();
+          } else {
+            this.collection = cache.set('user', 'blogs', new Collection());
+            this.blogsLoading = true;
+            this.fetch();
+          }
         }, this));
 
         commands.setHandler('menu:getRecentBlogHistory', this.getRecentBlogHistory);
@@ -112,7 +100,7 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
             if (DEBUG) {
               console.log('[menu:main:fetch:success]');
             }
-            this.selectCurrentBlog();
+            this.selectCurrentBlog(this.currentBlogId);
             this.blogsLoading = false;
             this.render();
           }, this),
@@ -137,13 +125,14 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
             return b.id;
           }).join(',');
         }
+        this.blogsLoading = true;
+        this.render();
         this.collection.fetch(options);
       },
 
       selectBlogHandler: function (bid) {
         var $blogList = this.$el;
         this.selectedBlogId = parseInt(bid, 10);
-        this.selectCurrentBlog(this.selectedBlogId);
         $blogList.find('.selected').removeClass('selected');
         $blogList.find('[data-id=' + this.selectedBlogId + ']').addClass('selected');
         this.saveChangesHandler();
@@ -167,6 +156,7 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
           this.collection.remove(this.blog);
 
           this.offset = 0;
+          this.selectCurrentBlog(this.currentBlogId);
           this.render();
 
           setTimeout(_.bind(function () {
@@ -209,15 +199,12 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
       },
 
       refetchBlogHistoryData: function () {
-        this.histories = this.getRecentBlogHistory() || [];
-
         var params,
           dfd,
           finalize = _.bind(function () {
+            this.selectCurrentBlog(this.currentBlogId);
             this.historiesLoading = false;
-            if (!this.blogsLoading) {
-              this.render();
-            }
+            this.render();
           }, this);
 
         if (this.histories.length) {
@@ -263,6 +250,14 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
         }
       },
 
+      navigationHandler: function () {
+        if (this.collection.length > this.offset) {
+          this.render();
+        } else {
+          this.fetch();
+        }
+      },
+
       onRender: function () {
         this.$el.find('a').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {
@@ -281,13 +276,14 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
 
         this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {
-            this.offset = parseInt($(e.currentTarget).data('offset'), 10) || 0;
-            this.blogsLoading = true;
-            this.render();
+            this.offset = parseInt($(e.currentTarget).data('offset'), 10) || this.offset;
+            this.offset = this.offset < 0 ? 0 : this.offset;
+            this.navigationHandler();
           }, this));
         }, this));
 
         $('#menu-blogs-list').scrollTop(0);
       }
     });
+
   });

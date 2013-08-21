@@ -5,6 +5,7 @@ describe("views", function () {
   var Controller, controller, initData;
   var commandSpies, stub;
   var cache = require('js/cache');
+  var fetchingSpy, renderSpy, selectCurrentBlogSpy;
 
   beforeEach(function () {
     resetMock();
@@ -23,8 +24,41 @@ describe("views", function () {
 
     commandSpies = jasmine.createSpyObj('commandSpies', ['dashboard:toggle', 'move:dashboard', 'router:navigate']);
     initCommands(commandSpies, controller);
+
     runs(function () {
-      reRequireModule(['js/router/controller', 'js/views/menu/blogs-list']);
+      reRequireModule(['js/views/menu/blogs-list', 'js/collections/blogs']);
+    });
+
+    runs(function () {
+      fetchingSpy = jasmine.createSpy('fetchingSpy');
+      renderSpy = jasmine.createSpy('renderSpy');
+      selectCurrentBlogSpy = jasmine.createSpy('selectCurrentBlogSpy');
+
+      var orig = require('js/views/menu/blogs-list');
+      undefRequireModule('js/views/menu/blogs-list');
+      define('js/views/menu/blogs-list', [], function () {
+        return orig.extend({
+          initialize: function () {
+            orig.prototype.initialize.apply(this, arguments);
+          },
+          fetch: function (options) {
+            orig.prototype.fetch.apply(this, arguments);
+            fetchingSpy(options);
+          },
+          render: function () {
+            orig.prototype.render.apply(this, arguments);
+            renderSpy();
+          },
+          selectCurrentBlog: function (target) {
+            orig.prototype.selectCurrentBlog.apply(this, arguments);
+            selectCurrentBlogSpy(target);
+          }
+        });
+      });
+      requireModuleAndWait(['js/views/menu/blogs-list']);
+      runs(function () {
+        reRequireModule(['js/router/controller']);
+      })
     });
 
     runs(function () {
@@ -65,7 +99,7 @@ describe("views", function () {
       blogList = new BlogList(initData);
       expect(blogList.currentBlogId).toEqual(initData.blog.id);
       expect(blogList.offset).toEqual(0);
-      expect(blogList.collection.toJSON().length).toEqual(0);
+      expect(blogList.collection).toBeNull();
       expect(cache.get('user', 'blogs')).not.toBeNull();
     });
 
@@ -95,15 +129,13 @@ describe("views", function () {
 
     it("fetch success without histories", function () {
       blogList = new BlogList(initData);
-      spyOn(blogList, 'selectCurrentBlog');
-      blogList.fetch();
 
       waitsFor(function () {
-        return blogList.selectCurrentBlog.callCount === 1;
+        return fetchingSpy.callCount === 1;
       }, 'render', 3000);
 
       runs(function () {
-        expect(blogList.selectCurrentBlog).toHaveBeenCalled();
+        expect(selectCurrentBlogSpy).toHaveBeenCalled();
         expect(blogList.blogsLoading).toBe(false);
       });
     });
@@ -117,15 +149,16 @@ describe("views", function () {
         id: 29
       }]));
       blogList = new BlogList(initData);
-      spyOn(blogList.collection, 'fetch');
-      blogList.fetch();
+      var count = stub.getBlogsList.callCount;
 
       waitsFor(function () {
-        return blogList.collection.fetch.callCount === 1;
+        return stub.getBlogsList.callCount > count;
       }, 'fetching blogList', 3000);
 
       runs(function () {
-        var options = blogList.collection.fetch.mostRecentCall.args[0];
+        var options = stub.getBlogsList.mostRecentCall.args[1];
+        console.log('bobobobo')
+        console.log(stub.getBlogsList.mostRecentCall.args[1])
         expect(options.excludeIds).toBeDefined();
         expect(options.excludeIds).toEqual('1,2,29');
       });
@@ -147,15 +180,7 @@ describe("views", function () {
 
     it("selectBlogHandler", function () {
       blogList = new BlogList(initData);
-
-      waitsFor(function () {
-        return !!blogList.trans;
-      }, 'translation', 3000);
-
-      runs(function () {
-        spyOn(blogList, 'saveChangesHandler');
-        blogList.fetch();
-      });
+      spyOn(blogList, 'saveChangesHandler');
 
       waitsFor(function () {
         return !blogList.blogsLoading;
@@ -172,7 +197,6 @@ describe("views", function () {
 
     it("saveChangesHandler with no history", function () {
       blogList = new BlogList(initData);
-      blogList.fetch();
 
       waitsFor(function () {
         return !blogList.blogsLoading;
@@ -212,7 +236,6 @@ describe("views", function () {
         id: 2
       }]));
       blogList = new BlogList(initData);
-      blogList.fetch();
 
       waitsFor(function () {
         return !blogList.blogsLoading;
@@ -250,7 +273,6 @@ describe("views", function () {
         id: 5
       }]));
       blogList = new BlogList(initData);
-      blogList.fetch();
 
       waitsFor(function () {
         return !blogList.blogsLoading;
@@ -354,7 +376,6 @@ describe("views", function () {
         id: 26
       }]));
       blogList = new BlogList(initData);
-      blogList.fetch();
 
       waitsFor(function () {
         return !blogList.blogsLoading;
@@ -379,6 +400,7 @@ describe("views", function () {
       blogList = new BlogList(initData);
       spyOn(blogList, 'addTapClass').andCallThrough();
       spyOn(blogList, 'selectBlogHandler');
+
       var $target, event;
 
       waitsFor(function () {
@@ -437,7 +459,6 @@ describe("views", function () {
 
     it("tap navigation", function () {
       blogList = new BlogList(initData);
-      spyOn(blogList, 'addTapClass').andCallThrough();
 
       var $target, event;
 
@@ -445,85 +466,66 @@ describe("views", function () {
         return !blogList.blogsLoading;
       }, 'fetching data', 3000);
 
+      var count;
       runs(function () {
-        spyOn(blogList, 'render').andCallThrough();
+        expect(blogList.offset).toEqual(0);
+        expect(blogList.next).toEqual(25);
+        expect(blogList.prev).toBeNull();
+        expect(blogList.$el.find('.blog-item-nav-prev').length).toBeFalsy();
+        expect(blogList.$el.find('.blog-item').length).toEqual(25);
+
+        spyOn(blogList, 'addTapClass').andCallThrough();
         $target = blogList.$el.find('.blog-item-nav-next');
         event = jQuery.Event('tap', {
           currentTarget: $target.get(0)
         });
+
+        count = renderSpy.callCount;
         $target.trigger(event);
       });
 
       waitsFor(function () {
-        return !!blogList.addTapClass.callCount;
+        return renderSpy.callCount > count + 1;
       }, 'add tap class', 3000);
-
-      var flag;
-      runs(function () {
-        setTimeout(function () {
-          flag = true;
-        }, 1000);
-      });
-
-      waitsFor(function () {
-        return flag;
-      }, 'waits for tap callback executed', 3000);
 
       runs(function () {
         expect(blogList.addTapClass).toHaveBeenCalled();
         expect(blogList.offset).toEqual(25);
-        expect(blogList.render).toHaveBeenCalled();
-      });
+        expect(blogList.next).toEqual(50);
+        expect(blogList.prev).toEqual(0);
+        expect(blogList.$el.find('.blog-item').length).toEqual(25);
 
-      runs(function () {
         $target = blogList.$el.find('.blog-item-nav-next');
         event = jQuery.Event('tap', {
           currentTarget: $target.get(0)
         });
+        count = renderSpy.callCount;
         $target.trigger(event);
       });
 
       waitsFor(function () {
-        return blogList.addTapClass.callCount === 2;
+        return renderSpy.callCount > count + 1;
       }, 'add tap class', 3000);
-
-      var flag2;
-      runs(function () {
-        setTimeout(function () {
-          flag2 = true;
-        }, 1000);
-      });
-
-      waitsFor(function () {
-        return flag2;
-      }, 'waits for tap callback executed', 3000);
 
       runs(function () {
         expect(blogList.offset).toEqual(50);
-      });
+        expect(blogList.next).toEqual(75);
+        expect(blogList.prev).toEqual(25);
 
-      runs(function () {
+        expect(blogList.$el.find('.blog-item-nav-next').length).toBeFalsy();
+        expect(blogList.$el.find('.blog-item').length).toEqual(1);
+
         $target = blogList.$el.find('.blog-item-nav-prev');
         event = jQuery.Event('tap', {
           currentTarget: $target.get(0)
         });
+        count = renderSpy.callCount;
         $target.trigger(event);
       });
 
       waitsFor(function () {
-        return blogList.addTapClass.callCount === 3;
+        return renderSpy.callCount > count;
       }, 'add tap class', 3000);
-
-      var flag3;
-      runs(function () {
-        setTimeout(function () {
-          flag3 = true;
-        }, 1000);
-      });
-
-      waitsFor(function () {
-        return flag3;
-      }, 'waits for tap callback executed', 3000);
 
       runs(function () {
         expect(blogList.offset).toEqual(25);
@@ -540,8 +542,6 @@ describe("views", function () {
       }]));
 
       blogList = new BlogList(initData);
-      spyOn(blogList, 'render').andCallThrough();
-      spyOn(blogList, 'fetch').andCallThrough();
       var count, fetchCount;
 
       waitsFor(function () {
@@ -549,46 +549,43 @@ describe("views", function () {
       }, 'fetching data', 3000);
 
       runs(function () {
-        count = blogList.render.callCount;
+        count = renderSpy.callCount;
         expect(blogList.offset).toEqual(0);
         expect(blogList.next).toEqual(22);
         blogList.offset = 22;
-        blogList.blogsLoading = true;
-        blogList.render();
+        blogList.navigationHandler();
       });
 
       waitsFor(function () {
-        return blogList.render.callCount > count;
+        return renderSpy.callCount > count;
       }, 'render call 1', 3000);
 
       runs(function () {
-        count = blogList.render.callCount;
+        count = renderSpy.callCount;
         expect(blogList.collection.length).toEqual(47);
         expect(blogList.next).toEqual(47);
         blogList.offset = 47;
-        blogList.blogsLoading = true;
-        blogList.render();
+        blogList.navigationHandler();
       });
 
       waitsFor(function () {
-        return blogList.render.callCount > count;
+        return renderSpy.callCount > count;
       }, 'render call 2', 3000);
 
       runs(function () {
-        count = blogList.render.callCount;
-        fetchCount = blogList.fetch.callCount;
+        count = renderSpy.callCount;
+        fetchCount = fetchingSpy.callCount;
         expect(blogList.collection.length).toEqual(48);
         blogList.offset = 25;
-        blogList.blogsLoading = true;
-        blogList.render();
+        blogList.navigationHandler();
       });
 
       waitsFor(function () {
-        return blogList.render.callCount > count;
+        return renderSpy.callCount > count;
       }, 'render call 3', 3000);
 
       runs(function () {
-        expect(blogList.fetch.callCount).toEqual(fetchCount);
+        expect(fetchingSpy.callCount).toEqual(fetchCount);
       });
     });
 
