@@ -104,8 +104,11 @@ sub widgets {
             handler => sub {
                 my $app = shift;
                 my ( $tmpl, $param ) = @_;
-                $param->{user_email} = $app->user->email || '';
-                $param->{loupe_is_enabled} = Loupe->is_enabled;
+                my $plugin = $app->component('Loupe');
+                my $hash   = $plugin->get_config_hash;
+                $param->{$_} = $hash->{$_} foreach qw( enabled file );
+                $param->{support_directory_url}
+                    = Loupe->support_directory_url;
             },
             singular => 1,
             set      => 'main',
