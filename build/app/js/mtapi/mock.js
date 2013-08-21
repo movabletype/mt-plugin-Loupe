@@ -404,10 +404,43 @@ define(['moment'], function (moment) {
     }, arguments);
   };
 
-  Mock.prototype.listComments = function () {
-    this.base('listComments', {
-      "totalResults": "169",
-      "items": [{
+  Mock.prototype.listComments = function (blogId, options) {
+    var items = [],
+      len;
+
+    if (window.Mock.throwListCommentItems) {
+      len = window.Mock.throwListCommentItemsLength;
+      items = window.Mock.throwListCommentItems;
+    } else if (window.Mock.throwListCommentItemsLength) {
+      len = window.Mock.throwListCommentItemsLength;
+      var id;
+      var today = moment();
+
+      for (var i = 0; i < len; i++) {
+        id = i + 1;
+        items.push({
+          "link": "http://memolog.org/2013/06/foobar.html#comment-" + id,
+          "entry": {
+            "id": "1"
+          },
+          "parent": null,
+          "date": today.subtract('days', parseInt(id, 10)).format(),
+          "status": "Pending",
+          "updatable": true,
+          "author": {
+            "userpicUrl": null,
+            "id": null,
+            "displayName": "yamaguchi"
+          },
+          "blog": {
+            "id": blogId
+          },
+          "body": "body" + id,
+          "id": id
+        });
+      }
+    } else {
+      items = [{
         "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-338",
         "entry": {
           "id": "806"
@@ -422,7 +455,7 @@ define(['moment'], function (moment) {
           "displayName": "yamaguchi"
         },
         "blog": {
-          "id": "2"
+          "id": blogId
         },
         "body": "\u306a\u306b\u305b\u4e00\u30f6\u6708\u524d\u306e\u51fa\u6765\u4e8b\u3067\u3059\u304b\u3089\u30fb\u30fb\u5199\u771f\u304c\u306a\u304b\u3063\u305f\u3089\u5b8c\u5168\u306b\u5fd8\u308c\u3066\u3044\u308b\u3068\u3053\u308d\u3067\u3059\u3002\n\n\u5927\u4ecf\u69d8\u306e\u4e2d\u306b\u5165\u308b\u305f\u3081\u306b\u3001\u5927\u4ecf\u69d8\u3092\u534a\u5468\u3061\u3087\u3063\u3068\u56de\u3089\u306a\u3044\u3068\u5165\u308c\u306a\u3044\u307b\u3069\u4e26\u3093\u3067\u3044\u307e\u3057\u305f\u3002\u4eba\u6c17\u30b9\u30dd\u30c3\u30c8\u306f\u6709\u7d66\u3068\u3063\u3066\u884c\u304f\u306b\u9650\u308a\u307e\u3059\u306d\u3002",
         "id": 338
@@ -441,7 +474,7 @@ define(['moment'], function (moment) {
           "displayName": "Jun Kaneko"
         },
         "blog": {
-          "id": "2"
+          "id": blogId
         },
         "body": "\u306e\u3069\u304b\u3067\u3044\u3044\u52a0\u6e1b\u306e\u8a18\u4e8b\u3067\u3059\u306a\u3002\u5927\u4ecf\u4e26\u3073\u904e\u304e\u3067\u3057\u3087\u3046w",
         "id": 337
@@ -460,11 +493,22 @@ define(['moment'], function (moment) {
           "displayName": "yamaguchi"
         },
         "blog": {
-          "id": "2"
+          "id": blogId
         },
         "body": "\u305d\u308c\u306f\u305d\u308c\u3067\u3044\u304b\u304c\u306a\u3082\u306e\u304b\u3068\u601d\u308f\u306a\u304f\u3082\u306a\u3044\u3067\u3059\u304c\u3001\u8912\u3081\u8a00\u8449\u3068\u3057\u3066\u4f4e\u8abf\u4e01\u91cd\u306b\u627f\u308a\u305f\u3044\u3068\u601d\u3044\u307e\u3059\u3002",
         "id": 336
-      }]
+      }];
+    }
+
+    if (options) {
+      var limit = options.limit ? options.limit : 25;
+      var offset = options.offset ? options.offset : 0;
+      items = items.slice(offset, offset + limit);
+    }
+
+    this.base('listComments', {
+      "totalResults": len || items.length,
+      "items": items
     }, arguments);
   };
 
@@ -695,49 +739,79 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.getComment = function (blogId, commentId) {
-    this.base('getComment', {
-      "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-338",
-      "entry": {
-        "id": "806"
-      },
-      "parent": null,
-      "date": "2009-06-14T22:53:43\u002b09:00",
-      "status": parseInt(commentId, 10) === 338 ? "Pending" : "Approved",
-      "updatable": true,
-      "author": {
-        "userpicUrl": null,
-        "id": null,
-        "displayName": "yamaguchi"
-      },
-      "blog": {
-        "id": blogId
-      },
-      "body": "\u306a\u306b\u305b\u4e00\u30f6\u6708\u524d\u306e\u51fa\u6765\u4e8b\u3067\u3059\u304b\u3089\u30fb\u30fb\u5199\u771f\u304c\u306a\u304b\u3063\u305f\u3089\u5b8c\u5168\u306b\u5fd8\u308c\u3066\u3044\u308b\u3068\u3053\u308d\u3067\u3059\u3002\n\n\u5927\u4ecf\u69d8\u306e\u4e2d\u306b\u5165\u308b\u305f\u3081\u306b\u3001\u5927\u4ecf\u69d8\u3092\u534a\u5468\u3061\u3087\u3063\u3068\u56de\u3089\u306a\u3044\u3068\u5165\u308c\u306a\u3044\u307b\u3069\u4e26\u3093\u3067\u3044\u307e\u3057\u305f\u3002\u4eba\u6c17\u30b9\u30dd\u30c3\u30c8\u306f\u6709\u7d66\u3068\u3063\u3066\u884c\u304f\u306b\u9650\u308a\u307e\u3059\u306d\u3002",
-      "id": commentId
-    }, arguments);
+    var item;
+
+    if (window.Mock.throwCommentItem) {
+      item = window.Mock.throwCommentItem;
+      item.blog = item.blog || {
+        id: blogId
+      };
+      item.id = item.id || commentId;
+    } else if (window.Mock.failGetComment) {
+      item = {
+        error: {
+          message: window.Mock.failGetComment
+        }
+      }
+    } else {
+      item = {
+        "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-338",
+        "entry": {
+          "id": "806"
+        },
+        "parent": null,
+        "date": "2009-06-14T22:53:43\u002b09:00",
+        "status": parseInt(commentId, 10) === 338 ? "Pending" : "Approved",
+        "updatable": true,
+        "author": {
+          "userpicUrl": null,
+          "id": null,
+          "displayName": "yamaguchi"
+        },
+        "blog": {
+          "id": blogId
+        },
+        "body": "\u306a\u306b\u305b\u4e00\u30f6\u6708\u524d\u306e\u51fa\u6765\u4e8b\u3067\u3059\u304b\u3089\u30fb\u30fb\u5199\u771f\u304c\u306a\u304b\u3063\u305f\u3089\u5b8c\u5168\u306b\u5fd8\u308c\u3066\u3044\u308b\u3068\u3053\u308d\u3067\u3059\u3002\n\n\u5927\u4ecf\u69d8\u306e\u4e2d\u306b\u5165\u308b\u305f\u3081\u306b\u3001\u5927\u4ecf\u69d8\u3092\u534a\u5468\u3061\u3087\u3063\u3068\u56de\u3089\u306a\u3044\u3068\u5165\u308c\u306a\u3044\u307b\u3069\u4e26\u3093\u3067\u3044\u307e\u3057\u305f\u3002\u4eba\u6c17\u30b9\u30dd\u30c3\u30c8\u306f\u6709\u7d66\u3068\u3063\u3066\u884c\u304f\u306b\u9650\u308a\u307e\u3059\u306d\u3002",
+        "id": commentId
+      }
+    }
+
+    this.base('getComment', item, arguments);
   };
 
   Mock.prototype.updateComment = function (blogId, commentId) {
-    this.base('updateComment', {
-      "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-338",
-      "entry": {
-        "id": "806"
-      },
-      "parent": null,
-      "date": "2009-06-14T22:53:43\u002b09:00",
-      "status": "Approved",
-      "updatable": true,
-      "author": {
-        "userpicUrl": null,
-        "id": null,
-        "displayName": "yamaguchi"
-      },
-      "blog": {
-        "id": blogId
-      },
-      "body": "\u306a\u306b\u305b\u4e00\u30f6\u6708\u524d\u306e\u51fa\u6765\u4e8b\u3067\u3059\u304b\u3089\u30fb\u30fb\u5199\u771f\u304c\u306a\u304b\u3063\u305f\u3089\u5b8c\u5168\u306b\u5fd8\u308c\u3066\u3044\u308b\u3068\u3053\u308d\u3067\u3059\u3002\n\n\u5927\u4ecf\u69d8\u306e\u4e2d\u306b\u5165\u308b\u305f\u3081\u306b\u3001\u5927\u4ecf\u69d8\u3092\u534a\u5468\u3061\u3087\u3063\u3068\u56de\u3089\u306a\u3044\u3068\u5165\u308c\u306a\u3044\u307b\u3069\u4e26\u3093\u3067\u3044\u307e\u3057\u305f\u3002\u4eba\u6c17\u30b9\u30dd\u30c3\u30c8\u306f\u6709\u7d66\u3068\u3063\u3066\u884c\u304f\u306b\u9650\u308a\u307e\u3059\u306d\u3002",
-      "id": commentId
-    }, arguments);
+    var item;
+
+    if (window.Mock.failUpdateComment) {
+      item = {
+        error: {
+          message: window.Mock.failUpdateComment
+        }
+      }
+    } else {
+      item = {
+        "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-338",
+        "entry": {
+          "id": "806"
+        },
+        "parent": null,
+        "date": "2009-06-14T22:53:43\u002b09:00",
+        "status": "Approved",
+        "updatable": true,
+        "author": {
+          "userpicUrl": null,
+          "id": null,
+          "displayName": "yamaguchi"
+        },
+        "blog": {
+          "id": blogId
+        },
+        "body": "\u306a\u306b\u305b\u4e00\u30f6\u6708\u524d\u306e\u51fa\u6765\u4e8b\u3067\u3059\u304b\u3089\u30fb\u30fb\u5199\u771f\u304c\u306a\u304b\u3063\u305f\u3089\u5b8c\u5168\u306b\u5fd8\u308c\u3066\u3044\u308b\u3068\u3053\u308d\u3067\u3059\u3002\n\n\u5927\u4ecf\u69d8\u306e\u4e2d\u306b\u5165\u308b\u305f\u3081\u306b\u3001\u5927\u4ecf\u69d8\u3092\u534a\u5468\u3061\u3087\u3063\u3068\u56de\u3089\u306a\u3044\u3068\u5165\u308c\u306a\u3044\u307b\u3069\u4e26\u3093\u3067\u3044\u307e\u3057\u305f\u3002\u4eba\u6c17\u30b9\u30dd\u30c3\u30c8\u306f\u6709\u7d66\u3068\u3063\u3066\u884c\u304f\u306b\u9650\u308a\u307e\u3059\u306d\u3002",
+        "id": commentId
+      }
+    }
+
+    this.base('updateComment', item, arguments);
   };
 
   Mock.prototype.createReplyComment = function (blogId, entryId, commentId, reply) {
@@ -766,6 +840,12 @@ define(['moment'], function (moment) {
       item.id = entryId ? entryId : item.id;
       if (item.blog) {
         item.blog.id = blogId ? blogId : item.blog.id;
+      }
+    } else if (window.Mock.failEntryItem) {
+      item = {
+        error: {
+          message: window.Mock.failEntryItem
+        }
       }
     } else {
       item = {

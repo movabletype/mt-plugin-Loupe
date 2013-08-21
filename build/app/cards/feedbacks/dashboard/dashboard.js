@@ -36,7 +36,7 @@ define(['js/cache', 'js/device', 'js/commands', 'template/helpers/trans', 'cards
           offset: this.collection.length
         }
         this.handleReadmore(options);
-        this.handleRefetch(options);
+        this.handleRefetch((this.fetchErrorOption || options));
       },
 
       serializeData: function () {

@@ -127,7 +127,7 @@ module.exports = function (grunt) {
       options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
-          es5: false,
+          es5: true,
           unused: false,
           evil: true
         },
