@@ -37,13 +37,6 @@ my $plugin = MT::Plugin::Loupe->new(
         registry   => {
             applications => {
                 cms => {
-                    methods => {
-                        send_welcome_mail => {
-                            code =>
-                                '$Loupe::Loupe::App::send_welcome_mail_to_yourself',
-                            app_mode => 'JSON',
-                        },
-                    },
                     widgets => '$Loupe::Loupe::App::widgets',
                     list_actions =>
                         { author => '$Loupe::Loupe::App::list_actions' },

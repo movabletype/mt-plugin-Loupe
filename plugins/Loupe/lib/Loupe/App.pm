@@ -10,31 +10,6 @@ use warnings;
 
 use Loupe;
 
-sub send_welcome_mail_to_yourself {
-    my $app = shift;
-
-    return $app->errtrans('Invalid request.')
-        unless $app->request_method eq 'POST' && Loupe->is_enabled;
-
-    my $user = $app->user or return;
-    my $commenter_blog_id = $app->_is_commenter($user);
-    return $app->permission_denied
-        unless $user->is_superuser
-            || ( defined($commenter_blog_id) && $commenter_blog_id <= 0 );
-
-    my $to_email_address = $app->param('to_email_address')
-        or return $app->json_error(
-        { message => 'Please enter a valid email address.' } );
-    require Loupe::Mail;
-    my ( $msg_loop, $error )
-        = Loupe::Mail->send( $app,
-        [ { id => $user->id, email => $to_email_address } ] );
-
-    $error
-        ? $app->json_error(@$msg_loop)
-        : $app->json_result( { to => $to_email_address || $user->email } );
-}
-
 sub widgets {
     my $app = MT->app;
     my $user = $app->user or return;
