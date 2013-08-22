@@ -748,6 +748,256 @@ describe("feedbacks", function () {
         expect(commentView.commentApprovePerm).toBe(false);
       });
     });
+
+    describe("Reply Comment", function () {
+      var blogId = '1',
+        commentId = '2',
+        entryId = '1',
+        routes = ['comments', blogId, commentId],
+        entryCollection, entryModel, model, collection,
+        data,
+        replyRenderSpy;
+
+      beforeEach(function () {
+        var orig = require('cards/feedbacks/view/reply');
+        replyRenderSpy = jasmine.createSpy('replyRenderSpy');
+
+        undefRequireModule('cards/feedbacks/view/reply');
+        define('cards/feedbacks/view/reply', [], function () {
+          return orig.extend({
+            render: function () {
+              orig.prototype.render.apply(this, arguments);
+              replyRenderSpy();
+            }
+          });
+        });
+        requireModuleAndWait(['cards/feedbacks/view/reply']);
+
+        var entry = window.Mock.throwEntryItem = {
+          "status": "Publish",
+          "date": "2013-08-05T09:00:00\u002b09:00",
+          "author": "Yutaka Yamaguchi",
+          "class": "entry",
+          "title": "title" + (new Date()).valueOf(),
+          "body": "body"
+        };
+
+        window.Mock.throwListCommentItemsLength = 30;
+        window.Mock.throwListCommentItemsStaus = 'Approved';
+
+        var Collection = require('cards/feedbacks/models/comments_collection');
+        collection = new Collection(blogId);
+
+        var EntryCollection = require('js/collections/entries');
+        entryCollection = new EntryCollection(blogId);
+        var EntryModel = require('js/models/entry');
+        entryModel = new EntryModel({
+          blogId: blogId,
+          id: entryId
+        });
+
+        spyOn(mtapi.api, 'listComments').andCallThrough();
+        spyOn(mtapi.api, 'createReplyComment').andCallThrough();
+
+        collection.fetch();
+        entryModel.fetch();
+
+        waitsFor(function () {
+          return mtapi.api.listComments.callCount === 1 && mtapi.api.getEntry.callCount === 1;
+        }, 'fetching collection', 3000);
+
+        runs(function () {
+          model = collection.get(commentId);
+
+          data = _.extend({}, initData, {
+            type: 'comments',
+            routes: routes,
+            blogId: blogId,
+            commentId: commentId,
+            model: model,
+            collection: collection,
+            entryModel: entryModel,
+          });
+        });
+      });
+
+      it("initialize comment block", function () {
+        var Reply = require('cards/feedbacks/view/reply');
+        var reply = new Reply(data);
+        expect(reply.type).toEqual('comments');
+        expect(reply.blogId).toEqual(blogId);
+        expect(reply.initial).toBe(true);
+      });
+
+      it("reply comment", function () {
+        var Reply = require('cards/feedbacks/view/reply');
+        var reply = new Reply(data);
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount === 2
+        }, 'rendering', 3000);
+
+        var count;
+        runs(function () {
+          var $target = reply.$el.find('#reply-button');
+          expect($target.length).toBeTruthy();
+          var event = $.Event('tap', {
+            currentTarget: $target.get(0)
+          });
+          count = replyRenderSpy.callCount;
+          $target.trigger(event);
+        });
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > count;
+        }, 'callback tap', 3000);
+
+        var body = 'Lorem ipsum';
+        runs(function () {
+          expect(reply.initial).toBe(false);
+          expect(reply.replied).toBe(false);
+          expect(reply.form).toBe(true);
+          expect(reply.body).toBe(false);
+
+          window.Mock.replyCommentId = 1234;
+          var $textarea = reply.$el.find('#reply-textarea');
+          $textarea.val(body);
+          var $target = reply.$el.find('#do-reply-button');
+          expect($target.length).toBeTruthy();
+          var event = $.Event('tap', {
+            currentTarget: $target.get(0)
+          });
+          count = replyRenderSpy.callCount;
+          $target.trigger(event);
+        });
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > count;
+        }, 'callback tap', 3000);
+
+        runs(function () {
+          expect(reply.form).toBe(false);
+          expect(reply.replied).toBe(true);
+          expect(reply.body).toEqual(body);
+          var newComment = reply.collection.get(window.Mock.replyCommentId)
+          expect(newComment).toBeTruthy();
+          var cmt = newComment.toJSON();
+          expect(cmt.id).toEqual(window.Mock.replyCommentId);
+          expect(cmt.body).toEqual(body);
+
+          // one more comment
+          var $target = reply.$el.find('#reply-button');
+          expect($target.length).toBeTruthy();
+          var event = $.Event('tap', {
+            currentTarget: $target.get(0)
+          });
+          count = replyRenderSpy.callCount;
+          $target.trigger(event);
+        });
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > count;
+        }, 'callback tap', 3000);
+
+        runs(function () {
+          body = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+          expect(reply.initial).toBe(false);
+          expect(reply.replied).toBe(false);
+          expect(reply.form).toBe(true);
+          expect(reply.body).toBe(false);
+
+          window.Mock.replyCommentId = 9876;
+          var $textarea = reply.$el.find('#reply-textarea');
+          $textarea.val(body);
+          var $target = reply.$el.find('#do-reply-button');
+          expect($target.length).toBeTruthy();
+          var event = $.Event('tap', {
+            currentTarget: $target.get(0)
+          });
+          count = replyRenderSpy.callCount;
+          $target.trigger(event);
+        });
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > count;
+        }, 'callback tap', 3000);
+
+        runs(function () {
+          expect(reply.form).toBe(false);
+          expect(reply.replied).toBe(true);
+          expect(reply.body).toEqual(body);
+          var $textarea = reply.$el.find('#reply-textarea');
+          expect($textarea.length).toBeFalsy();
+          var newComment = reply.collection.get(window.Mock.replyCommentId)
+          expect(newComment).toBeTruthy();
+          var cmt = newComment.toJSON();
+          expect(cmt.id).toEqual(window.Mock.replyCommentId);
+          expect(cmt.body).toEqual(body);
+        });
+      });
+
+      it("reply comment failed", function () {
+        window.Mock.failCreateReplyComment = 'some error occurred';
+
+        var Reply = require('cards/feedbacks/view/reply');
+        var reply = new Reply(data);
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > 2
+        }, 'rendering', 3000);
+
+        var count;
+        runs(function () {
+          var $target = reply.$el.find('#reply-button');
+          expect($target.length).toBeTruthy();
+          var event = $.Event('tap', {
+            currentTarget: $target.get(0)
+          });
+          count = replyRenderSpy.callCount;
+          $target.trigger(event);
+        });
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > count;
+        }, 'callback tap', 3000);
+
+        var body = 'Lorem ipsum';
+        runs(function () {
+          expect(reply.initial).toBe(false);
+          expect(reply.replied).toBe(false);
+          expect(reply.form).toBe(true);
+          expect(reply.body).toBe(false);
+
+          window.Mock.replyCommentId = 1234;
+          var $textarea = reply.$el.find('#reply-textarea');
+          $textarea.val(body);
+          var $target = reply.$el.find('#do-reply-button');
+          expect($target.length).toBeTruthy();
+          var event = $.Event('tap', {
+            currentTarget: $target.get(0)
+          });
+          count = replyRenderSpy.callCount;
+          $target.trigger(event);
+        });
+
+        waitsFor(function () {
+          return replyRenderSpy.callCount > count;
+        }, 'callback tap', 3000);
+
+        runs(function () {
+          expect(reply.error).toEqual(window.Mock.failCreateReplyComment);
+
+          expect(reply.form).toBe(true);
+          expect(reply.replied).toBe(false);
+          expect(reply.body).toEqual(body);
+          var $textarea = reply.$el.find('#reply-textarea');
+          expect($textarea.length).toBeTruthy();
+          expect($textarea.val()).toEqual(body);
+          var newComment = reply.collection.get(window.Mock.replyCommentId)
+          expect(newComment).toBeFalsy();
+        });
+      });
+    });
   });
 
   afterEach(function () {

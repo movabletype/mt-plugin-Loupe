@@ -425,7 +425,7 @@ define(['moment'], function (moment) {
           },
           "parent": null,
           "date": today.subtract('days', parseInt(id, 10)).format(),
-          "status": "Pending",
+          "status": window.Mock.throwListCommentItemsStaus ? window.Mock.throwListCommentItemsStaus : "Pending",
           "updatable": true,
           "author": {
             "userpicUrl": null,
@@ -815,22 +815,34 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.createReplyComment = function (blogId, entryId, commentId, reply) {
-    this.base('createReplyComment', {
-      "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-371",
-      "entry": {
-        "id": entryId
-      },
-      "parent": 337,
-      "date": "2013-06-19T16:06:28\u002b09:00",
-      "status": "Approved",
-      "updatable": true,
-      "author": reply.author,
-      "blog": {
-        "id": blogId
-      },
-      "body": reply.body,
-      "id": commentId
-    }, arguments);
+    var item;
+
+    if (window.Mock.failCreateReplyComment) {
+      item = {
+        error: {
+          message: window.Mock.failCreateReplyComment
+        }
+      }
+    } else {
+      item = {
+        "link": "http://memolog.org/memolog2/2009/06/kamakura-enoshima.html#comment-371",
+        "entry": {
+          "id": entryId
+        },
+        "parent": 337,
+        "date": "2013-06-19T16:06:28\u002b09:00",
+        "status": "Approved",
+        "updatable": true,
+        "author": reply.author,
+        "blog": {
+          "id": blogId
+        },
+        "body": reply.body,
+        "id": window.Mock.replyCommentId || parseInt(commentId, 10) + 1000
+      }
+    }
+
+    this.base('createReplyComment', item, arguments);
   };
 
   Mock.prototype.getEntry = function (blogId, entryId) {
