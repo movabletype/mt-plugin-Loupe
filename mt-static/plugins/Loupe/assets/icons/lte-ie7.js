@@ -24,7 +24,8 @@ window.onload = function() {
 			'icon-upload-fail' : '&#x21;',
 			'icon-share' : '&#x26;',
 			'icon-loading' : '&#x27;',
-			'icon-plus' : '&#x22;'
+			'icon-plus' : '&#x22;',
+			'icon-app_icon_outline' : '&#x2c;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;

@@ -27,7 +27,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.icon-user, .icon-arrow-down-right, .icon-arrow-up-right, .icon-arrow-right, .icon-arrow-up, .icon-arrow-down, .icon-arrow, .icon-upload, .icon-undo-arrow, .icon-twitter, .icon-comment, .icon-close, .icon-check, .icon-browser, .icon-arrow-left, .icon-upload-fail, .icon-share, .icon-loading, .icon-plus {
+.icon-user, .icon-arrow-down-right, .icon-arrow-up-right, .icon-arrow-right, .icon-arrow-up, .icon-arrow-down, .icon-arrow, .icon-upload, .icon-undo-arrow, .icon-twitter, .icon-comment, .icon-close, .icon-check, .icon-browser, .icon-arrow-left, .icon-upload-fail, .icon-share, .icon-loading, .icon-plus, .icon-app_icon_outline {
 	font-family: 'MTIcon';
 	speak: none;
 	font-style: normal;
@@ -93,4 +93,7 @@ you can use the generic selector below, but it's slower:
 }
 .icon-plus:before {
 	content: "\22";
+}
+.icon-app_icon_outline:before {
+	content: "\2c";
 }
