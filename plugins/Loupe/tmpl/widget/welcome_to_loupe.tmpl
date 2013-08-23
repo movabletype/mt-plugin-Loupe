@@ -76,7 +76,7 @@
                 magic_token: '<mt:var name="magic_token">',
                 plugin_sig: 'Loupe/Loupe.pl',
                 return_args: '__mode=dashboard&enabled_loupe=1',
-                enabled: jQuery('input#loupe_enabled').val(),
+                enabled: jQuery('input#loupe_enabled:checked').val(),
                 file: jQuery('input#loupe_file').val()
             },
             form = jQuery('<form />')
