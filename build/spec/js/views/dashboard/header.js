@@ -173,7 +173,6 @@ describe("views", function () {
       data.blog = null;
       header = new Header(data);
       header.render();
-      console.log(header.$el.html())
       expect(header.$el.find('#blogname').text()).toMatch(/Loupe/);
     })
   });

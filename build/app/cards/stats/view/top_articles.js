@@ -132,7 +132,7 @@ define(['js/views/card/composite',
         this.dfd = $.Deferred();
 
         if (!this.model.isSynced) {
-          var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
+          var statsProviderDfd = statsProvider(this.blogId);
 
           statsProviderDfd.done(_.bind(function () {
             this.providerIsNotAvailable = false;

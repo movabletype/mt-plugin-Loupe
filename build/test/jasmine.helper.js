@@ -1,5 +1,6 @@
 Mock = {};
 DEBUG = true;
+window.jasmineRequirePath = '';
 
 require(['jquery'], function ($) {
   $(document.body).append('<div id="container"><div id="menu"></div><div id="app"></div></div><div id="app-building"></div>');

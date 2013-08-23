@@ -325,6 +325,12 @@ define(['moment'], function (moment) {
     var item;
     if (window.Mock.throwStatsProviderItem) {
       item = window.Mock.throwStatsProviderItem;
+    } else if (window.Mock.failStatsProvider) {
+      item = {
+        error: {
+          message: window.Mock.failStatsProvider
+        }
+      };
     } else {
       item = {
         id: "GoogleAnalytics"
@@ -337,35 +343,48 @@ define(['moment'], function (moment) {
     var getDate = function (num) {
       return moment().subtract('days', parseInt(num, 10)).format("YYYY-MM-DD");
     };
+    var item;
 
-    this.base('listStatsPageviewsForDate', {
-      "totalResults": 7,
-      "totals": {
-        "pageviews": "5591316"
-      },
-      "items": [{
-        "pageviews": "705000",
-        "date": getDate(6)
-      }, {
-        "pageviews": "800440",
-        "date": getDate(5)
-      }, {
-        "pageviews": "923456",
-        "date": getDate(4)
-      }, {
-        "pageviews": "903030",
-        "date": getDate(3)
-      }, {
-        "pageviews": "1039390",
-        "date": getDate(2)
-      }, {
-        "pageviews": "450000",
-        "date": getDate(1)
-      }, {
-        "pageviews": "770000",
-        "date": getDate(0)
-      }]
-    }, arguments);
+    if (window.Mock.throwListStatsPageviewsForDate) {
+      item = window.Mock.throwListStatsPageviewsForDate;
+    } else if (window.Mock.failListStatsPageviewsForDate) {
+      item = {
+        error: {
+          message: window.Mock.failListStatsPageviewsForDate
+        }
+      };
+    } else {
+      item = {
+        "totalResults": 7,
+        "totals": {
+          "pageviews": "5591316"
+        },
+        "items": [{
+          "pageviews": "705000",
+          "date": getDate(6)
+        }, {
+          "pageviews": "800440",
+          "date": getDate(5)
+        }, {
+          "pageviews": "923456",
+          "date": getDate(4)
+        }, {
+          "pageviews": "903030",
+          "date": getDate(3)
+        }, {
+          "pageviews": "1039390",
+          "date": getDate(2)
+        }, {
+          "pageviews": "450000",
+          "date": getDate(1)
+        }, {
+          "pageviews": "770000",
+          "date": getDate(0)
+        }]
+      }
+    }
+
+    this.base('listStatsPageviewsForDate', item, arguments);
   };
 
   Mock.prototype.listStatsVisitsForDate = function () {
@@ -374,34 +393,45 @@ define(['moment'], function (moment) {
         today.subtract('days', parseInt(num, 10)).format("YYYY-MM-DD");
       };
 
-    this.base('listStatsVisitsForDate', {
-      "totalResults": 7,
-      "totals": {
-        "visits": "4115865"
-      },
-      "items": [{
-        "visits": "505000",
-        "date": getDate(6)
-      }, {
-        "visits": "600440",
-        "date": getDate(5)
-      }, {
-        "visits": "823456",
-        "date": getDate(4)
-      }, {
-        "visits": "703030",
-        "date": getDate(3)
-      }, {
-        "visits": "503939",
-        "date": getDate(2)
-      }, {
-        "visits": "450000",
-        "date": getDate(1)
-      }, {
-        "visits": "530000",
-        "date": getDate(0)
-      }]
-    }, arguments);
+    var item;
+
+    if (window.Mock.failListStatsVisitsForDate) {
+      item = {
+        error: {
+          message: window.Mock.failListStatsPageviewsForDate
+        }
+      };
+    } else {
+      item = {
+        "totalResults": 7,
+        "totals": {
+          "visits": "4115865"
+        },
+        "items": [{
+          "visits": "505000",
+          "date": getDate(6)
+        }, {
+          "visits": "600440",
+          "date": getDate(5)
+        }, {
+          "visits": "823456",
+          "date": getDate(4)
+        }, {
+          "visits": "703030",
+          "date": getDate(3)
+        }, {
+          "visits": "503939",
+          "date": getDate(2)
+        }, {
+          "visits": "450000",
+          "date": getDate(1)
+        }, {
+          "visits": "530000",
+          "date": getDate(0)
+        }]
+      }
+    }
+    this.base('listStatsVisitsForDate', item, arguments);
   };
 
   Mock.prototype.listComments = function (blogId, options) {
@@ -633,12 +663,17 @@ define(['moment'], function (moment) {
   };
 
   Mock.prototype.listStatsPageviewsForPath = function () {
-    this.base('listStatsPageviewsForPath', {
-      "totalResults": 81,
-      "totals": {
-        "pageviews": "353"
-      },
-      "items": [{
+    var resp, items;
+    if (window.Mock.throwListStatsPageviewsForPathItems) {
+      items = window.Mock.throwListStatsPageviewsForPathItems;
+    } else if (window.Mock.failListStatsPageviewsForPath) {
+      resp = {
+        error: {
+          message: window.Mock.failListStatsPageviewsForPath
+        }
+      }
+    } else {
+      items = [{
         "pageviews": "34",
         "entry": {
           "id": "418"
@@ -734,8 +769,20 @@ define(['moment'], function (moment) {
         "archiveType": "Individual",
         "category": null,
         "author": null
-      }]
-    }, arguments);
+      }];
+    }
+
+    if (!resp) {
+      resp = {
+        "totalResults": 81,
+        "totals": {
+          "pageviews": "353"
+        },
+        "items": items
+      }
+    }
+
+    this.base('listStatsPageviewsForPath', resp, arguments);
   };
 
   Mock.prototype.getComment = function (blogId, commentId) {

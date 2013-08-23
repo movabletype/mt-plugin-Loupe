@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'js/commands', 'hbs!cards/stats/templates/layout', 'cards/stats/view/recent_access', 'cards/stats/view/top_articles', 'cards/stats/view/top_articles_weekly'],
-
-function (Marionette, commands, template, RecentAccessView, TopArticlesView, TopArticlesWeeklyView) {
+define(['backbone.marionette', 'js/commands', 'hbs!cards/stats/templates/layout', 'cards/stats/view/recent_access', 'cards/stats/view/top_articles', 'cards/stats/view/top_articles_weekly'], function (Marionette, commands, template, RecentAccessView, TopArticlesView, TopArticlesWeeklyView) {
   "use strict";
 
   return Marionette.Layout.extend({
@@ -20,14 +18,14 @@ function (Marionette, commands, template, RecentAccessView, TopArticlesView, Top
       this.recentAccess.show(new RecentAccessView(this.options));
 
       this.topArticles.show(new TopArticlesView(
-        _.extend(this.options, {
-        unit: 'day'
-      })));
+        _.extend({}, this.options, {
+          unit: 'day'
+        })));
 
       this.topArticlesWeekly.show(new TopArticlesWeeklyView(
-        _.extend(this.options, {
-        unit: 'week'
-      })));
+        _.extend({}, this.options, {
+          unit: 'week'
+        })));
     }
   });
 });

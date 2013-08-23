@@ -2,7 +2,6 @@ define(['js/views/card/itemview', 'js/cache', 'js/mtapi/stats_provider', 'cards/
 
   function (CardItemView, cache, statsProvider, Model, template, ChartAPI) {
     "use strict";
-
     return CardItemView.extend({
       template: template,
 
@@ -26,7 +25,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/mtapi/stats_provider', 'cards/
         this.setTranslation();
 
         if (!this.model.isSynced) {
-          var statsProviderDfd = _.isFunction(statsProvider) ? statsProvider(this.blogId) : statsProvider;
+          var statsProviderDfd = statsProvider(this.blogId);
 
           statsProviderDfd.done(_.bind(function () {
             this.providerIsNotAvailable = false;

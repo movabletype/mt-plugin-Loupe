@@ -35,8 +35,6 @@ describe("models", function () {
       runs(function () {
         expect(perm).toBeDefined();
         var model = perm.toJSON().items;
-        console.log('foofa')
-        console.log(model)
         expect(model.blog.id).toEqual('1');
         _.forEach(item.permissions, function (value, key) {
           expect(model.permissions[key]).toEqual(value);
