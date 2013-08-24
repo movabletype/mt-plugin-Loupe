@@ -46,6 +46,7 @@ sub save_loupe_config {
 
     $app->request( 'loupe_config', \%args );
 
+    # Need to change mode for forwarding to user dashboard.
     $app->mode('dashboard');
     $app->forward('dashboard');
 }
@@ -63,6 +64,8 @@ sub dialog_invitation_email {
         $row->{description} = $row->{nickname};
     };
 
+    # Change temporarily MT::Component::template_paths()
+    # to load plugin's template file.
     require File::Spec;
     require MT::Component;
     my $template_paths = \&MT::Component::template_paths;
@@ -72,6 +75,7 @@ sub dialog_invitation_email {
             $template_paths->(@_)
         );
     };
+
     $app->listing(
         {   type  => 'author',
             terms => {
