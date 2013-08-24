@@ -38,11 +38,16 @@ my $plugin = MT::Plugin::Loupe->new(
             applications => {
                 cms => {
                     methods => {
+                        save_loupe_config => {
+                            code => '$Loupe::Loupe::App::save_loupe_config',
+                        },
                         dialog_invitation_email => {
-                            code => '$Loupe::Loupe::App::dialog_invitation_email',
+                            code =>
+                                '$Loupe::Loupe::App::dialog_invitation_email',
                         },
                         send_invitation_email => {
-                            code => '$Loupe::Loupe::App::send_invitation_email',
+                            code =>
+                                '$Loupe::Loupe::App::send_invitation_email',
                         },
                     },
                     widgets => '$Loupe::Loupe::App::widgets',
@@ -53,6 +58,8 @@ my $plugin = MT::Plugin::Loupe->new(
             callbacks => {
                 'MT::Config::post_save' =>
                     '$Loupe::Loupe::App::post_save_config',
+                'MT::App::CMS::template_source.header' =>
+                    '$Loupe::Loupe::App::template_source_header',
             },
             upgrade_functions => '$Loupe::Loupe::Upgrade::upgrade_functions',
         },

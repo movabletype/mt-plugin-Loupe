@@ -11,14 +11,10 @@
 
     <div id="loupe_settings" style="display: none;">
     <mtapp:setting
-        id="loupe_status"
-        label="<__trans phrase="Status">">
-        <input type="checkbox" id="loupe_enabled" class="checkbox" name="enabled" value="1"<mt:if name="enabled"> checked="checked"</mt:if>/>
-        <label for="loupe_enabled"><__trans phrase="Enable Loupe"></label>
-    </mtapp:setting>
-    <mtapp:setting
         id="loupe_url"
-        label="URL">
+        label="URL"
+        hint="<__trans phrase="The URL of Loupe's HTML file.">"
+        show_hint="1">
         <mt:var name="support_directory_url">loupe/<input type="text" id="loupe_file" class="text path" name="file" value="<mt:var name="file">"/>
     </mtapp:setting>
 
@@ -69,14 +65,14 @@
         jQuery(this).parent().hide();
         jQuery('div#loupe_settings').show();
     });
+<mt:if name="loupe_error">
+    jQuery('a#loupe_settings_link').trigger('click');
+</mt:if>
 
     jQuery('button#loupe-save-changes').click(function(){
         var data = {
-                __mode: 'save_plugin_config',
+                __mode: 'save_loupe_config',
                 magic_token: '<mt:var name="magic_token">',
-                plugin_sig: 'Loupe/Loupe.pl',
-                return_args: '__mode=dashboard&enabled_loupe=1',
-                enabled: jQuery('input#loupe_enabled:checked').val(),
                 file: jQuery('input#loupe_file').val()
             },
             form = jQuery('<form />')
