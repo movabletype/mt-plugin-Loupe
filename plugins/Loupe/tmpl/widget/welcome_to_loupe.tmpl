@@ -10,13 +10,17 @@
     <p class="msg-text"><a id="loupe_settings_link" href="" onclick="return false;"><__trans phrase="Configure Loupe"></a></p>
 
     <div id="loupe_settings" style="display: none;">
-    <mtapp:setting
-        id="loupe_url"
-        label="URL"
-        hint="<__trans phrase="The URL of Loupe's HTML file.">"
-        show_hint="1">
-        <mt:var name="support_directory_url">loupe/<input type="text" id="loupe_file" class="text path" name="file" value="<mt:var name="file">"/>
-    </mtapp:setting>
+
+        <div id="loupe_url-field" class="field field-left-label ">
+            <div id="loupe_field-header" class="field-header">
+                <label id="loupe_url-label" for="loupe_url">URL</label>
+            </div>
+
+            <div id="loupe_field-content" class="field-content">
+                http://centos5/mt/mt-static/support/loupe/<input type="text" id="loupe_file" class="text path" name="file" value="index.html"/>
+                <div class="hint">The URL of Loupe's HTML file.</div>
+            </div>
+        </div>
 
         <div class="actions-bar settings-actions-bar">
             <button
@@ -26,6 +30,7 @@
                 <__trans phrase="Save Changes">
             </button>
         </div>
+
     </div>
 </div>
 </mtapp:widget>
@@ -56,6 +61,12 @@
 }
 .ui-dialog {
     z-index: 2500;
+}
+#loupe_field-header {
+    width: 3em;
+}
+#loupe_field-content {
+    margin-left: 5em;
 }
 </style>
 
