@@ -59,7 +59,7 @@ sub dialog_invitation_email {
     my $app = shift;
 
     my $user = $app->user;
-    return $app->perission_denied unless $user->is_superuser;
+    return $app->permission_denied unless $user->is_superuser;
 
     my $plugin = $app->component('Loupe');
     my $hasher = sub {
