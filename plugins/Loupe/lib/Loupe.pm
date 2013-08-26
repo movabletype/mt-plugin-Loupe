@@ -110,7 +110,7 @@ sub support_directory_url {
             $domain
                 = 'http'
                 . ( $app->is_secure ? 's' : '' ) . '://'
-                . $ENV{'HTTP_HOST'};
+                . ( $ENV{'HTTP_HOST'} || '' );
         }
         if ( $url !~ /^\// ) {
             $url = '/' . $url;
