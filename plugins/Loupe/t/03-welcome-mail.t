@@ -54,100 +54,9 @@ $ENV{HTTP_HOST} = 'localhost';
 my ( $app, $out );
 
 {
-    note 'send_welcome_mail method';
-    local $ENV{HTTP_X_REQUESTED_WITH} = 'XMLHttpRequest';
+    note('itemset_action (send_welcome_mail)');
 
-    note 'Loupe is disabled';
-    $app = _run_app(
-        'MT::App::CMS',
-        {   __test_user      => $admin,
-            __request_method => 'POST',
-            __mode           => 'send_welcome_mail',
-        },
-    );
-    $out = delete $app->{__test_output};
-    my $json = quotemeta '{"error":"Invalid request.\n"}';
-    ok( $out =~ m/$json/, "Could not send mail." );
-
-    note 'Loupe is enabled';
-    my $mock_loupe = Test::MockModule->new('Loupe');
-    $mock_loupe->mock( 'is_enabled', sub {1} );
-
-    my $mock_mail = Test::MockModule->new('MT::Mail');
-    $mock_mail->mock( '_send_mt_sendmail',
-        sub { shift->_send_mt_debug(@_) } );
-
-    my @suite = (
-        { user => $admin,    ok => 1 },
-        { user => $aikawa,   ok => 1 },
-        { user => $ichikawa, ok => 0 },
-        { user => $ukawa,    ok => 0 },
-    );
-
-    foreach my $test (@suite) {
-        note 'user: ' . $test->{user}->name;
-
-        my ( $save_stderr, $read, $write );
-        my %headers;
-        my $mail_body;
-
-        if ( $test->{ok} ) {
-            $save_stderr = \*STDERR;
-            pipe $read, $write;
-            *STDERR = $write;
-        }
-
-        $app = _run_app(
-            'MT::App::CMS',
-            {   __test_user      => $test->{user},
-                __request_method => 'POST',
-                __mode           => 'send_welcome_mail',
-            },
-        );
-
-        if ( $test->{ok} ) {
-            close $write;
-
-            while ( ( my $line = <$read> ) ne "\n" ) {
-                chomp $line;
-                my ( $key, $value ) = split /: /, $line, 2;
-                $headers{$key} = $value;
-            }
-            $mail_body = join '', <$read>;
-
-            close $read;
-            *STDERR = $save_stderr;
-        }
-
-        $out = delete $app->{__test_output};
-
-        if ( $test->{ok} ) {
-            $json = quotemeta '{"error":null,"result":{"to":"'
-                . $test->{user}->email . '"}}';
-            ok( $out =~ m/$json/, 'Welcome mail has been sent.' );
-
-            is( $headers{Subject}, 'Welcome to Loupe',
-                'Mail Subject is ok.' );
-            is( $headers{From}, $test->{user}->email, 'Mail From is ok.' );
-            is( $headers{To},   $test->{user}->email, 'Mail To is ok.' );
-
-            ok( $mail_body
-                    =~ m/This is Loupe\. You can see immediately the status of your site if you are using Loupe\./,
-                'Mail content is ok.'
-            );
-        }
-        else {
-            ok( $out =~ m/Status: 302 Found/ && $out =~ m/permission=1/,
-                'Welcome mail has not been sent.' );
-        }
-
-    }
-}
-
-{
-    note 'itemset_action (send_welcome_mail)';
-
-    note 'Loupe is disabled';
+    note('Loupe is disabled');
     $app = _run_app(
         'MT::App::CMS',
         {   __test_user            => $admin,
@@ -166,7 +75,7 @@ my ( $app, $out );
         'Cannot send mail by list actions.'
     );
 
-    note 'Loupe is enabled';
+    note('Loupe is enabled');
     my $mock_loupe = Test::MockModule->new('Loupe');
     $mock_loupe->mock( 'is_enabled', sub {1} );
 
@@ -181,7 +90,7 @@ my ( $app, $out );
     );
 
     foreach my $test (@suite) {
-        note 'user: ' . $test->{user}->name;
+        note( 'user: ' . $test->{user}->name );
 
         my ( $save_stderr, $read, $write );
         my %headers;
@@ -231,10 +140,8 @@ my ( $app, $out );
             is( $headers{From}, $test->{user}->email, 'Mail From is ok.' );
             is( $headers{To},   $test->{user}->email, 'Mail To is ok.' );
 
-            ok( $mail_body
-                    =~ m/This is Loupe\. You can see immediately the status of your site if you are using Loupe\./,
-                'Mail content is ok.'
-            );
+            ok( $mail_body =~ m/Content-Type: multipart\/alternative;/,
+                'Mail content is ok.' );
         }
         else {
             ok( $out =~ m/An error occurred/
@@ -242,6 +149,131 @@ my ( $app, $out );
                     =~ m/That action \(send_welcome_mail\) is apparently not implemented!/,
                 'Welcome mail has not been sent.'
             );
+        }
+
+    }
+}
+
+{
+    note('dialog_invitation_email');
+
+    my @suite = (
+        { user => $admin,    can_view_dialog => 1 },
+        { user => $ichikawa, can_view_dialog => 0 },
+        { user => $ukawa,    can_view_dialog => 0 },
+    );
+
+    foreach my $test (@suite) {
+        note( 'user: ' . $test->{user}->name );
+
+        $app = _run_app(
+            'MT::App::CMS',
+            {   __test_user => $test->{user},
+                __mode      => 'dialog_invitation_email',
+                dialog      => 1,
+            },
+        );
+        $out = delete $app->{__test_output};
+
+        if ( $test->{can_view_dialog} ) {
+            ok( $out && $out =~ m/Status: 200/, 'Request ok.' );
+            ok( $out !~ m/permission=1/,
+                'System administrator can access dialog_invitation_email.' );
+        }
+        else {
+            ok( $out && $out =~ m/Status: 302/, 'Request ok.' );
+            ok( $out =~ m/permission=1/,
+                'Non-system administrator cannot access dialog_invitation_email.'
+            );
+        }
+    }
+}
+
+{
+    note('send_invitation_email');
+
+    $app = _run_app(
+        'MT::App::CMS',
+        {   __test_user => $admin,
+            __mode      => 'send_invitation_email',
+            ids         => $admin->id,
+        },
+    );
+    $out = delete $app->{__test_output};
+    ok( $out && $out =~ m/Invalid request\./, 'ok' );
+
+    my $mock_loupe = Test::MockModule->new('Loupe');
+    $mock_loupe->mock( 'is_enabled', sub {1} );
+
+    my $mock_mail = Test::MockModule->new('MT::Mail');
+    $mock_mail->mock( '_send_mt_sendmail',
+        sub { shift->_send_mt_debug(@_) } );
+
+    my @suite = (
+        { user => $admin,    post => 0, ok => 0 },
+        { user => $admin,    post => 1, ok => 1 },
+        { user => $aikawa,   post => 1, ok => 0 },
+        { user => $ichikawa, post => 1, ok => 0 },
+    );
+
+    foreach my $test (@suite) {
+
+        note( 'user: ' . $test->{user}->name );
+
+        my ( $save_stderr, $read, $write );
+        my %headers;
+        my $mail_body;
+
+        if ( $test->{ok} ) {
+            $save_stderr = \*STDERR;
+            pipe $read, $write;
+            *STDERR = $write;
+        }
+
+        $app = _run_app(
+            'MT::App::CMS',
+            {   __test_user => $test->{user},
+                $test->{post} ? ( __request_method => 'POST' ) : (),
+                __mode => 'send_invitation_email',
+                ids    => $test->{user}->id,
+            },
+        );
+
+        if ( $test->{ok} ) {
+            close $write;
+
+            while ( ( my $line = <$read> ) ne "\n" ) {
+                chomp $line;
+                my ( $key, $value ) = split /: /, $line, 2;
+                $headers{$key} = $value;
+            }
+            $mail_body = join '', <$read>;
+
+            close $read;
+            *STDERR = $save_stderr;
+        }
+
+        $out = delete $app->{__test_output};
+
+        if ( $test->{ok} ) {
+            ok( $out =~ m/Send Loupe welcome email/,
+                'Welcome mail has been sent.'
+            );
+
+            is( $headers{Subject}, 'Welcome to Loupe',
+                'Mail Subject is ok.' );
+            is( $headers{From}, $test->{user}->email, 'Mail From is ok.' );
+            is( $headers{To},   $test->{user}->email, 'Mail To is ok.' );
+
+            ok( $mail_body =~ m/Content-Type: multipart\/alternative;/,
+                'Mail content is ok.' );
+        }
+        else {
+            my $like = $test->{post} ? 'permission=1' : "Invalid request\.";
+            $like = quotemeta $like;
+
+            ok( $out =~ m/$like/, 'Invitation email has not been sent.' );
+
         }
 
     }
