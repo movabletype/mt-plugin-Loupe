@@ -14,6 +14,10 @@ sub save_loupe_config {
     my $app = shift;
 
     $app->validate_magic or return;
+
+    return $app->errtrans('Invalid request.')
+        unless $app->request_method eq 'POST';
+
     return $app->permission_denied()
         unless $app->can_do('save_plugin_setting');
 
