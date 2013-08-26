@@ -15,6 +15,8 @@ use lib qw( lib extlib t/lib );
 use MT::Test qw( :db :app );
 use MT::Test::Permission;
 
+use Loupe;
+
 # Prepare tests
 my $admin  = MT::Author->load(1);
 my $aikawa = MT::Test::Permission->make_author(
@@ -55,6 +57,10 @@ subtest 'Plugin setting is not configured' => sub {
             if ( $test->{has_widget} ) {
                 ok( $out =~ m/$widget/,
                     'Dashboard has welcome to Loupe widget.' );
+                my $support_directory_url = Loupe->support_directory_url;
+                ok( $out =~ m/$support_directory_url/,
+                    'Loupe widget has support_direcotry_url.'
+                );
             }
             else {
                 ok( $out !~ m/$widget/,
