@@ -145,11 +145,12 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
       background-color: $btn-basic-color;
       @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
     }
-    .button-icon {
-      font-size: 20px;
-      margin-right: 5px;
+    .button-icon, .button-label {
+      font-size: 1em;
+      font-size: 1rem;
+      line-height: 1.5;
       display: inline-block;
-      vertical-align: top;
+      vertical-align: middle;
     }
     .button-undo {
       position: absolute;
@@ -165,7 +166,7 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
       border-left: 1px solid lighten($btn-basic-color, 20%);
       width: 100%;
       height: 100%;
-      padding: 10px 15px;
+      padding: 10px;
       cursor: pointer;
       line-height: 2.2em;
       line-height: 2.2rem;
