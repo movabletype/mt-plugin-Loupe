@@ -25,52 +25,48 @@ define(['js/views/card/itemview', 'js/mtapi', 'js/device', 'hbs!cards/upload/tem
           }, this));
       },
 
-      onRender: function () {
-        if (this.perm) {
-          if (this.FileInputNotSupported) {
-            this.$el.parent().hide();
-          }
+      upload: function (files) {
+        if (this.perm && this.ui.uploadForm.val()) {
+          this.uploadedImages = [];
+          this.uploadError = [];
+          this.errorImages = [];
+          this.uploading = true;
+          this.$el.addClass('now-uploading');
 
-          var upload = _.bind(function (files, retry) {
-            if (this.ui.uploadForm.val() || retry) {
-              this.uploadedImages = [];
-              this.uploadError = [];
-              this.errorImages = [];
-              this.uploading = true;
-              this.$el.addClass('now-uploading');
-
-              var dfds = [];
-              _.each(files, _.bind(function (file) {
-                var dfd = $.Deferred();
-                dfds.push(dfd);
-                mtapi.api.uploadAsset(this.blogId, {
-                    file: file,
-                    autoRenameIfExists: true,
-                    bustCache: (new Date()).valueOf()
-                  },
-                  _.bind(function (resp) {
-                    if (!resp.error) {
-                      dfd.resolve();
-                      this.uploadedImages.push(resp);
-                    } else {
-                      this.errorImages.push(file);
-                      this.uploadError.push(resp.error);
-                      dfd.reject();
-                    }
-                    this.render();
-                  }, this));
-              }, this));
-              $.when.apply(this, dfds).done(_.bind(function () {
-                this.uploadError = [];
-                this.uploadCompleted = true;
-              }, this)).always(_.bind(function () {
-                this.$el.removeClass('now-uploading');
-                this.uploading = false;
+          var dfds = [];
+          _.each(files, _.bind(function (file) {
+            var dfd = $.Deferred();
+            dfds.push(dfd);
+            mtapi.api.uploadAsset(this.blogId, {
+                file: file,
+                autoRenameIfExists: true,
+                bustCache: (new Date()).valueOf()
+              },
+              _.bind(function (resp) {
+                if (!resp.error) {
+                  dfd.resolve();
+                  this.uploadedImages.push(resp);
+                } else {
+                  this.errorImages.push(file);
+                  this.uploadError.push(resp.error);
+                  dfd.reject();
+                }
                 this.render();
               }, this));
-            }
-          }, this);
+          }, this));
+          $.when.apply(this, dfds).done(_.bind(function () {
+            this.uploadError = [];
+            this.uploadCompleted = true;
+          }, this)).always(_.bind(function () {
+            this.$el.removeClass('now-uploading');
+            this.uploading = false;
+            this.render();
+          }, this));
+        }
+      },
 
+      onRender: function () {
+        if (this.perm) {
           this.ui.uploadButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
             this.addTapClass(e.currentTarget, _.bind(function () {
               if (!this.isLabelNeeded) {
@@ -79,20 +75,15 @@ define(['js/views/card/itemview', 'js/mtapi', 'js/device', 'hbs!cards/upload/tem
             }, this));
           }, this));
 
-          this.ui.retryButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
-            this.addTapClass(e.currentTarget, _.bind(function () {
-              this.ui.retryButton.remove();
-              upload(this.errorImages, true);
-            }, this));
-          }, this));
+          this.ui.uploadForm.on('change', _.bind(this.handleUploadFormChange, this));
+        }
+      },
 
-          this.ui.uploadForm.on('change', function (e) {
-            if (this.supportedFileAPI) {
-              upload(e.target.files);
-            } else {
-              upload([$('#upload-file-input').get(0)]);
-            }
-          });
+      handleUploadFormChange: function (e) {
+        if (this.supportedFileAPI) {
+          this.upload(e.target.files);
+        } else {
+          this.upload([$('#upload-file-input').get(0)]);
         }
       },
 
@@ -105,7 +96,7 @@ define(['js/views/card/itemview', 'js/mtapi', 'js/device', 'hbs!cards/upload/tem
       },
 
       checkFileAPISupport: function () {
-        if (window.FileReader && device.platform !== 'windows-phone') {
+        if (window.FileReader && !device.isWindowsPhone) {
           return true;
         } else {
           return false;
