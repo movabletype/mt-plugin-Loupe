@@ -995,10 +995,28 @@ define(['moment'], function (moment) {
     this.base('updateEntry', item, arguments);
   };
 
-  Mock.prototype.uploadAsset = function () {
-    this.base('uploadAsset', {
-      error: 'error'
-    }, arguments);
+  Mock.prototype.uploadAsset = function (blogId, options) {
+    var url = window.Mock.uploadAssetPath || location.href;
+
+    if (window.Mock.failUploadAsset) {
+      item = {
+        error: {
+          message: window.Mock.failUploadAsset
+        }
+      }
+    } else {
+      item = {
+        "filename": "001.jpg",
+        "url": url + "001.jpg",
+        "id": "266",
+        "label": "001.jpg",
+        "mimeType": "image/jpeg",
+        "description": null,
+        "tags": []
+      }
+    }
+
+    this.base('uploadAsset', item, arguments);
   };
 
   Mock.prototype.revokeAuthentication = function () {

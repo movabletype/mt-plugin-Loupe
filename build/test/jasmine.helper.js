@@ -105,8 +105,9 @@ function insertSpy(path, spy) {
         if (spy.hasOwnProperty(key)) {
           ext[key] = function (k, p) {
             return function () {
-              origFunc.prototype[k].apply(this, [].slice.call(arguments));
+              var temp = origFunc.prototype[k].apply(this, [].slice.call(arguments));
               spy[k].apply(spy, arguments);
+              return temp;
             }
           }(key, path)
         }
