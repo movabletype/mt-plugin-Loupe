@@ -9,7 +9,6 @@ define(['js/views/card/itemview', 'js/mtapi', 'js/device', 'hbs!cards/upload/tem
       ui: {
         uploadForm: '#upload-file-input',
         uploadButton: '#upload-file',
-        retryButton: '#retry',
         refreshButton: '#refresh'
       },
 
