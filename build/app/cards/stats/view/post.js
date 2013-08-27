@@ -30,48 +30,7 @@ define(['js/views/card/itemview',
             this.render();
           } else {
             this.render();
-
-            this.model = new Model({
-              id: this.entryId,
-              blogId: this.blogId
-            });
-            this.model.fetch({
-              success: _.bind(function () {
-                var permalink = this.model.toJSON().permalink || null;
-                var path;
-                if (permalink) {
-                  permalink = permalink.match(/http(?:s)?:\/\/[^\/]+\/(.*)/);
-                  path = permalink.length > 1 ? permalink[1] : null;
-                }
-
-                if (path) {
-                  this.statsModel = new StatsModel();
-                  this.statsModel.fetch({
-                    blogId: this.blogId,
-                    startDate: moment().startOf(this.unit).format(),
-                    endDate: moment().endOf(this.unit).format(),
-                    limit: 1,
-                    path: path,
-                    success: _.bind(function (resp) {
-                      this.loading = false;
-                      this.fetchError = false;
-                      this.pageviews = resp.toJSON().items[0] ? resp.toJSON().items[0].pageviews : 0;
-                      this.render();
-                    }, this),
-                    error: _.bind(function () {
-                      this.loading = false;
-                      this.fetchError = true;
-                      this.render();
-                    }, this)
-                  });
-                }
-              }, this),
-              error: _.bind(function () {
-                this.fetchError = true;
-                this.loading = false;
-                this.render();
-              }, this)
-            });
+            this.fetch();
           }
         }, this));
 
@@ -84,6 +43,50 @@ define(['js/views/card/itemview',
             }
           });
         }, this))
+      },
+
+      fetch: function () {
+        this.model = new Model({
+          id: this.entryId,
+          blogId: this.blogId
+        });
+        this.model.fetch({
+          success: _.bind(function () {
+            var permalink = this.model.toJSON().permalink || null;
+            var path;
+            if (permalink) {
+              permalink = permalink.match(/http(?:s)?:\/\/[^\/]+\/(.*)/);
+              path = permalink.length > 1 ? permalink[1] : null;
+            }
+
+            if (path) {
+              this.statsModel = new StatsModel();
+              this.statsModel.fetch({
+                blogId: this.blogId,
+                startDate: moment().startOf(this.unit).format(),
+                endDate: moment().endOf(this.unit).format(),
+                limit: 1,
+                path: path,
+                success: _.bind(function (resp) {
+                  this.loading = false;
+                  this.fetchError = false;
+                  this.pageviews = resp.toJSON().items[0] ? resp.toJSON().items[0].pageviews : 0;
+                  this.render();
+                }, this),
+                error: _.bind(function () {
+                  this.loading = false;
+                  this.fetchError = true;
+                  this.render();
+                }, this)
+              });
+            }
+          }, this),
+          error: _.bind(function () {
+            this.fetchError = true;
+            this.loading = false;
+            this.render();
+          }, this)
+        });
       },
 
       onRender: function () {

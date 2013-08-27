@@ -93,4 +93,36 @@ function backToDashboard($el, initData) {
   runs(function () {
     require('js/commands').execute('move:dashboard', initData);
   });
+};
+
+function insertSpy(path, spy) {
+  runs(function () {
+    var origFunc = require(path);
+    undefRequireModule(path);
+    define(path, [], function () {
+      var ext = {}
+      for (var key in spy) {
+        if (spy.hasOwnProperty(key)) {
+          ext[key] = function (k, p) {
+            return function () {
+              origFunc.prototype[k].apply(this, [].slice.call(arguments));
+              spy[k].apply(spy, arguments);
+            }
+          }(key, path)
+        }
+      }
+      return origFunc.extend(ext);
+    });
+    requireModuleAndWait([path]);
+  });
+};
+
+function assertRefetch(view) {
+  var $target = view.$el.find('.refetch');
+  expect($target.length).toBeTruthy();
+  var event = $.Event('tap', {
+    currentTarget: $target.get(0)
+  });
+  $target.trigger(event);
+  return $target;
 }
