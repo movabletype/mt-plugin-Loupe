@@ -1,0 +1,107 @@
+@import "_helpers";
+
+#header {
+  background-color: $bg-color;
+  font-size: 37px;
+  font-size: 2.3125rem;
+  height: $header-height;
+  @include position-zero;
+  z-index: 1000;
+  #header-main {
+    margin: 0 auto;
+    padding: 10px 0;
+    width: $content-max-width;
+  }
+  nav {
+    position: relative;
+  }
+  .header-title {
+    font-size: 18px;
+    line-height: 40px;
+    text-align: center;
+  }
+  .header-button {
+    background-color: #e0e0e0;
+    border: 1px solid #cccccc;
+    @include border-radius(4px);
+    font-size: 12px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 38px;
+    min-width: 39px;
+    /* 50 - 7 - 4 */
+    min-width: 3.125rem;
+    text-align: center;
+    a {
+      width: 100%;
+    }
+  }
+  .header-button-container {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    &.tapped {
+      .header-button {
+        background-color: #ccc;
+        &:before {
+          background-color: #ccc;
+        }
+      }
+    }
+  }
+  .header-button-container-left {
+    left: 0;
+    .header-button {
+      border-left: 0 none transparent;
+      margin-left: 14px;
+      padding: 0 7px 0 4px;
+      &:before {
+        background-color: #e0e0e0;
+        border: 1px solid #cccccc;
+        content: '\00a0';
+        display: block;
+        height: 26px;
+        margin-top: 5px;
+        margin-left: -16px;
+        position: absolute;
+        width: 26px;
+        z-index: -1;
+        @include transform(rotateY(42deg) rotate(45deg));
+      }
+    }
+  }
+  .header-button-container-right {
+    right: 0;
+  }
+  @include transition-shadow-header;
+  &.shadow {
+    @include single-box-shadow(rgba(158, 158, 158, 0.2), 0, 4px, 4px);
+    @include transition-shadow-header;
+  }
+}
+
+#share-button {
+  display: block;
+  font-size: 20px;
+  line-height: 30px;
+  padding: 5px 10px 5px 14px;
+  text-align: center;
+  width: 50px;
+  @include border-radius(4px);
+  &.tapped {
+    background-color: #ccc;
+  }
+}
+
+@media screen and (max-width: $content-max-width) {
+  #header {
+    #header-main {
+      width: 100%;
+      min-width: 320px;
+    }
+    .header-button-container {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}

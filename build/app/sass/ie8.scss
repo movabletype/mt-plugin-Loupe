@@ -1,20 +1,27 @@
 @import "_helpers";
 
+.move.ie8 {
+  overflow: hidden;
+}
+
 .ie8 {
-  #app-building {
-    background-image: url("assets/images/loading-small.gif");
+  .loading,
+  .content-loading {
+    background-image: url("../assets/images/loading-small.gif");
   }
   #header {
     #header-main {
       background-color: transparent;
-      .circle, .circle-inner {
+      .circle,
+      .circle-inner {
         @include border-radius-with-pie(100px);
         position: absolute;
       }
     }
   }
   #menu-blogs-list {
-    .circle, .circle-inner {
+    .circle,
+    .circle-inner {
       @include border-radius-with-pie(100px);
       position: absolute;
     }
@@ -37,10 +44,5 @@
     header h1 {
       background: url("../assets/images/logo-circle-small.png") no-repeat center center;
     }
-  }
-  .card {
-    header: {
-      min-height: 24px;
-    };
   }
 }

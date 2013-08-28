@@ -1,6 +1,12 @@
-doctype 5
+!!! 5
+//if lt IE 8
+  html
+//if IE 8
+  html(class="ie8")
+// [if gt IE 8] <!
 html(manifest=manifestFile)
-  head
+    // <![endif]
+    head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes')
     meta(name='format-detection', content='telephone=no,email=no,address=no')
@@ -39,4 +45,4 @@ html(manifest=manifestFile)
     #container
       #menu
       #app
-    #app-building
+    #app-building.loading
