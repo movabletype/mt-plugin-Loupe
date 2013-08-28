@@ -39,7 +39,7 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboa
         var width = $blognameInner.width();
         if ($loupeCircle && $loupeCircle.offset && offset) {
           $loupeCircle.offset({
-            left: offset.left - $loupeCircle.outerWidth(true)
+            left: offset.left - $loupeCircle.outerWidth(true) - 10
           });
         }
         if ($blognameArrow && $blognameArrow.offset && offset) {

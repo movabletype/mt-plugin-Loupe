@@ -4,14 +4,11 @@
   {{>js_views_card_partials_fetchError}}
   {{#if id}}
     {{#ifIs status eq="Publish"}}
-    <div class="pageviews">
-      <span class="label">{{#trans trans}}{{label}}{{/trans}}</span>
-      <span class="pageview">{{pageviews}}</span>
-    </div>
-    <div class="title">{{title}}</div>
-    <div class="date">{{formatDate date lang}}</div>
-    <div class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></div>
-    <div class="body">{{sanitize body}}</div>
+      <div class="pageviews">
+        <span class="label"><span class="label-inner">{{#trans trans}}{{label}}{{/trans}}</span></span>
+        <span class="pageview">{{pageviews}}</span>
+      </div>
+      {{>js_views_card_partials_entryItemsList}}
     {{/ifIs}}
   {{/if}}
   </div>

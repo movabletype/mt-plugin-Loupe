@@ -1,9 +1,5 @@
 @import "_helpers";
 
-$header-height: 60px;
-$header-inner-height: 44px;
-$header-padding-top: 7px;
-
 * {
   @include box-sizing(border-box);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -124,7 +120,7 @@ textarea, input {
   }
 }
 
-#dashboard {
+.dashboard {
   @include single-transition($property: top);
   #header {
     cursor: pointer;
@@ -165,12 +161,6 @@ textarea, input {
     #blogname-arrow {
       display: block;
     }
-  }
-  .button-container {
-    margin-left: 16px;
-    margin-left: 1rem;
-    margin-right: 16px;
-    margin-right: 1rem;
   }
   .overlay .button-container {
     margin-left: 0;
@@ -511,8 +501,6 @@ textarea, input {
 .message {
   border: 1px solid #979797;
   box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
-  margin: 0 1em;
-  margin: 0 1rem;
   text-align: center;
   font-size: 1rem;
   line-height: 1.5;

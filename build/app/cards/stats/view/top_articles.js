@@ -61,6 +61,9 @@ define(['js/views/card/composite',
 
                     itemViewModel.fetch({
                       success: _.bind(function () {
+                        itemViewModel.set({
+                          arrow: true
+                        });
                         this.collection.add(itemViewModel, {
                           sort: true
                         });

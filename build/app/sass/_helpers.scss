@@ -19,6 +19,10 @@ $content-max-width: 450px;
 $font-size: 16px;
 $radius: 0.488rem;
 
+$header-height: 60px;
+$header-inner-height: 44px;
+$header-padding-top: 7px;
+
 /* Colors */
 $white: white;
 $black: black;
@@ -75,7 +79,6 @@ $card-arrow: lighten($black, 75%);
     overflow: hidden;
     width: 44px;
     height: 44px;
-    margin-right: 10px;
     @include border-radius(100px);
   }
   .circle-inner {

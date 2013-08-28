@@ -1,62 +1,31 @@
 @import "../../../sass/_helpers.scss";
 
 #card-acception {
-  li {
-    .circle {
-      border-color: #aaa;
-      background-color: #aaa;
-      height: 60px;
-      width: 60px;
+  .circle {
+    border-color: #aaa;
+    background-color: #aaa;
+    height: 60px;
+    width: 60px;
+    .circle-inner {
+      border-color: $white;
+      background-color: #ccc;
+    }
+    &.image {
+      background-color: transparent;
       .circle-inner {
-        border-color: $white;
-        background-color: #ccc;
-      }
-      &.image {
-        background-color: transparent;
-        .circle-inner {
-          border-color: transparent;
-          background-color: transparent;
-        }
-      }
-    }
-    &.sample-item {
-      .circle.image {
         border-color: transparent;
-        background-size: 75px;
-        margin-right: 2px;
-        .circle-inner {
-          border-color: transparent;
-        }
+        background-color: transparent;
       }
     }
   }
-}
-
-#acception-view {
-  .content {
-    min-height: 288px;
-    /* 320 - (16 * 2) */
-    min-height: 20rem;
-    padding: 16px;
-    padding: 1rem;
-  }
-  .title {
-    text-align: left;
-    padding: 0;
-    font-weight: bold;
-    font-size: 16px;
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  .body {
-    line-height: 1.8;
-    img {
-      max-width: 100%;
+  .sample-item {
+    .circle.image {
+      border-color: transparent;
+      background-size: 75px;
+      margin-right: 2px;
+      .circle-inner {
+        border-color: transparent;
+      }
     }
-  }
-  .author-name {
-    font-weight: bold;
-    margin-left: 16px;
-    margin-left: 1rem;
   }
 }

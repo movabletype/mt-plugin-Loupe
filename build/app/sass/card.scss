@@ -64,7 +64,10 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
   }
   .content {
     height: 100%;
-    min-height: 300px;
+    padding: 16px;
+    padding: 1rem;
+    min-height: 268px;
+    /* 300 - (16 * 2) */
     min-height: 18.75rem;
     position: relative;
     @include border-bottom-radius(8px);
@@ -75,110 +78,24 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
         text-shadow: 1px 1px 0 $white;
       }
     }
-  }
-  .button-container {
-    background-color: $btn-basic-color;
-    color: #fff;
-    cursor: pointer;
-    text-align: center;
-    font-size: 16px;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin: 16px 0 24px;
-    margin: 1rem 0 1.5rem;
-    position: relative;
-    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    @include border-radius($radius);
-    @include transition-duration(0.05s);
-    @include transition-timing-function(ease-in);
-    .button {
-      display: block;
-      padding: 16px;
-      padding: 1rem;
-      min-height: 8px;
-      /* 40 - (16 * 2) */
-      min-height: 2.469rem;
-    }
-    &.tapped, &:active, &:hover:active {
-      background-color: darken($btn-basic-color, 2%);
-      top: 7px;
-      @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    }
-  }
-  .button-container-disabled {
-    background-color: $btn-disabled-color;
-    color: #666;
-    cursor: auto;
-    @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
-    @include border-radius($radius);
-    &.tapped, &:active, &:hover:active {
-      background-color: $btn-disabled-color;
-      top: 0;
-      @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
-    }
-  }
-  .button-container-caution {
-    background-color: $btn-attention-color;
-    @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    @include border-radius(radius);
-    &.tapped, &:active, &:hover:active {
-      background-color: darken($btn-attention-color, 2%);
-      top: 7px;
-      @include box-shadow(0px 1px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    }
-  }
-  .button-container-top {
-    margin: 0 0 24px;
-    margin: 0 0 1.5rem;
-  }
-  .button-container.with-icon {
-    .button-icon, .button {
-      display: inline-block;
-      vertical-align: middle;
-      padding: 16px 0;
-      padding: 1rem 0;
-    }
-  }
-  .button-container-undo {
-    cursor: auto;
-    min-height: 8px;
-    /* 40 - (16 * 2) */
-    min-height: 2.469rem;
-    padding: 16px;
-    padding: 1rem;
-    text-align: left;
-    &:active, &:hover:active {
-      background-color: $btn-basic-color;
-      top: 0;
-      @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    }
-    .button-icon, .button-label {
-      display: inline-block;
-      font-size: 1em;
-      font-size: 1rem;
-      line-height: 1.5;
-      vertical-align: middle;
-    }
-    .button-undo {
-      position: absolute;
-      border-left: 1px solid darken($btn-basic-color, 10%);
-      display: block;
-      top: 0;
-      right: 0;
-      height: 100%;
-    }
-    .button-undo-inner {
-      border-left: 1px solid lighten($btn-basic-color, 20%);
-      cursor: pointer;
-      display: block;
-      font-size: 18px;
-      font-size: 1.125rem;
-      height: 100%;
-      line-height: 2.2em;
-      line-height: 2.2rem;
-      padding: 10px;
-      padding: 0.625rem;
-      width: 100%;
+    &.content-list {
+      padding: 0;
+      min-height: 300px;
+      min-height: 18.75em;
+      .message,
+      .button-container {
+        margin-left: 16px;
+        margin-left: 1rem;
+        margin-right: 16px;
+        margin-right: 1rem;
+      }
+      .overlay {
+        .message,
+        .button-container {
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
     }
   }
   .card-item-list {
@@ -191,10 +108,6 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
       padding: 0;
       position: relative;
       @include pie-clearfix;
-      .item-asset-container {
-        display: table-cell;
-        vertical-align: middle;
-      }
       .circle {
         &.image {
           background-color: transparent;
@@ -207,37 +120,78 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
         }
       }
       a {
-        border-bottom: 1px solid $card-border-color;
         cursor: pointer;
         display: block;
         height: 100%;
-        padding: 16px;
-        padding: 1rem;
         width: 100%;
         @include pie-clearfix;
         &.tapped, &:active {
           @include background-image(linear-gradient(rgba($black, 0.15), rgba($black, 0.05) 5%));
         }
       }
+      .item-container {
+        border-bottom: 1px solid $card-border-color;
+        display: block;
+        height: 100%;
+        padding: 16px;
+        padding: 1rem;
+        width: 100%;
+        @include pie-clearfix;
+      }
       .item-content {
         display: table;
+        width: 100%;
+        .item-asset-container,
+        .item-title,
+        .item-arrow {
+          display: table-cell;
+          vertical-align: middle;
+        }
+        .item-asset-container {
+          width: 60px;
+        }
+        .item-title {
+          padding: 0 8px;
+          padding: 0 0.488rem;
+          text-align: left;
+          width: auto;
+        }
+        .item-arrow {
+          color: $card-arrow;
+          font-size: 36px;
+          font-size: 2.25rem;
+          text-align: right;
+          width: 21px;
+          width: 1.3125rem;
+        }
       }
-      .item-title {
-        display: table-cell;
-        vertical-align: middle;
-        padding: 0 36px 0 8px;
-        padding: 0 2.25rem 0 0.488rem;
+    }
+  }
+  .entry-items-list,
+  .comment-items-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    .title {
+      text-align: left;
+      padding: 16px 0;
+      padding: 1rem 0;
+      font-weight: bold;
+      font-size: 16px;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .body {
+      line-height: 1.8;
+      margin-top: 1em;
+      img {
+        max-width: 100%;
       }
-      .item-arrow {
-        color: $card-arrow;
-        display: block;
-        font-size: 36px;
-        font-size: 2.25rem;
-        position: absolute;
-        right: 16px;
-        right: 1rem;
-        top: 35%;
-      }
+    }
+    .author-name {
+      font-weight: bold;
+      margin-left: 16px;
+      margin-left: 1rem;
     }
   }
   @include box-shadow($card-shadow-color 0 0.667rem 0, rgba($white, 0.2) 0 1px 0 inset);

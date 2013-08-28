@@ -3,13 +3,14 @@
 
 #card-upload {
   .content {
-    min-height: 230px;
+    min-height: 198px;
+    /* 230 - (16 * 2) */
+    min-height: 14.375rem;
   }
   .uploaded-image {
-    width: 100%;
-    padding: 10px;
+    text-align: center;
     img {
-      width: 100%;
+      max-width: 100%;
     }
   }
   #upload-file-input {
@@ -17,17 +18,14 @@
     position: absolute;
   }
   .upload-image {
-    font-size: 70px;
     color: #999;
-    text-align: center;
+    font-size: 70px;
     display: block;
-    padding: 0.5em 0 0.5em;
+    padding: 40px 0 20px;
     padding: 2.5rem 0 1.5rem;
+    text-align: center;
   }
   #upload-file {
-    .button-icon, .button {
-      line-height: 24px;
-    }
     .button-icon {
       font-size: 24px;
       margin-left: -24px;
