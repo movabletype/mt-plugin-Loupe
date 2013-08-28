@@ -9,12 +9,12 @@
       padding: 20px;
     }
     .item-asset {
-      font-size: 40px;
       color: #999;
       display: block;
-      width: 100%;
+      font-size: 40px;
       height: 100%;
       margin-right: 10px;
+      width: 100%;
     }
   }
 }
@@ -22,25 +22,30 @@
 #feedbacks-comment-view,
 #feedbacks-comment-entry {
   .content {
+    padding: 16px;
     padding: 1rem;
-    min-height: 300px;
+    min-height: 268px;
+    /* 300 - (16 * 2) */
+    min-height: 18.75rem;
     position: relative;
   }
   .title {
     text-align: left;
     padding: 0;
     font-weight: bold;
-    font-size: 1.097rem;
+    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
   }
   .body {
-    line-height: 1.8em;
+    line-height: 1.8;
     img {
       max-width: 100%;
     }
   }
   .author-name {
     font-weight: bold;
+    margin-left: 16px;
     margin-left: 1rem;
   }
 }
@@ -48,7 +53,9 @@
 #feedbacks-comment-view {
   .content {
     padding: 10px 0 30px;
-    min-height: 300px;
+    min-height: 260px;
+    /* 300 - 10 - 30 */
+    min-height: 18.75rem;
     position: relative;
   }
   .comment-container {
@@ -71,6 +78,9 @@
     color: #fff;
     background-color: #666;
     text-align: left;
+    .message-inner {
+      background-color: transparent;
+    }
   }
   #reply-disabled-button {
     margin: 10px 0;
@@ -83,7 +93,7 @@
     padding: 10px 20px;
     border-top: 1px solid #dddddd;
     .message {
-      margin: 0 0 1em 0;
+      margin: 0 0 16px 0;
       margin: 0 0 1rem 0;
     }
   }

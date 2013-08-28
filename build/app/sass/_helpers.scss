@@ -23,6 +23,7 @@ $radius: 0.488rem;
 $white: white;
 $black: black;
 $bg-color: #f6f5f4;
+$font-color: #444444;
 $card-background-color: #f3f3f5;
 $card-header-color: #08c1af;
 $card-border-color: #c2c3c5;
@@ -52,20 +53,12 @@ $card-arrow: lighten($black, 75%);
 @mixin loading-white {
   .loading,
   .content-loading {
-    background-image: url("../assets/images/loading.gif");
-    @include loading-base;
     background-color: $card-background-color;
     background-color: rgba($card-background-color, 0.8);
-    -pie-background: url("../assets/images/loading.gif") no-repeat center center / 45px 45px;
-    z-index: 13;
-  }
-}
-
-@mixin loading {
-  .loading,
-  .content-loading {
     background-image: url("../assets/images/loading.gif");
     @include loading-base;
+    -pie-background: url("../assets/images/loading.gif") no-repeat center center / 45px 45px;
+    z-index: 13;
   }
 }
 

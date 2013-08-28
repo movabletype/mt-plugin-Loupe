@@ -12,11 +12,12 @@ $header-padding-top: 7px;
 }
 
 body {
-  margin: 0;
-  padding: 0;
   background-color: $bg-color;
+  color: $font-color;
   font-family: 'Helvetica Neue',sans-serif;
   font-size: $font-size;
+  margin: 0;
+  padding: 0;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
   &.hide {
     overflow: hidden;
@@ -24,6 +25,7 @@ body {
 }
 
 textarea, input {
+  font-size: 16px;
   font-size: 1rem;
   @include user-select(text);
 }
@@ -38,12 +40,12 @@ textarea, input {
 
 #app,
 #menu {
-  width: 100%;
   height: 100%;
+  width: 100%;
   .container {
+    height: 100%;
     position: absolute;
     width: 100%;
-    height: 100%;
   }
 }
 
@@ -60,49 +62,47 @@ textarea, input {
 }
 
 #header {
-  height: $header-height;
   background-color: $bg-color;
-  position: absolute;
-  color: #444;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 0;
   font-size: 37px;
+  font-size: 2.3125rem;
+  height: $header-height;
+  left: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
   z-index: 1000;
   #header-main {
-    width: $content-max-width;
     height: $header-height;
     margin: 0 auto;
     padding: 0;
+    width: $content-max-width;
   }
   nav {
     position: relative;
   }
   #show-menu,
   #back-dashboard {
-    color: #444;
-    position: absolute;
-    left: 0;
     cursor: pointer;
+    left: 0;
+    position: absolute;
   }
   .share-button-container {
+    cursor: pointer;
     padding: 9px 0;
     position: absolute;
-    top: 0;
     right: 0;
-    cursor: pointer;
+    top: 0;
   }
   #share-button {
-    color: #444;
-    padding: 5px 10px 5px 14px;
     background-color: #e0e0e0;
     border: 1px solid #cccccc;
+    display: block;
     font-size: 20px;
     line-height: 30px;
-    display: block;
-    width: 50px;
+    padding: 5px 10px 5px 14px;
     text-align: center;
+    width: 50px;
     @include border-radius(4px);
     &.tapped {
       background-color: #ccc;
@@ -115,7 +115,6 @@ textarea, input {
     font-size: 18px;
     line-height: 40px;
     text-align: center;
-    color: #444;
   }
   @include loupe-circle;
   @include transition-shadow-header;
@@ -146,20 +145,20 @@ textarea, input {
     margin: 0;
   }
   #blogname-arrow {
+    color: #999;
     display: none;
-    position: absolute;
-    top: $header-padding-top;
     height: $header-inner-height;
     line-height: $header-inner-height;
-    color: #999;
+    position: absolute;
+    top: $header-padding-top;
     @include single-transition($property: transform);
     &.rotate {
       @include transform(rotate(180deg));
     }
   }
   .error-in-dashboard {
-    text-align: center;
     margin: 100px 0;
+    text-align: center;
   }
   .show {
     #blogname-circle,
@@ -168,9 +167,9 @@ textarea, input {
     }
   }
   .button-container {
-    margin-left: 1em;
-    margin-right: 1em;
+    margin-left: 16px;
     margin-left: 1rem;
+    margin-right: 16px;
     margin-right: 1rem;
   }
   .overlay .button-container {
@@ -182,32 +181,33 @@ textarea, input {
 .header-button {
   background-color: #e0e0e0;
   border: 1px solid #cccccc;
+  border-left: 0 none transparent;
   border-radius: 4px;
-  text-align: center;
   font-size: 12px;
-  line-height: 38px;
-  padding: 0 7px;
   font-weight: bold;
-  min-width: 50px;
   height: 40px;
-  padding: 0 7px 0 4px;
-  border-left: 0 none;
+  line-height: 38px;
+  min-width: 39px;
+  /* 50 - 7 - 4 */
+  min-width: 3.125rem;
   margin-left: 14px;
+  padding: 0 7px 0 4px;
+  text-align: center;
   a {
     width: 100%;
   }
   &:before {
-    position: absolute;
-    display: block;
-    width: 26px;
-    height: 26px;
-    content: '\00a0';
-    @include transform(rotateY(42deg) rotate(45deg));
     background-color: #e0e0e0;
     border: 1px solid #cccccc;
+    content: '\00a0';
+    display: block;
+    height: 26px;
     margin-top: 5px;
     margin-left: -16px;
+    position: absolute;
+    width: 26px;
     z-index: -1;
+    @include transform(rotateY(42deg) rotate(45deg));
   }
 }
 

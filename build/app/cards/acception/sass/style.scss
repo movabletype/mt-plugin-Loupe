@@ -3,10 +3,10 @@
 #card-acception {
   li {
     .circle {
-      width: 60px;
-      height: 60px;
       border-color: #aaa;
       background-color: #aaa;
+      height: 60px;
+      width: 60px;
       .circle-inner {
         border-color: $white;
         background-color: #ccc;
@@ -34,24 +34,29 @@
 
 #acception-view {
   .content {
-    min-height: 320px;
+    min-height: 288px;
+    /* 320 - (16 * 2) */
+    min-height: 20rem;
+    padding: 16px;
     padding: 1rem;
   }
   .title {
     text-align: left;
     padding: 0;
     font-weight: bold;
-    font-size: 1.097rem;
+    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
   }
   .body {
-    line-height: 1.8em;
+    line-height: 1.8;
     img {
       max-width: 100%;
     }
   }
   .author-name {
     font-weight: bold;
+    margin-left: 16px;
     margin-left: 1rem;
   }
 }
