@@ -6,12 +6,20 @@
 #card-stats {
   position: relative;
   overflow: visible;
+  .content {
+    padding-left: 0;
+    padding-right: 0;
+  }
   .tap-enabled {
     cursor: pointer;
   }
   .stats-dashboard-graph-container {
     width: 320px;
     margin: 0 auto;
+  }
+  .today {
+    padding-left: 16px;
+    padding-left: 1rem;
   }
   .todays-pageviews {
     @include numeric-font;

@@ -17,6 +17,13 @@
         @include border-radius-with-pie(100px);
         position: absolute;
       }
+      .header-button-container-left .header-button {
+        border: 1px solid #cccccc;
+        margin-left: 0;
+        &:before {
+          display: none;
+        }
+      }
     }
   }
   #menu-blogs-list {
@@ -24,13 +31,6 @@
     .circle-inner {
       @include border-radius-with-pie(100px);
       position: absolute;
-    }
-  }
-  .header-button {
-    border: 1px solid #cccccc;
-    margin-left: 0;
-    &:before {
-      display: none;
     }
   }
   #app {
