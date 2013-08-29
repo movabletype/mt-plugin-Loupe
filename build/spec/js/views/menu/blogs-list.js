@@ -529,6 +529,26 @@ describe("views", function () {
 
       runs(function () {
         expect(blogList.offset).toEqual(25);
+
+        expect(blogList.$el.find('.blog-item-nav-next').length).toBeTruthy();
+        expect(blogList.$el.find('.blog-item').length).toEqual(25);
+
+        $target = blogList.$el.find('.blog-item-nav-prev');
+        event = jQuery.Event('tap', {
+          currentTarget: $target.get(0)
+        });
+        count = renderSpy.callCount;
+        $target.trigger(event);
+      });
+
+      waitsFor(function () {
+        return renderSpy.callCount > count;
+      }, 'add tap class', 3000);
+
+      runs(function () {
+        expect(blogList.offset).toEqual(0);
+        expect(blogList.$el.find('.blog-item-nav-prev').length).toBeFalsy();
+        expect(blogList.$el.find('.blog-item').length).toEqual(25);
       });
     });
 

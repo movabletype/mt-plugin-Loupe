@@ -276,7 +276,7 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
 
         this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {
-            this.offset = parseInt($(e.currentTarget).data('offset'), 10) || this.offset;
+            this.offset = $(e.currentTarget).data('offset') !== undefined ? parseInt($(e.currentTarget).data('offset'), 10) : this.offset;
             this.offset = this.offset < 0 ? 0 : this.offset;
             this.navigationHandler();
           }, this));
