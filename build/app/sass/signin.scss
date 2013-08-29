@@ -1,6 +1,6 @@
 @import "_helpers";
 
-#login {
+#signin {
   margin: 0 auto;
   max-width: $content-max-width;
   width: 94%;
@@ -16,16 +16,16 @@
     padding: 32px 16px 16px;
     padding: 2rem 1rem 1rem;
   }
-  .login-field {
+  .signin-field {
     padding-bottom: 16px;
     padding-bottom: 1rem;
   }
-  .login-label {
+  .signin-label {
     display: block;
     margin-bottom: 2px;
     margin-bottom: 0.1rem;
   }
-  .login-input {
+  .signin-input {
     border: 2px solid $card-border-color;
     padding: 0.5em;
     width: 100%;

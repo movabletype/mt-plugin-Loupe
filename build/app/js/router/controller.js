@@ -156,19 +156,19 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
         }
       },
 
-      login: function () {
-        commands.execute('move:login');
+      signin: function () {
+        commands.execute('move:signin');
       },
 
       authenticate: function () {
         var hash = location.href.lastIndexOf('#'),
           route = hash !== -1 ? location.href.slice(hash + 1) : '';
 
-        if (route !== 'login') {
+        if (route !== 'signin') {
           window.sessionStorage.setItem('routeCache', route);
-          commands.execute('router:navigate', 'login');
+          commands.execute('router:navigate', 'signin');
         } else {
-          this.login();
+          this.signin();
         }
       },
 
@@ -179,7 +179,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           delete this.token;
           cache.clearAll();
           vent.trigger('after:signout');
-          commands.execute('router:navigate', 'login');
+          commands.execute('router:navigate', 'signin');
         }, this));
       },
 
@@ -217,7 +217,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
             }
           } else {
             if (DEBUG) {
-              console.log('user retries login for ' + authRetry + ' times, so giving up login');
+              console.log('user retries signin for ' + authRetry + ' times, so giving up signin');
             }
             var message = 'authorizationRequired error occured over time for some reason';
             window.sessionStorage.removeItem('authRetry');

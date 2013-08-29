@@ -239,7 +239,7 @@ describe("router", function () {
 
       waitsFor(function () {
         return flag;
-      }, 'move login screen', 3000);
+      }, 'move signin screen', 3000);
 
       runs(function () {
         expect(controller.authenticate).toHaveBeenCalled();
@@ -666,30 +666,30 @@ describe("router", function () {
 
       runs(function () {
         expect(sessionStorage.getItem('routeCache')).toEqual('stats');
-        expect(route).toEqual('login');
+        expect(route).toEqual('signin');
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
       });
     });
 
-    it("when user location is 'login', only execute move:login command", function () {
+    it("when user location is 'signin', only execute move:signin command", function () {
       sessionStorage.removeItem('routeCache');
 
       var Controller, controller, flag;
 
-      Backbone.history.navigate('login');
+      Backbone.history.navigate('signin');
       var commandsOrig = require('js/commands');
       var command = _.clone(commandsOrig);
       var routerNavigate = jasmine.createSpy('routerNavigate');
-      var moveLogin = jasmine.createSpy('moveLogin');
+      var movesignin = jasmine.createSpy('movesignin');
 
       command.execute = function (co, data) {
         commandsOrig.execute.call(commandsOrig, co, data);
-        if (co === 'router:navigate' && data === 'login') {
+        if (co === 'router:navigate' && data === 'signin') {
           routerNavigate();
           flag = true;
-        } else if (co === 'move:login') {
-          moveLogin();
+        } else if (co === 'move:signin') {
+          movesignin();
           flag = true;
         }
       };
@@ -704,7 +704,7 @@ describe("router", function () {
       runs(function () {
         Controller = require('js/router/controller');
         controller = new Controller();
-        spyOn(controller, 'login').andCallThrough();
+        spyOn(controller, 'signin').andCallThrough();
         controller.authenticate();
       });
 
@@ -714,9 +714,9 @@ describe("router", function () {
 
       runs(function () {
         expect(sessionStorage.getItem('routeCache')).toBeNull();
-        expect(controller.login).toHaveBeenCalled();
+        expect(controller.signin).toHaveBeenCalled();
         expect(routerNavigate).not.toHaveBeenCalled();
-        expect(moveLogin).toHaveBeenCalled();
+        expect(movesignin).toHaveBeenCalled();
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
       });
@@ -738,7 +738,7 @@ describe("router", function () {
 
       command.execute = function (co, data) {
         commandsOrig.execute.call(commandsOrig, co, data);
-        if (co === 'router:navigate' && data === 'login') {
+        if (co === 'router:navigate' && data === 'signin') {
           routerNavigate();
           flag = true;
         }

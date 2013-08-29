@@ -98,7 +98,7 @@ define(['moment'], function (moment) {
 
     var invalid = {
       error: {
-        message: 'Invalid Login'
+        message: 'Invalid Sign in'
       }
     }
 

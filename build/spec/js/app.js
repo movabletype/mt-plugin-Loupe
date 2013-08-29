@@ -6,7 +6,7 @@ describe("js", function () {
   var commandSpies;
   var cardLayoutSpy = jasmine.createSpy('cardLayoutSpy');
   var menuLayoutSpy = jasmine.createSpy('menuLayoutSpy');
-  var loginViewSpy = jasmine.createSpy('loginViewSpy');
+  var signinViewSpy = jasmine.createSpy('signinViewSpy');
   var dashboardLayoutSpy = jasmine.createSpy('dashboardLayoutSpy');
 
   beforeEach(function () {
@@ -24,7 +24,7 @@ describe("js", function () {
     });
 
     runs(function () {
-      commandSpies = jasmine.createSpyObj('commandSpies', ['move:cardView:firstCard:view', 'app:beforeTransition', 'app:afterTransition', 'app:buildMenu', 'move:login', 'app:error']);
+      commandSpies = jasmine.createSpyObj('commandSpies', ['move:cardView:firstCard:view', 'app:beforeTransition', 'app:afterTransition', 'app:buildMenu', 'move:signin', 'app:error']);
       initCommands(commandSpies, controller);
 
       runs(function () {
@@ -50,13 +50,13 @@ describe("js", function () {
           });
         });
 
-        var loginViewOrig = require('js/views/login/login');
-        undefRequireModule('js/views/login/login');
-        define('js/views/login/login', [], function () {
-          return loginViewOrig.extend({
+        var signinViewOrig = require('js/views/signin/signin');
+        undefRequireModule('js/views/signin/signin');
+        define('js/views/signin/signin', [], function () {
+          return signinViewOrig.extend({
             initialize: function (options) {
-              loginViewOrig.prototype.initialize.apply(this, arguments);
-              loginViewSpy(options);
+              signinViewOrig.prototype.initialize.apply(this, arguments);
+              signinViewSpy(options);
             }
           });
         });
@@ -368,23 +368,23 @@ describe("js", function () {
         });
       });
 
-      it("move:login", function () {
+      it("move:signin", function () {
         var count;
         runs(function () {
           spyOn(app.main, 'show');
           var commands = require('js/commands');
-          count = commandSpies['move:login'].callCount;
-          commands.execute('move:login', initData);
+          count = commandSpies['move:signin'].callCount;
+          commands.execute('move:signin', initData);
         });
 
         waitsFor(function () {
-          return commandSpies['move:login'].callCount > count;
-        }, 'executed move:login', 3000);
+          return commandSpies['move:signin'].callCount > count;
+        }, 'executed move:signin', 3000);
 
         runs(function () {
           expect(app.main.show).toHaveBeenCalled();
-          expect(loginViewSpy).toHaveBeenCalled();
-          expect(loginViewSpy.mostRecentCall.args[0]).toEqual(initData);
+          expect(signinViewSpy).toHaveBeenCalled();
+          expect(signinViewSpy.mostRecentCall.args[0]).toEqual(initData);
         });
       });
 
