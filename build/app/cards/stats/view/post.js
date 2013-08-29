@@ -106,7 +106,7 @@ define(['js/views/card/itemview',
           year: "This Year's"
         }
 
-        data.label = map[this.unit] + ' Access';
+        data.label = map[this.unit] + ' access';
         if (data.pageviews === undefined) {
           data.pageviews = this.pageviews;
         }
