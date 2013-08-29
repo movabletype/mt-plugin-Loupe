@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/collections/blogs', 'js/models/blog', 'js/mtapi/logout'],
+define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands', 'js/vent', 'js/mtapi/user', 'js/collections/blogs', 'js/models/blog', 'js/mtapi/signout'],
 
-  function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollection, BlogModel, logout) {
+  function (Marionette, L10N, cache, mtapi, commands, vent, getUser, BlogCollection, BlogModel, signout) {
     "use strict";
     return Marionette.Controller.extend({
       auth: function (callback) {
@@ -172,13 +172,13 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
         }
       },
 
-      logout: function () {
-        logout().done(_.bind(function () {
+      signout: function () {
+        signout().done(_.bind(function () {
           localStorage.removeItem('currentBlogId');
           localStorage.removeItem('recentBlogHistory');
           delete this.token;
           cache.clearAll();
-          vent.trigger('after:logout');
+          vent.trigger('after:signout');
           commands.execute('router:navigate', 'login');
         }, this));
       },

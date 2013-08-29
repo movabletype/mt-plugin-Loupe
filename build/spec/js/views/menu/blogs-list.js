@@ -427,7 +427,7 @@ describe("views", function () {
       });
     });
 
-    it("tap logout", function () {
+    it("tap signout", function () {
       blogList = new BlogList(initData);
       spyOn(blogList, 'addTapClass').andCallThrough();
       var $target, event;
@@ -437,7 +437,7 @@ describe("views", function () {
       }, 'fetching data', 3000);
 
       runs(function () {
-        $target = blogList.$el.find('a[data-id="logout"]');
+        $target = blogList.$el.find('a[data-id="signout"]');
         event = jQuery.Event('tap', {
           currentTarget: $target.get(0)
         });
@@ -452,7 +452,7 @@ describe("views", function () {
       runs(function () {
         expect(blogList.addTapClass).toHaveBeenCalled();
         expect(commandSpies['router:navigate']).toHaveBeenCalled();
-        expect(commandSpies['router:navigate'].mostRecentCall.args[0]).toEqual('logout');
+        expect(commandSpies['router:navigate'].mostRecentCall.args[0]).toEqual('signout');
         Backbone.history.navigate('');
       });
     });

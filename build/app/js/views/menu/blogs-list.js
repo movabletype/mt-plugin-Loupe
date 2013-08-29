@@ -264,9 +264,9 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
             var $link = $(e.currentTarget);
             e.preventDefault();
             e.stopPropagation();
-            if ($link.data('id') === 'logout') {
-              vent.on('after:logout', commands.execute('dashboard:toggle'));
-              commands.execute('router:navigate', 'logout');
+            if ($link.data('id') === 'signout') {
+              vent.on('after:signout', commands.execute('dashboard:toggle'));
+              commands.execute('router:navigate', 'signout');
             } else {
               this.selectBlogHandler($link.data('id'));
             }

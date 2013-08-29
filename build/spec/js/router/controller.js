@@ -722,7 +722,7 @@ describe("router", function () {
       });
     });
 
-    it("execute logout", function () {
+    it("execute signout", function () {
       localStorage.setItem('currentBlogId', '3');
       localStorage.setItem('recentBlogHistory', []);
 
@@ -756,7 +756,7 @@ describe("router", function () {
         Controller = require('js/router/controller');
         controller = new Controller();
         controller.token = mtapi.api.getTokenData();
-        controller.logout();
+        controller.signout();
       });
 
       waitsFor(function () {
