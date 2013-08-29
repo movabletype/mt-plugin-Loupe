@@ -90,7 +90,8 @@
                 .attr({
                     action: '<mt:var name="script_url">',
                     method: 'post'
-                });
+                })
+                .hide();
         for ( key in data ) {
             var input = jQuery('<input />')
                 .attr({
@@ -99,6 +100,7 @@
                 });
             form.append(input);
         }
+        jQuery(document.body).append(form);
         form.submit();
         form.remove();
         return false;
