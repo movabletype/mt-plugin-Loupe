@@ -20,365 +20,47 @@ body {
   }
 }
 
-textarea, input {
+textarea,
+input {
   font-size: 16px;
   font-size: 1rem;
   @include user-select(text);
 }
 
-#app-building {
-  @include loading-base;
-  background-color: $bg-color;
-  background-color: rgba($bg-color, 0.5);
-  background-image: url("../assets/images/loading.gif");
-  z-index: 9999;
-}
-
-#app,
-#menu {
+.container {
   height: 100%;
+  position: absolute;
   width: 100%;
-  .container {
-    height: 100%;
-    position: absolute;
-    width: 100%;
-  }
-}
-
-#menu .container {
-  display: none;
-}
-
-@mixin transition-header {
-  @include single-transition($property: all, $duration: 0.3s, $function: ease);
-}
-
-@mixin transition-shadow-header {
-  @include single-transition($property: box-shadow, $duration: 0.3s, $function: ease);
-}
-
-#header {
-  background-color: $bg-color;
-  font-size: 37px;
-  font-size: 2.3125rem;
-  height: $header-height;
-  left: 0;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 1000;
-  #header-main {
-    height: $header-height;
-    margin: 0 auto;
-    padding: 0;
-    width: $content-max-width;
-  }
-  nav {
-    position: relative;
-  }
-  #show-menu,
-  #back-dashboard {
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-  }
-  .share-button-container {
-    cursor: pointer;
-    padding: 9px 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  #share-button {
-    background-color: #e0e0e0;
-    border: 1px solid #cccccc;
-    display: block;
-    font-size: 20px;
-    line-height: 30px;
-    padding: 5px 10px 5px 14px;
-    text-align: center;
-    width: 50px;
-    @include border-radius(4px);
-    &.tapped {
-      background-color: #ccc;
-      &:before {
-        background-color: #ccc;
-      }
-    }
-  }
-  .header-title {
-    font-size: 18px;
-    line-height: 40px;
-    text-align: center;
-  }
-  @include loupe-circle;
-  @include transition-shadow-header;
-  &.shadow {
-    @include single-box-shadow(rgba(158, 158, 158, 0.2), 0, 4px, 4px);
-    @include transition-shadow-header;
-  }
-}
-
-.dashboard {
-  @include single-transition($property: top);
-  #header {
-    cursor: pointer;
-    #header-main {
-      padding: $header-padding-top 0 9px;
-    }
-    .circle {
-      display: none;
-      position: absolute;
-    }
-  }
-  #blogname {
-    text-align: center;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: $header-inner-height;
-    height: $header-inner-height;
-    margin: 0;
-  }
-  #blogname-arrow {
-    color: #999;
-    display: none;
-    height: $header-inner-height;
-    line-height: $header-inner-height;
-    position: absolute;
-    top: $header-padding-top;
-    @include single-transition($property: transform);
-    &.rotate {
-      @include transform(rotate(180deg));
-    }
-  }
-  .error-in-dashboard {
-    margin: 100px 0;
-    text-align: center;
-  }
-  .show {
-    #blogname-circle,
-    #blogname-arrow {
-      display: block;
-    }
-  }
-  .overlay .button-container {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-.header-button {
-  background-color: #e0e0e0;
-  border: 1px solid #cccccc;
-  border-left: 0 none transparent;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  height: 40px;
-  line-height: 38px;
-  min-width: 39px;
-  /* 50 - 7 - 4 */
-  min-width: 3.125rem;
-  margin-left: 14px;
-  padding: 0 7px 0 4px;
-  text-align: center;
-  a {
-    width: 100%;
-  }
-  &:before {
-    background-color: #e0e0e0;
-    border: 1px solid #cccccc;
-    content: '\00a0';
-    display: block;
-    height: 26px;
-    margin-top: 5px;
-    margin-left: -16px;
-    position: absolute;
-    width: 26px;
-    z-index: -1;
-    @include transform(rotateY(42deg) rotate(45deg));
-  }
-}
-
-.header-button-container,
-.header-title {
-  padding: 10px 10px 9px 0;
-  &.tapped {
-    .header-button {
-      background-color: #ccc;
-      &:before {
-        background-color: #ccc;
-      }
-    }
-  }
 }
 
 .main-container {
-  padding: 0 0 1px 0;
+  @include scroll-as-native;
+  @include position-zero;
+  background-color: $bg-color;
   overflow: auto;
+  padding: 0 0 1px 0;
   top: $header-height;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-  background-color: $bg-color;
-  -webkit-overflow-scrolling: touch;
+  z-index: 100;
 }
 
-.main-container {
-  z-index: 10;
-}
-
-.menu-main-container {
-  z-index: 9;
-  top: 0;
-  bottom: $header-height;
-  left: 0;
-  right: 0;
-  position: absolute;
-  -webkit-overflow-scrolling: touch;
-  overflow: hidden;
-  .blogs-list {
-    position: absolute;
-    top: 64px;
-    bottom: 0;
-    overflow: auto;
-    left: 0;
-    right: 0;
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    @include loading-white;
-    .loading {
-      background-color: #282828;
-      background-color: rgba(40, 40, 40, 0.9);
-      position: static;
-      background-position: center 15px;
-      height: 78px;
-      z-index: 100;
-    }
-    .histories {
-      position: relative;
-      .blog-item:last-child {
-        border-bottom: 4px solid #e0e0e0;
-      }
-    }
-    .blogs {
-      position: relative;
-    }
-    @include loupe-circle;
-  }
-  .display-name,
-  .blog-name {
-    display: block;
-    height: 50px;
-    padding: 15px 15px 15px 60px;
-  }
-  .userpic {
-    width: 44px;
-    height: 50px;
-    overflow: hidden;
-    position: absolute;
-    z-index: 1;
-    background-position: center center;
-    background-size: cover;
-    @include border-radius-with-pie(100px);
-    &.no-image {
-      font-size: 40px;
-      line-height: 50px;
-      text-align: center;
-      color: #666;
-    }
-  }
-  .user-info,
-  .blog-item {
-    border-bottom: 1px solid #665d66;
-    position: relative;
-    .circle {
-      float: left;
-    }
-    a {
-      border-bottom: 1px solid #4b434b;
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      padding: 13px 20px;
-      &.tapped, &:active {
-        @include background-image(linear-gradient(rgba($white, 0.15), rgba($white, 0.05) 5%));
-      }
-    }
-    &.selected {
-      a {
-        color: #ffb142;
-      }
-      .circle {
-        border-color: #ffb142;
-        background-color: #ffb142;
-      }
-    }
-    &.error {
-      padding: 13px;
-      display: block;
-      text-align: center;
-    }
-  }
-  .blog-item-nav {
-    cursor: pointer;
-    padding: 0 10px;
-    line-height: 76px;
-    height: 76px;
-    &.blog-item-nav-prev {
-      float: left;
-    }
-    &.blog-item-nav-next {
-      float: right;
-    }
-    &:hover {
-      color: #ff6633;
-    }
-  }
-  .blog-item-nav-icon,
-  .blog-item-nav-label {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .blog-item-nav-icon {
-    font-size: 20px;
-    padding: 2px;
-  }
-  #menu-header {
-    background-color: #625362;
-    position: relative;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  #menu-header-logo {
-    text-align: center;
-    margin: 0;
-    font-size: 44px;
-    line-height: 44px;
-  }
-  #menu-header-arrow {
-    font-size: 36px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: 3px solid white;
-    @include border-radius(100px);
-    @include single-transition($property: transform);
-    &.rotate {
-      @include transform(rotate(180deg));
-    }
+.main {
+  display: block;
+  margin: 0 auto;
+  width: $content-max-width;
+  & > div {
+    padding-bottom: 1px;
   }
 }
 
+@media screen and (max-width: $content-max-width) {
+  #main {
+    width: 100%;
+    min-width: 320px;
+  }
+}
+
+/* ## On move */
 .move {
-  &.ie8 {
-    overflow: hidden;
-  }
   #header {
     @include transition-header;
     @include hardware-accelerate-hack;
@@ -393,139 +75,74 @@ textarea, input {
   }
 }
 
-#main {
-  margin: 0 auto;
-  width: $content-max-width;
-  display: block;
-  & > div {
-    padding-bottom: 1px;
-  }
+/* ## Loading */
+.loading,
+.content-loading {
+  background-color: $card-background-color;
+  background-color: rgba($card-background-color, 0.8);
+  background-image: url("../assets/images/loading.gif");
+  background-repeat: no-repeat;
+  background-size: 45px 45px;
+  background-position: center center;
+  @include position-zero;
+  z-index: 300;
 }
 
-#menu-main {
-  margin: 0 auto;
-  width: $content-max-width;
+#app-building {
+  background-color: $bg-color;
+  background-color: rgba($bg-color, 0.5);
+  z-index: 2000;
+}
+
+/* ## Loupe Circle */
+.circle {
+  background-color: $white;
+  border: 6px solid $white;
   display: block;
-  background-color: #372e37;
-  color: #fff;
+  height: 44px;
+  overflow: hidden;
+  width: 44px;
+  @include border-radius(100px);
+}
+
+.circle-inner {
+  background-color: #e6e6e6;
+  background-position: center center;
+  background-size: cover;
+  border: 1px solid #dddddd;
+  display: block;
   height: 100%;
-  position: relative;
+  width: 100%;
+  @include border-radius(100px);
 }
 
-#share {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  .share-inner {
-    width: $content-max-width;
-    margin: 0 auto;
-    position: relative;
-  }
-  #share-close {
-    color: #fff;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    font-size: 40px;
-    cursor: pointer;
-  }
-  h1 {
-    margin: 0;
-    padding: 24% 0 6%;
-    text-align: center;
-    color: #fff;
-    font-size: 20px;
-  }
-  .share-list {
-    margin: 0;
-    padding: 0;
-    @include pie-clearfix;
-    li {
-      float: left;
-      a {
-        color: #fff;
-        text-decoration: none;
-        display: block;
-        padding: 20px 50px;
-      }
-    }
-  }
-  .icon-twitter {
-    font-size: 100px;
-  }
-}
-
-#login {
-  header h1 {
-    text-indent: -9999px;
-    background: url("../assets/images/logo-circle.png") no-repeat center center;
-    background-size: 100px;
-    min-height: 100px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .card {
-    width: 94%;
-    max-width: 450px;
-    margin: 0 auto;
-    .content {
-      .login-field {
-        padding-bottom: 1em;
-        padding-bottom: 1rem;
-      }
-      .login-label {
-        display: block;
-        margin-bottom: 0.1em;
-        margin-bottom: 0.1rem;
-      }
-      .login-input {
-        -webkit-appearance: none;
-        width: 100%;
-        border: 2px solid $card-border-color;
-        @include single-box-shadow(lighten($card-border-color, 10%), 0, 1px, 1px, 0, inset);
-        padding: 0.5em;
-        @include border-radius(4px);
-      }
-      min-height: 0;
-      padding: 2em 1em 1em 1em;
-      padding: 2rem 1rem 1rem 1rem;
-    }
-  }
-}
-
+/* ## Message */
 .message {
   border: 1px solid #979797;
   box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  font-size: 1rem;
-  line-height: 1.5;
   color: #666;
   display: block;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
   @include border-radius($radius);
   .message-inner {
     background: #dcdcdc;
     background: rgba(127, 127, 127, 0.2);
-    padding: 1em;
+    display: block;
+    padding: 16px;
     padding: 1rem;
     word-break: break-all;
-    display: block;
   }
 }
 
+/* ## OverLay */
 .overlay {
   background-color: rgba($card-background-color, 0.95);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 13;
-  padding: 1em;
+  @include position-zero;
+  z-index: 200;
+  padding: 16px;
   padding: 1rem;
   .overlay-inner {
     height: 100%;
@@ -533,10 +150,10 @@ textarea, input {
   /* often used with .message */
   .overlay-content {
     display: table;
-    width: 100%;
     height: 100%;
-    text-align: center;
     margin: 0;
+    text-align: center;
+    width: 100%;
     .overlay-content-inner {
       display: table-cell;
       vertical-align: middle;
@@ -544,26 +161,5 @@ textarea, input {
   }
   &.with-button .overlay-content {
     height: 66.666666%;
-  }
-}
-
-@media screen and (max-width: $content-max-width) {
-  #header #header-main,
-  #main,
-  #share .share-inner {
-    width: 100%;
-    min-width: 320px;
-  }
-  #header .header-button-container,
-  #header .share-button-container {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  #menu-main {
-    width: 100%;
-    min-width: 300px;
-  }
-  .menu-main-container .save-changes {
-    margin-right: 30px;
   }
 }

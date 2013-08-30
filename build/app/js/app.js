@@ -1,6 +1,6 @@
-define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout', 'js/views/login/login'],
+define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout', 'js/views/signin/signin'],
 
-  function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout, LoginView) {
+  function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout, SigninView) {
     "use strict";
 
     var app = new Marionette.Application();
@@ -52,8 +52,8 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
         $('#app-building').hide();
       }, this));
 
-      commands.setHandler('move:login', function (params) {
-        app.main.show(new LoginView(params));
+      commands.setHandler('move:signin', function (params) {
+        app.main.show(new SigninView(params));
         commands.execute('app:afterTransition');
       });
 

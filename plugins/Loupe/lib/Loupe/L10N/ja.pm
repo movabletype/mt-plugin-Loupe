@@ -32,9 +32,7 @@ use vars qw( %Lexicon );
 	'Error saving Loupe settings: [_1]' => 'Loupeの設定を保存できませんでした: [_1]',
 	'Send invitation email' => 'ユーザーに招待状をメールで送信する',
 	'Could not send a invitation mail because Loupe is not enabled.' => 'Loupeが無効になっているため、招待状を送信できません。',
-	'Are you sure you want to send an invitation email to selected users?' => 'Loupeの招待状を選択されたユーザーに送信してもよろしいですか？',
 	'Welcome to Loupe' => 'ようこそ、Loupeへ',
-	'Send Loupe invitation email' => 'Loupeの招待状を送信する',
 
 ## plugins/Loupe/lib/Loupe/Mail.pm
 	'Loupe invitation mail has been sent to [_3] for user \'[_1]\' (user #[_2]).' => 'Loupeの招待状をユーザー\'[_1]\'(ID: [_2])のメールアドレス \'[_3]\'に送信しました。',

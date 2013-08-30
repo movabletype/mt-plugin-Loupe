@@ -1,0 +1,52 @@
+@import "_helpers";
+
+#share {
+  @include position-zero;
+  background-color: $black;
+  background-color: rgba($black, 0.8);
+  z-index: 1500;
+  .share-inner {
+    margin: 0 auto;
+    position: relative;
+    width: $content-max-width;
+  }
+  #share-close {
+    color: #fff;
+    cursor: pointer;
+    font-size: 40px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  h1 {
+    color: $white;
+    font-size: 20px;
+    margin: 0;
+    padding: 24% 0 6%;
+    text-align: center;
+  }
+  .share-list {
+    margin: 0;
+    padding: 0;
+    @include pie-clearfix;
+    li {
+      float: left;
+      a {
+        color: $white;
+        display: block;
+        padding: 20px 50px;
+        text-decoration: none;
+      }
+    }
+  }
+  .icon-twitter {
+    font-size: 100px;
+  }
+}
+
+@media screen and (max-width: $content-max-width) {
+  #share .share-inner {
+    width: 100%;
+    min-width: 320px;
+  }
+}

@@ -44,10 +44,12 @@
 }
 
 .android2 {
-  .header-button {
-    margin-left: 20px;
-  }
-  .header-button:before {
-    -webkit-transform: rotate(45deg);
+  #header .header-button-container-left {
+    .header-button {
+      margin-left: 20px;
+    }
+    .header-button:before {
+      -webkit-transform: rotate(45deg);
+    }
   }
 }

@@ -749,8 +749,7 @@ module.exports = function (grunt) {
           };
         }),
         options: {
-          inherit: 'app/l10n/',
-          reset: grunt.option('reset')
+          inherit: 'app/l10n/'
         }
       },
       concat: {
@@ -768,11 +767,11 @@ module.exports = function (grunt) {
           })),
         options: {
           inherit: 'app/l10n/',
-          reset: grunt.option('reset'),
           concat: true
         }
       },
       options: {
+        reset: grunt.option('reset'),
         comments: grunt.option('comments'),
         findOnly: grunt.option('findOnly'),
         langs: grunt.option('langs')

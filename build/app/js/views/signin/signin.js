@@ -1,4 +1,4 @@
-define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/views/login/templates/login'],
+define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/views/signin/templates/signin'],
 
   function (Marionette, device, commands, mtapi, template) {
     "use strict";
@@ -9,7 +9,7 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
       ui: {
         username: '#username',
         password: '#password',
-        button: '#sign-in-button'
+        button: '#signin-button'
       },
 
       initialize: function (options) {
@@ -17,9 +17,9 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
         this.username = options.username;
         this.password = options.password;
 
-        commands.setHandler('login:error', _.bind(function (error) {
+        commands.setHandler('signin:error', _.bind(function (error) {
           commands.execute('app:afterTransition');
-          this.loginError = error;
+          this.signinError = error;
           this.render();
         }, this));
       },
@@ -33,7 +33,7 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
 
         var timerId = setTimeout(_.bind(function () {
           commands.execute('app:afterTransition');
-          this.loginError = 'Timeout Error';
+          this.signinError = 'Timeout Error';
           this.render();
         }, this), this.timeout);
 
@@ -52,20 +52,20 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
               console.log(resp.error);
             }
             commands.execute('app:afterTransition');
-            this.loginError = resp.error.message || 'Login authencation was failed for some reason';
+            this.signinError = resp.error.message || 'Sign in authencation was failed for some reason';
             this.render();
           }
         }, this));
       },
 
       onRender: function () {
-        if (this.loginError) {
+        if (this.signinError) {
           this.$el.find('.close-me').hammer(this.hammerOpts).on('tap', _.bind(function () {
-            this.$el.find('.login-error').remove();
+            this.$el.find('.signin-error').remove();
           }, this));
         }
 
-        this.$el.find('.login-input').on('keypress', _.bind(function (e) {
+        this.$el.find('.signin-input').on('keypress', _.bind(function (e) {
           if (e.which === 13) {
             this.authenticate();
           }
@@ -82,7 +82,7 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
         var data = {};
         data.username = this.username;
         data.password = this.password;
-        data.loginError = this.loginError;
+        data.signinError = this.signinError;
         return data;
       }
     });

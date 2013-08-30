@@ -1,0 +1,49 @@
+@import "_helpers";
+
+.dashboard {
+  @include single-transition($property: top);
+  #header {
+    cursor: pointer;
+    #header-main {
+      padding-top: $header-padding-top;
+    }
+    .circle {
+      display: none;
+      position: absolute;
+    }
+  }
+  #blogname {
+    text-align: center;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: $header-inner-height;
+    height: $header-inner-height;
+    margin: 0;
+  }
+  #blogname-arrow {
+    color: #999;
+    display: none;
+    height: $header-inner-height;
+    line-height: $header-inner-height;
+    position: absolute;
+    top: $header-padding-top;
+    @include single-transition($property: transform);
+    &.rotate {
+      @include transform(rotate(180deg));
+    }
+  }
+  .error-in-dashboard {
+    margin: 100px 0;
+    text-align: center;
+  }
+  .show {
+    #blogname-circle,
+    #blogname-arrow {
+      display: block;
+    }
+  }
+  .overlay .button-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

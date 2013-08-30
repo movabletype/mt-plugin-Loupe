@@ -3,8 +3,8 @@ define(['backbone.marionette', 'js/commands'], function (Marionette, commands) {
 
   var appRoutes = {
     '': 'moveDashboard',
-    'logout': 'logout',
-    'login': 'login',
+    'signout': 'signout',
+    'signin': 'signin',
     '_login': 'authorizationCallback'
   };
 

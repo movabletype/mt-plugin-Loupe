@@ -5,7 +5,7 @@
   {{#if id}}
     {{#ifIs status eq="Publish"}}
       <div class="pageviews">
-        <span class="label"><span class="label-inner">{{#trans trans}}{{label}}{{/trans}}</span></span>
+        <span class="label"><span class="label-inner">{{#trans trans}}{{{label}}}{{/trans}}</span></span>
         <span class="pageview">{{pageviews}}</span>
       </div>
       {{>js_views_card_partials_entryItemsList}}

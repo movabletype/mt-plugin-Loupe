@@ -264,9 +264,9 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
             var $link = $(e.currentTarget);
             e.preventDefault();
             e.stopPropagation();
-            if ($link.data('id') === 'logout') {
-              vent.on('after:logout', commands.execute('dashboard:toggle'));
-              commands.execute('router:navigate', 'logout');
+            if ($link.data('id') === 'signout') {
+              vent.on('after:signout', commands.execute('dashboard:toggle'));
+              commands.execute('router:navigate', 'signout');
             } else {
               this.selectBlogHandler($link.data('id'));
             }
@@ -276,7 +276,7 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
 
         this.$el.find('.blog-item-nav').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {
-            this.offset = parseInt($(e.currentTarget).data('offset'), 10) || this.offset;
+            this.offset = $(e.currentTarget).data('offset') !== undefined ? parseInt($(e.currentTarget).data('offset'), 10) : this.offset;
             this.offset = this.offset < 0 ? 0 : this.offset;
             this.navigationHandler();
           }, this));

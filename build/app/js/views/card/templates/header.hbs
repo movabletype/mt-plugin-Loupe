@@ -1,11 +1,17 @@
 <div id="header-main">
   <nav>
-    <div id="back-dashboard" class="header-button-container">
+    <div id="back-dashboard" class="header-button-container header-button-container-left">
       <div class="header-button"><div class="header-button-inner">
         <a>{{#trans trans}}Back{{/trans}}</a>
       </div></div>
     </div>
     <div class="header-title"><div class="header-title-inner">{{#trans trans}}{{name}}{{/trans}}</div></div>
-    {{#if shareEnabled}}<div class="share-button-container"><a id="share-button" class="icon-share"></a></div>{{/if}}
+    {{#if shareEnabled}}
+      <div class="header-button-container header-button-container-right share-button-container">
+        <div class="header-button"><div class="header-button-inner">
+          <a id="share-button" class="icon-share"></a>
+        </div></div>
+      </div>
+    {{/if}}
   </nav>
 </div>

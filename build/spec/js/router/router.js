@@ -102,17 +102,17 @@
 
     it("reserved route", function () {
       var spy = jasmine.createSpy('spy');
-      spyOn(controller, 'logout');
+      spyOn(controller, 'signout');
 
-      define('cards/logout/view', function () {
+      define('cards/signout/view', function () {
         return function () {
           return spy;
         }
       });
 
       cards = [{
-        "name": "logout",
-        "id": "logout",
+        "name": "signout",
+        "id": "signout",
         "routes": [{
           "id": "view",
           "view": "view"
@@ -124,11 +124,11 @@
       }, cards);
 
       runs(function () {
-        commands.execute('router:navigate', 'logout');
+        commands.execute('router:navigate', 'signout');
       });
 
       runs(function () {
-        expect(controller.logout).toHaveBeenCalled();
+        expect(controller.signout).toHaveBeenCalled();
         expect(spy).not.toHaveBeenCalled();
       });
     });

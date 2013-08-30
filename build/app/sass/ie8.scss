@@ -1,29 +1,36 @@
 @import "_helpers";
 
+.move.ie8 {
+  overflow: hidden;
+}
+
 .ie8 {
-  #app-building {
-    background-image: url("assets/images/loading-small.gif");
+  .loading,
+  .content-loading {
+    background-image: url("../assets/images/loading-small.gif");
   }
   #header {
     #header-main {
       background-color: transparent;
-      .circle, .circle-inner {
+      .circle,
+      .circle-inner {
         @include border-radius-with-pie(100px);
         position: absolute;
+      }
+      .header-button-container-left .header-button {
+        border: 1px solid #cccccc;
+        margin-left: 0;
+        &:before {
+          display: none;
+        }
       }
     }
   }
   #menu-blogs-list {
-    .circle, .circle-inner {
+    .circle,
+    .circle-inner {
       @include border-radius-with-pie(100px);
       position: absolute;
-    }
-  }
-  .header-button {
-    border: 1px solid #cccccc;
-    margin-left: 0;
-    &:before {
-      display: none;
     }
   }
   #app {
@@ -33,14 +40,9 @@
       }
     }
   }
-  #login {
+  #signin {
     header h1 {
       background: url("../assets/images/logo-circle-small.png") no-repeat center center;
     }
-  }
-  .card {
-    header: {
-      min-height: 24px;
-    };
   }
 }

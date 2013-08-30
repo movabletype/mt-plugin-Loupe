@@ -47,5 +47,6 @@
   "welcome to Loupe! - this card lists the new comments": "このカードには、新しいコメントが一覧されます",
   "welcome to Loupe! - this card lists the posts waiting for acception": "このカードには、承認待ちの記事が一覧されます",
   "You have no available item in this card": "表示するデータがありません",
-  "You have no blog to show in Loupe": "Loupeで表示できるブログやウェブサイトがありません"
+  "You have no blog to show in Loupe": "Loupeで表示できるブログやウェブサイトがありません",
+  "Sign Out": "サインアウト"
 }

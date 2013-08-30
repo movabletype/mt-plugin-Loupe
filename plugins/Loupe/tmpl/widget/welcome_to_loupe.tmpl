@@ -17,7 +17,7 @@
             </div>
 
             <div id="loupe_field-content" class="field-content">
-                <mt:var name="support_directory_url">loupe/<input type="text" id="loupe_file" class="text path" name="file" value="index.html"/>
+                <mt:var name="support_directory_url">loupe/<input type="text" id="loupe_file" class="text path" name="file" value="<mt:var name="file">"/>
                 <div class="hint"><__trans phrase="The URL of Loupe's HTML file."></div>
             </div>
         </div>
@@ -90,7 +90,8 @@
                 .attr({
                     action: '<mt:var name="script_url">',
                     method: 'post'
-                });
+                })
+                .hide();
         for ( key in data ) {
             var input = jQuery('<input />')
                 .attr({
@@ -99,6 +100,7 @@
                 });
             form.append(input);
         }
+        jQuery(document.body).append(form);
         form.submit();
         form.remove();
         return false;

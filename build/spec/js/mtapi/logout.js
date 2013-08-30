@@ -3,21 +3,21 @@ describe("mtapi", function () {
 
   beforeEach(function () {
     var flag;
-    require(['js/mtapi/logout'], function () {
+    require(['js/mtapi/signout'], function () {
       flag = true;
     });
     waitsFor(function () {
       return flag;
-    }, 'requiring logout module', 3000);
+    }, 'requiring signout module', 3000);
   });
 
-  describe("logout", function () {
+  describe("signout", function () {
     beforeEach(function () {
       window.Mock.alwaysFail = null;
     })
 
-    it("logout", function () {
-      var Logout = require('js/mtapi/logout');
+    it("signout", function () {
+      var Logout = require('js/mtapi/signout');
       var dfd = new Logout();
       var flag;
 
@@ -38,8 +38,8 @@ describe("mtapi", function () {
       });
     });
 
-    it("logout fail", function () {
-      var Logout = require('js/mtapi/logout');
+    it("signout fail", function () {
+      var Logout = require('js/mtapi/signout');
       window.Mock.alwaysFail = 'Get Logout Error';
 
       var dfd = new Logout();
@@ -58,7 +58,7 @@ describe("mtapi", function () {
 
       waitsFor(function () {
         return flag;
-      }, 'logout failed', 3000);
+      }, 'signout failed', 3000);
 
       runs(function () {
         expect(dfd.fail).toHaveBeenCalled();

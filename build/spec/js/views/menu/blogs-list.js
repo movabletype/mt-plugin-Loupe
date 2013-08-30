@@ -427,7 +427,7 @@ describe("views", function () {
       });
     });
 
-    it("tap logout", function () {
+    it("tap signout", function () {
       blogList = new BlogList(initData);
       spyOn(blogList, 'addTapClass').andCallThrough();
       var $target, event;
@@ -437,7 +437,7 @@ describe("views", function () {
       }, 'fetching data', 3000);
 
       runs(function () {
-        $target = blogList.$el.find('a[data-id="logout"]');
+        $target = blogList.$el.find('a[data-id="signout"]');
         event = jQuery.Event('tap', {
           currentTarget: $target.get(0)
         });
@@ -452,7 +452,7 @@ describe("views", function () {
       runs(function () {
         expect(blogList.addTapClass).toHaveBeenCalled();
         expect(commandSpies['router:navigate']).toHaveBeenCalled();
-        expect(commandSpies['router:navigate'].mostRecentCall.args[0]).toEqual('logout');
+        expect(commandSpies['router:navigate'].mostRecentCall.args[0]).toEqual('signout');
         Backbone.history.navigate('');
       });
     });
@@ -529,6 +529,26 @@ describe("views", function () {
 
       runs(function () {
         expect(blogList.offset).toEqual(25);
+
+        expect(blogList.$el.find('.blog-item-nav-next').length).toBeTruthy();
+        expect(blogList.$el.find('.blog-item').length).toEqual(25);
+
+        $target = blogList.$el.find('.blog-item-nav-prev');
+        event = jQuery.Event('tap', {
+          currentTarget: $target.get(0)
+        });
+        count = renderSpy.callCount;
+        $target.trigger(event);
+      });
+
+      waitsFor(function () {
+        return renderSpy.callCount > count;
+      }, 'add tap class', 3000);
+
+      runs(function () {
+        expect(blogList.offset).toEqual(0);
+        expect(blogList.$el.find('.blog-item-nav-prev').length).toBeFalsy();
+        expect(blogList.$el.find('.blog-item').length).toEqual(25);
       });
     });
 

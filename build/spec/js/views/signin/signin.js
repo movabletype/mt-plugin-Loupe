@@ -1,7 +1,7 @@
 describe("views", function () {
   'use strict';
 
-  var Login, initData;
+  var Signin, initData;
   var Controller, controller;
 
   var commandsOrig, commands, cmd, flagAuthenticate;
@@ -11,7 +11,7 @@ describe("views", function () {
     commandsOrig = require('js/commands');
     commands = _.clone(commandsOrig);
 
-    cmd = jasmine.createSpyObj('cmd', ['authorizationCallback', 'app:afterTransition', 'login:error']);
+    cmd = jasmine.createSpyObj('cmd', ['authorizationCallback', 'app:afterTransition', 'signin:error']);
 
     commands.execute = function (co, data) {
       if (co === 'l10n') {
@@ -38,98 +38,98 @@ describe("views", function () {
       return commands;
     });
 
-    reRequireModule(['js/views/login/login']);
+    reRequireModule(['js/views/signin/signin']);
 
     runs(function () {
-      Login = require('js/views/login/login');
+      Signin = require('js/views/signin/signin');
     });
   });
 
-  describe("login/login", function () {
-    var login;
+  describe("signin/signin", function () {
+    var signin;
 
-    it("render login screen", function () {
-      login = new Login();
-      login.render();
-      login.$el.appendTo($('#app'));
+    it("render signin screen", function () {
+      signin = new Signin();
+      signin.render();
+      signin.$el.appendTo($('#app'));
       var $username = $('#username');
       var $password = $('#password');
       expect($username.length).toBeTruthy();
       expect($username.val()).toEqual('');
       expect($password.length).toBeTruthy();
       expect($password.val()).toEqual('');
-      login.$el.remove();
+      signin.$el.remove();
     });
 
-    it("render login screen with username and password", function () {
-      login = new Login({
+    it("render signin screen with username and password", function () {
+      signin = new Signin({
         username: 'foo',
         password: 'bar'
       });
-      login.render();
-      login.$el.appendTo($('#app'));
+      signin.render();
+      signin.$el.appendTo($('#app'));
       var $username = $('#username');
       var $password = $('#password');
       expect($username.length).toBeTruthy();
       expect($username.val()).toEqual('foo');
       expect($password.length).toBeTruthy();
       expect($password.val()).toEqual('bar');
-      login.$el.remove();
+      signin.$el.remove();
     });
 
     it("tap button and then start authenticate", function () {
-      login = new Login();
-      spyOn(login, 'authenticate');
-      login.render();
-      login.$el.appendTo($('#app'));
-      $('#sign-in-button').trigger('tap');
-      expect(login.authenticate).toHaveBeenCalled();
+      signin = new Signin();
+      spyOn(signin, 'authenticate');
+      signin.render();
+      signin.$el.appendTo($('#app'));
+      $('#signin-button').trigger('tap');
+      expect(signin.authenticate).toHaveBeenCalled();
     });
 
-    it("pressing enter key in login form and then start authenticate", function () {
-      login = new Login();
-      spyOn(login, 'authenticate');
-      login.render();
-      login.$el.appendTo($('#app'));
+    it("pressing enter key in signin form and then start authenticate", function () {
+      signin = new Signin();
+      spyOn(signin, 'authenticate');
+      signin.render();
+      signin.$el.appendTo($('#app'));
       var e = jQuery.Event('keypress', {
         which: 13
       });
       $('#username').trigger(e);
-      expect(login.authenticate).toHaveBeenCalled();
+      expect(signin.authenticate).toHaveBeenCalled();
       $('#password').trigger(e);
-      expect(login.authenticate.callCount).toEqual(2);
+      expect(signin.authenticate.callCount).toEqual(2);
     });
 
     it("authenticate first error and then success", function () {
       flagAuthenticate = null;
       window.Mock.authOnly = 'foo,bar';
-      login = new Login();
-      spyOn(login, 'authenticate').andCallThrough();
-      login.render();
-      login.$el.appendTo($('#app'));
+      signin = new Signin();
+      spyOn(signin, 'authenticate').andCallThrough();
+      signin.render();
+      signin.$el.appendTo($('#app'));
       $('#username').val('lorem');
       $('#password').val('ipsum');
-      login.authenticate();
+      signin.authenticate();
 
       waitsFor(function () {
         return flagAuthenticate;
       }, 'authenticate', 3000);
 
       runs(function () {
-        expect(login.loginError).toEqual('Invalid Login');
-        expect($('.login-error').text()).toMatch(/Invalid Login/);
+        expect(signin.signinError).toEqual('Invalid Sign in');
+        expect($('.signin-error').text()).toMatch(/Invalid Sign in/);
         expect(cmd['authorizationCallback']).not.toHaveBeenCalled();
         expect(cmd['app:afterTransition']).toHaveBeenCalled();
-        var $closeMe = login.$el.find('.close-me');
+        var $closeMe = signin.$el.find('.close-me');
         expect($closeMe.length).toBeTruthy();
         $closeMe.trigger('tap');
-        var $closeMe = login.$el.find('.close-me');
+        var $closeMe = signin.$el.find('.close-me');
         expect($closeMe.length).toBeFalsy();
 
         $('#username').val('foo');
         $('#password').val('bar');
         flagAuthenticate = null;
-        login.authenticate();
+        signin.authenticate();
       });
 
       waitsFor(function () {
@@ -141,22 +141,22 @@ describe("views", function () {
       });
     });
 
-    it("login:error handler", function () {
+    it("signin:error handler", function () {
       var count = cmd['app:afterTransition'].callCount;
-      login = new Login();
-      spyOn(login, 'authenticate');
-      login.render();
-      login.$el.appendTo($('#app'));
+      signin = new Signin();
+      spyOn(signin, 'authenticate');
+      signin.render();
+      signin.$el.appendTo($('#app'));
       var commands = require('js/commands');
-      commands.execute('login:error', 'Login Error');
+      commands.execute('signin:error', 'signin Error');
 
       waitsFor(function () {
-        return !!cmd['login:error'].callCount
-      }, 'login error', 3000);
+        return !!cmd['signin:error'].callCount
+      }, 'signin error', 3000);
 
       runs(function () {
-        expect(login.loginError).toEqual('Login Error');
-        expect($('.login-error').text()).toMatch(/Login Error/);
+        expect(signin.signinError).toEqual('signin Error');
+        expect($('.signin-error').text()).toMatch(/signin Error/);
         expect(cmd['app:afterTransition'].callCount).toEqual(count + 1);
       });
     });
@@ -164,11 +164,11 @@ describe("views", function () {
     it("timeout error", function () {
       window.Mock.slowResponse = 1000;
       var count = cmd['app:afterTransition'].callCount;
-      login = new Login();
-      login.timeout = 500;
-      login.render();
-      login.$el.appendTo($('#app'));
-      login.authenticate();
+      signin = new Signin();
+      signin.timeout = 500;
+      signin.render();
+      signin.$el.appendTo($('#app'));
+      signin.authenticate();
 
       var flag;
       setTimeout(function () {
@@ -177,11 +177,11 @@ describe("views", function () {
 
       waitsFor(function () {
         return flag;
-      }, 'login error', 3000);
+      }, 'signin error', 3000);
 
       runs(function () {
-        expect(login.loginError).toEqual('Timeout Error');
-        expect($('.login-error').text()).toMatch(/Timeout Error/);
+        expect(signin.signinError).toEqual('Timeout Error');
+        expect($('.signin-error').text()).toMatch(/Timeout Error/);
         expect(cmd['app:afterTransition'].callCount).toEqual(count + 1);
       });
     });
@@ -189,31 +189,31 @@ describe("views", function () {
     it("show default error message", function () {
       flagAuthenticate = null;
       window.Mock.customAuthError = '';
-      login = new Login();
-      spyOn(login, 'authenticate').andCallThrough();
-      login.render();
-      login.$el.appendTo($('#app'));
-      login.authenticate();
+      signin = new Signin();
+      spyOn(signin, 'authenticate').andCallThrough();
+      signin.render();
+      signin.$el.appendTo($('#app'));
+      signin.authenticate();
 
       waitsFor(function () {
         return flagAuthenticate;
       }, 'authenticate', 3000);
 
       runs(function () {
-        var msg = 'Login authencation was failed for some reason';
-        expect(login.loginError).toEqual(msg);
-        expect($('.login-error').text()).toMatch(new RegExp('Login authencation was failed for some reason'));
+        var msg = 'Sign in authencation was failed for some reason';
+        expect(signin.signinError).toEqual(msg);
+        expect($('.signin-error').text()).toMatch(new RegExp('Sign in authencation was failed for some reason'));
       });
     });
 
     afterEach(function () {
-      login.$el.remove();
+      signin.$el.remove();
       resetMock();
     });
   });
 
   afterEach(function () {
     commandsOrig.execute('move:dashboard', initData);
-    reRequireModule(['js/commands', 'js/router/controller', 'js/views/login/login']);
+    reRequireModule(['js/commands', 'js/router/controller', 'js/views/signin/signin']);
   });
 });

@@ -58,7 +58,6 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
     }
     @include pie-clearfix;
   }
-  @include loading-white;
   .loading {
     @include border-radius(8px);
   }
@@ -195,6 +194,5 @@ http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0
     }
   }
   @include box-shadow($card-shadow-color 0 0.667rem 0, rgba($white, 0.2) 0 1px 0 inset);
-  @include loupe-circle;
   @include border-radius($radius);
 }

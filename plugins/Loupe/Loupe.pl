@@ -51,8 +51,6 @@ my $plugin = MT::Plugin::Loupe->new(
                         },
                     },
                     widgets => '$Loupe::Loupe::App::widgets',
-                    list_actions =>
-                        { author => '$Loupe::Loupe::App::list_actions' },
                 },
             },
             callbacks => {

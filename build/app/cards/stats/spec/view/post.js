@@ -89,7 +89,7 @@ describe("stats", function () {
         expect(post.model.blogId).toEqual(routes[0]);
         expect(post.pageviews).toBeDefined();
         var serializedData = post.serializeData();
-        expect(serializedData.label).toEqual('Today\'s Access');
+        expect(serializedData.label).toEqual('Today\'s access');
       });
     });
 
