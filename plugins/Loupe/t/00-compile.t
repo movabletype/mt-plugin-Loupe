@@ -20,6 +20,10 @@ use_ok('Loupe::Mail::StaticResource');
 use_ok('Loupe::L10N');
 use_ok('Loupe::L10N::en_us');
 use_ok('Loupe::L10N::ja');
+use_ok('Loupe::L10N::de');
+use_ok('Loupe::L10N::es');
+use_ok('Loupe::L10N::fr');
+use_ok('Loupe::L10N::nl');
 
 test_all_modules_are_checked();
 

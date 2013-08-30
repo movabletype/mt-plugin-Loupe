@@ -16,10 +16,8 @@ use vars qw( %Lexicon );
 %Lexicon = (
 
 ## plugins/Loupe/lib/Loupe/App.pm
-	'Are you sure you want to send an invitation email to selected users?' => 'Bent u zeker dat u een uitnodiging wenst te mailen naar de geselecteerde gebruikers?', # Translate - New
 	'Could not send a invitation mail because Loupe is not enabled.' => 'Kon geen uitnodiging mailen omdat Loupe niet is ingeschakeld.', # Translate - New
 	'Welcome to Loupe' => 'Welkom bij Loupe', # Translate - New
-	'Send Loupe invitation email' => 'Loupe uitnodiging mailen', # Translate - New
 
 ## plugins/Loupe/lib/Loupe/Mail.pm
 	'Loupe invitation mail has been sent to [_3] for user \'[_1]\' (user #[_2]).' => 'Loupe uitnodiging werd gemaild naar [_3] voor gebruiker \'[_1]\' (gebruiker #[_2]).', # Translate - New
