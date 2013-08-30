@@ -77,7 +77,11 @@ use vars qw( %Lexicon );
 	'The email address that should receive an invitation email from Movable Type.' => 'L\'adresse e-mail à laquelle envoyer une invation depuis Movable Type.', # Translate - New
 	'Send Invitation Mail' => 'Envoyer l\'e-mail d\'invitation', # Translate - New
 	'Sent the invitation email containing the access URL for Loupe to \'[_1]\'.' => 'Envoyer l\'e-mail d\'invitation contenant l\'URL pour accéder à Loupe à \'[_1]\'.', # Translate - New
-
+	'Loupe settings has been successfully. You can send invitation email to users via <a href="[_1]">Loupe Plugin Settings</a>.' => 'Le paramétrage de Loupe est correct. Vous pouvez envoyer un e-mail d\'invitation via les <a href="[_1]">réglages du plugin Loupe</a>.', # Translate - New
+	'Error saving Loupe settings: [_1]' => 'Impossible de sauvegarder les réglages de Loupe : [_1]', # Translate - New
+	'Send invitation email' => 'Envoyer un e-mail d\'invitation', # Translate - New
+	q{The URL of Loupe's HTML file.} => q{L'URL du fichier HTML de Loupe.}, # Translate - New
+	'Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics. <a href="http://www.movabletype.org/beta/60/loupe.html" target="_blank">See more details.</a>' => 'Loupe est une console alternative de Movable Type conçue pour mobiles, permettant aux utilisateurs d\'approuver notes et commentaires, charger des photos, et voir les statistiques des sites et des blogs. <a href="http://www.movabletype.org/beta/60/loupe.html" target="_blank">En savoir plus</a>.', # Translate - New
 
 );
 

@@ -77,6 +77,11 @@ use vars qw( %Lexicon );
 	'The email address that should receive an invitation email from Movable Type.' => 'La dirección de correo que debe recibir la invitación de Movable Type.', # Translate - New
 	'Send Invitation Mail' => 'Enviar correo de invitación', # Translate - New
 	'Sent the invitation email containing the access URL for Loupe to \'[_1]\'.' => 'Se envió el correo de invitación con la URL de acceso a Loupe a \'[_1]\'.', # Translate - New
+        'This [_2] is using the settings of [_1].' => 'Este [_2] está usando la configuración de [_1].', # Translate - New
+        'Error saving Loupe settings: [_1]' => 'Error guardando la configuración de Loupe', # Translate - New
+        'Send invitation email' => 'Enviar correo de invitación', # Translate - New
+        q{The URL of Loupe's HTML file.} => q{La URL del fichero HTML de Loupe.}, # Translate - New
+        'Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics. <a href="http://www.movabletype.org/beta/60/loupe.html" target="_blank">See more details.</a>' => 'Loupe es una consola alternativa para Movable Type especialmente diseñada para dispositivos móviles, que permite aprobar entradas y comentarios pendientes, subir fotografías, y consultar las estadísticas de los blogs y los sitios web. Consulta <a href="http://www.movabletype.org/beta/60/loupe.html target="_blank">más información</a>.', # Translate - New
 
 );
 
