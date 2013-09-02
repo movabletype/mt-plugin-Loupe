@@ -2,36 +2,18 @@
 
 Style Guide for Loupe
 
-## Base Configuration
+# Main
 
-Loupe has base configurations enables user to customize easily.
+main.css provides base structure and common interfaces around Loupe.
+
+## Configuration
+
+Loupe has base configurations enables user to customize basic style easily.
 
 More deitails, check app/sass/_helpers.scss directory.
 
-<h3>Font</h3>
-
-* Font Size ($font-size) : 16px;
-* Font Color ($font-color) : #444444;
-
-```
-<div>
-  Lorem Ipsum
-</div>
-```
-
-<h3>Background</h3>
-
-* Background Color ($bg-color) : #f6f5f4;
-
-<h3>Header</h3>
-
-* Header Height ($header-height) : 60px;
-* Header Inner Height ($header-inner-height) :44px;
-* Header Padding Top: $header-padding-top: 7px;
-
 <h3>Card Base Styling</h3>
 
-* Content Width ($content-max-width) : 450px;
 * Border Radius ($radius) : 0.488rem;
 * Background Color ($card-background-color) : #f3f3f5;
 * Header Color ($card-header-color) : #08c1af;
@@ -46,6 +28,212 @@ More deitails, check app/sass/_helpers.scss directory.
 * Button Base Color ($btn-basic-color) : #8bcd4d;
 * Button Attention Color ($btn-attention-color) : #e94e1c;
 * Button Disable Color ($btn-disabled-color): #999999;
+
+## Base Style
+
+Loupe set the basic Styles in body element, you can change it by changing the following configurations.
+
+* Font Size (**$font-size**) : 16px;
+* Font Color (**$font-color**) : <span style="color:#444444">■</span> #444444;
+* Background Color (**$bg-color**) : <span style="color:#f6f5f4">■</span> #f6f5f4
+
+## Base Box Model
+
+Loupe set 'border-box' box model in universal selector. So, if you want to use the other box model (like content-box), you need to set style explicitly.
+
+## Base Structure
+
+Loupe has two main area, #menu and #app.
+
+* **#menu** element contains menus for common operaiton in loupe, selecting blog, singout and so on.
+* **#app** element has two main parts, #header and #main
+
+* **#header** usually has general information about screen and global navigation.
+* **#main** usually has main contents around Card which is main feature in Loupe.<br/>#main has max-width 450px as a default. You can change it with **$content-max-width** paramater.<br/>When window width is smaller than **$content-max-width**, use **$content-min-width**(default is 320px) instead.
+
+```
+<style>
+@import url(../../app/css/sass/card.css);
+@import url(../../app/css/sass/header.css);
+</style>
+<body>
+<div style="background-color:#f6f5f4; height: 450px; position:relative">
+  <div id="container">
+    <div id="menu"></div>
+    <div id="app">
+      <div class="container">
+        <header id="header">
+          <div>
+            <div id="header-main">
+              <nav>
+                <div class="header-button-container header-button-container-left">
+                  <div class="header-button"><div class="header-button-inner">
+                    <a>Back</a>
+                  </div></div>
+                </div>
+                <div class="header-title"><div class="header-title-inner">My Card</div></div>
+              </nav>
+            </div>
+          </div>
+        </header>
+        <div class="main-container">
+          <main id="main" class="main">
+            <div>
+              <section id="card-foobar" class="card">
+                <div>
+                  <header><h1>My Card</h1></header>
+                  <div class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+```
+
+# Loading
+
+.loading class shows loading image on background.
+
+```
+<div class="loading"></div>
+```
+
+.loading class is positioned absolutely, so if you want to show loading image in restricted area, set position:relative to parent block.
+
+```
+<div style="background-color: #ccc">
+  <div style="position:relative; height:100px; padding: 10px;">
+    <div class="loading"></div>
+    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+  </div>
+  <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+</div>
+```
+
+# Loupe Circle
+
+loupe circle is the circle like loupe with CSS
+
+```
+<div style="background-color:#f6f5f4; padding: 10px">
+<span class="circle">
+  <span class="circle-inner"></span>
+</span>
+</div>
+```
+
+You can customize circle based on loupe circle as follows.
+
+**Note**: loupe circle uses border-radius property which is not supported in IE8
+
+```
+<style>
+  .my-loupe .circle {
+    background: url(sample.jpg) center center / cover;
+    border: 20px solid #cceaff;
+    width: 200px;
+    height: 200px
+  }
+  .my-loupe .circle-inner {
+    background: transparent;
+    border: 0;
+  }
+</style>
+<div class="my-loupe">
+<span class="circle">
+  <span class="circle-inner" style="background: transparent; border: 0;">
+  </span>
+</span>
+</div>
+```
+
+## Message
+
+If you want to some message in the card or anywhere, you can use .message class as follows.
+
+```
+<div style="background-color:#f3f3f5; padding: 10px">
+<div class="message">
+  <div class="message-inner">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </div>
+</div>
+</div>
+```
+
+## OverLay
+
+If you want to cover some block to prevent from user operation, you can use .overlay class as follows.
+
+```
+<div style="position:relative">
+  <div class="overlay">
+    <div class="overlay-inner">
+      <div class="overlay-content">
+        <div class="overlay-content-inner">
+          This is OverLay Message.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+</div>
+```
+
+You can also use .message class in overlay block
+
+```
+<div style="position:relative">
+  <div class="overlay">
+    <div class="overlay-inner">
+      <div class="overlay-content message">
+        <div class="overlay-content-inner message-inner">
+          This is OverLay Message.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+</div>
+```
+
+If you want to add a button in overlay block, .with-button class helps to control .overlay-content heigth
+
+```
+<style>
+@import url(../../app/css/sass/button.css)
+</style>
+<div style="position:relative; height: 300px;">
+  <div class="overlay with-button">
+    <div class="overlay-inner">
+      <div class="overlay-content message">
+        <div class="overlay-content-inner message-inner">
+          This is OverLay Message.
+        </div>
+      </div>
+      <div class="button-container">
+        <div class="button">Click Me</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+</div>
+```
+
 
 */
 
@@ -125,7 +313,6 @@ input {
   }
 }
 
-/* ## Loading */
 .loading,
 .content-loading {
   background-color: $card-background-color;
@@ -144,7 +331,6 @@ input {
   z-index: 2000;
 }
 
-/* ## Loupe Circle */
 .circle {
   background-color: $white;
   border: 6px solid $white;
@@ -186,7 +372,6 @@ input {
   }
 }
 
-/* ## OverLay */
 .overlay {
   background-color: rgba($card-background-color, 0.95);
   @include position-zero;
@@ -196,7 +381,6 @@ input {
   .overlay-inner {
     height: 100%;
   }
-  /* often used with .message */
   .overlay-content {
     display: table;
     height: 100%;
