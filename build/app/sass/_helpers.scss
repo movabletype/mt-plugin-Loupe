@@ -16,6 +16,8 @@ $default-transition-function: ease;
 $default-transition-delay: 0s;
 
 $content-max-width: 450px;
+$content-min-width: 320px;
+
 $font-size: 16px;
 $radius: 0.488rem;
 
@@ -23,7 +25,6 @@ $header-height: 60px;
 $header-inner-height: 44px;
 $header-padding-top: 7px;
 
-/* Colors */
 $white: white;
 $black: black;
 $bg-color: #f6f5f4;

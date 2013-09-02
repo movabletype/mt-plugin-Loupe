@@ -104,13 +104,12 @@ input {
 }
 
 @media screen and (max-width: $content-max-width) {
-  #main {
+  .main {
     width: 100%;
-    min-width: 320px;
+    min-width: $content-min-width;
   }
 }
 
-/* ## On move */
 .move {
   #header {
     @include transition-header;
@@ -153,7 +152,7 @@ input {
   height: 44px;
   overflow: hidden;
   width: 44px;
-  @include border-radius(100px);
+  @include border-radius(1000px);
 }
 
 .circle-inner {
@@ -164,10 +163,9 @@ input {
   display: block;
   height: 100%;
   width: 100%;
-  @include border-radius(100px);
+  @include border-radius(1000px);
 }
 
-/* ## Message */
 .message {
   border: 1px solid #979797;
   box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
