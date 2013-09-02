@@ -11,4 +11,5 @@ sass_dir = "app/"
 images_dir = "../"
 javascripts_dir = "app/js"
 output_style = :expanded
+line_comments = false;
 sass_options = { :sourcemap => true }
