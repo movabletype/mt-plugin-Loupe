@@ -1,3 +1,54 @@
+/* # Loupe Style Guide
+
+Style Guide for Loupe
+
+## Base Configuration
+
+Loupe has base configurations enables user to customize easily.
+
+More deitails, check app/sass/_helpers.scss directory.
+
+<h3>Font</h3>
+
+* Font Size ($font-size) : 16px;
+* Font Color ($font-color) : #444444;
+
+```
+<div>
+  Lorem Ipsum
+</div>
+```
+
+<h3>Background</h3>
+
+* Background Color ($bg-color) : #f6f5f4;
+
+<h3>Header</h3>
+
+* Header Height ($header-height) : 60px;
+* Header Inner Height ($header-inner-height) :44px;
+* Header Padding Top: $header-padding-top: 7px;
+
+<h3>Card Base Styling</h3>
+
+* Content Width ($content-max-width) : 450px;
+* Border Radius ($radius) : 0.488rem;
+* Background Color ($card-background-color) : #f3f3f5;
+* Header Color ($card-header-color) : #08c1af;
+* Border Color ($card-border-color) : #c2c3c5;
+* Box Shadow Color ($card-shadow-color) : #a6a7ac;
+* Count Background Color ($count-background-color) : #ebcf00;
+* Count Background Blue ($count-background-blue) : #47cdec;
+
+
+<h3>Button</h3>
+
+* Button Base Color ($btn-basic-color) : #8bcd4d;
+* Button Attention Color ($btn-attention-color) : #e94e1c;
+* Button Disable Color ($btn-disabled-color): #999999;
+
+*/
+
 @import "_helpers";
 
 * {
