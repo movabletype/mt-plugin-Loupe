@@ -153,6 +153,7 @@ module.exports = function (grunt) {
     compass: {
       dev: {
         options: {
+          noLineComments: true,
           sassDir: 'app',
           cssDir: 'app/css',
           specify: ['app/sass/*.scss', 'app/sass/*.sass', 'app/cards/*/*.scss', 'app/cards/*/*.sass', 'app/cards/*/sass/*.scss', 'app/cards/*/sass/*.sass']
@@ -412,6 +413,13 @@ module.exports = function (grunt) {
               connect.directory(options.base)
             ];
           }
+        }
+      },
+      styleguide: {
+        options: {
+          hostname: 'localhost',
+          port: 9004,
+          keepalive: true
         }
       }
     },
