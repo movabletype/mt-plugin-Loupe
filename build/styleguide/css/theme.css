@@ -80,7 +80,7 @@ body {
   margin: 0;
   padding: 10px;
   color: #444;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Futura Light', sans-serif;
 }
 
 .kalei-comments> p a,
@@ -93,15 +93,28 @@ body {
   margin-left: 10px;
 }
 
-.kalei-comments > ul,
-.kalei-comments > ol {
-  margin-left: 20px;
+.kalei-comments > h1,
+.kalei-comments > h2,
+.kalei-comments > h3,
+.kalei-comments > h4,
+.kalei-comments > h5,
+.kalei-comments > h5,
+.kalei-comments > h6 {
+  font-family: 'Futura';
 }
 
 .kalei-comments > ul,
 .kalei-comments > ol,
 .kalei-comments > p {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0;
+  margin: 10px;
+}
+
+.kalei-comments > ul,
+.kalei-comments > ol {
+  margin-left: 2em;
 }
 
 /*
@@ -196,7 +209,7 @@ When you use Markdown code blocks ```, Kalei automatically renders the code as H
   color: #ebebeb;
   font-size: 12px;
   font-weight: bold;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Futura Light', sans-serif;
   border-radius: 0 0 4px 0;
   background-color: #444;
   opacity: 0.3;
@@ -258,7 +271,7 @@ body .codedemo:after {
   color: #ebebeb;
   font-size: 12px;
   font-weight: bold;
-  font-family:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family:  'Futura Light', sans-serif;
   border-radius: 3px 0 3px 0;
   background-color: #444;
 }
