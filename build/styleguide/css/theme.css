@@ -173,7 +173,8 @@ When you use Markdown code blocks ```, Kalei automatically renders the code as H
 .kalei-comments > pre > code,
 .kalei-css-container > pre > code {
   padding: 10px;
-  font-size: 11px;
+  font-size: 13px;
+  font-family: 'Futura Light';
   white-space: pre-wrap;
 }
 
