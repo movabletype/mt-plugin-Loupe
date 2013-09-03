@@ -18,7 +18,10 @@ $default-transition-delay: 0s;
 $content-max-width: 450px;
 $content-min-width: 320px;
 
-$font-size: 16px;
+$font-color: #444444;
+$font-family: "Helvetica Neue", sans-serif;
+$font-size: 100%;
+
 $radius: 0.488rem;
 
 $header-height: 60px;
@@ -28,7 +31,6 @@ $header-padding-top: 7px;
 $white: white;
 $black: black;
 $bg-color: #f6f5f4;
-$font-color: #444444;
 $card-background-color: #f3f3f5;
 $card-header-color: #08c1af;
 $card-border-color: #c2c3c5;
@@ -72,4 +74,90 @@ $card-arrow: lighten($black, 75%);
   left: 0;
   right: 0;
   position: absolute;
+}
+
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+@function normalize-fontsize($size) {
+  $unit: unit($size);
+  $size: strip-unit($size);
+  @if $unit == px {
+    $size: $size;
+  }
+  @else if $unit == "%" {
+    $size: $size / 100 * 16;
+  }
+  @else {
+    $size: $size * 16;
+  }
+  @return ceil($size);
+}
+
+@function is-min-max-width-height($prop) {
+  $bool: false;
+  @if $prop == "max-width" {
+    $bool: true;
+  }
+  @else if $prop == "max-height" {
+    $bool: true;
+  }
+  @else if $prop == "min-width" {
+    $bool: true;
+  }
+  @else if $prop == "min-height" {
+    $bool: true;
+  }
+  @return $bool;
+}
+
+// rem with fallback for ie8
+// this mixin is cloned from
+// http://css-tricks.com/snippets/css/less-mixin-for-rem-font-sizing/
+// adding my min/max-width ie8 issue fixes
+@mixin rem($property, $values...) {
+  $max: length($values);
+  $pxValues: ();
+  $remValues: ();
+  @if is-min-max-width-height($property) {
+    // calicurate min/max width to fit ie8 content-box.
+    $value: strip-unit(nth($values, 1));
+    $px: round($value * normalize-fontsize($font-size));
+    $rem: $value;
+    @for $i from 2 through $max {
+      $minus: normalize-fontsize(nth($values, $i));
+      $px: $px - $minus;
+    }
+    @if $px < 1 {
+      $pxValues: 0;
+    }
+    @else {
+      $pxValues: #{$px}px;
+    }
+    $remValues: #{$rem}rem;
+  }
+  @else {
+    @for $i from 1 through $max {
+      $value: strip-unit(nth($values, $i));
+      $px: round($value * normalize-fontsize($font-size));
+      $rem: $value;
+      @if $px == 0 {
+        $px: 0;
+      }
+      @else {
+        $px: #{$px}px;
+      }
+      $pxValues: append($pxValues, $px);
+      @if $rem == 0 {
+        $rem: 0;
+      }
+      @else {
+        $rem: #{$rem}rem;
+      }
+      $remValues: append($remValues, $rem);
+    }
+  }
+  #{$property}: $pxValues;
+  #{$property}: $remValues;
 }
