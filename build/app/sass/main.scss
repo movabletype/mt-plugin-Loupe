@@ -232,11 +232,14 @@ If you want to add a button in overlay block, .with-button class helps to contro
   outline: none;
 }
 
+html {
+  font-size: $font-size;
+}
+
 body {
   background-color: $bg-color;
   color: $font-color;
   font-family: $font-family;
-  font-size: $font-size;
   margin: 0;
   padding: 0;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
