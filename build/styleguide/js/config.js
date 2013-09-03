@@ -4,7 +4,7 @@ define({
   // You can configure any path by just deleteing the one above and uncommenting the one below to point at your css directory
   //css_path: 'http://localhost/css/styles.css',
   // You can manually list the css files to process by giving a css_paths array
-  css_paths: ["../../app/css/sass/main.css", "card.css", "button.css", "dashboard.css", "header.css", "menu.css", "share.css"],
+  css_paths: ["../../app/css/sass/main.css", "card.css", "button.css", "header.css", "menu.css", "share.css"],
 
   // You can optionally set configuration for marked.js
   marked_options: {
