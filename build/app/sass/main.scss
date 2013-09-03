@@ -2,7 +2,7 @@
 
 Style Guide for Loupe
 
-# Main
+## Main
 
 main.css provides base structure and common interfaces around Loupe.
 
@@ -11,16 +11,6 @@ main.css provides base structure and common interfaces around Loupe.
 Loupe has base configurations enables user to customize basic style easily.
 
 More deitails, check app/sass/_helpers.scss directory.
-
-<h3>Card Base Styling</h3>
-
-* Border Radius ($radius) : 0.488rem;
-* Background Color ($card-background-color) : #f3f3f5;
-* Header Color ($card-header-color) : #08c1af;
-* Border Color ($card-border-color) : #c2c3c5;
-* Box Shadow Color ($card-shadow-color) : #a6a7ac;
-* Count Background Color ($count-background-color) : #ebcf00;
-* Count Background Blue ($count-background-blue) : #47cdec;
 
 
 <h3>Button</h3>
@@ -33,9 +23,11 @@ More deitails, check app/sass/_helpers.scss directory.
 
 Loupe set the basic Styles in body element, you can change it by changing the following configurations.
 
-* Font Size (**$font-size**) : 16px;
+* Font Size (**$font-size**) : 100% (equal to 16px in most browsers);
 * Font Color (**$font-color**) : <span style="color:#444444">■</span> #444444;
 * Background Color (**$bg-color**) : <span style="color:#f6f5f4">■</span> #f6f5f4
+
+rem value is assigned according to the [Modulear Scale](http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0) calicuration
 
 ## Base Box Model
 
@@ -95,7 +87,7 @@ Loupe has two main area, #menu and #app.
 </body>
 ```
 
-# Loading
+## Loading
 
 .loading class shows loading image on background.
 
@@ -115,7 +107,7 @@ Loupe has two main area, #menu and #app.
 </div>
 ```
 
-# Loupe Circle
+## Loupe Circle
 
 loupe circle is the circle like loupe with CSS
 
@@ -249,7 +241,7 @@ If you want to add a button in overlay block, .with-button class helps to contro
 body {
   background-color: $bg-color;
   color: $font-color;
-  font-family: 'Helvetica Neue',sans-serif;
+  font-family: $font-family;
   font-size: $font-size;
   margin: 0;
   padding: 0;
@@ -261,8 +253,7 @@ body {
 
 textarea,
 input {
-  font-size: 16px;
-  font-size: 1rem;
+  @include rem(font-size, 1rem);
   @include user-select(text);
 }
 
@@ -354,30 +345,28 @@ input {
 
 .message {
   border: 1px solid #979797;
-  box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  @include box-shadow($white 0 1px 0 0, rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset);
   color: #666;
   display: block;
-  font-size: 16px;
-  font-size: 1rem;
+  @include rem(font-size, 1rem);
   line-height: 1.5;
   text-align: center;
   @include border-radius($radius);
   .message-inner {
-    background: #dcdcdc;
-    background: rgba(127, 127, 127, 0.2);
+    background-color: lighten(rgb(127, 127, 127), 36.5%);
+    background-color: rgba(127, 127, 127, 0.2);
     display: block;
-    padding: 16px;
-    padding: 1rem;
+    @include rem(padding, 1rem);
     word-break: break-all;
   }
 }
 
 .overlay {
+  background-color: darken($card-background-color, 2%);
   background-color: rgba($card-background-color, 0.95);
   @include position-zero;
   z-index: 200;
-  padding: 16px;
-  padding: 1rem;
+  @include rem(padding, 1rem);
   .overlay-inner {
     height: 100%;
   }
