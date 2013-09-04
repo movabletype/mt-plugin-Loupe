@@ -1,12 +1,11 @@
-/* # Card
+/*
+<h1>Card</h1>
 
 card.css provides common style for Loupe Cards
 
-## Configuration
+## Configurations
 
-Loupe has base configurations enables user to customize basic style easily.
-
-More deitails, check app/sass/_helpers.scss directory.
+You can change it by changing the following configurations.
 
 * Background Color ($card-background-color) : <span style="color:#f3f3f5">■</span> #f3f3f5;
 * Header Color ($card-header-color) : <span style="color:#08c1af">■</span> #08c1af;
@@ -15,9 +14,8 @@ More deitails, check app/sass/_helpers.scss directory.
 * Count Background Color ($count-background-color) : <span style="color:#ebcf00">■</span> #ebcf00;
 * Count Background Blue ($count-background-blue) : <span style="color:#47cdec">■</span> #47cdec;
 
-## Base Style
-
 rem value is assigned according to the [Modulear Scale](http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0) calicuration
+More deitails, check _helpers.scss.
 
 ## Base Structure
 
@@ -41,9 +39,29 @@ Card has one wrapper class, .card and two main building blocks, header and .cont
   </div>
 </section>
 ```
+*/
 
-## Header
+@import "_helpers";
 
+.card {
+  background-color: $card-background-color;
+  border: 2px solid $card-border-color;
+  @include rem(margin, 1rem, 0, 1.5rem);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  @include box-shadow($card-shadow-color 0 0.667rem 0, rgba($white, 0.2) 0 1px 0 inset);
+  @include border-radius($radius);
+  &:first-child {
+    margin-top: 0;
+  }
+  .loading {
+    @include border-radius($radius);
+  }
+}
+
+/*
+# Header
 ```
 <style>
   @import url(../../app/css/sass/card.css)
@@ -68,17 +86,50 @@ You can easily add count number at the right side of header with .card-header-co
   </div>
 </section>
 ```
+*/
 
-## Content
+.card header {
+  background-color: $card-header-color;
+  border-bottom: 2px solid darken($card-header-color, 10%);
+  color: #fff;
+  @include rem(min-height, 2.469rem, 10px, 7px);
+  @include rem(padding, 0.667rem, 1rem, 0.488rem);
+  @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 2%) 100%));
+  @include border-top-radius(5px);
+  @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
+  h1 {
+    float: left;
+    font-weight: normal;
+    @include rem(font-size, 1rem);
+    line-height: 1.5;
+    margin: 0;
+    text-shadow: 0 -1px 0 rgba($black, 0.6);
+  }
+  .card-header-count {
+    background-color: $count-background-color;
+    border: 2px solid darken($count-background-color, 20%);
+    float: right;
+    font-family: Helvetica, Arial, sans-serif;
+    @include rem(font-size, 1rem);
+    font-weight: bold;
+    line-height: 1;
+    margin: 0;
+    @include rem(min-width, 1rem, 0.488rem, 0.488rem);
+    @include rem(padding, 0.217rem, 0.488rem);
+    text-shadow: 0 1px 0 darken($count-background-color, 20%);
+    @include border-radius(1000px);
+  }
+  @include pie-clearfix;
+}
+
+/*
+# Content
 
 .content block has 18.75rem min-height as default.
 
 ```
 <section class="card">
   <div>
-    <header>
-      <h1>My Card</h1>
-    </header>
     <div class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
   </div>
 </section>
@@ -91,9 +142,6 @@ If there is no item to show in card, you can use .no-item class to show message 
 ```
 <section class="card">
   <div>
-    <header>
-      <h1>My Card</h1>
-    </header>
     <div class="content">
       <div class="no-item overlay">
         <div class="overlay-inner">
@@ -109,17 +157,48 @@ If there is no item to show in card, you can use .no-item class to show message 
   </div>
 </section>
 ```
+*/
 
-## Card Item List
+.card .content {
+  height: 100%;
+  @include rem(padding, 1rem);
+  @include rem(min-height, 18.75rem, 1rem, 1rem);
+  position: relative;
+  @include border-bottom-radius($radius);
+  .no-item {
+    background-color: $card-background-color;
+    background-color: rgba($card-background-color, 0.8);
+    .overlay-content-inner {
+      text-shadow: 1px 1px 0 $white;
+    }
+  }
+  &.content-list {
+    padding: 0;
+    @include rem(min-height, 18.75rem);
+    .message,
+    .button-container {
+      @include rem(margin-left, 1rem);
+      @include rem(margin-right, 1rem);
+    }
+    .overlay {
+      .message,
+      .button-container {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+/*
+
+# Card Item List
 
 If you want to show some items list in content, use .content-list class with .content and .card-item-list for listing.
 
 ```
 <section class="card">
   <div>
-    <header>
-      <h1>My Card</h1>
-    </header>
     <div class="content content-list">
       <ul class="card-item-list">
         <li>
@@ -191,7 +270,77 @@ You can easy to align the item contents with .item-content and releted classes.
 </section>
 ```
 
-## Basic Entry items
+*/
+
+.card-item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  li {
+    border-bottom: 1px solid white;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    @include pie-clearfix;
+    .circle {
+      &.image {
+        background-color: transparent;
+        background-position: center center;
+        background-size: cover;
+        .circle-inner {
+          border-color: transparent;
+          background-color: transparent;
+        }
+      }
+    }
+    a {
+      cursor: pointer;
+      display: block;
+      height: 100%;
+      width: 100%;
+      @include pie-clearfix;
+      &.tapped, &:active {
+        @include background-image(linear-gradient(rgba($black, 0.15), rgba($black, 0.05) 5%));
+      }
+    }
+    .item-container {
+      border-bottom: 1px solid $card-border-color;
+      display: block;
+      height: 100%;
+      @include rem(padding, 1rem);
+      width: 100%;
+      @include pie-clearfix;
+    }
+    .item-content {
+      display: table;
+      width: 100%;
+      .item-asset-container,
+      .item-title,
+      .item-arrow,
+      .item-item {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .item-asset-container {
+        width: 60px;
+      }
+      .item-title {
+        @include rem(padding, 0, 0.488rem);
+        text-align: left;
+        width: auto;
+      }
+      .item-arrow {
+        color: $card-arrow;
+        @include rem(font-size, 2.25rem);
+        text-align: right;
+        @include rem(width, 1.3125rem);
+      }
+    }
+  }
+}
+
+/*
+# Basic Entry items
 
 Loupe has basic styling for entry/comment item in the following.
 
@@ -213,179 +362,30 @@ Loupe has basic styling for entry/comment item in the following.
     </ul>
   </div>
 </section>
-
 ```
-
 */
 
-@import "_helpers";
-
-.card {
-  background-color: $card-background-color;
-  border: 2px solid $card-border-color;
-  @include rem(margin, 1rem, 0, 1.5rem);
-  overflow: hidden;
+.entry-items-list,
+.comment-items-list {
+  list-style-type: none;
+  margin: 0;
   padding: 0;
-  position: relative;
-  &:first-child {
-    margin-top: 0;
+  .title {
+    text-align: left;
+    @include rem(padding, 1rem, 0);
+    font-weight: bold;
+    @include rem(font-size, 1rem);
+    line-height: 1.5;
   }
-  header {
-    background-color: $card-header-color;
-    border-bottom: 2px solid darken($card-header-color, 10%);
-    color: #fff;
-    @include rem(min-height, 2.469rem, 10px, 7px);
-    @include rem(padding, 0.667rem, 1rem, 0.488rem);
-    @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 2%) 100%));
-    @include border-top-radius(5px);
-    @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
-    h1 {
-      float: left;
-      font-weight: normal;
-      @include rem(font-size, 1rem);
-      line-height: 1.5;
-      margin: 0;
-      text-shadow: 0 -1px 0 rgba($black, 0.6);
-    }
-    .card-header-count {
-      background-color: $count-background-color;
-      border: 2px solid darken($count-background-color, 20%);
-      float: right;
-      font-family: Helvetica, Arial, sans-serif;
-      @include rem(font-size, 1rem);
-      font-weight: bold;
-      line-height: 1;
-      margin: 0;
-      @include rem(min-width, 1rem, 0.488rem, 0.488rem);
-      @include rem(padding, 0.217rem, 0.488rem);
-      text-shadow: 0 1px 0 darken($count-background-color, 20%);
-      @include border-radius(1000px);
-    }
-    @include pie-clearfix;
-  }
-  .loading {
-    @include border-radius($radius);
-  }
-  .content {
-    height: 100%;
-    @include rem(padding, 1rem);
-    @include rem(min-height, 18.75rem, 1rem, 1rem);
-    position: relative;
-    @include border-bottom-radius($radius);
-    .no-item {
-      background-color: $card-background-color;
-      background-color: rgba($card-background-color, 0.8);
-      .overlay-content-inner {
-        text-shadow: 1px 1px 0 $white;
-      }
-    }
-    &.content-list {
-      padding: 0;
-      @include rem(min-height, 18.75rem);
-      .message,
-      .button-container {
-        @include rem(margin-left, 1rem);
-        @include rem(margin-right, 1rem);
-      }
-      .overlay {
-        .message,
-        .button-container {
-          margin-left: 0;
-          margin-right: 0;
-        }
-      }
+  .body {
+    line-height: 1.8;
+    @include rem(margin-top, 1rem);
+    img {
+      max-width: 100%;
     }
   }
-  .card-item-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    li {
-      border-bottom: 1px solid white;
-      margin: 0;
-      padding: 0;
-      position: relative;
-      @include pie-clearfix;
-      .circle {
-        &.image {
-          background-color: transparent;
-          background-position: center center;
-          background-size: cover;
-          .circle-inner {
-            border-color: transparent;
-            background-color: transparent;
-          }
-        }
-      }
-      a {
-        cursor: pointer;
-        display: block;
-        height: 100%;
-        width: 100%;
-        @include pie-clearfix;
-        &.tapped, &:active {
-          @include background-image(linear-gradient(rgba($black, 0.15), rgba($black, 0.05) 5%));
-        }
-      }
-      .item-container {
-        border-bottom: 1px solid $card-border-color;
-        display: block;
-        height: 100%;
-        @include rem(padding, 1rem);
-        width: 100%;
-        @include pie-clearfix;
-      }
-      .item-content {
-        display: table;
-        width: 100%;
-        .item-asset-container,
-        .item-title,
-        .item-arrow,
-        .item-item {
-          display: table-cell;
-          vertical-align: middle;
-        }
-        .item-asset-container {
-          width: 60px;
-        }
-        .item-title {
-          @include rem(padding, 0, 0.488rem);
-          text-align: left;
-          width: auto;
-        }
-        .item-arrow {
-          color: $card-arrow;
-          @include rem(font-size, 2.25rem);
-          text-align: right;
-          @include rem(width, 1.3125rem);
-        }
-      }
-    }
+  .author-name {
+    font-weight: bold;
+    @include rem(margin-left, 1rem);
   }
-  .entry-items-list,
-  .comment-items-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    .title {
-      text-align: left;
-      @include rem(padding, 1rem, 0);
-      font-weight: bold;
-      @include rem(font-size, 1rem);
-      line-height: 1.5;
-    }
-    .body {
-      line-height: 1.8;
-      @include rem(margin-top, 1rem);
-      img {
-        max-width: 100%;
-      }
-    }
-    .author-name {
-      font-weight: bold;
-      @include rem(margin-left, 1rem);
-    }
-  }
-  @include box-shadow($card-shadow-color 0 0.667rem 0, rgba($white, 0.2) 0 1px 0 inset);
-  @include border-radius($radius);
 }
