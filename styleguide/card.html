@@ -20,10 +20,7 @@ More deitails, check _helpers.scss.</p>
 <li>header has h1 element for showing the card name</li>
 <li>.content is the wrapper class for the card content</li>
 </ul>
-<textarea class="preview-code" spellcheck="false">&lt;style&gt;
-  @import url(../../app/css/sass/card.css)
-&lt;/style&gt;
-&lt;section class="card"&gt;
+<textarea class="preview-code" spellcheck="false">&lt;section class="card"&gt;
   &lt;div&gt;
     &lt;header&gt;
       &lt;h1&gt;My Card&lt;/h1&gt;
@@ -182,23 +179,6 @@ More deitails, check _helpers.scss.</p>
 }
 .card .content .no-item .overlay-content-inner {
   text-shadow: 1px 1px 0 white;
-}
-.card .content.content-list {
-  padding: 0;
-  min-height: 300px;
-  min-height: 18.75rem;
-}
-.card .content.content-list .message,
-.card .content.content-list .button-container {
-  margin-left: 16px;
-  margin-left: 1rem;
-  margin-right: 16px;
-  margin-right: 1rem;
-}
-.card .content.content-list .overlay .message,
-.card .content.content-list .overlay .button-container {
-  margin-left: 0;
-  margin-right: 0;
 }</code></pre></div></article><article id="card-item-list" class="section"><div class="docs"><a href="#card-item-list" class="permalink"><svg viewBox="0 0 512 512" height="32" width="32" class="icon"><path d="M156.2,199.7c7.5-7.5,15.9-13.8,24.8-18.7c49.6-27.3,113.1-12.8,145,35.5l-38.5,38.5c-11.1-25.2-38.5-39.6-65.8-33.5c-10.3,2.3-20.1,7.4-28,15.4l-73.9,73.9c-22.4,22.4-22.4,58.9,0,81.4c22.4,22.4,58.9,22.4,81.4,0l22.8-22.8c20.7,8.2,42.9,11.5,64.9,9.9l-50.3,50.3c-43.1,43.1-113,43.1-156.1,0c-43.1-43.1-43.1-113-0-156.1L156.2,199.7z M273.6,82.3l-50.3,50.3c21.9-1.6,44.2,1.6,64.9,9.9l22.8-22.8c22.4-22.4,58.9-22.4,81.4,0c22.4,22.4,22.4,58.9,0,81.4l-73.9,73.9c-22.5,22.5-59.1,22.3-81.4,0c-5.2-5.2-9.7-11.7-12.5-18l-38.5,38.5c4,6.1,8.3,11.5,13.7,16.9c13.9,13.9,31.7,24.3,52.1,29.3c26.5,6.4,54.8,2.8,79.2-10.6c8.9-4.9,17.3-11.1,24.8-18.7l73.9-73.9c43.1-43.1,43.1-113,0-156.1C386.6,39.2,316.7,39.2,273.6,82.3z"></path></svg></a><h1 id="card-item-list">Card Item List</h1>
 <p>If you want to show some items list in content, use .content-list class with .content and .card-item-list for listing.</p>
 <textarea class="preview-code" spellcheck="false">&lt;section class="card"&gt;
@@ -222,8 +202,7 @@ More deitails, check _helpers.scss.</p>
       &lt;/ul&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-&lt;/section&gt;</textarea><h3>Item Contents</h3>
-
+&lt;/section&gt;</textarea><h2 id="item-contents">Item Contents</h2>
 <p>You can easy to align the item contents with .item-content and releted classes.</p>
 <ul>
 <li>.item-containter has border-bottom and padding settings, if you want to add link to list item, use this class with a element, and you can fit link area to its list item block.</li>
@@ -267,7 +246,25 @@ More deitails, check _helpers.scss.</p>
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/section&gt;</textarea>
-</div><div class="code"><pre><code>.card-item-list {
+</div><div class="code"><pre><code>.card .content.content-list {
+  padding: 0;
+  min-height: 300px;
+  min-height: 18.75rem;
+}
+.card .content.content-list .message,
+.card .content.content-list .button-container {
+  margin-left: 16px;
+  margin-left: 1rem;
+  margin-right: 16px;
+  margin-right: 1rem;
+}
+.card .content.content-list .overlay .message,
+.card .content.content-list .overlay .button-container {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.card-item-list {
   list-style: none;
   margin: 0;
   padding: 0;

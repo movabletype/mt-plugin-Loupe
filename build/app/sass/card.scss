@@ -25,9 +25,6 @@ Card has one wrapper class, .card and two main building blocks, header and .cont
 * .content is the wrapper class for the card content
 
 ```
-<style>
-  @import url(../../app/css/sass/card.css)
-</style>
 <section class="card">
   <div>
     <header>
@@ -172,22 +169,6 @@ If there is no item to show in card, you can use .no-item class to show message 
       text-shadow: 1px 1px 0 $white;
     }
   }
-  &.content-list {
-    padding: 0;
-    @include rem(min-height, 18.75rem);
-    .message,
-    .button-container {
-      @include rem(margin-left, 1rem);
-      @include rem(margin-right, 1rem);
-    }
-    .overlay {
-      .message,
-      .button-container {
-        margin-left: 0;
-        margin-right: 0;
-      }
-    }
-  }
 }
 
 /*
@@ -221,7 +202,7 @@ If you want to show some items list in content, use .content-list class with .co
 </section>
 ```
 
-<h3>Item Contents</h3>
+## Item Contents
 
 You can easy to align the item contents with .item-content and releted classes.
 
@@ -269,8 +250,24 @@ You can easy to align the item contents with .item-content and releted classes.
   </div>
 </section>
 ```
-
 */
+
+.card .content.content-list {
+  padding: 0;
+  @include rem(min-height, 18.75rem);
+  .message,
+  .button-container {
+    @include rem(margin-left, 1rem);
+    @include rem(margin-right, 1rem);
+  }
+  .overlay {
+    .message,
+    .button-container {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
 
 .card-item-list {
   list-style: none;
