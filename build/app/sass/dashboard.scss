@@ -74,3 +74,10 @@
     }
   }
 }
+
+@media screen and (max-width: $content-max-width) {
+  .dashboard #header #header-main {
+    width: auto;
+    min-width: 0;
+  }
+}
