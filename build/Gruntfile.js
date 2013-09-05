@@ -836,22 +836,6 @@ module.exports = function (grunt) {
           pathToPIE: '../../plugins/loupe/ie/PIE/PIE.htc'
         }
       }
-    },
-    styleguide: {
-      dist: {
-        options: {
-          name: 'Loupe Style Guide',
-          framework: {
-            name: 'styledocco'
-          },
-          template: {
-            include: ['app/assets/icons/style.css']
-          }
-        },
-        files: {
-          '../styleguide': ['app/css/sass/main.css', 'app/css/sass/card.css', 'app/css/sass/button.css', 'app/css/sass/header.css', 'app/css/sass/menu.css', 'app/css/sass/share.css']
-        }
-      }
     }
   });
 
@@ -910,18 +894,42 @@ module.exports = function (grunt) {
     'jasmine:test'
   ]);
 
-  grunt.registerTask('styledocco', [
-    'compass:dev',
-    'clean:styleguide',
-    'copy:styleguide',
-    'styleguide:dist',
-    'string-replace:styleguide'
-  ]);
+  if (grunt.file.exists('node_modules/grunt-styleguide')) {
+    // If you want to use grunt-styleguide task, you need to install grunt-styleguide manually
+    // [sudo] npm install grunt-styleguide (you might be needed to use sudo)
 
-  grunt.registerTask('styledocco-callback', [
-    'styleguide:dist',
-    'string-replace:styleguide'
-  ]);
+    grunt.loadNpmTasks('grunt-styleguide');
+
+    grunt.config.data['styleguide'] = {
+      dist: {
+        options: {
+          name: 'Loupe Style Guide',
+          framework: {
+            name: 'styledocco'
+          },
+          template: {
+            include: ['app/assets/icons/style.css']
+          }
+        },
+        files: {
+          '../styleguide': ['app/css/sass/main.css', 'app/css/sass/card.css', 'app/css/sass/button.css', 'app/css/sass/header.css', 'app/css/sass/menu.css', 'app/css/sass/share.css']
+        }
+      }
+    }
+
+    grunt.registerTask('styledocco', [
+      'compass:dev',
+      'clean:styleguide',
+      'copy:styleguide',
+      'styleguide:dist',
+      'string-replace:styleguide'
+    ]);
+
+    grunt.registerTask('styledocco-callback', [
+      'styleguide:dist',
+      'string-replace:styleguide'
+    ]);
+  }
 
   grunt.registerTask('none', []);
 };

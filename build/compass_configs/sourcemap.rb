@@ -3,7 +3,7 @@
 # gem install compass-sourcemaps --pre
 # gem install sass --pre
 # and then
-# compass compile --config compass_sourcemaps_config.rb
+# compass compile --config compass_configs/sourcemap.rb
 
 http_path = "/"
 css_dir = "app/css"
