@@ -74,7 +74,7 @@ use vars qw( %Lexicon );
 	'Loupe cannot be used now. Please contact your Movable Type System Administrator.' => 'Loupe steht derzeit nicht zur Verfügung. Bitte wenden Sie sich an Ihren Movable-Type-Administrator.', # Translate - New # OK
 	'The email address that should receive an invitation email from Movable Type.' => 'Begrüßungsmail an diese Adresse schicken:', # Translate - New # OK
 	'Send Invitation Mail' => 'Begrüßungsmail abschicken', # Translate - New # OK
-	'Sent the invitation email containing the access URL for Loupe to \'[_1]\'.' => 'Begrüßungsmail mit der Loupe-URL an \'[_1}\' schicken.', # Translate - New # OK
+	'Sent the invitation email containing the access URL for Loupe to \'[_1]\'.' => 'Begrüßungsmail mit der Loupe-URL an \'[_1]\' schicken.', # Translate - New # OK
         'Loupe settings has been successfully. You can send invitation email to users via <a href="[_1]">Loupe Plugin Settings</a>.' => 'Loupe ist jetzt eingerichtet. Laden Sie auch Ihre Benutzer zu Loupe ein. Einladungen können Sie in den <a href="[_1]">Loupe-Einstellungen</a> verschicken.', # Translate - New # OK
         'Error saving Loupe settings: [_1]' => 'Konnte Loupe-Einstellungen nicht sichern: [_1]', # Translate - New # OK
         'Send invitation email' => 'Einladungs-Mail verschicken', # Translate - New # OK
