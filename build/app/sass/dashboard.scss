@@ -5,29 +5,29 @@
   #header {
     cursor: pointer;
     #header-main {
-      padding-top: $header-padding-top;
+      padding-top: $dashboard-header-padding-top;
+      display: table;
+      width: auto;
+      max-width: $content-max-width;
     }
-    .circle {
-      display: none;
-      position: absolute;
-    }
+  }
+  .blogname-container {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  #blogname-circle {
+    margin-right: 10px;
   }
   #blogname {
     text-align: center;
     font-weight: normal;
-    font-size: 18px;
-    line-height: $header-inner-height;
-    height: $header-inner-height;
+    @include rem(font-size, 1.125rem);
     margin: 0;
   }
   #blogname-arrow {
     color: #999;
-    display: none;
     font-size: 37px;
-    height: $header-inner-height;
-    line-height: $header-inner-height;
-    position: absolute;
-    top: $header-padding-top;
+    top: $dashboard-header-padding-top;
     @include single-transition($property: transform);
     &.rotate {
       @include transform(rotate(180deg));
@@ -37,14 +37,40 @@
     margin: 100px 0;
     text-align: center;
   }
+  .overlay .button-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.ie8 .dashboard {
+  .blogname-container {
+    display: block;
+  }
+  #header #header-main {
+    width: $content-max-width;
+  }
+  #blogname-circle {
+    display: none;
+    position: absolute;
+    margin-right: 0;
+  }
+  #blogname {
+    display: block;
+    font-size: 18px;
+    line-height: 44px;
+    height: 44px;
+  }
+  #blogname-arrow {
+    display: none;
+    height: 44px;
+    line-height: 44px;
+    position: absolute;
+  }
   .show {
     #blogname-circle,
     #blogname-arrow {
       display: block;
     }
-  }
-  .overlay .button-container {
-    margin-left: 0;
-    margin-right: 0;
   }
 }

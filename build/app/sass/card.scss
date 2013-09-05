@@ -92,7 +92,7 @@ You can easily add count number at the right side of header with .card-header-co
   @include rem(min-height, 2.469rem, 10px, 7px);
   @include rem(padding, 0.667rem, 1rem, 0.488rem);
   @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 2%) 100%));
-  @include border-top-radius(5px);
+  @include border-top-radius(0.3125rem);
   @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
   h1 {
     float: left;

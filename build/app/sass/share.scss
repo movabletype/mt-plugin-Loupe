@@ -1,3 +1,29 @@
+/*
+
+<h1>Share</h1>
+
+share.css is the style for share buttons overlay
+
+```
+<section id="share">
+  <div class="share-inner">
+    <div id="share-close" class="icon-close"></div>
+    <header>
+      <h1>Share The Post</h1>
+    </header>
+    <div class="share-contents">
+      <ul class="share-list">
+        <li>
+          <a href="#" target="blank" class="icon-twitter"></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+```
+
+*/
+
 @import "_helpers";
 
 #share {
@@ -20,7 +46,7 @@
   }
   h1 {
     color: $white;
-    font-size: 20px;
+    @include rem(font-size, 1.25rem);
     margin: 0;
     padding: 24% 0 6%;
     text-align: center;
@@ -47,6 +73,6 @@
 @media screen and (max-width: $content-max-width) {
   #share .share-inner {
     width: 100%;
-    min-width: 320px;
+    min-width: $content-min-width;
   }
 }

@@ -11,7 +11,6 @@
   }
   #header {
     #header-main {
-      background-color: transparent;
       .circle,
       .circle-inner {
         @include border-radius-with-pie(100px);
@@ -33,6 +32,26 @@
       position: absolute;
     }
   }
+  .display-name,
+  .blog-name {
+    display: block;
+    padding-top: 12px;
+    padding-left: 60px;
+    height: 50px;
+  }
+  .userpic {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+  }
+  .user-info,
+  .blog-item {
+    .circle {
+      display: block;
+      float: left;
+    }
+  }
   #app {
     &.menu-opened {
       .container {
@@ -43,6 +62,17 @@
   #signin {
     header h1 {
       background: url("../assets/images/logo-circle-small.png") no-repeat center center;
+    }
+  }
+}
+
+.ie9 {
+  #header .header-button-container-left {
+    .header-button {
+      margin-left: 20px;
+    }
+    .header-button:before {
+      -ms-transform: rotate(45deg);
     }
   }
 }

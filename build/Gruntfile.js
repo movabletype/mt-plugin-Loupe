@@ -918,5 +918,10 @@ module.exports = function (grunt) {
     'string-replace:styleguide'
   ]);
 
+  grunt.registerTask('styledocco-callback', [
+    'styleguide:dist',
+    'string-replace:styleguide'
+  ]);
+
   grunt.registerTask('none', []);
 };
