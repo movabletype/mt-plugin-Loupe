@@ -186,9 +186,6 @@ If you want to add icon image inside button, use with .with-icon class
 .button-container-undo class provies undo button styling like the following
 
 ```
-<style>
-  @import (../build/app/assets/icons/style.css);
-</style>
 <div class="button-container button-container-undo">
   <span class="button-icon icon-check"></span>
   <span class="button-label">Lorem ipsum</span>

@@ -60,9 +60,6 @@ Card has one wrapper class, .card and two main building blocks, header and .cont
 /*
 # Header
 ```
-<style>
-  @import url(../../app/css/sass/card.css)
-</style>
 <section class="card">
   <div>
     <header>
@@ -94,6 +91,7 @@ You can easily add count number at the right side of header with .card-header-co
   @include background-image(linear-gradient($card-header-color, $card-header-color 80%, darken($card-header-color, 2%) 100%));
   @include border-top-radius(0.3125rem);
   @include box-shadow(rgba($white, 0.4) 0 2px 0 inset);
+  @include pie-clearfix;
   h1 {
     float: left;
     font-weight: normal;
@@ -116,7 +114,6 @@ You can easily add count number at the right side of header with .card-header-co
     text-shadow: 0 1px 0 darken($count-background-color, 20%);
     @include border-radius(1000px);
   }
-  @include pie-clearfix;
 }
 
 /*
