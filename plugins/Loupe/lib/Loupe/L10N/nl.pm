@@ -42,7 +42,7 @@ use vars qw( %Lexicon );
 
 ## plugins/Loupe/tmpl/welcome_mail_html.tmpl
 	'Your MT blog status at a glance' => 'De status van uw MT blog in een oogopslag', # Translate - New
-	'Dear [_1], ' => 'Beste [1_]', # Translate - New
+	'Dear [_1], ' => 'Beste [_1]', # Translate - New
 	'With Loupe, you can check the status of your blog without having to sign in to your Movable Type account.' => 'Met Loupe kunt u de staus van uw blog zien zonder u te moeten aanmelden met uw Movable Type account.', # Translate - New
 	'View Access Analysis' => 'Toegangsanalyse bekijken', # Translate - New
 	'Approve Entries' => 'Berichten goedkeuren', # Translate - New
