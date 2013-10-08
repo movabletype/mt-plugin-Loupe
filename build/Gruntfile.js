@@ -441,7 +441,7 @@ module.exports = function (grunt) {
       test: {
         src: ['app'],
         options: {
-          specs: specs,
+          specs: grunt.option('target') || specs,
           helpers: helpers.concat(['app/js/main.js']),
           host: 'http://localhost:9003/',
           outfile: '_SpecRunner.html',
@@ -561,7 +561,7 @@ module.exports = function (grunt) {
           }, {
             pattern: /..\/..\/app\/css\/sass\/..\/assets/g,
             replacement: 'assets'
-          }],
+          }]
         },
         files: {
           '../styleguide/': ['../styleguide/*.html']
@@ -915,7 +915,7 @@ module.exports = function (grunt) {
           '../styleguide': ['app/css/sass/main.css', 'app/css/sass/card.css', 'app/css/sass/button.css', 'app/css/sass/header.css', 'app/css/sass/menu.css', 'app/css/sass/share.css']
         }
       }
-    }
+    };
 
     grunt.registerTask('styledocco', [
       'compass:dev',
