@@ -42,7 +42,7 @@ use vars qw( %Lexicon );
 
 ## plugins/Loupe/tmpl/welcome_mail_html.tmpl
 	'Your MT blog status at a glance' => 'De status van uw MT blog in een oogopslag', # Translate - New
-	'Dear [_1], ' => 'Beste [1_]', # Translate - New
+	'Dear [_1], ' => 'Beste [_1]', # Translate - New
 	'With Loupe, you can check the status of your blog without having to sign in to your Movable Type account.' => 'Met Loupe kunt u de staus van uw blog zien zonder u te moeten aanmelden met uw Movable Type account.', # Translate - New
 	'View Access Analysis' => 'Toegangsanalyse bekijken', # Translate - New
 	'Approve Entries' => 'Berichten goedkeuren', # Translate - New
@@ -85,7 +85,7 @@ use vars qw( %Lexicon );
         'Error saving Loupe settings: [_1]' => 'Fout bij opslaan Loupe instellingen:', # Translate - New
         'Send invitation email' => 'Uitnodigingsmail sturen', # Translate - New
         q{The URL of Loupe's HTML file.} => q{De URL van het HTML bestand van Loupe.}, # Translate - New
-        'Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics. <a href="http://www.movabletype.org/beta/60/loupe.html" target="_blank">See more details.</a>' => 'Loupe is een mobiel-vriendelijke alternatieve console voor Movable Type waarmee gebruikers berichten en reacties kunnen goedkeuren, foto\'s kunnen uploaden en website- en blogstatistieken mee kunnen bekijken. <a href="http://www.movabletype.org/beta/60/loupe.html" target="_blank">Meer details lezen.</a>', # Translate - New
+        'Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics. <a href="http://www.movabletype.org/documentation/loupe/" target="_blank">See more details.</a>' => 'Loupe is een mobiel-vriendelijke alternatieve console voor Movable Type waarmee gebruikers berichten en reacties kunnen goedkeuren, foto\'s kunnen uploaden en website- en blogstatistieken mee kunnen bekijken. <a href="http://www.movabletype.org/documentation/loupe/" target="_blank">Meer details lezen.</a>', # Translate - New
 
 
 );
