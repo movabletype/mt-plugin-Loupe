@@ -194,6 +194,10 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           this.authorizationCallback();
         }, this));
 
+        commands.setHandler('addCardViewMethod', _.bind(function (card) {
+          this.addCardViewMethod(card);
+        }, this))
+
         mtapi.api.on('authorizationRequired', _.bind(function (resp) {
           if (DEBUG) {
             console.log('getTokenData error');
@@ -231,28 +235,28 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
           }
         }, this));
 
-        var cards = options.cards;
-        var methodFactory = _.bind(function (command, card) {
-          return _.bind(function () {
-            var routes = [].slice.call(arguments, 0);
-            this.auth(function (data) {
-              var params = _.extend({}, data, {
-                routes: routes,
-                card: card
-              });
-              commands.execute(command, params);
-            });
+        _.forEach(options.cards, function (card) {
+          this.addCardViewMethod(card);
+        }, this);
+      },
+      addCardViewMethod: function (card) {
+        if (card.routes && card.routes.length) {
+          _.each(card.routes, function (route) {
+            var routeMethodName = 'moveCardPage_' + card.id + route.id;
+            if (!this[routeMethodName]) {
+              this[routeMethodName] = _.bind(function () {
+                var routes = [].slice.call(arguments, 0);
+                this.auth(function (data) {
+                  var params = _.extend({}, data, {
+                    routes: routes,
+                    card: card
+                  });
+                  commands.execute('move:cardView:' + card.id + ':' + route.id, params);
+                });
+              }, this);
+            }
           }, this);
-        }, this);
-
-        _.forEach(cards, function (card) {
-          if (card.routes && card.routes.length) {
-            _.each(card.routes, function (route) {
-              var routeMethodName = 'moveCardPage_' + card.id + route.id;
-              this[routeMethodName] = methodFactory('move:cardView:' + card.id + ':' + route.id, card);
-            }, this);
-          }
-        }, this);
+        }
       },
       moveDashboard: function () {
         var routes = [].slice.call(arguments, 0);
