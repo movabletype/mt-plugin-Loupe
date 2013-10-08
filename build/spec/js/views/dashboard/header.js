@@ -4,8 +4,9 @@ describe("views", function () {
   var Header, header, initData;
   var Controller, controller;
 
-  var commandsOrig, commands, cmd, commandSpy, mainSpy, Main, flagSlideDown, flagSlideUp, flagToggle;
-  beforeEach(function () {
+  var commandsOrig, commands, cmd, commandSpy, flagSlideDown, flagSlideUp, flagToggle;
+
+  function init() {
     $('#dashboard').remove();
 
     commandsOrig = require('js/commands');
@@ -30,8 +31,8 @@ describe("views", function () {
         flagToggle = true;
       }
       if (cmd[co]) {
-        cmd[co](data)
-      };
+        cmd[co](data);
+      }
       commandSpy(co, data);
     };
 
@@ -69,14 +70,22 @@ describe("views", function () {
         return origFunc.call(controller.l10n, fakePath, namespace);
       });
     });
-  });
+  }
 
   describe("dashboard/header", function () {
     it("adjustHeader", function () {
+      var device = require('js/device');
+      device.isIE = true;
+      device.version = 8;
+
+      init();
+
       var flag;
-      setTimeout(function () {
-        flag = true;
-      }, 100);
+      runs(function () {
+        setTimeout(function () {
+          flag = true;
+        }, 100);
+      });
 
       waitsFor(function () {
         return flag;
@@ -85,10 +94,17 @@ describe("views", function () {
       runs(function () {
         expect(header.adjustHeader).toHaveBeenCalled();
         expect(header.$el.hasClass('show')).toBe(true);
+        reRequireModule('js/device');
       });
     });
 
     it("orientationchange and debouncedresize events trigger adjustHeader", function () {
+      var device = require('js/device');
+      device.isIE = true;
+      device.version = 8;
+
+      init();
+
       header.$el.remove();
       header = new Header(initData);
       spyOn(header, 'adjustHeader');
@@ -131,15 +147,18 @@ describe("views", function () {
 
       runs(function () {
         expect(header.adjustHeader.callCount).toEqual(3);
-      })
+        reRequireModule('js/device');
+      });
     });
 
     it("handleSlide", function () {
-      var $blognameArrow = $('#blogname-arrow');
+      var $blognameArrow;
+
+      init();
       commands.execute('dashboard:toggle');
 
       waitsFor(function () {
-        return flagToggle
+        return flagToggle;
       }, 'executed dashboard:toggle', 3000);
 
       runs(function () {
@@ -147,15 +166,15 @@ describe("views", function () {
         expect($(document.body).hasClass('hide')).toBe(true);
         expect(cmd['menu:show']).toHaveBeenCalled();
         expect(cmd['dashboard:slidedown']).toHaveBeenCalled();
-        expect(cmd['dashboard:slidedown']).toHaveBeenCalledWith(header.$el.height());
         expect(cmd['menu:header:toggle']).toHaveBeenCalled();
+        $blognameArrow = header.ui.blognameArrow;
         expect($blognameArrow.hasClass('rotate')).toBe(true);
         flagToggle = null;
         commands.execute('dashboard:toggle');
       });
 
       waitsFor(function () {
-        return flagToggle
+        return flagToggle;
       }, 'executed dashboard:toggle', 3000);
 
       runs(function () {
@@ -164,17 +183,19 @@ describe("views", function () {
         expect(cmd['menu:hide']).toHaveBeenCalled();
         expect(cmd['dashboard:slideup']).toHaveBeenCalled();
         expect(cmd['menu:header:toggle'].callCount).toEqual(2);
+        $blognameArrow = header.ui.blognameArrow;
         expect($blognameArrow.hasClass('rotate')).toBe(false);
       });
     });
 
     it("no blog", function () {
+      init();
       var data = _.clone(initData);
       data.blog = null;
       header = new Header(data);
       header.render();
       expect(header.$el.find('#blogname').text()).toMatch(/Loupe/);
-    })
+    });
   });
 
   afterEach(function () {
