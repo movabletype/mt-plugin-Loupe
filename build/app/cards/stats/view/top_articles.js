@@ -1,7 +1,6 @@
 define(['js/views/card/composite',
     'js/cache',
     'moment',
-    'moment.lang',
     'js/mtapi/stats_provider',
     'cards/stats/models/top_articles',
     'cards/stats/models/top_articles_itemview_collection',
@@ -10,7 +9,7 @@ define(['js/views/card/composite',
     'hbs!cards/stats/templates/top_articles'
   ],
 
-  function (CardCompositeView, cache, moment, momentLang, statsProvider, Model, ItemViewCollection, ItemViewModel, ItemView, template) {
+  function (CardCompositeView, cache, moment, statsProvider, Model, ItemViewCollection, ItemViewModel, ItemView, template) {
     'use strict';
 
     return CardCompositeView.extend({

@@ -1,6 +1,6 @@
-define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/trans', 'moment', 'moment.lang', 'cards/acception/models/collection', 'cards/acception/models/model', 'hbs!cards/acception/templates/view'],
+define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/trans', 'moment', 'cards/acception/models/collection', 'cards/acception/models/model', 'hbs!cards/acception/templates/view'],
 
-  function (CardItemView, cache, device, commands, Trans, moment, momentLang, Collection, Model, template) {
+  function (CardItemView, cache, device, commands, Trans, moment, Collection, Model, template) {
     "use strict";
 
     return CardItemView.extend({

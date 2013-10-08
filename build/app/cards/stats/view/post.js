@@ -2,14 +2,13 @@ define(['js/views/card/itemview',
     'js/cache',
     'js/commands',
     'moment',
-    'moment.lang',
     'cards/stats/models/top_articles_itemview',
     'cards/stats/models/top_articles_itemview_collection',
     'hbs!cards/stats/templates/post',
     'cards/stats/models/top_articles'
   ],
 
-  function (CardItemView, cache, commands, moment, momentLang, Model, ItemViewCollection, template, StatsModel) {
+  function (CardItemView, cache, commands, moment, Model, ItemViewCollection, template, StatsModel) {
     'use strict';
     return CardItemView.extend({
       template: template,

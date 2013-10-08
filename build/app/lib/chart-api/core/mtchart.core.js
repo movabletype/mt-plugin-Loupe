@@ -1,14 +1,4 @@
-(function (root, factory) {
-  if (typeof exports === 'object') {
-    var jquery = require('jquery');
-
-    module.exports = factory(jquery);
-  } else if (typeof define === 'function' && define.amd) {
-    define(['jquery'], factory);
-  }
-}(this, function ($) {
-
-  var ChartAPI = (function (global, $) {
+var ChartAPI = (function (global, $) {
   "use strict";
   var jQuery = $;
   var ChartAPI = {};
@@ -2407,7 +2397,3 @@ ChartAPI.Build_ = function (settings) {
 
   return ChartAPI;
 })(this, jQuery);
-
-
-  return MT.ChartAPI;
-}));

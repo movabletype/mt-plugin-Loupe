@@ -1,7 +1,7 @@
 (function () {
   var elem = document.createElement('canvas');
   if (elem.getContext && elem.getContext('2d')) {
-    <!-- @include ../lib/EaselJS/easeljs-0.6.1.min.js -->
+    <!-- @include ../lib/EaselJS/easeljs-0.7.0.min.js -->
     return this.createjs;
   }
 }());

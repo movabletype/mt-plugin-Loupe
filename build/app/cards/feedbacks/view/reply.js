@@ -2,12 +2,11 @@ define(['js/views/card/itemview',
     'js/mtapi',
     'js/commands',
     'moment',
-    'moment.lang',
     'cards/feedbacks/models/comments_model',
     'hbs!cards/feedbacks/templates/reply'
   ],
 
-  function (CardItemView, mtapi, commands, moment, momentLang, Model, template) {
+  function (CardItemView, mtapi, commands, moment, Model, template) {
     'use strict';
 
     return CardItemView.extend({

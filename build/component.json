@@ -2,24 +2,26 @@
   "name": "Loupe",
   "version": "0.1.0",
   "ignore": [
-      "**/.*",
-      "node_modules",
-      "components"
+    "**/.*",
+    "node_modules",
+    "components"
   ],
   "dependencies": {
-    "underscore": "1.4.4",
-    "backbone": "1.0.0",
-    "backbone.localStorage": "1.1.0",
-    "backbone.marionette": "1.0.2",
-    "backbone.wreqr": "0.2.0",
-    "backbone.babysitter": "0.0.5",
-    "require-handlebars-plugin": "0.4.0",
-    "hammerjs": "1.0.5",
+    "jquery": "1.*",
+    "underscore": "1.*",
+    "backbone": "1.*",
+    "backbone.marionette": "1.*",
+    "backbone.wreqr": "0.*",
+    "backbone.babysitter": "0.*",
+    "require-handlebars-plugin": "0.*",
+    "hammerjs": "1.*",
     "jquery-smartresize": "git://github.com/louisremi/jquery-smartresize.git",
-    "morris.js": "0.4.3",
-    "requirejs-text": "2.0.5",
-    "requirejs-plugins": "1.0.1",
+    "morris.js": "0.4.*",
+    "requirejs-text": "2.*",
+    "requirejs-plugins": "1.*",
     "conditionizr": "git://github.com/conditionizr/conditionizr.git",
-    "moment": "2.0.0"
+    "moment": "2.*",
+    "basket.js": "~0.3.0",
+    "easeljs": "*"
   }
 }
