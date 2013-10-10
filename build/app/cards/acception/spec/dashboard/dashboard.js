@@ -25,7 +25,29 @@ describe("acception", function () {
     fetchingSpy = jasmine.createSpy();
     renderSpy = jasmine.createSpy();
     commandSpies = {};
-    initCommands(commandSpies, controller);
+
+    runs(function () {
+      reRequireModule(['js/router/controller', 'js/router/router']);
+    });
+
+    runs(function () {
+      Controller = require('js/router/controller');
+      controller = new Controller({
+        cards: [card]
+      });
+      initCommands(commandSpies, controller);
+    });
+
+    var flag
+    runs(function () {
+      require(['js/commands'], function () {
+        flag = true;
+      })
+    });
+
+    waitsFor(function () {
+      return flag;
+    });
 
     runs(function () {
       requireModuleAndWait(['cards/acception/dashboard/dashboard']);
@@ -51,10 +73,11 @@ describe("acception", function () {
         });
       });
       requireModuleAndWait(['cards/acception/dashboard/dashboard']);
-      reRequireModule(['js/router/controller']);
     });
 
     runs(function () {
+      var cache = require('js/cache');
+      cache.clear('user');
       initController(Controller, controller, function (data) {
         initData = _.extend({}, data, {
           card: card
@@ -102,6 +125,7 @@ describe("acception", function () {
       }
 
       resetMock();
+      window.Mock.userLang = 'en-us';
       window.Mock.throwListEntryItemsLength = 30;
       window.Mock.throwListEntryItems = items;
 
@@ -167,7 +191,9 @@ describe("acception", function () {
       window.Mock.throwListEntryItemsLength = 0;
       window.Mock.throwListEntryItems = [];
 
-      dashboard = new Dashboard(initData);
+      runs(function () {
+        dashboard = new Dashboard(initData);
+      })
 
       waitsFor(function () {
         return !dashboard.loading;
@@ -197,23 +223,26 @@ describe("acception", function () {
         }];
         var cache = require('js/cache');
         cache.clearAll();
-        reRequireModule(['js/app']);
+        reRequireModule(['js/cards', 'js/app']);
       });
 
       var app;
       runs(function () {
+        Backbone.history.stop();
         app = require('js/app');
         app.start({
           cards: [initData.card]
         });
-      })
+      });
+
+      waitsFor(function () {
+        return Backbone.History.started;
+      }, 'app started');
 
       var flag
       runs(function () {
-        initController(Controller, controller, function (data) {
-          var commands = require('js/commands');
-          commands.execute('move:dashboard', initData);
-        });
+        var commands = require('js/commands');
+        commands.execute('move:dashboard', initData);
       })
 
       waitsFor(function () {

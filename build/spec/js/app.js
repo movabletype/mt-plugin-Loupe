@@ -74,14 +74,26 @@ describe("js", function () {
       });
 
       runs(function () {
-        reRequireModule(['js/app', 'js/router/controller']);
+        reRequireModule(['js/router/router'])
+      });
+
+      runs(function () {
+        reRequireModule(['js/router/controller'])
+      });
+
+      runs(function () {
+        reRequireModule(['js/cards']);
+      });
+
+      runs(function () {
+        reRequireModule(['js/app']);
       });
     });
 
     runs(function () {
       initController(Controller, controller, function (data) {
         initData = data;
-      });
+      }, null, true);
     });
 
     waitsFor(function () {
@@ -115,8 +127,10 @@ describe("js", function () {
       var app;
 
       runs(function () {
+        Backbone.history.stop();
         app = require('js/app');
         app.addInitializer(spy);
+
         app.start();
       });
 
@@ -143,6 +157,7 @@ describe("js", function () {
       var app;
 
       runs(function () {
+        Backbone.history.stop();
         app = require('js/app');
         app.addInitializer(spy);
         app.start();
@@ -175,33 +190,32 @@ describe("js", function () {
       var cards = [{
         "name": "first card",
         "id": "firstCard",
-        "dashboard": {
-          "view": "dashboard/dashboard"
-        },
         "routes": [{
           "id": "view",
           "layout": "view/layout"
         }]
       }];
 
-      reRequireDevice();
-
-      var spy = jasmine.createSpy('spy');
       var app;
-      var commands = require('js/commands');
+      var commands;
       var count;
 
       runs(function () {
+        reRequireDevice();
+      });
+
+      runs(function () {
+        Backbone.history.stop();
+        commands = require('js/commands');
         app = require('js/app');
         spyOn(app.main, 'show');
-        app.addInitializer(spy);
         app.start({
           cards: cards
         });
       });
 
       waitsFor(function () {
-        return spy.callCount === 1;
+        return Backbone.History.started && commands._wreqrHandlers['move:cardView:firstCard:view'];
       }, 'starting app', 3000);
 
       runs(function () {
@@ -224,9 +238,6 @@ describe("js", function () {
       var cards = [{
         "name": "second card",
         "id": "secondCard",
-        "dashboard": {
-          "view": "dashboard/dashboard"
-        },
         "routes": [{
           "id": "view",
           "header": "header",
@@ -238,22 +249,22 @@ describe("js", function () {
 
       reRequireDevice();
 
-      var spy = jasmine.createSpy('spy');
       var app;
-      var commands = require('js/commands');
+      var commands;
       var count;
 
       runs(function () {
+        commands = require('js/commands');
+        Backbone.history.stop();
         app = require('js/app');
         spyOn(app.main, 'show');
-        app.addInitializer(spy);
         app.start({
           cards: cards
         });
       });
 
       waitsFor(function () {
-        return spy.callCount === 1;
+        return Backbone.History.started;
       }, 'starting app', 3000);
 
       runs(function () {
@@ -286,6 +297,7 @@ describe("js", function () {
 
         runs(function () {
           spy = jasmine.createSpy('spy');
+          Backbone.history.stop();
           app = require('js/app');
           spyOn(app.menu, 'show');
           app.addInitializer(spy);
@@ -340,6 +352,7 @@ describe("js", function () {
         var spy;
         runs(function () {
           spy = jasmine.createSpy('spy');
+          Backbone.history.stop();
           app = require('js/app');
           app.addInitializer(spy);
           app.start();

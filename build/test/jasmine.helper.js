@@ -57,6 +57,8 @@ function initCommands(commandSpies, spyTarget, controller) {
         commandSpies[command](data);
       }
     };
+    commands.commandsOrig = commandsOrig;
+    commands.foobar = 'yes I\'m foobar'
     undefRequireModule('js/commands');
     window.define('js/commands', [], function () {
       return commands;
@@ -64,18 +66,29 @@ function initCommands(commandSpies, spyTarget, controller) {
   });
 }
 
-function initController(Controller, controller, callback, cards) {
+function initController(Controller, controller, callback, cards, router) {
   var options = cards ? {
     cards: cards
   } : {};
-  Controller = require('js/router/controller');
-  controller = new Controller(options);
+
+  if (!controller) {
+    Controller = require('js/router/controller');
+    controller = new Controller(options);
+  }
+
+  if (router) {
+    var AppRouter = require('js/router/router')
+    new AppRouter({
+      controller: controller
+    });
+  }
+
   controller.auth(function (data) {
     data = _.extend({}, data);
     if (cards && cards.length) {
       data.card = cards[0];
     }
-    callback(data);
+    callback(data, controller);
   });
 };
 

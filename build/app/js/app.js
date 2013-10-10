@@ -1,9 +1,10 @@
-define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout', 'js/views/signin/signin'],
+define(['backbone', 'backbone.marionette', 'js/cards', 'js/cache', 'js/device', 'js/commands', 'js/vent', 'js/router/router', 'js/router/controller', 'js/views/menu/layout', 'js/views/dashboard/layout', 'js/views/card/layout', 'js/views/signin/signin'],
 
-  function (Backbone, Marionette, cache, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout, SigninView) {
+  function (Backbone, Marionette, cards, cache, device, commands, vent, AppRouter, Controller, MenuLayout, DashboardLayout, CardLayout, SigninView) {
     "use strict";
 
     var app = new Marionette.Application();
+
     if (DEBUG) {
       require(['perf'], function (perf) {
         perf.start();
@@ -12,8 +13,9 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
 
     app.addInitializer(function (options) {
       cache.set('app', 'initial', true);
+      options = options || {};
       this.initial = true;
-      this.cards = options && options.cards ? options.cards : [];
+      this.cards = options.cards || [];
       this.device = device;
       var $body = $(document.body);
       if (this.device.platform) {
@@ -58,45 +60,57 @@ define(['backbone', 'backbone.marionette', 'js/cache', 'js/device', 'js/commands
       });
 
       commands.setHandler('move:dashboard', function (params) {
-        params.cards = app.cards;
+        params.cards = cards.getAll();
         app.main.show(new DashboardLayout(params));
         commands.execute('app:afterTransition');
       });
 
-      commands.setHandler('app:error', _.bind(function (params) {
+      commands.setHandler('app:error', function (params) {
         app.main.show(new DashboardLayout(params));
         commands.execute('app:afterTransition');
-      }));
+      });
 
-      _.each(app.cards, function (card) {
-        if (card.routes && card.routes.length) {
-          _.each(card.routes, function (route) {
-            commands.setHandler('move:cardView:' + card.id + ':' + route.id, function (params) {
-              if (DEBUG) {
-                console.log('move:cardView:' + card.id + ':' + route.id);
-              }
-              var path = 'cards/' + card.id + '/';
-              if (route.layout) {
-                require([path + route.layout.replace(/\.js$/, '')], function (Layout) {
-                  app.main.show(new Layout(params));
-                  commands.execute('app:afterTransition');
-                });
-              } else {
-                params = _.extend(params, {
-                  viewHeader: route.header,
-                  viewView: route.view,
-                  viewTemplate: route.template,
-                  viewData: route.data
-                });
-                params.viewView = route.view;
-                app.main.show(new CardLayout(params));
-                commands.execute('app:afterTransition');
-              }
-            });
-          });
+      commands.setHandler('app:setCardViewHandler', function (card, route, callback) {
+        app.setCardViewHandler(card, route);
+        if (callback) {
+          callback();
         }
       });
+
+      var dfds = [];
+      _.each(app.cards, function (card) {
+        dfds.push(cards.add(card));
+      });
+
+      $.when(dfds).done(function () {
+        Backbone.history.start();
+      });
     });
+
+    app.setCardViewHandler = function (card, route) {
+      commands.setHandler('move:cardView:' + card.id + ':' + route.id, function (params) {
+        if (DEBUG) {
+          console.log('move:cardView:' + card.id + ':' + route.id);
+        }
+        var path = 'cards/' + card.id + '/';
+        if (route.layout) {
+          require([path + route.layout.replace(/\.js$/, '')], function (Layout) {
+            app.main.show(new Layout(params));
+            commands.execute('app:afterTransition');
+          });
+        } else {
+          params = _.extend(params, {
+            viewHeader: route.header,
+            viewView: route.view,
+            viewTemplate: route.template,
+            viewData: route.data
+          });
+          params.viewView = route.view;
+          app.main.show(new CardLayout(params));
+          commands.execute('app:afterTransition');
+        }
+      });
+    };
 
     app.addRegions({
       main: '#app',

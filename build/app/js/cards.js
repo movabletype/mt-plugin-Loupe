@@ -1,4 +1,4 @@
-define([], function () {
+define(['js/commands'], function (commands) {
   /**
    * @typeof {Object} Card
    * @property {!String} id
@@ -11,23 +11,41 @@ define([], function () {
        * @param {Card} card
        */
       add: function (card) {
-        if (!_.find(cards, function (orig) {
+        var dfd = $.Deferred();
+
+        function addCardRoute(card, i, len) {
+          if (i === len) {
+            dfd.resolve();
+          } else {
+            var route = card.routes[i];
+            commands.execute('addCardViewMethod', card, route, function () {
+              commands.execute('router:addRoute', card, route, function () {
+                commands.execute('app:setCardViewHandler', card, route, function () {
+                  addCardRoute(card, i + 1, len);
+                });
+              });
+            });
+          }
+        }
+
+        if (card.id && !_.find(cards, function (orig) {
           return orig.id === card.id;
         })) {
-          cards.push[card];
-          commands.execute('addCardViewMethod', card);
+          cards.push(card);
+          var len = card.routes ? card.routes.length : 0;
+          addCardRoute(card, 0, len);
+        } else {
+          dfd.resolve();
         }
+        return dfd;
       },
       /**
-       * remove card from cards array.
-       * @param  {Card} card
+       * get all cards information
+       * @return {Array.<Card>} cards array of cards
        */
-      remove: function (card) {
-        cards = _.reject(cards, function (orig) {
-          return orig.id === card.id
-        });
-      },
-
+      getAll: function () {
+        return cards;
+      }
     };
   return cardsMethods;
 });

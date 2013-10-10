@@ -234,7 +234,7 @@ describe("router", function () {
       spyOn(controller, 'authenticate').andCallFake(function () {
         origFunc.apply(controller, arguments);
         flag = true;
-      })
+      });
       controller.auth();
 
       waitsFor(function () {
@@ -969,10 +969,10 @@ describe("router", function () {
           cards: cards
         });
         spyOn(controller, 'auth').andCallThrough();
-        expect(controller.moveCardPage_statsview).toBeDefined();
-        expect(controller.moveCardPage_statspost).toBeDefined();
+        expect(controller['move:cardView:stats:view']).toBeDefined();
+        expect(controller['move:cardView:stats:view']).toBeDefined();
 
-        controller.moveCardPage_statsview();
+        controller['move:cardView:stats:view']();
       });
 
       waitsFor(function () {
