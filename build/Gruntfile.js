@@ -87,7 +87,7 @@ module.exports = function (grunt) {
   }, 'app/cards/**/*.js');
 
   var specs = [];
-  var helpers = ['app/lib/jquery/jquery-1.10.1.js', 'test/template.js', 'test/jasmine.helper.js'];
+  var helpers = ['app/lib/jquery/jquery.js', 'test/template.js', 'test/jasmine.helper.js'];
   grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/**/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
@@ -96,7 +96,7 @@ module.exports = function (grunt) {
     }
   });
 
-  var testTarget = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
+  var testTarget = ['app/js/app.js', 'app/js/cards.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
   testTarget = grunt.util._.without(testTarget, 'app/js/mtapi/mock.js');
 
   var settings = grunt.file.readJSON('settings.json');
@@ -892,6 +892,13 @@ module.exports = function (grunt) {
     'preprocess:test',
     'requirejs:test',
     'jasmine:test'
+  ]);
+
+  grunt.registerTask('coverage', [
+    'clean:beforeCoverage',
+    'preprocess:test',
+    'requirejs:test',
+    'jasmine:coverage'
   ]);
 
   if (grunt.file.exists('node_modules/grunt-styleguide')) {
