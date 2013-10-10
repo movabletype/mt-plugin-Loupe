@@ -62,7 +62,7 @@ define(['backbone.marionette', 'js/cache', 'js/device', 'js/commands', 'js/trans
                   url: staticPath + '/cards/acception/assets/welcome.png'
                 }],
                 title: translation(this.trans, 'welcome to Loupe! - this card lists the posts waiting for acception')
-              }
+              };
               data.items = [];
               for (var i = 0; i < 3; i++) {
                 data.items.push(item);
