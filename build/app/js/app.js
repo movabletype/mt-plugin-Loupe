@@ -12,11 +12,17 @@ define(['backbone', 'backbone.marionette', 'js/cards', 'js/cache', 'js/device', 
     }
 
     app.addInitializer(function (options) {
-      cache.set('app', 'initial', true);
       options = options || {};
+      var app = this;
+      cache.set('app', 'initial', true);
+      cache.set('app', 'staticPath', $('#main-script').data('base'));
       this.initial = true;
-      this.cards = options.cards || [];
+      this.cards = cards.add(options.cards, true).getAll();
       this.device = device;
+      this.router = options.router || new AppRouter({
+        controller: new Controller()
+      });
+
       var $body = $(document.body);
       if (this.device.platform) {
         $body.addClass(this.device.platform);
@@ -60,7 +66,7 @@ define(['backbone', 'backbone.marionette', 'js/cards', 'js/cache', 'js/device', 
       });
 
       commands.setHandler('move:dashboard', function (params) {
-        params.cards = cards.getAll();
+        params.cards = app.cards;
         app.main.show(new DashboardLayout(params));
         commands.execute('app:afterTransition');
       });
@@ -77,15 +83,26 @@ define(['backbone', 'backbone.marionette', 'js/cards', 'js/cache', 'js/device', 
         }
       });
 
-      var dfds = [];
-      _.each(app.cards, function (card) {
-        dfds.push(cards.add(card));
+      cards.deploy().done(function () {
+        if (!Backbone.History.started) {
+          Backbone.history.start();
+        }
+        vent.trigger('app:cards:deploy:end');
       });
 
-      $.when(dfds).done(function () {
-        Backbone.history.start();
+      vent.on('cards:add', function (addedCards) {
+        cards.deploy().done(function () {
+          commands.execute('dashboard:insertCard', addedCards)
+        });
       });
     });
+
+    app.stop = function () {
+      app.closeRegions();
+      vent.stopListening();
+      commands.removeAllHandlers();
+      cache.clearAll();
+    };
 
     app.setCardViewHandler = function (card, route) {
       commands.setHandler('move:cardView:' + card.id + ':' + route.id, function (params) {

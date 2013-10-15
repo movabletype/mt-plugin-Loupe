@@ -183,7 +183,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
         }, this));
       },
 
-      initialize: function (options) {
+      initialize: function () {
         commands.setHandler('l10n', _.bind(function (callback) {
           if (this.l10n) {
             this.l10n.waitLoadCommon(callback);
@@ -192,13 +192,6 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
 
         commands.setHandler('authorizationCallback', _.bind(function () {
           this.authorizationCallback();
-        }, this));
-
-        commands.setHandler('addCardViewMethod', _.bind(function (card, route, callback) {
-          this.addCardViewMethod(card, route);
-          if (callback) {
-            callback();
-          }
         }, this));
 
         mtapi.api.on('authorizationRequired', _.bind(function (resp) {
@@ -237,18 +230,9 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
             });
           }
         }, this));
-
-        _.forEach(options.cards, function (card) {
-          if (card.routes && card.routes.length) {
-            _.each(card.routes, function (route) {
-              this.addCardViewMethod(card, route);
-            }, this);
-          }
-        }, this);
       },
-      addCardViewMethod: function (card, route) {
-        var routeMethodName = 'move:cardView:' + card.id + ':' + route.id;
-        if (!this[routeMethodName]) {
+      addCardViewMethod: function (card, routeMethodName) {
+        if (routeMethodName && !this[routeMethodName]) {
           this[routeMethodName] = _.bind(function () {
             var routes = [].slice.call(arguments, 0);
             this.auth(function (data) {

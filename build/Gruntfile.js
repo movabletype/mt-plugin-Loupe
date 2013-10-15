@@ -14,7 +14,6 @@ module.exports = function (grunt) {
   var requireConfig = grunt.file.readJSON('./app/js/require.config.json');
 
   var requireJSPaths = {
-    "requireLib": "lib/require",
     "underscore": "lib/underscore/underscore-min",
     "backbone": "lib/backbone/backbone-min",
     "backbone.localStorage": "lib/backbone.localStorage/backbone.localStorage-min",
@@ -32,7 +31,8 @@ module.exports = function (grunt) {
     "app": "js/app",
     "vendor": "js/vendor",
     "template": "js/template",
-    "card": "js/card"
+    "card": "js/card",
+    "init": "js/build_foundations/init"
   };
 
   var jasminPathsCoverage = grunt.util._.clone(requireConfig.paths);
@@ -191,6 +191,7 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/index.html',
           '../mt-static/plugins/Loupe/jade',
           '../mt-static/plugins/Loupe/js/boot.js',
+          '../mt-static/plugins/Loupe/js/build_foundations',
           '../mt-static/plugins/Loupe/js/cache.js',
           '../mt-static/plugins/Loupe/js/collections',
           '../mt-static/plugins/Loupe/js/device.js',
@@ -218,6 +219,7 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/template',
           '../mt-static/plugins/Loupe/templates',
           '../mt-static/plugins/Loupe/cards',
+          '../mt-static/plugins/Loupe/components',
           '../mt-static/plugins/Loupe/assets/icons/index.html',
           '../mt-static/plugins/Loupe/assets/icons/license.txt',
           '../mt-static/plugins/Loupe/assets/icons/Read Me.txt',
@@ -298,6 +300,15 @@ module.exports = function (grunt) {
       prep: {
         targets: bulkSymlinkLinks,
         dir: 'app/js/template/helpers/'
+      },
+      dev: {
+        targets: grunt.util._.map(grunt.file.expand({
+          filter: 'isDirectory',
+          cwd: 'app/'
+        }, 'plugins/*'), function (path) {
+          return '../' + path
+        }),
+        dir: 'app/cards/'
       }
     },
     watch: {
@@ -545,6 +556,7 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/js/template.js': '../mt-static/plugins/Loupe/js/template.js',
           '../mt-static/plugins/Loupe/js/vendor.js': '../mt-static/plugins/Loupe/js/vendor.js',
           '../mt-static/plugins/Loupe/js/card.js': '../mt-static/plugins/Loupe/js/card.js',
+          '../mt-static/plugins/Loupe/js/init.js': '../mt-static/plugins/Loupe/js/build_foundations/init.js',
           '../mt-static/plugins/Loupe/js/l10n/de.js': '../mt-static/plugins/Loupe/js/l10n/de.js',
           '../mt-static/plugins/Loupe/js/l10n/es.js': '../mt-static/plugins/Loupe/js/l10n/es.js',
           '../mt-static/plugins/Loupe/js/l10n/fr.js': '../mt-static/plugins/Loupe/js/l10n/fr.js',
@@ -585,7 +597,11 @@ module.exports = function (grunt) {
             mtApiPath: settings.mtApiPath,
             libPath: '.',
             manifestFile: null,
-            csses: csses
+            csses: csses,
+            cards: grunt.file.expand({
+              filter: 'isDirectory',
+              cwd: 'app/plugins/'
+            }, '*')
           }
         },
         files: {
@@ -600,6 +616,7 @@ module.exports = function (grunt) {
             mtApiCGIPath: '<mt:var name="api_cgi_path">',
             mtApiPath: '<mt:var name="api_path">',
             libPath: '<mt:var name="lib_path">',
+            cards: ['showYourUserAgent'], // temporary string for dev,
             manifestFile: null
           }
         },
@@ -655,8 +672,6 @@ module.exports = function (grunt) {
           modules: [{
             name: 'vendor',
             include: [
-              "requireLib",
-              "jquery",
               "jquery.hammer",
               "jquery.smartresize",
               "jquery.smartscroll",
@@ -673,49 +688,54 @@ module.exports = function (grunt) {
               "i18nprecompile",
               "json2",
               "moment",
-              "moment.lang",
-              "eve",
               "raphael",
               "morris",
               "easeljs",
               "mtchart"
             ]
           }, {
+            name: 'init',
+            include: [
+              "lib/require",
+              "js/cards"
+            ],
+            exclude: ['vendor']
+          }, {
             name: 'template',
             include: hbsTemplates,
-            exclude: ['vendor']
+            exclude: ['vendor', 'init']
           }, {
             name: 'app',
             include: ['js/trans'],
-            exclude: ['vendor', 'template']
+            exclude: ['vendor', 'init', 'template']
           }, {
             name: 'card',
             include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
-            exclude: ['vendor', 'template', 'app']
+            exclude: ['vendor', 'init', 'template', 'app']
           }, {
             name: 'js/l10n/de',
             include: langTemplates.de,
-            exclude: ['vendor', 'template', 'app', 'card']
+            exclude: ['vendor', 'init', 'template', 'app', 'card']
           }, {
             name: 'js/l10n/es',
             include: langTemplates.es,
-            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de']
+            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de']
           }, {
             name: 'js/l10n/fr',
             include: langTemplates.fr,
-            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
+            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
           }, {
             name: 'js/l10n/ja',
             include: langTemplates.ja,
-            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
+            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
           }, {
             name: 'js/l10n/nl',
             include: langTemplates.nl,
-            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
+            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
           }, {
             name: 'js/l10n/en-us',
             include: langTemplates['en-us'],
-            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
+            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
           }],
 
           skipDirOptimize: true,
@@ -750,11 +770,11 @@ module.exports = function (grunt) {
           pragmasOnSave: {
             //removes Handlebars.Parser code (used to compile template strings) set
             //it to `false` if you need to parse template strings even after build
-            excludeHbsParser: true,
+            excludeHbsParser: false,
             // kills the entire plugin set once it's built.
-            excludeHbs: true,
+            excludeHbs: false,
             // removes i18n precompiler, handlebars and json2
-            excludeAfterBuild: true
+            excludeAfterBuild: false
           },
 
           locale: "ja_jp",
@@ -848,8 +868,8 @@ module.exports = function (grunt) {
     'sassVars:build',
     'compass:dev',
     'requirejs:build',
-    'clean:afterBuild',
     'string-replace:build',
+    'clean:afterBuild',
     'preprocess:basket',
     'uglify:basket',
     'copy:beforeConcat',

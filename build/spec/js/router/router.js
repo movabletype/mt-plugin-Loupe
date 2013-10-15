@@ -15,6 +15,7 @@
       }]
     }];
 
+    var testSpy;
 
     beforeEach(function () {
       runs(function () {
@@ -42,18 +43,21 @@
         Controller = require('js/router/controller');
         commands = require('js/commands');
 
-
         Backbone.history.stop();
         Backbone.history = new Backbone.History();
-      })
-    });
 
-    it("route to test card", function () {
-      runs(function () {
-        controller = new Controller({
-          cards: cards
+        testSpy = jasmine.createSpy('move:cardView:test:view');
+
+        controller = new Controller();
+        var origFunc = controller.addCardViewMethod;
+        spyOn(controller, "addCardViewMethod").andCallFake(function (card, routeMethodName, callback) {
+          if (routeMethodName === 'move:cardView:test:view') {
+            controller['move:cardView:test:view'] = testSpy;
+          } else {
+            origFunc.call(controller, card, routeMethodName, callback);
+          }
         });
-        spyOn(controller, "move:cardView:test:view");
+        spyOn(controller, 'moveDashboard');
 
         router = new AppRouter({
           controller: controller
@@ -61,81 +65,46 @@
 
         app = require('js/app');
         app.start({
-          cards: cards
+          cards: cards,
+          router: router
         });
       });
 
       waitsFor(function () {
         return Backbone.History.started;
       });
+    });
 
+    it("route to test card", function () {
       runs(function () {
         router.navigate('', true);
         router.navigate('test', true);
       });
 
       runs(function () {
-        expect(controller['move:cardView:test:view']).toHaveBeenCalled();
+        expect(testSpy).toHaveBeenCalled();
+        app.stop();
       });
     });
 
     it("route to dashboard", function () {
       runs(function () {
-        controller = new Controller({
-          cards: cards
-        });
-        spyOn(controller, "moveDashboard");
-
-        router = new AppRouter({
-          controller: controller
-        });
-
-        app = require('js/app');
-        app.start({
-          cards: cards
-        });
-      });
-
-      waitsFor(function () {
-        return Backbone.History.started;
-      });
-
-      runs(function () {
-        router.navigate('', true);
-        expect(controller.moveDashboard).toHaveBeenCalled();
-      });
-    });
-
-    it("should not route unused cards", function () {
-      runs(function () {
-        controller = new Controller({
-          cards: cards
-        });
-        spyOn(controller, "move:cardView:test:view");
-
-        router = new AppRouter({
-          controller: controller
-        });
-
-        app = require('js/app');
-        app.start();
-      });
-
-      waitsFor(function () {
-        return Backbone.History.started;
-      });
-
-      runs(function () {
         router.navigate('test', true);
-        expect(controller['move:cardView:test:view']).not.toHaveBeenCalled();
+        router.navigate('', true);
+      });
+
+      runs(function () {
+        expect(controller.moveDashboard).toHaveBeenCalled();
+        app.stop();
       });
     });
 
     it("route to dashboard even thought no cards", function () {
       runs(function () {
-        controller = new Controller({
-          cards: cards
-        });
+        router.navigate('test', true);
+        app.stop();
+
+        controller = new Controller();
         spyOn(controller, "moveDashboard");
 
         router = new AppRouter({
@@ -144,7 +113,7 @@
 
         app = require('js/app');
         app.start({
-          cards: cards
+          router: router
         });
       });
 
@@ -160,27 +129,6 @@
 
     it("router should listen navigate command and navigate it", function () {
       runs(function () {
-        controller = new Controller({
-          cards: cards
-        });
-        spyOn(controller, "moveDashboard");
-        spyOn(controller, "move:cardView:test:view");
-
-        router = new AppRouter({
-          controller: controller
-        });
-
-        app = require('js/app');
-        app.start({
-          cards: cards
-        });
-      });
-
-      waitsFor(function () {
-        return Backbone.History.started;
-      });
-
-      runs(function () {
         commands.execute('router:navigate', 'test');
       });
 
@@ -191,28 +139,9 @@
     });
 
     it("do nothing if navigate command have no params", function () {
-      runs(function () {
-        controller = new Controller({
-          cards: cards
-        });
-        spyOn(controller, "moveDashboard");
-
-        router = new AppRouter({
-          controller: controller
-        });
-
-        app = require('js/app');
-        app.start({
-          cards: cards
-        });
-      });
-
-      waitsFor(function () {
-        return Backbone.History.started;
-      });
-
       var count;
       runs(function () {
+        router.navigate('test', true);
         count = controller.moveDashboard.callCount;
         commands.execute('router:navigate');
       });
@@ -221,11 +150,16 @@
         expect(controller.moveDashboard.callCount).toEqual(count);
         commands.execute('router:navigate', '');
       });
+
+      runs(function () {
+        expect(controller.moveDashboard.callCount).toEqual(count + 1);
+      });
     });
 
     it("reserved route", function () {
       var spy;
       runs(function () {
+        app.stop();
         spy = jasmine.createSpy('spy');
 
         define('cards/signout/view', [], function () {
@@ -254,7 +188,8 @@
 
         app = require('js/app');
         app.start({
-          cards: cards
+          cards: cards,
+          router: router
         });
       });
 

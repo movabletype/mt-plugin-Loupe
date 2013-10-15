@@ -1,49 +1,49 @@
 [{
-    "name": "Stats",
-    "id": "stats",
-    "dashboard": {
-      "view": "dashboard/dashboard"
-    },
-    "routes": [{
-        "id": "view",
-        "view": "view/layout"
-      }, {
-        "id": "post",
-        "route": ":blog_id/:id/:unit",
-        "view": "view/post",
-        "header": "view/post_header"
-      }
-    ]
+  "name": "Stats",
+  "id": "stats",
+  "order": 100,
+  "dashboard": {
+    "view": "dashboard/dashboard"
+  },
+  "routes": [{
+    "id": "view",
+    "view": "view/layout"
   }, {
-    "name": "Acception",
-    "id": "acception",
-    "dashboard": {
-      "view": "dashboard/dashboard"
-    },
-    "routes": [{
-        "id": "view",
-        "route": ":blog_id/:id",
-        "view": "view/view",
-        "header": "view/view_header"
-      }
-    ]
-  }, {
-    "name": "Media Upload",
-    "id": "upload",
-    "dashboard": {
-      "view": "dashboard/dashboard"
-    }
-  }, {
-    "name": "Feedbacks",
-    "id": "feedbacks",
-    "dashboard": {
-      "view": "dashboard/dashboard"
-    },
-    "routes": [{
-        "id": "view",
-        "view": "view/layout",
-        "route": ":type/:blog_id/:id"
-      }
-    ]
+    "id": "post",
+    "route": ":blog_id/:id/:unit",
+    "view": "view/post",
+    "header": "view/post_header"
+  }]
+}, {
+  "name": "Acception",
+  "id": "acception",
+  "order": 200,
+  "dashboard": {
+    "view": "dashboard/dashboard"
+  },
+  "routes": [{
+    "id": "view",
+    "route": ":blog_id/:id",
+    "view": "view/view",
+    "header": "view/view_header"
+  }]
+}, {
+  "name": "Media Upload",
+  "id": "upload",
+  "order": 300,
+  "dashboard": {
+    "view": "dashboard/dashboard"
   }
-]
+}, {
+  "name": "Feedbacks",
+  "id": "feedbacks",
+  "order": 400,
+  "dashboard": {
+    "view": "dashboard/dashboard"
+  },
+  "routes": [{
+    "id": "view",
+    "view": "view/layout",
+    "route": ":type/:blog_id/:id"
+  }]
+}]

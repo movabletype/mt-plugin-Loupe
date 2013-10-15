@@ -963,15 +963,31 @@ describe("router", function () {
       var Controller, controller;
       reRequireModule('js/router/controller');
 
+      var flag2;
       runs(function () {
+        var commands = require('js/commands');
+        commands.removeHandler('router:addRoute');
         Controller = require('js/router/controller');
-        controller = new Controller({
-          cards: cards
+        controller = new Controller();
+        var appRouter = require('js/router/router');
+        var router = new appRouter({
+          controller: controller
         });
+
+        var cardsMethod = require('js/cards');
+        cardsMethod.add(cards).deploy().done(function () {
+          flag2 = true;
+        })
+      });
+
+      waitsFor(function () {
+        return flag2;
+      });
+
+      runs(function () {
         spyOn(controller, 'auth').andCallThrough();
         expect(controller['move:cardView:stats:view']).toBeDefined();
         expect(controller['move:cardView:stats:view']).toBeDefined();
-
         controller['move:cardView:stats:view']();
       });
 

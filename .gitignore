@@ -5,11 +5,11 @@ build/app/index.html
 build/app/css/*
 build/app/template
 build/app/sass/_sass_grunt_vars.scss
-#plugins/Loupe/tmpl/loupe.tmpl
-#mt-static/*
+build/app/js/main.js
 
-# bower directory which configured in .bowerc
+# ignore directory for dev
 build/app/components
+build/app/plugins
 
 # node modules
 build/node_modules
@@ -31,4 +31,3 @@ build/test/coverage
 # sass cache
 *.sass-cache
 
-/build/app/js/main.js

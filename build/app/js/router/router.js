@@ -10,17 +10,10 @@ define(['backbone.marionette', 'js/commands'], function (Marionette, commands) {
 
   return Marionette.AppRouter.extend({
     appRoutes: appRoutes,
-    initialize: function (options, cards) {
+    initialize: function (options) {
       this.options = options;
 
       this.reservedRoutes = _.keys(appRoutes);
-      _.forEach(cards, function (card) {
-        if (card.id && card.routes && card.routes.length) {
-          _.each(card.routes, function (route) {
-            this.addRoute(card, route);
-          }, this);
-        }
-      }, this);
 
       commands.setHandler('router:addRoute', _.bind(function (card, route, callback) {
         this.addRoute(card, route);
@@ -42,6 +35,7 @@ define(['backbone.marionette', 'js/commands'], function (Marionette, commands) {
       if (_.contains(this.reservedRoutes, routeName)) {
         console.log('card ID "' + card.id + '" is about to use reserved route, "' + routeName + '". you must change this route');
       } else {
+        this._getController().addCardViewMethod(card, routeMethodName);
         this.appRoute(routeName, routeMethodName);
       }
     }

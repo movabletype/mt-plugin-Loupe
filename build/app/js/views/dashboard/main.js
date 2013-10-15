@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'js/views/card/itemview', 'hbs!js/views/dashboard/templates/main'],
+define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/blog', 'js/views/card/itemview', 'hbs!js/views/dashboard/templates/main'],
 
-  function (Marionette, commands, Trans, getBlog, CardItemView, template) {
+  function (Marionette, commands, cardsMethod, Trans, getBlog, CardItemView, template) {
     "use strict";
 
     return Marionette.Layout.extend({
@@ -13,83 +13,112 @@ define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'js/v
 
       template: template,
 
-      prepareCards: function (options) {
-        if (options.blog) {
-          this.error = options.blog.error;
+      insertCard: function (card) {
+        var dashboard = card.dashboard;
+
+        if (dashboard) {
+          var id = card.id,
+            that = this,
+            order = parseInt(card.order, 10) || null,
+            path = (card.root || 'cards/') + id + '/';
+
+          card.$el = $('<section id="card-' + id + '" class="card"></section>');
+
+          if (typeof order !== 'number') {
+            card.$el.appendTo(this.$el);
+            card.inserted = true;
+          } else {
+            var len = this.cards.length;
+            for (var i = 0; i < len; i++) {
+              var target = this.cards[i],
+                $targetEl = target.$el;
+
+              if (target.inserted && target.id !== card.id && (!target.order || target.order > order)) {
+                card.$el.insertBefore($targetEl);
+                card.inserted = true;
+                break;
+              }
+            }
+            if (!card.inserted) {
+              card.$el.appendTo(this.$el);
+              card.inserted = true;
+            }
+          }
+
+          this.addRegion(id, "#card-" + id);
+
+          if (DEBUG) {
+            var dfd = $.Deferred();
+            this.cardsDfds.push(dfd);
+            that[id].on('show', function () {
+              require(['perf'], function (perf) {
+                perf.log('afterCardBuild_' + id);
+                dfd.resolve();
+              });
+            });
+          }
+
+          if (dashboard.view) {
+            require([path + dashboard.view.replace(/\.js$/, '')], function (View) {
+              that[id].show(new View(_.extend(that.options, {
+                card: card
+              })));
+            });
+          } else if (dashboard.template) {
+            var match = dashboard.template.match(/^(.*)\.(.*)$/),
+              type, filename;
+
+            if (match[2] === 'hbs') {
+              type = 'hbs';
+              filename = match[1];
+            } else {
+              type = 'text';
+              filename = match[0];
+            }
+
+            var script = dashboard.data ? [path + dashboard.data.replace(/\.js$/, '')] : [],
+              templatePath = type + '!' + path + filename,
+              requirements = [templatePath].concat(script);
+
+            require(requirements, function (template, templateData) {
+              template = type === 'hbs' ? template : templatePath;
+              templateData = templateData ? templateData : {};
+              var View = CardItemView.extend({
+                template: template,
+                serializeData: function () {
+                  var data = this.serializeDataInitialize();
+                  data = _.extend(data, templateData);
+                  return data;
+                }
+              });
+
+              that[id].show(new View(_.extend(that.options, {
+                card: card
+              })));
+            });
+          }
         }
-        this.cards = this.error ? [] : options.cards;
+      },
+
+      onClose: function () {
+        commands.removeHandler('dashboard:insertCard');
+      },
+
+      prepareCards: function (options) {
         if (options.user) {
           commands.execute('l10n', _.bind(function (l10n) {
             this.trans = new Trans(l10n);
-            var cardsDfds = [];
+            this.cardsDfds = [];
             if (this.cards && this.cards.length) {
-              _.forEach(this.cards, function (card) {
-                var dashboard = card.dashboard;
-                if (dashboard) {
-                  var id = card.id,
-                    that = this,
-                    path = 'cards/' + id + '/';
-
-                  $('<section id="card-' + id + '" class="card"></section>').appendTo(this.el);
-                  this.addRegion(id, "#card-" + id);
-
-                  if (DEBUG) {
-                    var dfd = $.Deferred();
-                    cardsDfds.push(dfd);
-                    that[id].on('show', function () {
-                      require(['perf'], function (perf) {
-                        perf.log('afterCardBuild_' + id);
-                        dfd.resolve();
-                      });
-                    });
-                  }
-                  if (dashboard.view) {
-                    require([path + dashboard.view.replace(/\.js$/, '')], function (View) {
-                      that[id].show(new View(_.extend(that.options, {
-                        card: card
-                      })));
-                    });
-                  } else if (dashboard.template) {
-                    var match = dashboard.template.match(/^(.*)\.(.*)$/),
-                      type, filename;
-
-                    if (match[2] === 'hbs') {
-                      type = 'hbs';
-                      filename = match[1];
-                    } else {
-                      type = 'text';
-                      filename = match[0];
-                    }
-
-                    var script = dashboard.data ? [path + dashboard.data.replace(/\.js$/, '')] : [],
-                      templatePath = type + '!' + path + filename,
-                      requirements = [templatePath].concat(script);
-
-                    require(requirements, function (template, templateData) {
-                      template = type === 'hbs' ? template : templatePath;
-                      templateData = templateData ? templateData : {};
-                      var View = CardItemView.extend({
-                        template: template,
-                        serializeData: function () {
-                          var data = this.serializeDataInitialize();
-                          data = _.extend(data, templateData);
-                          return data;
-                        }
-                      });
-
-                      that[id].show(new View(_.extend(that.options, {
-                        card: card
-                      })));
-                    });
-                  }
-                }
+              _.each(this.cards, function (card) {
+                this.insertCard(card);
               }, this);
             } else {
               this.render();
             }
 
             if (DEBUG) {
-              $.when.apply(this, cardsDfds).done(function () {
+              $.when(this.cardsDfds).done(function () {
                 require(['perf'], function (perf) {
                   perf.log('afterAllCardsLoaded');
                   perf.info('afterAllCardsLoaded');
@@ -107,12 +136,27 @@ define(['backbone.marionette', 'js/commands', 'js/trans', 'js/mtapi/blog', 'js/v
       initialize: function (options) {
         this.options = options;
         this.blog = options.blog;
+        if (this.blog) {
+          this.error = this.blog.error;
+        }
+        this.cards = (this.error || !options.cards) ? [] : options.cards;
       },
 
       onRender: function () {
         if (!this.buildOnlyOnce) {
           this.buildOnlyOnce = true;
           this.prepareCards(this.options);
+          commands.setHandler('dashboard:insertCard', _.bind(function (addedCards) {
+            addedCards = $.isArray(addedCards) ? addedCards : (addedCards ? [addedCards] : []);
+            _.each(addedCards, function (card) {
+              if (!_.find(this.cards, function (c) {
+                return c.id === card.id
+              })) {
+                this.cards.push(card);
+                this.insertCard(card);
+              }
+            }, this);
+          }, this));
         }
       }
     });
