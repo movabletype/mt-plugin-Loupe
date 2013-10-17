@@ -1,0 +1,112 @@
+@import "_helpers";
+
+.button-container {
+  background-color: $btn-basic-color;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 16px 0 24px;
+  margin: 1rem 0 1.5rem;
+  position: relative;
+  @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+  @include border-radius($radius);
+  @include transition-duration(0.05s);
+  @include transition-timing-function(ease-in);
+  .button {
+    display: block;
+    padding: 16px;
+    padding: 1rem;
+    min-height: 8px;
+    /* 40 - (16 * 2) */
+    min-height: 2.469rem;
+  }
+  &.tapped, &:active, &:hover:active {
+    background-color: darken($btn-basic-color, 2%);
+    top: 7px;
+    @include box-shadow(0px 1px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+  }
+}
+
+.button-container-disabled {
+  background-color: $btn-disabled-color;
+  color: #666;
+  cursor: auto;
+  @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
+  @include border-radius($radius);
+  &.tapped, &:active, &:hover:active {
+    background-color: $btn-disabled-color;
+    top: 0;
+    @include box-shadow(0px 8px 0px 0px transparent, inset 0px 1px 0px 0px transparent);
+  }
+}
+
+.button-container-caution {
+  background-color: $btn-attention-color;
+  @include box-shadow(0px 8px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+  @include border-radius(radius);
+  &.tapped, &:active, &:hover:active {
+    background-color: darken($btn-attention-color, 2%);
+    top: 7px;
+    @include box-shadow(0px 1px 0px 0px darken($btn-attention-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+  }
+}
+
+.button-container-top {
+  margin: 0 0 24px;
+  margin: 0 0 1.5rem;
+}
+
+.button-container.with-icon {
+  .button-icon, .button {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 16px 0;
+    padding: 1rem 0;
+  }
+}
+
+.button-container-undo {
+  cursor: auto;
+  min-height: 8px;
+  /* 40 - (16 * 2) */
+  min-height: 2.469rem;
+  padding: 16px;
+  padding: 1rem;
+  text-align: left;
+  &:active, &:hover:active {
+    background-color: $btn-basic-color;
+    top: 0;
+    @include box-shadow(0px 8px 0px 0px darken($btn-basic-color, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
+  }
+  .button-icon, .button-label {
+    display: inline-block;
+    font-size: 1em;
+    font-size: 1rem;
+    line-height: 1.5;
+    vertical-align: middle;
+  }
+  .button-undo {
+    position: absolute;
+    border-left: 1px solid darken($btn-basic-color, 10%);
+    display: block;
+    top: 0;
+    right: 0;
+    height: 100%;
+  }
+  .button-undo-inner {
+    border-left: 1px solid lighten($btn-basic-color, 20%);
+    cursor: pointer;
+    display: block;
+    font-size: 18px;
+    font-size: 1.125rem;
+    height: 100%;
+    line-height: 2.2em;
+    line-height: 2.2rem;
+    padding: 10px;
+    padding: 0.625rem;
+    width: 100%;
+  }
+}

@@ -29,7 +29,9 @@ define(['backbone', 'moment', 'js/mtapi', 'cards/acception/models/model'], funct
         params.offset = parseInt(options.offset, 10);
       }
 
-      mtapi.api.listEntries(this.blogId, params, _.bind(function (resp) {
+      mtapi.api.listEntries(this.blogId, params, {
+        fields: 'author,blog,categories,id,status,title,body,permalink,date,excerpt'
+      }, _.bind(function (resp) {
         if (DEBUG) {
           console.log(resp);
         }

@@ -1,0 +1,9 @@
+<a {{#if this.id}}data-route="feedbacks/comments/{{blog.id}}/{{this.id}}"{{/if}} class="item-container">
+  <span class="item-content">
+    <span class="item-asset-container">
+      <span class="item-asset icon-comment"></span>
+    </span>
+    <span class="item-title">{{removeHtml body}}</span>
+    <span class="item-arrow icon-arrow"></span>
+  </span>
+</a>

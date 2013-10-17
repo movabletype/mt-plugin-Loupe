@@ -1,61 +1,31 @@
-@import "compass/css3/border-radius";
-@import "compass/utilities/general/clearfix";
 @import "../../../sass/_helpers.scss";
 
 #card-acception {
-  li {
-    .circle {
-      width: 60px;
-      height: 60px;
-      border-color: #aaa;
-      background-color: #aaa;
+  .circle {
+    border-color: #aaa;
+    background-color: #aaa;
+    height: 60px;
+    width: 60px;
+    .circle-inner {
+      border-color: $white;
+      background-color: #ccc;
+    }
+    &.image {
+      background-color: transparent;
       .circle-inner {
-        border-color: $white;
-        background-color: #ccc;
-      }
-      &.image {
+        border-color: transparent;
         background-color: transparent;
-        .circle-inner {
-          border-color: transparent;
-          background-color: transparent;
-        }
       }
     }
   }
-}
-
-#acception-view {
-  .acception-failed {
-    background-color: rgba(240, 240, 240, 0.95);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 13;
-    .message {
-      height: 190px;
+  .sample-item {
+    .circle.image {
+      border-color: transparent;
+      background-size: 75px;
+      margin-right: 2px;
+      .circle-inner {
+        border-color: transparent;
+      }
     }
-  }
-  .content {
-    min-height: 320px;
-    padding: 1rem;
-  }
-  .title {
-    text-align: left;
-    padding: 0;
-    font-weight: bold;
-    font-size: 1.097rem;
-    line-height: 1.5;
-  }
-  .body {
-    line-height: 1.8em;
-    img {
-      max-width: 100%;
-    }
-  }
-  .author-name {
-    font-weight: bold;
-    margin-left: 1rem;
   }
 }

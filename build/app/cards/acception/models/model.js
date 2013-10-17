@@ -1,37 +1,30 @@
 define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
   return Backbone.Model.extend({
     sync: function (method, model, options) {
+      var dfd = $.Deferred(),
+        blogId = options.blogId,
+        callback = function (resp) {
+          if (!resp.error) {
+            dfd.resolve(resp);
+          } else {
+            dfd.reject(resp);
+          }
+        };
+
+      dfd.done(options.success);
+      dfd.fail(options.error);
+
       if (method === 'read') {
-        var dfd = $.Deferred();
-        dfd.done(options.success);
-        dfd.fail(options.error);
-        mtapi.api.getEntry(options.blogId, options.entryId, function (resp) {
-          if (!resp.error) {
-            dfd.resolve(resp);
-          } else {
-            dfd.reject(resp);
-          }
-        });
-        return dfd;
+        mtapi.api.getEntry(blogId, this.id, {
+          fields: 'author,blog,categories,id,status,title,body,permalink,date,excerpt'
+        }, callback);
       } else if (method === 'update') {
-        var dfd = $.Deferred(),
-          blogId = model.get('blog').id,
-          entryId = model.get('id'),
-          entry = model.toJSON();
-
-        dfd.done(options.success);
-        dfd.fail(options.error);
+        var entry = model.toJSON();
         entry.status = options.status || entry.status;
-
-        mtapi.api.updateEntry(blogId, entryId, entry, function (resp) {
-          if (!resp.error) {
-            dfd.resolve(resp);
-          } else {
-            dfd.reject(resp);
-          }
-        });
-        return dfd;
+        mtapi.api.updateEntry(blogId, this.id, entry, callback);
       }
+
+      return dfd;
     }
   });
 });

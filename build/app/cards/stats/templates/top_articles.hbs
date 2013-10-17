@@ -1,7 +1,7 @@
 <header>
-<h1 id="{{name}}-title">{{#trans trans}}{{{title}}}{{/trans}}</h1>
+<h1 id="{{name}}-title">{{#trans trans numberOfArticles}}{{{title}}}{{/trans}}</h1>
 </header>
-<div class="content">
+<div class="content content-list">
   {{>js_views_card_partials_loading}}
   {{>js_views_card_partials_fetchError}}
   {{>js_views_card_partials_providerIsNotAvailable}}
@@ -9,7 +9,7 @@
   <ul id="top-articles-list-{{unit}}" class="card-item-list top-articles-list">
   {{#each items}}
     <li id="eid-{{this.entry.id}}" data-pageviews="{{this.pageviews}}">
-      <div class="list-item-inner">
+      <div class="item-container">
         <div class="content-loading"></div>
         {{>cards_stats_templates_itemviewContent}}
       </div>

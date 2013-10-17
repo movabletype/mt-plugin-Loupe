@@ -1,6 +1,4 @@
-define(['backbone', 'moment', 'js/mtapi'],
-
-function (Backbone, moment, mtapi) {
+define(['backbone', 'moment', 'js/mtapi'], function (Backbone, moment, mtapi) {
   return Backbone.Model.extend({
     isSynced: false,
     initialize: function (blogId) {
@@ -37,7 +35,6 @@ function (Backbone, moment, mtapi) {
               console.log('listStatsVisitsForDate success in latest_page_view');
               console.log(resp);
             }
-            this.isSynced = true;
             dfd2.resolve(resp);
           } else {
             if (DEBUG) {

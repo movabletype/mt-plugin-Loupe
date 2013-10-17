@@ -2,45 +2,47 @@
   <div class="content">
   {{#if perm}}
     {{>js_views_card_partials_loading}}
+    {{>js_views_card_partials_fetchError}}
     {{#if acceptionFailed}}
-        <div class="acception-failed error"><span class="message"><span class="message-inner">{{#trans trans}}{{error}}{{/trans}}</span></span><div class="close-me button">{{#trans trans}}close{{/trans}}</div></div>
-    {{/if}}
-      {{#if fetchError}}
-       <div class="error">
-        <span class="message"><span class="message-inner">{{#trans trans}}Failed fetching data{{/trans}}</span></span>
+        <div class="acception-failed error overlay with-button">
+          <div class="overlay-inner">
+            <span class="message overlay-content">
+              <span class="message-inner overlay-content-inner">
+                {{#trans trans}}{{error}}{{/trans}}
+              </span>
+            </span>
+            <div class="button-container">
+              <div class="close-me button">{{#trans trans}}Close{{/trans}}</div>
+            </div>
+          </div>
         </div>
-       {{/if}}
+    {{/if}}
     {{#if id}}
       {{#ifIs status eq="Review"}}
-        <div id="accept-button" class="contents-top-button button">{{#trans trans}}Accept{{/trans}}</div>
-        <div class="title">{{title}}</div>
-        <p><span class="date">{{formatDate date lang}}</span><br>
-        <span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
-        <div class="body">{{sanitize body}}</div>
+        <div id="accept" class="button-container button-container-top button-container-caution">
+          <div class="button">{{#trans trans}}Accept{{/trans}}</div>
+        </div>
       {{else}}
         {{#ifIs status eq="Publish"}}
-        <div id="published-button" class="ok contents-top-button button button-with-undo">
+        <div class="button-container button-container-top button-container-undo">
           <span class="button-icon icon-check"></span>
           <span id="accepted" class="button-label">
             {{#if accepted}}
-              {{#trans trans}}Published!{{/trans}}
+              {{#trans trans}}Completed Publishing{{/trans}}
             {{else}}
               {{#trans trans}}Published{{/trans}}
             {{/if}}
-            <span id="accept-undo" class="button-undo"><span class="button-undo-inner icon-undo-arrow"></span></span>
+            <span id="accept-undo" class="button-undo">
+              <span class="button-undo-inner icon-undo-arrow"></span>
+            </span>
           </span>
         </div>
-        <div class="title">{{title}}</div>
-        <p><span class="date">{{formatDate date lang}}</span><br>
-        <span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
-        <div class="body">{{sanitize body}}</div>
         {{/ifIs}}
       {{/ifIs}}
+      {{>js_views_card_partials_entryItemsList}}
     {{/if}}
   {{else}}
-    <div class="error"><span class="message"><span class="message-inner">
-    {{#trans trans}}User has no permission for this card{{/trans}}
-    </span></span></div>
+    {{>js_views_card_partials_noPermission}}
   {{/if}}
   </div>
 </section>

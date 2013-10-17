@@ -1,9 +1,9 @@
 {
-  "name": "Loupe",
+  "name": "loupe",
   "version": "0.1.0",
   "description": "user mode application",
   "main": "Gruntfile.js",
-  "repository": "",
+  "repository": "git@github.com:movabletype/mt-plugin-Loupe.git",
   "author": "Six Apart",
   "devDependencies": {
     "matchdep": "~0.1.1",
@@ -31,6 +31,7 @@
     "grunt-symbolic-link": "~0.3.1",
     "grunt-bulk-symlink": "~0.1.0",
     "grunt-preprocess": "~2.3.0",
-    "grunt-contrib-uglify": "~0.2.2"
+    "grunt-contrib-uglify": "~0.2.2",
+    "temporary": "0.0.5"
   }
 }

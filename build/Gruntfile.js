@@ -9,7 +9,6 @@ module.exports = function (grunt) {
     }
   });
 
-
   grunt.loadTasks('grunt_local_tasks');
 
   var requireConfig = grunt.file.readJSON('./app/js/require.config.json');
@@ -35,7 +34,6 @@ module.exports = function (grunt) {
     "template": "js/template",
     "card": "js/card"
   };
-
 
   var jasminPathsCoverage = grunt.util._.clone(requireConfig.paths);
   grunt.util._.forIn(jasminPathsCoverage, function (v, k) {
@@ -89,8 +87,8 @@ module.exports = function (grunt) {
   }, 'app/cards/**/*.js');
 
   var specs = [];
-  var helpers = ['test/template.js', 'test/helper.js'];
-  grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/*.js')), function (src) {
+  var helpers = ['app/lib/jquery/jquery-1.10.1.js', 'test/template.js', 'test/jasmine.helper.js'];
+  grunt.util._.forEach(grunt.file.expand('spec/**/*.js').concat(grunt.file.expand('app/cards/*/spec/**/*.js')), function (src) {
     if (/_helper.js/.test(src)) {
       helpers.push(src);
     } else {
@@ -99,6 +97,7 @@ module.exports = function (grunt) {
   });
 
   var testTarget = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'].concat(grunt.file.expand('app/js/*/**/*.js')).concat(cardLibsForJasmine);
+  testTarget = grunt.util._.without(testTarget, 'app/js/mtapi/mock.js');
 
   var settings = grunt.file.readJSON('settings.json');
 
@@ -113,12 +112,22 @@ module.exports = function (grunt) {
     }
   });
 
+  var csses = grunt.file.expand({
+    cwd: 'app'
+  }, 'css/*/**/*.css').concat(grunt.file.expand({
+    cwd: 'app'
+  }, 'cards/css/**/*.css'));
+  csses = grunt.util._.reject(csses, function (css) {
+    return (/assets\//).test(css);
+  });
+
   // Project configuration.
   grunt.initConfig({
     jshint: {
       options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         options: {
+          es5: true,
           unused: false,
           evil: true
         },
@@ -146,13 +155,13 @@ module.exports = function (grunt) {
         options: {
           sassDir: 'app',
           cssDir: 'app/css',
-          specify: ['app/sass/*.scss', 'app/cards/*/*.scss', 'app/cards/*/sass/*.scss']
+          specify: ['app/sass/*.scss', 'app/sass/*.sass', 'app/cards/*/*.scss', 'app/cards/*/*.sass', 'app/cards/*/sass/*.scss', 'app/cards/*/sass/*.sass']
         }
       }
     },
     concat: {
       dev: {
-        src: ['app/css/*/**/*.css'],
+        src: ['app/css/*/**/*.css', 'app/cards/css/**/*.css'],
         dest: 'app/css/style.css'
       }
     },
@@ -164,7 +173,7 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      beforeCompass: ['app/css/style.css'],
+      beforeCompass: ['app/css/style.css', 'app/css/assets', 'app/css/**/assets'],
       build: {
         options: {
           force: true
@@ -176,83 +185,93 @@ module.exports = function (grunt) {
           force: true
         },
         src: [
-            '../mt-static/plugins/Loupe/build.txt',
-            '../mt-static/plugins/Loupe/css/*',
-            '../mt-static/plugins/Loupe/index.html',
-            '../mt-static/plugins/Loupe/jade',
-            '../mt-static/plugins/Loupe/js/boot.js',
-            '../mt-static/plugins/Loupe/js/cache.js',
-            '../mt-static/plugins/Loupe/js/collections',
-            '../mt-static/plugins/Loupe/js/device.js',
-            '../mt-static/plugins/Loupe/js/models',
-            '../mt-static/plugins/Loupe/js/commands.js',
-            '../mt-static/plugins/Loupe/js/mtapi',
-            '../mt-static/plugins/Loupe/js/mtapi.js',
-            '../mt-static/plugins/Loupe/js/perf.js',
-            '../mt-static/plugins/Loupe/js/router',
-            '../mt-static/plugins/Loupe/js/main.js',
-            '../mt-static/plugins/Loupe/js/main.preprocess.js',
-            '../mt-static/plugins/Loupe/js/require.config.json',
-            '../mt-static/plugins/Loupe/js/l10n.js',
-            '../mt-static/plugins/Loupe/js/lib',
-            '../mt-static/plugins/Loupe/js/layouts',
-            '../mt-static/plugins/Loupe/js/require.js',
-            '../mt-static/plugins/Loupe/js/template',
-            '../mt-static/plugins/Loupe/js/trans.js',
-            '../mt-static/plugins/Loupe/js/vent.js',
-            '../mt-static/plugins/Loupe/js/views',
-            '../mt-static/plugins/Loupe/l10n',
-            '../mt-static/plugins/Loupe/lib',
-            '../mt-static/plugins/Loupe/preprocesses',
-            '../mt-static/plugins/Loupe/sass',
-            '../mt-static/plugins/Loupe/template',
-            '../mt-static/plugins/Loupe/templates',
-            '../mt-static/plugins/Loupe/cards',
-            '../mt-static/plugins/Loupe/assets/icons/index.html',
-            '../mt-static/plugins/Loupe/assets/icons/license.txt',
-            '../mt-static/plugins/Loupe/assets/icons/Read Me.txt'
+          '../mt-static/plugins/Loupe/build.txt',
+          '../mt-static/plugins/Loupe/css/*',
+          '../mt-static/plugins/Loupe/index.html',
+          '../mt-static/plugins/Loupe/jade',
+          '../mt-static/plugins/Loupe/js/boot.js',
+          '../mt-static/plugins/Loupe/js/cache.js',
+          '../mt-static/plugins/Loupe/js/collections',
+          '../mt-static/plugins/Loupe/js/device.js',
+          '../mt-static/plugins/Loupe/js/models',
+          '../mt-static/plugins/Loupe/js/commands.js',
+          '../mt-static/plugins/Loupe/js/mtapi',
+          '../mt-static/plugins/Loupe/js/mtapi.js',
+          '../mt-static/plugins/Loupe/js/perf.js',
+          '../mt-static/plugins/Loupe/js/router',
+          '../mt-static/plugins/Loupe/js/main.js',
+          '../mt-static/plugins/Loupe/js/main.preprocess.js',
+          '../mt-static/plugins/Loupe/js/require.config.json',
+          '../mt-static/plugins/Loupe/js/l10n.js',
+          '../mt-static/plugins/Loupe/js/lib',
+          '../mt-static/plugins/Loupe/js/layouts',
+          '../mt-static/plugins/Loupe/js/require.js',
+          '../mt-static/plugins/Loupe/js/template',
+          '../mt-static/plugins/Loupe/js/trans.js',
+          '../mt-static/plugins/Loupe/js/vent.js',
+          '../mt-static/plugins/Loupe/js/views',
+          '../mt-static/plugins/Loupe/l10n',
+          '../mt-static/plugins/Loupe/lib',
+          '../mt-static/plugins/Loupe/preprocesses',
+          '../mt-static/plugins/Loupe/sass',
+          '../mt-static/plugins/Loupe/template',
+          '../mt-static/plugins/Loupe/templates',
+          '../mt-static/plugins/Loupe/cards',
+          '../mt-static/plugins/Loupe/assets/icons/index.html',
+          '../mt-static/plugins/Loupe/assets/icons/license.txt',
+          '../mt-static/plugins/Loupe/assets/icons/Read Me.txt',
+          '../mt-static/plugins/Loupe/assets/icons/MTIcon.json',
+          '../mt-static/plugins/Loupe/assets/icons/svg'
         ]
       },
-      afterTest: ['template.js']
+      afterTest: ['template.js'],
+      beforeCoverage: ['.grunt/grunt-contrib-jasmine', 'app/test/coverage']
     },
     copy: {
       prep: {
         files: [{
-            expand: true,
-            src: ['app/lib/chart-api/mtchart.css'],
-            dest: 'app/css/lib/',
-            flatten: true
-          }
-        ]
+          expand: true,
+          src: ['app/lib/chart-api/mtchart.css'],
+          dest: 'app/css/lib/',
+          flatten: true
+        }]
       },
       build: {
         files: [{
-            expand: true,
-            cwd: 'app/',
-            src: ['cards/**/assets/**'],
-            dest: '../mt-static/plugins/Loupe',
-            filter: 'isFile'
-          }
-        ]
+          expand: true,
+          cwd: 'app/',
+          src: ['cards/**/assets/**'],
+          dest: '../mt-static/plugins/Loupe',
+          filter: 'isFile'
+        }]
       },
       beforeConcat: {
         files: [{
-            expand: true,
-            cwd: 'app/',
-            src: ['cards/**/*.css'],
-            dest: 'app/css',
-            filter: 'isFile'
-          }
-        ]
+          expand: true,
+          cwd: 'app/',
+          src: ['cards/**/*.css'],
+          dest: 'app/css',
+          filter: 'isFile'
+        }]
       }
     },
     symlink: {
+      options: {
+        overwrite: true
+      },
       prep: {
         target: 'js/template',
-        link: 'app/template',
-        options: {
-          overwrite: true
-        }
+        link: 'app/template'
+      },
+      prep2: {
+        // help for sass file editing (need to consider better solution...)
+        target: '../assets/',
+        link: 'app/css/assets'
+      },
+      prep3: {
+        // help for sass file editing (need to consider better solution...)
+        target: '../../../assets/',
+        link: 'app/css/cards/upload/assets'
       },
       bulkSymlink: {
         target: grunt.option('bulkSymlinkTarget'),
@@ -273,14 +292,17 @@ module.exports = function (grunt) {
       },
       css: {
         files: [
-            'app/sass/*.scss',
-            'app/cards/*/**.scss',
-            'app/cards/*/*/**.scss'
+          'app/sass/*.scss',
+          'app/sass/*.sass',
+          'app/cards/*/**.scss',
+          'app/cards/*/**.sass',
+          'app/cards/*/*/**.scss',
+          'app/cards/*/*/**.sass'
         ],
         tasks: ['clean:beforeCompass', 'compass:dev', 'copy:beforeConcat', 'concat', 'cssmin']
       },
       ie: {
-        files: ['app/ie/sass/*.scss'],
+        files: ['app/ie/sass/*.scss', 'app/ie/sass/*.sass'],
         tasks: ['compass:ie']
       }
     },
@@ -289,7 +311,11 @@ module.exports = function (grunt) {
         options: {
           inline: true,
           context: {
-            mock: grunt.option('mock') || false
+            mock: grunt.option('mock') || false,
+            failAuth: grunt.option('failAuth') || false,
+            failAuthSPDY: grunt.option('failAuthSPDY') || false,
+            userLang: grunt.option('userLang'),
+            blogLength: grunt.option('blogLength')
           }
         },
         files: {
@@ -300,7 +326,7 @@ module.exports = function (grunt) {
         options: {
           inline: true,
           context: {
-            mock: true
+            mock: "{}"
           }
         },
         files: {
@@ -316,11 +342,6 @@ module.exports = function (grunt) {
         },
         files: {
           '../mt-static/plugins/Loupe/manifest.appcache': 'app/preprocesses/manifest.preprocess.appcache'
-        }
-      },
-      l10n: {
-        files: {
-          'app/l10n/ja.js': 'app/preprocesses/l10n/ja.preprocess'
         }
       },
       basket: {
@@ -358,18 +379,51 @@ module.exports = function (grunt) {
         options: {
           hostname: 'localhost',
           port: 9002,
-          keepalive: true
+          keepalive: true,
+          middleware: function (connect, options) {
+            return [
+              function (req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', '*');
+                next();
+              },
+              // Serve static files.
+              connect.static(options.base),
+              // Make empty directories browsable.
+              connect.directory(options.base)
+            ];
+          }
+        }
+      },
+      jasmine: {
+        options: {
+          hostname: 'localhost',
+          port: 9003,
+          middleware: function (connect, options) {
+            return [
+              function (req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', '*');
+                next();
+              },
+              // Serve static files.
+              connect.static(options.base),
+              // Make empty directories browsable.
+              connect.directory(options.base)
+            ];
+          }
         }
       }
     },
     jasmine: {
       test: {
-        src: ['app'], //testTarget,
+        src: ['app'],
         options: {
           specs: specs,
           helpers: helpers.concat(['app/js/main.js']),
-          host: 'http://localhost:9002/',
+          host: 'http://localhost:9003/',
           outfile: '_SpecRunner.html',
+          keepRunner: true,
           template: require('grunt-template-jasmine-requirejs'),
           templateOptions: {
             requireConfig: {
@@ -387,7 +441,9 @@ module.exports = function (grunt) {
         src: testTarget,
         options: {
           specs: specs,
-          helpers: helpers, //.concat(['app/js/main.js']),
+          helpers: helpers.concat(['test/coverage.helper.js']),
+          host: 'http://localhost:9002/',
+          keepRunner: true,
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {
             coverage: 'test/coverage/coverage.json',
@@ -419,8 +475,19 @@ module.exports = function (grunt) {
       }
     },
     'sass-convert': {
-      files: {
-        src: ['app/sass/*.scss', 'app/cards/**/*.scss']
+      scss: {
+        files: [{
+          src: ['app/sass/*.scss', 'app/cards/**/*.scss']
+        }]
+      },
+      sass: {
+        files: [{
+          src: ['app/sass/*.sass', 'app/cards/**/*.sass']
+        }],
+        options: {
+          from: 'sass',
+          to: 'sass'
+        }
       }
     },
     htmlmin: {
@@ -441,16 +508,15 @@ module.exports = function (grunt) {
       build: {
         options: {
           replacements: [{
-              pattern: /([,;])define\(/ig,
-              replacement: '$1\ndefine('
-            }, {
-              pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
-              replacement: ''
-            }, {
-              pattern: /;(require\(\["app"\])/,
-              replacement: ';\n$1'
-            }
-          ]
+            pattern: /([,;])define\(/ig,
+            replacement: '$1\ndefine('
+          }, {
+            pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
+            replacement: ''
+          }, {
+            pattern: /;(require\(\["app"\])/,
+            replacement: ';\n$1'
+          }]
         },
         files: {
           '../mt-static/plugins/Loupe/js/app.js': '../mt-static/plugins/Loupe/js/app.js',
@@ -482,7 +548,8 @@ module.exports = function (grunt) {
             mtApiCGIPath: settings.mtApiCGIPath,
             mtApiPath: settings.mtApiPath,
             libPath: '.',
-            manifestFile: null
+            manifestFile: null,
+            csses: csses
           }
         },
         files: {
@@ -535,8 +602,9 @@ module.exports = function (grunt) {
           mainConfigFile: 'app/js/main.js',
           name: 'js/template',
           out: 'test/template.js',
-          include: ['json!cards/cards.json', 'js/l10n/ja'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
-          exclude: ['jquery', 'handlebars', 'hbs'],
+          include: ['json!cards/cards.json', 'js/l10n/ja', 'js/mtapi/mock'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
+          //exclude: ['handlebars', 'hbs'],
+          exclude: ['hbs'],
           optimize: 'none',
           optimizeCss: 'none'
         }
@@ -549,71 +617,70 @@ module.exports = function (grunt) {
           paths: requireJSPaths,
           dir: "../mt-static/plugins/Loupe",
           modules: [{
-              name: 'vendor',
-              include: [
-                  "requireLib",
-                  "jquery",
-                  "jquery.hammer",
-                  "jquery.smartresize",
-                  "jquery.smartscroll",
-                  "underscore",
-                  "backbone",
-                  "backbone.localStorage",
-                  "backbone.wreqr",
-                  "backbone.babysitter",
-                  "backbone.marionette",
-                  "text",
-                  "json",
-                  "hbs",
-                  "handlebars",
-                  "i18nprecompile",
-                  "json2",
-                  "moment",
-                  "moment.lang",
-                  "eve",
-                  "raphael",
-                  "morris",
-                  "easeljs",
-                  "mtchart"
-              ]
-            }, {
-              name: 'template',
-              include: hbsTemplates,
-              exclude: ['vendor']
-            }, {
-              name: 'app',
-              include: ['js/trans'],
-              exclude: ['vendor', 'template']
-            }, {
-              name: 'card',
-              include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
-              exclude: ['vendor', 'template', 'app']
-            }, {
-              name: 'js/l10n/de',
-              include: langTemplates.de,
-              exclude: ['vendor', 'template', 'app', 'card']
-            }, {
-              name: 'js/l10n/es',
-              include: langTemplates.es,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de']
-            }, {
-              name: 'js/l10n/fr',
-              include: langTemplates.fr,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
-            }, {
-              name: 'js/l10n/ja',
-              include: langTemplates.ja,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
-            }, {
-              name: 'js/l10n/nl',
-              include: langTemplates.nl,
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
-            }, {
-              name: 'js/l10n/en-us',
-              include: langTemplates['en-us'],
-              exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
-            }
-          ],
+            name: 'vendor',
+            include: [
+              "requireLib",
+              "jquery",
+              "jquery.hammer",
+              "jquery.smartresize",
+              "jquery.smartscroll",
+              "underscore",
+              "backbone",
+              "backbone.localStorage",
+              "backbone.wreqr",
+              "backbone.babysitter",
+              "backbone.marionette",
+              "text",
+              "json",
+              "hbs",
+              "handlebars",
+              "i18nprecompile",
+              "json2",
+              "moment",
+              "moment.lang",
+              "eve",
+              "raphael",
+              "morris",
+              "easeljs",
+              "mtchart"
+            ]
+          }, {
+            name: 'template',
+            include: hbsTemplates,
+            exclude: ['vendor']
+          }, {
+            name: 'app',
+            include: ['js/trans'],
+            exclude: ['vendor', 'template']
+          }, {
+            name: 'card',
+            include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
+            exclude: ['vendor', 'template', 'app']
+          }, {
+            name: 'js/l10n/de',
+            include: langTemplates.de,
+            exclude: ['vendor', 'template', 'app', 'card']
+          }, {
+            name: 'js/l10n/es',
+            include: langTemplates.es,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de']
+          }, {
+            name: 'js/l10n/fr',
+            include: langTemplates.fr,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
+          }, {
+            name: 'js/l10n/ja',
+            include: langTemplates.ja,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
+          }, {
+            name: 'js/l10n/nl',
+            include: langTemplates.nl,
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
+          }, {
+            name: 'js/l10n/en-us',
+            include: langTemplates['en-us'],
+            exclude: ['vendor', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
+          }],
 
           skipDirOptimize: true,
           removeCombined: false,
@@ -665,47 +732,59 @@ module.exports = function (grunt) {
         }
       }
     },
-    findTranslationStrings: {
+    makeL10N: {
       core: {
         files: [{
-            src: ['app/js/views/**/*.hbs'],
-            dir: 'app/l10n/'
-          }
-        ]
-      },
-      card: {
-        files: grunt.util._.map(grunt.file.expand({
-          filter: 'isDirectory'
-        }, 'app/cards/' + grunt.option('card')), function (dir) {
-          return {
-            src: [dir + '/**/*.hbs'],
-            dir: dir + '/l10n/'
-          };
-        }),
-        options: {
-          inherit: 'app/l10n/',
-          reset: grunt.option('reset')
-        }
+          src: ['app/js/views/**/*.hbs'],
+          dir: 'app/l10n/'
+        }]
       },
       cards: {
         files: grunt.util._.map(grunt.file.expand({
           filter: 'isDirectory'
-        }, 'app/cards/*'), function (dir) {
+        }, 'app/cards/' + (grunt.option('card') || '*')), function (dir) {
           return {
             src: [dir + '/**/*.hbs'],
             dir: dir + '/l10n/'
           };
         }),
         options: {
+          inherit: 'app/l10n/'
+        }
+      },
+      concat: {
+        files: [{
+          src: ['app/js/views/**/*.hbs'],
+          dir: 'app/l10n/'
+        }].concat(
+          grunt.util._.map(grunt.file.expand({
+            filter: 'isDirectory'
+          }, 'app/cards/' + (grunt.option('card') || '*')), function (dir) {
+            return {
+              src: [dir + '/**/*.hbs'],
+              dir: dir + '/l10n/'
+            };
+          })),
+        options: {
           inherit: 'app/l10n/',
-          reset: grunt.option('reset')
+          concat: true
         }
       },
       options: {
+        reset: grunt.option('reset'),
         comments: grunt.option('comments'),
         findOnly: grunt.option('findOnly'),
-        copyStringsFromJa: grunt.option('copyStringsFromJa'),
         langs: grunt.option('langs')
+      }
+    },
+    extendJSON: {
+      l10n: {
+        files: grunt.util._.map(langs, function (lang) {
+          return {
+            src: [(grunt.option('rootPath') ? grunt.option('rootPath') + '/' : '') + '**/' + lang + '.json'],
+            dest: lang + '.json'
+          };
+        })
       }
     },
     sassVars: {
@@ -725,44 +804,58 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-      'preprocess:prep',
-      'symlink:prep',
-      'copy:prep',
-      'clean:build',
-      'clean:beforeCompass',
-      'sassVars:build',
-      'compass',
-      'requirejs:build',
-      'clean:afterBuild',
-      'string-replace',
-      'preprocess:basket',
-      'uglify:basket',
-      'copy:beforeConcat',
-      'cssmin:build',
-      'copy:build',
-      'jade:build',
-      'copy:beforeConcat',
-      'concat:dev'
+    'preprocess:prep',
+    'symlink:prep',
+    'copy:prep',
+    'clean:build',
+    'clean:beforeCompass',
+    'sassVars:build',
+    'compass:dev',
+    'requirejs:build',
+    'clean:afterBuild',
+    'string-replace',
+    'preprocess:basket',
+    'uglify:basket',
+    'copy:beforeConcat',
+    'cssmin:build',
+    'copy:build',
+    'jade:build',
+    'copy:beforeConcat',
+    'concat:dev',
+    'jade:dev',
+    'symlink:prep2',
+    'symlink:prep3'
   ]);
 
   grunt.registerTask('dev', [
-      'preprocess:prep',
-      'symlink:prep',
-      'copy:prep',
-      'jade:dev',
-      'sassVars:dev',
-      'compass:dev',
-      'copy:beforeConcat',
-      'concat:dev'
+    'preprocess:prep',
+    'symlink:prep',
+    'copy:prep',
+    'sassVars:dev',
+    'clean:beforeCompass',
+    'compass:dev',
+    'copy:beforeConcat',
+    'concat:dev',
+    'jade:dev',
+    'symlink:prep2',
+    'symlink:prep3'
   ]);
 
   grunt.registerTask('test', [
-      'preprocess:test',
-      'requirejs:test',
-      'jshint',
-      'jasmine',
-      'clean:afterTest',
-      'open:test'
+    'clean:beforeCoverage',
+    'preprocess:test',
+    'requirejs:test',
+    'connect:jasmine',
+    'jasmine',
+    'open:test',
+    'jshint'
+  ]);
+
+  grunt.registerTask('jasmineTest', [
+    'connect:jasmine',
+    'preprocess:test',
+    'requirejs:test',
+    'jasmine:test'
   ]);
 
   grunt.registerTask('none', []);

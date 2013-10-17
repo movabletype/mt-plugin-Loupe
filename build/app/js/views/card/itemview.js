@@ -1,6 +1,5 @@
-define(['backbone.marionette', 'js/cache', 'js/commands', 'js/device', 'js/trans'],
+define(['backbone.marionette', 'js/cache', 'js/commands', 'js/device', 'js/trans'], function (Marionette, cache, commands, device, Trans) {
 
-function (Marionette, cache, commands, device, Trans) {
   "use strict";
 
   var cardItemViewProto = {
@@ -15,7 +14,7 @@ function (Marionette, cache, commands, device, Trans) {
       this.trans = null;
       this.hammerOpts = device.options.hammer();
       var permsList = cache.get('user', 'perms');
-      this.perms = permsList.get(this.blogId) ? permsList.get(this.blogId).get('permissions') : null;
+      this.perms = (permsList && permsList.get(this.blogId)) ? permsList.get(this.blogId).get('permissions') : null;
     },
     permissionCheck: function (target, perms) {
       if (perms) {
@@ -125,7 +124,8 @@ function (Marionette, cache, commands, device, Trans) {
         }
         data.lang = lang;
       }
-      data.name = this.card.id;
+      data.name = this.card.name;
+      data.id = this.card.id;
       data.fetchError = this.fetchError;
       data.loading = this.loading;
       data.loadingReadmore = this.loadingReadmore;

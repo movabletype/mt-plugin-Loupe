@@ -2,36 +2,34 @@
 @import "../../../sass/_helpers.scss";
 
 #card-upload {
+  .content {
+    min-height: 198px;
+    /* 230 - (16 * 2) */
+    min-height: 14.375rem;
+  }
   .uploaded-image {
-    width: 100%;
-    padding: 10px;
+    text-align: center;
     img {
-      width: 100%;
+      max-width: 100%;
     }
   }
   #upload-file-input {
     visibility: hidden;
     position: absolute;
   }
-  #upload-file {
-    display: block;
-    padding: 0;
-    .upload-file-input-inner {
-      cursor: pointer;
-      display: block;
-      width: 100%;
-      height: 100%;
-      padding: 1em;
-      padding: 1rem;
-    }
-  }
   .upload-image {
-    font-size: 70px;
     color: #999;
-    text-align: center;
+    font-size: 70px;
     display: block;
-    padding: 0.5em 0 0.5em;
+    padding: 40px 0 20px;
     padding: 2.5rem 0 1.5rem;
+    text-align: center;
+  }
+  #upload-file {
+    .button-icon {
+      font-size: 24px;
+      margin-left: -24px;
+    }
   }
   #upload-file-uploading {
     display: none;
@@ -50,33 +48,6 @@
     }
     #upload-file-uploading {
       display: block;
-    }
-  }
-  .error .message {
-    height: auto;
-    padding: 0 1em;
-    padding: 0 1rem;
-    .message-inner {
-      color: $white;
-      font-size: 1em;
-      font-size: 1rem;
-      line-height: 1.5;
-      padding: 1em;
-      padding: 1rem;
-      margin: 1em 1em 0;
-      margin: 1rem 1rem 1.5rem;
-      min-height: 2.469rem;
-      background-color: $btn-disabled-color;
-      @include border-radius($radius);
-      p {
-        padding-top: 10px;
-        margin: 0;
-        text-align: left;
-      }
-      .error-heading {
-        padding-top: 0;
-        text-align: center;
-      }
     }
   }
 }

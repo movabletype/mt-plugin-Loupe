@@ -1,3 +1,5 @@
-<p><span class="date">{{formatDate date lang}}</span><br>
-<span class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></span></p>
-<div class="body">{{sanitize body}}</div>
+<ul class="comment-items-list">
+  <li class="date">{{formatDate date lang}}</li>
+  <li class="author">{{#trans trans}}Author{{/trans}}<span class="author-name">{{author.displayName}}</span></li>
+  <li class="body">{{sanitize body}}</li>
+</ul>

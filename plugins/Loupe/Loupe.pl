@@ -1,3 +1,9 @@
+# This program is distributed under the terms of
+# The MIT License (MIT)
+#
+# Copyright (c) 2013 Six Apart, Ltd.
+#
+# $Id$
 package MT::Plugin::Loupe;
 use strict;
 use warnings;
@@ -5,13 +11,13 @@ use base qw( MT::Plugin );
 
 use Loupe::Const;
 
-our $VERSION = '1.00';
+our $VERSION = '1.0';
 
 my $plugin = MT::Plugin::Loupe->new(
     {   id   => 'Loupe',
         name => 'Loupe',
         description =>
-            '<MT_TRANS phrase="Loupe is the application for operating the user daily task easily.">',
+            '<MT_TRANS phrase="Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics.">',
         version                => $VERSION,
         schema_version         => $VERSION,
         author_name            => 'Six Apart, Ltd.',
@@ -32,20 +38,26 @@ my $plugin = MT::Plugin::Loupe->new(
             applications => {
                 cms => {
                     methods => {
-                        send_welcome_mail => {
+                        save_loupe_config => {
+                            code => '$Loupe::Loupe::App::save_loupe_config',
+                        },
+                        dialog_invitation_email => {
                             code =>
-                                '$Loupe::Loupe::App::send_welcome_mail_to_yourself',
-                            app_mode => 'JSON',
+                                '$Loupe::Loupe::App::dialog_invitation_email',
+                        },
+                        send_invitation_email => {
+                            code =>
+                                '$Loupe::Loupe::App::send_invitation_email',
                         },
                     },
                     widgets => '$Loupe::Loupe::App::widgets',
-                    list_actions =>
-                        { author => '$Loupe::Loupe::App::list_actions' },
                 },
             },
             callbacks => {
                 'MT::Config::post_save' =>
                     '$Loupe::Loupe::App::post_save_config',
+                'MT::App::CMS::template_source.header' =>
+                    '$Loupe::Loupe::App::template_source_header',
             },
             upgrade_functions => '$Loupe::Loupe::Upgrade::upgrade_functions',
         },

@@ -5,81 +5,105 @@
 <mt:setvarblock name="widget_header">
 </mt:setvarblock>
 <div id="widget-container">
-<mt:if name="is_administrator">
-    <p>
-        <__trans phrase="Thank you for installing Loupe. After setting up Loupe for only 20 seconds, you can check your blog easily with your smartphone. Please try.">
-    </p>
-    <div>
-    <mt:if name="loupe_is_enabled">
-        <a href="<mt:var name="script_url">?__mode=list&_type=author&blog_id=0"><__trans phrase="Send welcome mail to users."></a>
-    <mt:else>
-        <a class="button" href="<mt:var name="script_url">?__mode=cfg_plugins&blog_id=0"><__trans phrase="Plugin Setting"></a>
-    </mt:if>
+    <p><__trans phrase="Loupe is a mobile-friendly alternative console for Movable Type to let users approve pending entries and comments, upload photos, and view website and blog statistics. <a href="http://www.movabletype.org/documentation/loupe/" target="_blank">See more details.</a>"></p>
+    <p><__trans phrase="Loupe can be used without complex configuration, you can get started immediately."></p>
+    <p class="msg-text"><a id="loupe_settings_link" href="" onclick="return false;"><__trans phrase="Configure Loupe"></a></p>
+
+    <div id="loupe_settings" style="display: none;">
+
+        <div id="loupe_url-field" class="field field-left-label ">
+            <div id="loupe_field-header" class="field-header">
+                <label id="loupe_url-label" for="loupe_url">URL</label>
+            </div>
+
+            <div id="loupe_field-content" class="field-content">
+                <mt:var name="support_directory_url">loupe/<input type="text" id="loupe_file" class="text path" name="file" value="<mt:var name="file">"/>
+                <div class="hint"><__trans phrase="The URL of Loupe's HTML file."></div>
+            </div>
+        </div>
+
+        <div class="actions-bar settings-actions-bar">
+            <button
+                id="loupe-save-changes"
+                class="save action primary button"
+                onclick="return false;">
+                <__trans phrase="Save Changes">
+            </button>
+        </div>
+
     </div>
-<mt:else>
-    <p>
-        <__trans phrase="Thank you for installing Loupe. If using Loupe, you can check your blog easily with your smartphone. Please try.">
-    </p>
-    <div>
-        <a href="javascript:void(0);" onclick="javascript:sendWelcomeMail(); return false;"><__trans phrase="Send welcome mail to yourself."></a>
-    </div>
-</mt:if>
 </div>
 </mtapp:widget>
 
-<mt:unless name="is_administrator">
+<style type="text/css">
+#welcome_to_loupe {
+    background-color: #f3f3f5;
+}
+#welcome_to_loupe .widget-header{
+    background: #3b9486;
+    filter: progid:DXImageTransform.Microsoft.gradient(
+      startColorstr='#3b9486',
+      endColorstr='#348275',
+      GradientType=0
+    );
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3b9486), color-stop(80%, #3b9486), color-stop(100%, #348275));
+    background-image: -webkit-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    background-image: -moz-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    background-image: -o-linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    background-image: linear-gradient(#3b9486, #3b9486 80%, #348275 100%);
+    color: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+#welcome_to_loupe .widget-header .widget-close-link{
+    background-color: #f3f3f3;
+}
+.ui-dialog {
+    z-index: 2500;
+}
+#loupe_field-header {
+    width: 3em;
+}
+#loupe_field-content {
+    margin-left: 5em;
+}
+</style>
+
 <script type="text/javascript">
 /* <![CDATA[ */
-function sendWelcomeMail() {
-    // remove old mesages
-    jQuery('div#content-header > #sent,#failed').remove();
-    // show overlay
-    jQuery('div.mt-dialog-overlay').show();
-    if ( jQuery('div#indicator').length == 0 ) {
-        createIndicator();
-    }
-    jQuery('div#indicator').show();
-    // wait for displaying overlay
-    setTimeout(function(){
-        // send mail
-        jQuery.ajax({
-            async: false,
-            type: 'POST',
-            timeout: 5000,
-            url: '<mt:var name="script_url">',
-            data: {
-                __mode: 'send_welcome_mail'
+    jQuery('a#loupe_settings_link').click(function(){
+        jQuery(this).parent().hide();
+        jQuery('div#loupe_settings').show();
+    });
+<mt:if name="loupe_error">
+    jQuery('a#loupe_settings_link').trigger('click');
+</mt:if>
+
+    jQuery('button#loupe-save-changes').click(function(){
+        var data = {
+                __mode: 'save_loupe_config',
+                magic_token: '<mt:var name="magic_token">',
+                file: jQuery('input#loupe_file').val()
             },
-            dataType: 'json',
-            success: function(data) {
-                var div;
-                if ( data['error'] ) {
-                    div = errorMessage( data['error']['message'] );
-                } else {
-                    div = successMessage();
-                }
-                jQuery('div#content-header').append(div);
-            },
-            error: function(data) {
-                var div = errorMessage();
-                jQuery('div#content-header').append(div);
-            }
-        });
-        // hide overlay
-        jQuery('div#indicator').hide();
-        jQuery('div.mt-dialog-overlay').hide();
-    },300);
-}
-function createIndicator() {
-    var div = '<div id="indicator" style="display: none; position: absolute; left: 50%; top: 50%; margin-left: -20px; margin-top: -20px;"><img src="<mt:var name="static_uri">images/indicator.gif"></div>';
-    jQuery('div#welcome_to_loupe div#widget-container').append(div);
-}
-function successMessage() {
-    return '<div id="sent" class="msg msg-info"><p class="msg-text"><__trans phrase="Sent welcome mail."></p><span class="mt-close-msg close-link clickable icon-remove icon16 action-icon"><__trans phrase="Close"></span></div>';
-}
-function errorMessage(message) {
-    return '<div id="failed" class="msg msg-error"><p class="msg-text"><__trans phrase="Failed to be sent welcome mail: ">'+message+'</p></div>';
-}
+            form = jQuery('<form />')
+                .attr({
+                    action: '<mt:var name="script_url">',
+                    method: 'post'
+                })
+                .hide();
+        for ( key in data ) {
+            var input = jQuery('<input />')
+                .attr({
+                    name: key,
+                    value: data[key]
+                });
+            form.append(input);
+        }
+        jQuery(document.body).append(form);
+        form.submit();
+        form.remove();
+        return false;
+    });
 /* ]]> */
 </script>
-</mt:unless>

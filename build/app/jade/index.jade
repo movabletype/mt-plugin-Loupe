@@ -1,17 +1,30 @@
-doctype 5
+!!! 5
+//if lt IE 8
+  html
+//if IE 8
+  html(class="ie8")
+// [if gt IE 8] <!
 html(manifest=manifestFile)
-  head
+    // <![endif]
+    head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes')
     meta(name='format-detection', content='telephone=no,email=no,address=no')
     meta(name='apple-mobile-web-app-capable', content='yes')
     meta(name='msapplication-tap-highlight', content='no')
+    link(rel='apple-touch-icon-precomposed', sizes='72x72', href!='#{libPath}/assets/images/apple-touch-icon.png')
+    link(rel='apple-touch-icon-precomposed', sizes='144x144', href!='#{libPath}/assets/images/apple-touch-icon.png')
 
     title Loupe
 
     link(rel='stylesheet', href!='#{libPath}/assets/font/League-Gothic-fontfacekit/stylesheet.css')
     link(rel='stylesheet', href!='#{libPath}/assets/icons/style.css')
-    link(rel='stylesheet', href!='#{libPath}/css/style.css')
+
+    if dev
+      each val in csses
+        link(rel='stylesheet', href!='#{libPath}/#{val}')
+    else
+      link(rel='stylesheet', href!='#{libPath}/css/style.css')
 
     if dev
       script(src!='#{mtApiPath}/mt-data-api.js')
@@ -32,4 +45,4 @@ html(manifest=manifestFile)
     #container
       #menu
       #app
-    #app-building
+    #app-building.loading

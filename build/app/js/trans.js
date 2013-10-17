@@ -7,7 +7,7 @@ define(function () {
   };
 
   Trans.prototype.trans = function (str) {
-    str = this.l10n.get(this.namespace, str) || this.l10n.get('common', str) || str;
+    str = this.l10n ? (this.l10n.get(this.namespace, str) || this.l10n.get('common', str) || str) : str;
 
     if (arguments.length > 1) {
       for (var i = 1; i <= arguments.length; i++) {

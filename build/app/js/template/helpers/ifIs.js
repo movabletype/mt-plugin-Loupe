@@ -8,10 +8,11 @@ define('template/helpers/ifIs', ['handlebars'], function (Handlebars) {
         'ne': (target !== options.hash.ne),
         'lt': (target <= options.hash.lt),
         'gt': (target >= options.hash.gt),
-        'exists': (target !== undefined)
+        'exists': (target !== undefined),
+        'notNull': (target !== null)
       };
 
-      var cond = hash.eq ? 'eq' : hash.ne ? 'ne' : hash.lt ? 'lt' : hash.gt ? 'gt' : hash.exists ? 'exists' : ' ';
+      var cond = hash.eq ? 'eq' : hash.ne ? 'ne' : hash.lt ? 'lt' : hash.gt ? 'gt' : hash.exists ? 'exists' : hash.notNull ? 'notNull' : ' ';
       if (map[cond]) {
         return options.fn(this);
       } else {

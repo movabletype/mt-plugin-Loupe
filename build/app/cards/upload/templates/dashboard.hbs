@@ -4,56 +4,55 @@
 {{>js_views_card_partials_title}}
 
 <form id="upload-file-form" method="post" name="upload-file">
-<div class="contents">
-{{#each uploadedImages}}
-<div class="uploaded-image">
-  <img src="{{this.url}}">
-</div>
-{{/each}}
-{{#if uploadError.length}}
-<div class="error">
-  <div class="upload-image icon-upload-fail"></div>
-  <div class="message"><div class="message-inner">
-  <p class="error-heading">{{#trans trans}}Failed uploading{{/trans}}</p>
-  {{#each uploadError}}
-  <p>{{#if this}}{{this.message}}{{/if}}</p>
+<div class="content">
+  {{#each uploadedImages}}
+  <div class="uploaded-image">
+    <img src="{{this.url}}">
+  </div>
   {{/each}}
-  </div></div>
-</div>
-{{#if supportedFileAPI}}
-<div id="retry" class="upload-file button">
-    {{#trans trans}}retry{{/trans}}
-</div>
-{{/if}}
-{{/if}}
-{{#unless uploadError.length}}
-{{#unless uploadedImages.length}}
-<div class="upload-image icon-upload"></div>
-{{/unless}}
-{{/unless}}
-<div class="upload-file-input-container">
-  <input type="file" id="upload-file-input" accept="image/*"/>
-</div>
-<div id="upload-file" class="button">
-  {{#if isLabelNeeded}}
-  <label for="upload-file-input">
+  {{#if uploadError.length}}
+  <div class="error">
+    <div class="upload-image icon-upload-fail"></div>
+    <div class="message">
+      <div class="message-inner">
+        <p class="error-heading">{{#trans trans}}Failed Uploading{{/trans}}</p>
+        {{#each uploadError}}
+          <p>{{#if this}}{{this.message}}{{/if}}</p>
+        {{/each}}
+      </div>
+    </div>
+  </div>
   {{/if}}
-  <span class="upload-file-input-inner">
-    {{#if uploadCompleted}}
-      {{#trans trans}}more upload{{/trans}}
-    {{else}}
-      {{#if error}}
-        {{#trans trans}}choose another files{{/trans}}
-      {{else}}
-        {{#trans trans}}choose files{{/trans}}
-      {{/if}}
+  {{#unless uploadError.length}}
+  {{#unless uploadedImages.length}}
+  <div class="upload-image icon-upload"></div>
+  {{/unless}}
+  {{/unless}}
+  <div class="upload-file-input-container">
+    <input type="file" id="upload-file-input" accept="image/*"/>
+  </div>
+  <div id="upload-file" class="button-container with-icon">
+    {{#if isLabelNeeded}}
+    <label for="upload-file-input">
     {{/if}}
-  </span>
-  {{#if isLabelNeeded}}
-  </label>
-  {{/if}}
-</div>
-<div id="upload-file-uploading" class="upload-file button button-disabled"></div>
+    <span class="button-icon icon-plus"></span><span class="button">
+      {{#if uploadCompleted}}
+        {{#trans trans}}More Upload{{/trans}}
+      {{else}}
+        {{#if error}}
+          {{#trans trans}}Choose Another Files{{/trans}}
+        {{else}}
+          {{#trans trans}}Choose Files{{/trans}}
+        {{/if}}
+      {{/if}}
+    </span>
+    {{#if isLabelNeeded}}
+    </label>
+    {{/if}}
+  </div>
+  <div class="button-container button-container-disabled">
+    <div id="upload-file-uploading" class="upload-file button"></div>
+  </div>
 </div>
 </form>
 {{/if}}

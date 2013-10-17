@@ -1,9 +1,9 @@
 <div class="histories">
-  {{#if historiesLoading}}
-  <div class="loading"></div>
-  {{/if}}
   {{#if histories.length}}
     <ul class="histories-list">
+    {{#if historiesLoading}}
+      <li class="blog-item loading"></li>
+    {{/if}}
     {{#each histories}}
       <li data-id="{{id}}" class="blog-item{{#if this.selected}} selected{{/if}}">
         <a href="#" data-id="{{id}}">
@@ -16,10 +16,10 @@
   {{/if}}
 </div>
 <div class="blogs">
-  {{#if blogsLoading}}
-  <div class="loading"></div>
-  {{/if}}
   <ul>
+  {{#if blogsLoading}}
+    <li class="blog-item loading"></li>
+  {{/if}}
   {{#if error}}
     <li class="blog-item error">
       {{error.message}}
@@ -36,13 +36,13 @@
     <li class="user-info">
       {{#if user}}
       {{#with user}}
-      <a href="#logout">
+      <a href="#" data-id="signout">
         {{#if this.userpicUrl}}
           <div class="circle userpic" style="background-image: url({{userpicUrl}}); -pie-background: url({{userpicUrl}}) no-repeat center center / cover"></div>
         {{else}}
           <div class="userpic no-image icon-user"></div>
         {{/if}}
-        <div class="display-name">{{#trans ../trans}}Logout{{/trans}}</div>
+        <div class="display-name">{{#trans ../trans}}Sign Out{{/trans}}</div>
       </a>
       {{/with}}
       {{/if}}
@@ -50,10 +50,16 @@
   </ul>
 </div>
 <div class="blog-item-nav-container">
-{{#ifIs prev exists=true}}
-  <div class="blog-item-nav blog-item-nav-prev" data-offset="{{prev}}"><span class="icon-arrow-left"></span>{{#trans trans}}previous{{/trans}}</div>
+{{#ifIs prev notNull=true}}
+  <div class="blog-item-nav blog-item-nav-prev" data-offset="{{prev}}">
+    <span class="blog-item-nav-icon icon-arrow-left"></span>
+    <span class="blog-item-nav-label">{{#trans trans}}previous{{/trans}}</span>
+  </div>
 {{/ifIs}}
 {{#ifIs totalResults gt=next}}
-  <div class="blog-item-nav blog-item-nav-next" data-offset="{{next}}">{{#trans trans}}next{{/trans}}<span class="icon-arrow"></span></div>
+  <div class="blog-item-nav blog-item-nav-next" data-offset="{{next}}">
+    <span class="blog-item-nav-label">{{#trans trans}}next{{/trans}}</span>
+    <span class="blog-item-nav-icon icon-arrow"></span>
+  </div>
 {{/ifIs}}
 </div>

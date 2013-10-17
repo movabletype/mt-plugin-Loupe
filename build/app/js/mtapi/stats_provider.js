@@ -21,8 +21,12 @@ define(['js/cache', 'js/mtapi'], function (cache, mtapi) {
           if (DEBUG) {
             console.log('stats provider is ' + resp.id);
           }
-          cache.set(blogId, 'statsProvider', resp);
-          dfd.resolve(resp);
+          if (resp.id) {
+            cache.set(blogId, 'statsProvider', resp);
+            dfd.resolve(resp);
+          } else {
+            dfd.reject(resp);
+          }
         } else {
           dfd.reject(resp);
         }

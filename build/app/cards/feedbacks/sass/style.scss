@@ -1,113 +1,39 @@
-@import "compass/css3/border-radius";
-@import "compass/css3/images";
-@import "compass/utilities/general/clearfix";
 @import "../../../sass/_helpers.scss";
 
 #card-feedbacks {
-  li {
-    a {
-      padding: 20px;
-    }
-    .item-asset {
-      font-size: 40px;
-      color: #999;
-      display: block;
-      width: 100%;
-      height: 100%;
-      margin-right: 10px;
-    }
+  .item-asset-container {
+    padding-top: 6px;
+    width: 50px;
   }
-}
-
-#feedbacks-comment-view,
-#feedbacks-comment-entry {
-  .error .message {
-    height: 100px;
-  }
-  .content {
-    padding: 1rem;
-    min-height: 300px;
-    position: relative;
-  }
-  .title {
-    text-align: left;
-    padding: 0;
-    font-weight: bold;
-    font-size: 1.097rem;
-    line-height: 1.5;
-  }
-  .body {
-    line-height: 1.8em;
-    img {
-      max-width: 100%;
-    }
-  }
-  .author-name {
-    font-weight: bold;
-    margin-left: 1rem;
-  }
-}
-
-#feedbacks-comment-view {
-  .acception-failed {
-    background-color: rgba(240, 240, 240, 0.95);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 13;
-  }
-  .content {
-    padding: 10px 0 30px;
-    min-height: 300px;
-    position: relative;
-  }
-  .comment-container {
-    padding: 10px 20px 20px;
+  .item-asset {
+    color: #999;
+    font-size: 40px;
   }
 }
 
 #reply {
-  position: relative;
-  #reply-container {
-    position: relative;
+  .message {
+    margin: 0 0 16px 0;
+    margin: 0 0 1rem 0;
   }
-  #reply-button,
-  #do-reply-button {
-    cursor: pointer;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  #reply-complete {
-    background-color: #666;
-    @include box-shadow(0px 8px 0px 0px darken(#666666, 10%), inset 0px 1px 0px 0px rgba($white, 0.5));
-    @include border-radius($radius);
-    &:hover {}
-    &.tapped, &:active, &:hover:active {
-      top: 0;
-      background-color: #666;
+  .reply-complete-message {
+    color: $white;
+    background-color: #666666;
+    text-align: left;
+    .message-inner {
+      background-color: transparent;
     }
-    margin-left: 0;
-    margin-right: 0;
   }
-  #reply-disabled-button {
-    margin: 10px 0;
-  }
-  .reply-button-container {
-    padding: 0 20px;
-  }
-  #reply-textarea-container {
-    margin-top: 20px;
-    padding: 10px 20px;
+  .reply-textarea-container {
+    margin: 16px -16px;
+    margin: 1rem -1rem;
+    padding: 16px;
+    padding: 1rem;
     border-top: 1px solid #dddddd;
   }
-  #reply-textarea {
+  textarea {
     width: 100%;
     height: 200px;
-    border-color: #ccc;
-  }
-  #do-reply-button {
-    margin-top: 10px;
+    border: 1px solid #ccc;
   }
 }

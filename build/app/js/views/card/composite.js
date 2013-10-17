@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'js/commands', 'js/views/card/itemview'],
-
-function (Marionette, commands, CardItemView) {
+define(['backbone.marionette', 'js/commands', 'js/views/card/itemview'], function (Marionette, commands, CardItemView) {
   "use strict";
 
   var cardCompositeViewProto = _.extend({}, CardItemView.cardItemViewProto, {
@@ -23,10 +21,12 @@ function (Marionette, commands, CardItemView) {
       this.$el.hammer(this.hammerOpts).on('tap', 'a', _.bind(function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var route = $(e.currentTarget).data('route') || '';
-        this.addTapClass(e.currentTarget, function () {
-          commands.execute('router:navigate', route);
-        });
+        var route = $(e.currentTarget).data('route') || null;
+        if (route) {
+          this.addTapClass(e.currentTarget, function () {
+            commands.execute('router:navigate', route);
+          });
+        }
         return false;
       }, this));
     },
@@ -40,6 +40,7 @@ function (Marionette, commands, CardItemView) {
           this.loading = false;
           this.loadingReadmore = false;
           this.fetchError = false;
+          this.fetchErrorOption = null;
           if (options.successCallback) {
             options.successCallback();
           }
@@ -49,6 +50,7 @@ function (Marionette, commands, CardItemView) {
           this.loading = false;
           this.loadingReadmore = false;
           this.fetchError = true;
+          this.fetchErrorOption = options;
           if (options.errorCallback) {
             options.errorCallback();
           }

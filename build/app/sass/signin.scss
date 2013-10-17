@@ -1,0 +1,36 @@
+@import "_helpers";
+
+#signin {
+  margin: 0 auto;
+  max-width: $content-max-width;
+  width: 94%;
+  header h1 {
+    background: url("../assets/images/logo-circle.png") no-repeat center center;
+    background-size: 100px;
+    margin: 10px 0;
+    min-height: 100px;
+    text-indent: -9999px;
+  }
+  .content {
+    min-height: 0;
+    padding: 32px 16px 16px;
+    padding: 2rem 1rem 1rem;
+  }
+  .signin-field {
+    padding-bottom: 16px;
+    padding-bottom: 1rem;
+  }
+  .signin-label {
+    display: block;
+    margin-bottom: 2px;
+    margin-bottom: 0.1rem;
+  }
+  .signin-input {
+    border: 2px solid $card-border-color;
+    padding: 0.5em;
+    width: 100%;
+    @include single-box-shadow(lighten($card-border-color, 10%), 0, 1px, 1px, 0, inset);
+    @include border-radius(4px);
+    -webkit-appearance: none;
+  }
+}

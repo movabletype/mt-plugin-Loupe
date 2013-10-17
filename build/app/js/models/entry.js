@@ -8,7 +8,9 @@ define(['backbone', 'js/mtapi'], function (Backbone, mtapi) {
         var dfd = $.Deferred();
         dfd.done(options.success);
         dfd.fail(options.error);
-        mtapi.api.getEntry(this.blogId, this.id, function (resp) {
+        mtapi.api.getEntry(this.blogId, this.id, {
+          fields: 'author,blog,categories,id,status,title,body,permalink,date,excerpt'
+        }, function (resp) {
           if (!resp.error) {
             dfd.resolve(resp);
           } else {

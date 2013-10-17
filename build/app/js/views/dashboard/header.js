@@ -1,6 +1,4 @@
-define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboard/templates/header'],
-
-function (Marionette, device, commands, template) {
+define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboard/templates/header'], function (Marionette, device, commands, template) {
   "use strict";
 
   return Marionette.ItemView.extend({
@@ -36,15 +34,15 @@ function (Marionette, device, commands, template) {
       var $blognameInner = this.$el.find('#blogname-inner');
       var $loupeCircle = this.$el.find('#blogname-circle');
       var $blognameArrow = this.ui.blognameArrow;
-      if ($blognameInner) {
+      if ($blognameInner.length) {
         var offset = $blognameInner.offset();
         var width = $blognameInner.width();
-        if ($loupeCircle) {
+        if ($loupeCircle && $loupeCircle.offset && offset) {
           $loupeCircle.offset({
-            left: offset.left - $loupeCircle.outerWidth(true)
+            left: offset.left - $loupeCircle.outerWidth(true) - 10
           });
         }
-        if ($blognameArrow && offset) {
+        if ($blognameArrow && $blognameArrow.offset && offset) {
           $blognameArrow.offset({
             left: offset.left + width
           });
@@ -66,12 +64,8 @@ function (Marionette, device, commands, template) {
 
     serializeData: function () {
       var data = {};
-      if (this.blog) {
-        data.blog = this.blog;
-        if (!this.blog.name) {
-          data.blog.name = 'Loupe';
-        }
-      }
+      data.blog = this.blog || {};
+      data.blog.name = data.blog.name || 'Loupe';
       return data;
     }
   });
