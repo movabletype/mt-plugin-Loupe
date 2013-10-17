@@ -214,6 +214,7 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/js/views',
           '../mt-static/plugins/Loupe/l10n',
           '../mt-static/plugins/Loupe/lib',
+          '../mt-static/plugins/Loupe/plugins',
           '../mt-static/plugins/Loupe/preprocesses',
           '../mt-static/plugins/Loupe/sass',
           '../mt-static/plugins/Loupe/template',
@@ -544,10 +545,10 @@ module.exports = function (grunt) {
             pattern: /([,;])define\(/ig,
             replacement: '$1\ndefine('
           }, {
-            pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\);[\n]?/ig,
+            pattern: /define\("[\-\.\w\/]*",function\(\)\{\}\)[,;]?[\n]?/ig,
             replacement: ''
           }, {
-            pattern: /;(require\(\["app"\])/,
+            pattern: /;(require\(\[[^\]]*\])/,
             replacement: ';\n$1'
           }]
         },
