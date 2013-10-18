@@ -15,22 +15,36 @@ define(function () {
         cards = Object.prototype.toString.call(cards) === '[object Array]' ? cards : (typeof cards !== 'undefined' ? [cards] : []);
 
         var len = cards.length,
+          addedCards = [],
           orig, card;
 
         for (var i = 0; i < len; i++) {
           orig = cards[i];
-          card = {};
-          for (var c in orig) {
-            card[c] = orig[c];
+          var l = _cards.length;
+          var flag = false;
+
+          for (var j = 0; j < l; j++) {
+            if (_cards[j].id === orig.id) {
+              flag = true;
+              break;
+            }
           }
-          card.deployed = false;
-          _cards.push(card);
+
+          if (!flag) {
+            card = {};
+            for (var c in orig) {
+              card[c] = orig[c];
+            }
+            card.deployed = false;
+            _cards.push(card);
+            addedCards.push(card);
+          }
         }
 
         /*global Backbone:false*/
         if (!silence && typeof Backbone !== 'undefined' && Backbone.Wreqr) {
           require(['js/vent'], function (vent) {
-            vent.trigger('cards:add', cards);
+            vent.trigger('cards:add', addedCards);
           });
         }
 
@@ -64,10 +78,14 @@ define(function () {
           }
         });
 
-        $.when(_dfds).done(function () {
-          _dfds = [];
+        if (_dfds.length === 0) {
           dfd.resolve();
-        });
+        } else {
+          $.when.apply($, _dfds).done(function () {
+            _dfds = [];
+            dfd.resolve();
+          });
+        }
 
         return dfd;
       },
