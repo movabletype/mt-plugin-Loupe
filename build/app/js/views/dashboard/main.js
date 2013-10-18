@@ -14,15 +14,13 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
       template: template,
 
       insertCard: function (card) {
-        var dashboard = card.dashboard;
-
-        if (dashboard) {
+        if (card.dashboard) {
           var id = card.id,
-            that = this,
-            order = parseInt(card.order, 10) || null,
-            path = (card.root || 'cards/') + id + '/';
+            idAttr = 'card-' + id,
+            order = parseInt(card.order, 10) || null;
 
-          card.$el = $('<section id="card-' + id + '" class="card"></section>');
+          card.$el = $('<section id="' + idAttr + '" class="card"></section>');
+          card.$el.selector = '#' + idAttr;
 
           if (typeof order !== 'number') {
             card.$el.appendTo(this.$el);
@@ -45,12 +43,26 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
             }
           }
 
-          this.addRegion(id, "#card-" + id);
+          this[id + 'Handler'] = this.createHandler(card);
+
+          this.on('region:add', function (name, region) {
+            this[name + 'Handler'](name, region);
+          }, this);
+
+          this.addRegion(id, card.$el);
+        }
+      },
+
+      createHandler: function (card) {
+        return function (name, region) {
+          var id = card.id,
+            dashboard = card.dashboard,
+            path = (card.root || 'cards/') + id + '/';
 
           if (DEBUG) {
             var dfd = $.Deferred();
             this.cardsDfds.push(dfd);
-            that[id].on('show', function () {
+            region.on('show', function () {
               require(['perf'], function (perf) {
                 perf.log('afterCardBuild_' + id);
                 dfd.resolve();
@@ -59,11 +71,11 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
           }
 
           if (dashboard.view) {
-            require([path + dashboard.view.replace(/\.js$/, '')], function (View) {
-              that[id].show(new View(_.extend(that.options, {
+            require([path + dashboard.view.replace(/\.js$/, '')], _.bind(function (View) {
+              region.show(new View(_.extend(this.options, {
                 card: card
               })));
-            });
+            }, this));
           } else if (dashboard.template) {
             var match = dashboard.template.match(/^(.*)\.(.*)$/),
               type, filename;
@@ -80,7 +92,7 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
               templatePath = type + '!' + path + filename,
               requirements = [templatePath].concat(script);
 
-            require(requirements, function (template, templateData) {
+            require(requirements, _.bind(function (template, templateData) {
               template = type === 'hbs' ? template : templatePath;
               templateData = templateData ? templateData : {};
               var View = CardItemView.extend({
@@ -92,12 +104,12 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
                 }
               });
 
-              that[id].show(new View(_.extend(that.options, {
+              region.show(new View(_.extend(this.options, {
                 card: card
               })));
-            });
+            }, this));
           }
-        }
+        };
       },
 
       onClose: function () {
@@ -118,7 +130,7 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
             }
 
             if (DEBUG) {
-              $.when(this.cardsDfds).done(function () {
+              $.when.apply($, this.cardsDfds).done(function () {
                 require(['perf'], function (perf) {
                   perf.log('afterAllCardsLoaded');
                   perf.info('afterAllCardsLoaded');
@@ -146,17 +158,17 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
         if (!this.buildOnlyOnce) {
           this.buildOnlyOnce = true;
           this.prepareCards(this.options);
-          commands.setHandler('dashboard:insertCard', _.bind(function (addedCards) {
+          commands.setHandler('dashboard:insertCard', function (addedCards) {
             addedCards = $.isArray(addedCards) ? addedCards : (addedCards ? [addedCards] : []);
             _.each(addedCards, function (card) {
               if (!_.find(this.cards, function (c) {
-                return c.id === card.id
+                return c.id === card.id;
               })) {
                 this.cards.push(card);
                 this.insertCard(card);
               }
             }, this);
-          }, this));
+          }, this);
         }
       }
     });
