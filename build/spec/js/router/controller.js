@@ -634,29 +634,69 @@ describe("router", function () {
       sessionStorage.removeItem('routeCache');
 
       var Controller, controller, flag;
-
-      Backbone.history.navigate('stats');
       var commandsOrig = require('js/commands');
-      var command = _.clone(commandsOrig);
+      var commands = _.clone(commandsOrig);
       var route;
-      command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
-        if (co === 'router:navigate') {
+      commands.execute = function (command, data) {
+        commandsOrig.execute.apply(commandsOrig, arguments);
+        if (command === 'router:navigate') {
           route = data;
           flag = true;
         }
       };
 
       undefRequireModule('js/commands');
-      define('js/commands', [], function () {
-        return command;
-      });
-
-      reRequireModule('js/router/controller');
 
       runs(function () {
+        define('js/commands', [], function () {
+          return commands;
+        });
+        requireModuleAndWait('js/commands');
+      });
+
+      runs(function () {
+        reRequireModule(['js/app', 'js/router/controller', 'js/router/router', 'js/cards']);
+      });
+
+      var app, cards;
+      runs(function () {
+        cards = [{
+          "name": "Stats",
+          "id": "stats",
+          "dashboard": {
+            "view": "dashboard/dashboard"
+          },
+          "routes": [{
+            "id": "view",
+            "view": "view/layout"
+          }, {
+            "id": "post",
+            "route": ":blog_id/:id/:unit",
+            "view": "view/post",
+            "header": "view/post_header"
+          }]
+        }];
+
+        app = require('js/app');
         Controller = require('js/router/controller');
         controller = new Controller();
+        var AppRouter = require('js/router/router');
+        var router = new AppRouter({
+          controller: controller
+        });
+
+        app.start({
+          cards: cards,
+          router: router
+        });
+      });
+
+      waitsFor(function () {
+        return Backbone.History.started;
+      });
+
+      runs(function () {
+        Backbone.history.navigate('stats');
         controller.authenticate();
       });
 
@@ -669,6 +709,7 @@ describe("router", function () {
         expect(route).toEqual('signin');
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
+        app.stop();
       });
     });
 
@@ -684,7 +725,7 @@ describe("router", function () {
       var movesignin = jasmine.createSpy('movesignin');
 
       command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
+        commandsOrig.execute.apply(commandsOrig, arguments);
         if (co === 'router:navigate' && data === 'signin') {
           routerNavigate();
           flag = true;
@@ -698,6 +739,7 @@ describe("router", function () {
       define('js/commands', [], function () {
         return command;
       });
+      requireModuleAndWait('js/commands');
 
       reRequireModule('js/router/controller');
 
@@ -737,7 +779,7 @@ describe("router", function () {
       var routerNavigate = jasmine.createSpy('routerNavigate');
 
       command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
+        commandsOrig.execute.apply(commandsOrig, arguments);
         if (co === 'router:navigate' && data === 'signin') {
           routerNavigate();
           flag = true;
@@ -840,7 +882,7 @@ describe("router", function () {
       var resp, flag;
 
       command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
+        commandsOrig.execute.apply(commandsOrig, arguments);
         if (co === 'app:error') {
           appError();
           resp = data;
@@ -885,7 +927,7 @@ describe("router", function () {
       var resp, flag;
 
       command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
+        commandsOrig.execute.apply(commandsOrig, arguments);
         if (co === 'app:error') {
           appError();
           resp = data;
@@ -947,7 +989,7 @@ describe("router", function () {
       var resp, flag;
 
       command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
+        commandsOrig.execute.apply(commandsOrig, arguments);
         if (co === 'move:cardView:stats:view') {
           commandExec();
           resp = data;
@@ -961,23 +1003,32 @@ describe("router", function () {
       });
 
       var Controller, controller;
-      reRequireModule('js/router/controller');
+      reRequireModule(['js/router/router', 'js/router/controller', 'js/cards', 'js/app']);
 
-      var flag2;
+      var app, flag2;
       runs(function () {
         var commands = require('js/commands');
         commands.removeHandler('router:addRoute');
         Controller = require('js/router/controller');
         controller = new Controller();
-        var appRouter = require('js/router/router');
-        var router = new appRouter({
+        var AppRouter = require('js/router/router');
+        var router = new AppRouter({
           controller: controller
         });
 
-        var cardsMethod = require('js/cards');
-        cardsMethod.add(cards).deploy().done(function () {
+        app = require('js/app');
+        var vent = require('js/vent');
+
+        vent.on('app:cards:deploy:end', function () {
+          spyOn(app.main, 'show');
           flag2 = true;
-        })
+        });
+
+        app.start({
+          cards: cards,
+          router: router,
+          controller: controller
+        });
       });
 
       waitsFor(function () {
@@ -1000,6 +1051,7 @@ describe("router", function () {
         expect(commandExec).toHaveBeenCalled();
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
+        app.stop();
       });
     });
 
@@ -1012,7 +1064,7 @@ describe("router", function () {
       var resp, flag;
 
       command.execute = function (co, data) {
-        commandsOrig.execute.call(commandsOrig, co, data);
+        commandsOrig.execute.apply(commandsOrig, arguments);
         if (co === 'router:navigate') {
           commandExec();
           resp = data;

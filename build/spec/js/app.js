@@ -75,17 +75,8 @@ describe("js", function () {
 
       runs(function () {
         reRequireModule(['js/router/router'])
-      });
-
-      runs(function () {
         reRequireModule(['js/router/controller'])
-      });
-
-      runs(function () {
         reRequireModule(['js/cards']);
-      });
-
-      runs(function () {
         reRequireModule(['js/app']);
       });
     });
@@ -110,7 +101,6 @@ describe("js", function () {
   };
 
   describe("app", function () {
-
     beforeEach(function () {
       resetMock();
       $('body').attr('class', '');
@@ -123,19 +113,15 @@ describe("js", function () {
 
       reRequireDevice();
 
-      var spy = jasmine.createSpy('spy');
       var app;
 
       runs(function () {
-        Backbone.history.stop();
         app = require('js/app');
-        app.addInitializer(spy);
-
         app.start();
       });
 
       waitsFor(function () {
-        return spy.callCount === 1;
+        return Backbone.History.started;
       }, 'starting app', 3000);
 
       runs(function () {
@@ -153,18 +139,15 @@ describe("js", function () {
 
       reRequireDevice();
 
-      var spy = jasmine.createSpy('spy');
       var app;
 
       runs(function () {
-        Backbone.history.stop();
         app = require('js/app');
-        app.addInitializer(spy);
         app.start();
       });
 
       waitsFor(function () {
-        return spy.callCount === 1;
+        return Backbone.History.started;
       }, 'starting app', 3000);
 
       runs(function () {
@@ -204,18 +187,24 @@ describe("js", function () {
         reRequireDevice();
       });
 
+      var flag;
       runs(function () {
-        Backbone.history.stop();
         commands = require('js/commands');
         app = require('js/app');
-        spyOn(app.main, 'show');
+
+        var vent = require('js/vent');
+        vent.on('app:cards:deploy:end', function () {
+          spyOn(app.main, 'show');
+          flag = true;
+        });
+
         app.start({
           cards: cards
         });
       });
 
       waitsFor(function () {
-        return Backbone.History.started && commands._wreqrHandlers['move:cardView:firstCard:view'];
+        return flag;
       }, 'starting app', 3000);
 
       runs(function () {
@@ -249,22 +238,27 @@ describe("js", function () {
 
       reRequireDevice();
 
-      var app;
+      var app, flag;
       var commands;
       var count;
 
       runs(function () {
         commands = require('js/commands');
-        Backbone.history.stop();
         app = require('js/app');
-        spyOn(app.main, 'show');
+
+        var vent = require('js/vent');
+        vent.on('app:cards:deploy:end', function () {
+          spyOn(app.main, 'show');
+          flag = true;
+        });
+
         app.start({
           cards: cards
         });
       });
 
       waitsFor(function () {
-        return Backbone.History.started;
+        return flag;
       }, 'starting app', 3000);
 
       runs(function () {
@@ -289,23 +283,26 @@ describe("js", function () {
     });
 
     describe("handlers", function () {
-      var spy;
       var app;
 
       beforeEach(function () {
+        var flag;
         reRequireDevice();
 
         runs(function () {
-          spy = jasmine.createSpy('spy');
-          Backbone.history.stop();
           app = require('js/app');
-          spyOn(app.menu, 'show');
-          app.addInitializer(spy);
+
+          var vent = require('js/vent');
+          vent.on('app:cards:deploy:end', function () {
+            spyOn(app.menu, 'show');
+            flag = true;
+          });
+
           app.start();
         });
 
         waitsFor(function () {
-          return spy.callCount === 1;
+          return flag;
         }, 'starting app', 3000);
       });
 
@@ -344,22 +341,16 @@ describe("js", function () {
       it("app:beforeTransition with Android", function () {
         runs(function () {
           window.Mock.userAgent = 'Mozilla/5.0 (Linux; U; Android 2.3.4; ja-jp; SonyEricssonSO-01C Build/4.0.1.C.1.31) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1';
-          $('body').attr('class', '');
-          $('#app-building').attr('style', '');
           reRequireDevice();
         });
 
-        var spy;
         runs(function () {
-          spy = jasmine.createSpy('spy');
-          Backbone.history.stop();
           app = require('js/app');
-          app.addInitializer(spy);
           app.start();
         });
 
         waitsFor(function () {
-          return spy.callCount === 1;
+          return Backbone.History.started;
         }, 'starting app', 3000);
 
         var $appBuilding;
@@ -425,6 +416,8 @@ describe("js", function () {
 
   afterEach(function () {
     resetMock();
+    var app = require('js/app');
+    app.stop();
     reRequireModule(['js/commands', 'js/app']);
   });
 });

@@ -84,13 +84,10 @@ describe("views", function () {
         expect(main.$el.find('#menu-header-arrow').hasClass('rotate')).toBe(false);
       });
     });
-
-    afterEach(function () {
-      main.$el.remove();
-    })
   });
 
   afterEach(function () {
+    main.$el.remove();
     $('#dashboard').remove();
     reRequireModule(['js/commands', 'js/router/controller', 'js/views/menu/blogs-list']);
     runs(function () {

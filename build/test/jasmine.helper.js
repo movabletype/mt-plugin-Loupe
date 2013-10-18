@@ -6,7 +6,11 @@ require(['jquery'], function ($) {
   $(document.body).append('<div id="container"><div id="menu"></div><div id="app"></div></div><div id="app-building"></div>');
 });
 
-require(['json!cards/cards.json', 'js/mtapi/mock', 'app', 'js/boot']);
+require(['backbone.marionette', 'json!cards/cards.json', 'js/mtapi/mock', 'app'], function (Marionette) {
+  Marionette.TemplateCache.prototype.loadTemplate = function (templateId) {
+    return require(templateId);
+  };
+});
 
 // initialzing module in case which is not required yet.
 
@@ -42,7 +46,6 @@ function reRequireModule(path) {
 function initCommands(commandSpies, spyTarget, controller) {
   spyTarget = spyTarget || ['command'];
   reRequireModule(['js/commands']);
-  //  commandSpies = jasmine.createSpyObj('commandSpies', spyTarget);
   var flag;
   runs(function () {
     var commandsOrig = require('js/commands');

@@ -58,7 +58,6 @@ describe("views", function () {
       expect($username.val()).toEqual('');
       expect($password.length).toBeTruthy();
       expect($password.val()).toEqual('');
-      signin.$el.remove();
     });
 
     it("render signin screen with username and password", function () {
@@ -74,7 +73,6 @@ describe("views", function () {
       expect($username.val()).toEqual('foo');
       expect($password.length).toBeTruthy();
       expect($password.val()).toEqual('bar');
-      signin.$el.remove();
     });
 
     it("tap button and then start authenticate", function () {

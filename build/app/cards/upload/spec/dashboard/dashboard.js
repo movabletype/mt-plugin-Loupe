@@ -97,6 +97,7 @@ describe("upload", function () {
       runs(function () {
         expect(dashboard.checkSupport()).toBe(false);
         expect($el.attr('style')).toMatch(/display: none/);
+        $el.remove();
       })
     });
 
@@ -130,6 +131,7 @@ describe("upload", function () {
       runs(function () {
         expect(dashboard.checkSupport()).toBe(false);
         expect($el.attr('style')).toMatch(/display: none/);
+        $el.remove();
       });
     });
 
@@ -267,6 +269,7 @@ describe("upload", function () {
         expect(dashboard.userIsSystemAdmin()).toBe(false);
         expect(dashboard.perm).toBe(true);
         expect($el.attr('style')).toMatch(/display: block/);
+        $el.remove();
       });
     });
 
@@ -301,6 +304,7 @@ describe("upload", function () {
         expect(dashboard.userIsSystemAdmin()).toBe(false);
         expect(dashboard.perm).toBe(false);
         expect($el.attr('style')).toMatch(/display: none/);
+        $el.remove();
       });
     });
 
@@ -431,6 +435,7 @@ describe("upload", function () {
         expect(dashboard.upload).toHaveBeenCalled();
         var arg = dashboard.upload.mostRecentCall.args[0];
         expect(arg[0]).toEqual(dashboard.$el.find('#upload-file-input').get(0));
+        dashboard.$el.remove();
       });
     });
   });

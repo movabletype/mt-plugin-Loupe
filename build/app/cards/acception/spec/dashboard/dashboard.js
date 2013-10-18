@@ -27,7 +27,7 @@ describe("acception", function () {
     commandSpies = {};
 
     runs(function () {
-      reRequireModule(['js/router/controller', 'js/router/router']);
+      reRequireModule(['js/router/controller']);
     });
 
     runs(function () {
@@ -91,7 +91,7 @@ describe("acception", function () {
     }, 'initialize main', 3000);
 
     runs(function () {
-      reRequireModule(['moment']);
+      reRequireModule(['moment', 'js/router/router']);
     })
   });
 
@@ -138,7 +138,7 @@ describe("acception", function () {
 
       waitsFor(function () {
         // fetching 3 items in initialize
-        return !dashboard.loading;
+        return !!fetchingSpy.callCount;
       }, 'fetching collection', 3000);
 
       runs(function () {
@@ -226,17 +226,27 @@ describe("acception", function () {
         reRequireModule(['js/cards', 'js/app']);
       });
 
-      var app;
+      var app, flag;
       runs(function () {
-        Backbone.history.stop();
         app = require('js/app');
+        var commands = require('js/commands');
+        commands.removeHandler('router:addRoute');
+        var vent = require('js/vent');
+        vent.on('app:cards:deploy:end', function () {
+          flag = true;
+        });
+        var AppRouter = require('js/router/router');
+        var router = new AppRouter({
+          controller: controller
+        });
         app.start({
-          cards: [initData.card]
+          cards: [initData.card],
+          router: router
         });
       });
 
       waitsFor(function () {
-        return Backbone.History.started;
+        return flag;
       }, 'app started');
 
       var flag
@@ -253,6 +263,7 @@ describe("acception", function () {
         expect($('#card-acception').attr('style')).toMatch(/display: none/);
         var cache = require('js/cache');
         cache.clear('user', 'user');
+        app.stop();
       });
     });
 

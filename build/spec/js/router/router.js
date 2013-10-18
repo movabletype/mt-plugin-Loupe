@@ -78,12 +78,18 @@
     it("route to test card", function () {
       runs(function () {
         router.navigate('', true);
+      });
+
+      runs(function () {
         router.navigate('test', true);
+      })
+
+      waitsFor(function () {
+        return !!testSpy.callCount
       });
 
       runs(function () {
         expect(testSpy).toHaveBeenCalled();
-        app.stop();
       });
     });
 
@@ -95,11 +101,10 @@
 
       runs(function () {
         expect(controller.moveDashboard).toHaveBeenCalled();
-        app.stop();
       });
     });
 
-    it("route to dashboard even thought no cards", function () {
+    it("route to dashboard even though no cards", function () {
       runs(function () {
         router.navigate('test', true);
         app.stop();
@@ -177,9 +182,7 @@
           }]
         }];
 
-        controller = new Controller({
-          cards: cards
-        });
+        controller = new Controller();
         spyOn(controller, 'signout');
 
         router = new AppRouter({
@@ -205,5 +208,10 @@
         expect(controller.signout).toHaveBeenCalled();
         expect(spy).not.toHaveBeenCalled();
       });
+    });
+
+    afterEach(function () {
+      var app = require('js/app');
+      app.stop();
     });
   });

@@ -4,6 +4,7 @@ describe("views", function () {
   var Share, share;
   var Controller, controller, initData;
   var commandSpies;
+  var renderSpy, onRenderSpy;
 
   beforeEach(function () {
     commandSpies = jasmine.createSpyObj('commandSpies', ['share:close']);
@@ -11,6 +12,27 @@ describe("views", function () {
 
     runs(function () {
       reRequireModule(['js/router/controller', 'js/views/share/share']);
+    });
+
+    runs(function () {
+      renderSpy = jasmine.createSpy('render');
+      onRenderSpy = jasmine.createSpy('onRender');
+
+      var shareOrig = require('js/views/share/share');
+      undefRequireModule('js/views/share/share');
+      define('js/views/share/share', [], function () {
+        return shareOrig.extend({
+          render: function () {
+            shareOrig.prototype.render.apply(this, arguments);
+            renderSpy();
+          },
+          onRender: function () {
+            shareOrig.prototype.onRender.apply(this, arguments);
+            onRenderSpy();
+          }
+        });
+      });
+      requireModuleAndWait(['js/views/share/share']);
     })
 
     runs(function () {
@@ -28,16 +50,14 @@ describe("views", function () {
   describe("share/share", function () {
     it("initialize without share option", function () {
       share = new Share();
-      spyOn(share, 'render').andCallThrough();
-      spyOn(share, 'onRender').andCallThrough();
 
       waitsFor(function () {
         return !!share.trans;
       }, 'executed l10n', 3000);
 
       runs(function () {
-        expect(share.render).toHaveBeenCalled();
-        expect(share.onRender).toHaveBeenCalled();
+        expect(renderSpy).toHaveBeenCalled();
+        expect(onRenderSpy).toHaveBeenCalled();
         expect(share.share).toEqual({});
       });
     });
@@ -84,10 +104,9 @@ describe("views", function () {
 
     it("share modal close", function () {
       share = new Share();
-      spyOn(share, 'onRender').andCallThrough();
 
       waitsFor(function () {
-        return !!share.onRender.callCount;
+        return !!onRenderSpy.callCount;
       }, 'onRender', 3000);
 
       runs(function () {
