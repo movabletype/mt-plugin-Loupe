@@ -29,9 +29,9 @@ module.exports = function (grunt) {
     "main": "js/main",
     "boot": "js/boot",
     "app": "js/app",
-    "vendor": "js/vendor",
-    "template": "js/template",
-    "card": "js/card",
+    "vendor": "js/build_foundations/vendor",
+    "templates": "js/build_foundations/templates",
+    "card": "js/build_foundations/card",
     "init": "js/build_foundations/init"
   };
 
@@ -107,7 +107,7 @@ module.exports = function (grunt) {
 
   var jsHintFiles = ['app/js/app.js', 'app/js/vent.js', 'app/js/mtapi.js', 'app/js/device.js', 'app/js/cache.js', 'app/js/commands.js', 'app/js/trans.js', 'app/js/l10n.js', 'app/js/boot.js'];
   grunt.util._.forEach(grunt.file.expand('app/js/*/**/*.js'), function (src) {
-    if (!/mock.js/.test(src) && src !== 'app/js/l10n/ja.js') {
+    if (!/mock.js/.test(src) && src !== 'app/js/l10n/ja.js' && !/build_foundations/.test(src)) {
       jsHintFiles.push(src);
     }
   });
@@ -193,22 +193,18 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/js/boot.js',
           '../mt-static/plugins/Loupe/js/build_foundations',
           '../mt-static/plugins/Loupe/js/cache.js',
+          '../mt-static/plugins/Loupe/js/cards.js',
           '../mt-static/plugins/Loupe/js/collections',
-          '../mt-static/plugins/Loupe/js/device.js',
-          '../mt-static/plugins/Loupe/js/models',
           '../mt-static/plugins/Loupe/js/commands.js',
+          '../mt-static/plugins/Loupe/js/device.js',
+          '../mt-static/plugins/Loupe/js/l10n.js',
+          '../mt-static/plugins/Loupe/js/main.js',
+          '../mt-static/plugins/Loupe/js/models',
           '../mt-static/plugins/Loupe/js/mtapi',
           '../mt-static/plugins/Loupe/js/mtapi.js',
           '../mt-static/plugins/Loupe/js/perf.js',
-          '../mt-static/plugins/Loupe/js/router',
-          '../mt-static/plugins/Loupe/js/main.js',
-          '../mt-static/plugins/Loupe/js/main.preprocess.js',
           '../mt-static/plugins/Loupe/js/require.config.json',
-          '../mt-static/plugins/Loupe/js/l10n.js',
-          '../mt-static/plugins/Loupe/js/lib',
-          '../mt-static/plugins/Loupe/js/layouts',
-          '../mt-static/plugins/Loupe/js/require.js',
-          '../mt-static/plugins/Loupe/js/template',
+          '../mt-static/plugins/Loupe/js/router',
           '../mt-static/plugins/Loupe/js/trans.js',
           '../mt-static/plugins/Loupe/js/vent.js',
           '../mt-static/plugins/Loupe/js/views',
@@ -307,7 +303,7 @@ module.exports = function (grunt) {
           filter: 'isDirectory',
           cwd: 'app/'
         }, 'plugins/*'), function (path) {
-          return '../' + path
+          return '../' + path;
         }),
         dir: 'app/cards/'
       }
@@ -554,9 +550,9 @@ module.exports = function (grunt) {
         },
         files: {
           '../mt-static/plugins/Loupe/js/app.js': '../mt-static/plugins/Loupe/js/app.js',
-          '../mt-static/plugins/Loupe/js/template.js': '../mt-static/plugins/Loupe/js/template.js',
-          '../mt-static/plugins/Loupe/js/vendor.js': '../mt-static/plugins/Loupe/js/vendor.js',
-          '../mt-static/plugins/Loupe/js/card.js': '../mt-static/plugins/Loupe/js/card.js',
+          '../mt-static/plugins/Loupe/js/templates.js': '../mt-static/plugins/Loupe/js/build_foundations/templates.js',
+          '../mt-static/plugins/Loupe/js/vendor.js': '../mt-static/plugins/Loupe/js/build_foundations/vendor.js',
+          '../mt-static/plugins/Loupe/js/card.js': '../mt-static/plugins/Loupe/js/build_foundations/card.js',
           '../mt-static/plugins/Loupe/js/init.js': '../mt-static/plugins/Loupe/js/build_foundations/init.js',
           '../mt-static/plugins/Loupe/js/l10n/de.js': '../mt-static/plugins/Loupe/js/l10n/de.js',
           '../mt-static/plugins/Loupe/js/l10n/es.js': '../mt-static/plugins/Loupe/js/l10n/es.js',
@@ -654,7 +650,7 @@ module.exports = function (grunt) {
         options: {
           baseUrl: "app",
           mainConfigFile: 'app/js/main.js',
-          name: 'js/template',
+          name: 'js/build_foundations/init',
           out: 'test/template.js',
           include: ['json!cards/cards.json', 'js/l10n/ja', 'js/mtapi/mock'].concat(hbsTemplates).concat(cardTemplates).concat(langTemplates.ja),
           //exclude: ['handlebars', 'hbs'],
@@ -702,41 +698,41 @@ module.exports = function (grunt) {
             ],
             exclude: ['vendor']
           }, {
-            name: 'template',
+            name: 'templates',
             include: hbsTemplates,
             exclude: ['vendor', 'init']
           }, {
             name: 'app',
             include: ['js/trans'],
-            exclude: ['vendor', 'init', 'template']
+            exclude: ['vendor', 'init', 'templates']
           }, {
             name: 'card',
             include: cardLibs.concat(cardTemplates).concat(['json!cards/cards.json']),
-            exclude: ['vendor', 'init', 'template', 'app']
+            exclude: ['vendor', 'init', 'templates', 'app']
           }, {
             name: 'js/l10n/de',
             include: langTemplates.de,
-            exclude: ['vendor', 'init', 'template', 'app', 'card']
+            exclude: ['vendor', 'init', 'templates', 'app', 'card']
           }, {
             name: 'js/l10n/es',
             include: langTemplates.es,
-            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de']
+            exclude: ['vendor', 'init', 'templates', 'app', 'card', 'js/l10n/de']
           }, {
             name: 'js/l10n/fr',
             include: langTemplates.fr,
-            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
+            exclude: ['vendor', 'init', 'templates', 'app', 'card', 'js/l10n/de', 'js/l10n/es']
           }, {
             name: 'js/l10n/ja',
             include: langTemplates.ja,
-            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
+            exclude: ['vendor', 'init', 'templates', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr']
           }, {
             name: 'js/l10n/nl',
             include: langTemplates.nl,
-            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
+            exclude: ['vendor', 'init', 'templates', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja']
           }, {
             name: 'js/l10n/en-us',
             include: langTemplates['en-us'],
-            exclude: ['vendor', 'init', 'template', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
+            exclude: ['vendor', 'init', 'templates', 'app', 'card', 'js/l10n/de', 'js/l10n/es', 'js/l10n/fr', 'js/l10n/ja', 'js/l10n/nl']
           }],
 
           skipDirOptimize: true,

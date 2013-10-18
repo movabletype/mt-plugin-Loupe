@@ -17,7 +17,7 @@
     unique: global.buildTime
   }).then(function () {
     basket.require({
-      url: libPath + '/js/template.js',
+      url: libPath + '/js/templates.js',
       unique: global.buildTime
     }, {
       url: libPath + '/js/card.js',
