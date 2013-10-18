@@ -51,16 +51,21 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboa
       }
     },
 
+    onClose: function () {
+      commands.removeHandler('dashboard:toggle', this.handleSlide);
+      $(window).off('orientationchange debouncedresize');
+      this.$el.hammer().off('tap');
+    },
+
     onRender: function () {
       if (device.isIE && device.version <= 8) {
         setTimeout(_.bind(function () {
           this.adjustHeader();
         }, this), 0);
+        $(window).on('orientationchange debouncedresize', _.bind(this.adjustHeader, this));
       }
 
-      commands.setHandler('dashboard:toggle', _.bind(this.handleSlide, this));
-      $(window).on('orientationchange debouncedresize', _.bind(this.adjustHeader, this));
-
+      commands.setHandler('dashboard:toggle', this.handleSlide, this);
       this.$el.hammer(device.options.hammer()).on('tap', _.bind(this.handleSlide, this));
     },
 

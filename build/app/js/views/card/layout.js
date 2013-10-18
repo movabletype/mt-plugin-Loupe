@@ -18,19 +18,27 @@ define(['backbone.marionette', 'js/views/card/itemview', 'js/commands', 'hbs!js/
       main: '#main'
     },
 
-    setShareHandler: function () {
-      commands.setHandler('share:show', _.bind(function (options) {
-        this.$el.append('<section id="share"></section>');
-        this.addRegion('share', '#share');
-        this.share.show(new ShareView(options));
-      }, this));
+    shareShow: function (options) {
+      this.$el.append('<section id="share"></section>');
+      this.addRegion('share', '#share');
+      this.share.show(new ShareView(options));
+    },
 
-      commands.setHandler('share:close', _.bind(function () {
-        if (this.share) {
-          this.share.close();
-        }
-        $('#share').remove();
-      }, this));
+    shareClose: function () {
+      if (this.share) {
+        this.share.close();
+      }
+      $('#share').remove();
+    },
+
+    setShareHandler: function () {
+      commands.setHandler('share:show', this.shareShow, this);
+      commands.setHandler('share:close', this.shareClose, this);
+    },
+
+    onClose: function () {
+      commands.removeHandler('share:show');
+      commands.removeHandler('share:close');
     },
 
     onRender: function () {

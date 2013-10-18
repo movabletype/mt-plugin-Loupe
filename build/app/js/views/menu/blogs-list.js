@@ -258,6 +258,13 @@ define(['js/views/card/itemview', 'json2', 'js/cache', 'js/device', 'js/commands
         }
       },
 
+      onClose: function () {
+        vent.off('after:signout');
+        commands.removeHandler('menu:getRecentBlogHistory', this.getRecentBlogHistory);
+        commands.removeHandler('menu:setRecentBlogHistory', this.setRecentBlogHistory);
+        commands.removeHandler('menu:resetRecentBlogHistory', this.resetRecentBlogHistory);
+      },
+
       onRender: function () {
         this.$el.find('a').hammer(this.hammerOpts).on('tap', _.bind(function (e) {
           this.addTapClass(e.currentTarget, _.bind(function () {

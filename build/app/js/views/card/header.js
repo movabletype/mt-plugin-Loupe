@@ -1,6 +1,4 @@
-define(['js/views/card/itemview', 'hbs!js/views/card/templates/header', 'js/device', 'js/commands'],
-
-function (CardItemView, template, device, commands) {
+define(['js/views/card/itemview', 'hbs!js/views/card/templates/header', 'js/device', 'js/commands'], function (CardItemView, template, device, commands) {
   "use strict";
 
   return CardItemView.extend({
@@ -30,6 +28,10 @@ function (CardItemView, template, device, commands) {
         commands.execute('app:beforeTransition');
         commands.execute('router:navigate', this.backButtonRoute());
       }, this));
+    },
+
+    onClose: function () {
+      commands.removeHandler('header:render');
     },
 
     onRender: function () {

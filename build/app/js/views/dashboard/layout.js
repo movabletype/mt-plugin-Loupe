@@ -16,23 +16,28 @@ define(['backbone.marionette', 'js/commands', 'hbs!js/views/dashboard/templates/
       this.options = options;
     },
 
+    onClose: function () {
+      commands.removeHandler('dashboard:slidedown');
+      commands.removeHandler('dashboard:slideup');
+    },
+
     onRender: function () {
       this.header.show(new HeaderView(this.options));
       this.$el.attr('id', 'dashboard');
       this.$el.addClass('dashboard container');
       this.main.show(new MainLayout(this.options));
 
-      commands.setHandler('dashboard:slidedown', _.bind(function (height) {
+      commands.setHandler('dashboard:slidedown', function (height) {
         this.$el.css({
           top: $(window).height() - height + 'px'
         });
-      }, this));
+      }, this);
 
-      commands.setHandler('dashboard:slideup', _.bind(function () {
+      commands.setHandler('dashboard:slideup', function () {
         this.$el.css({
           top: '0'
         });
-      }, this));
+      }, this);
     },
 
     onShow: function () {
