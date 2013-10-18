@@ -205,6 +205,7 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/js/perf.js',
           '../mt-static/plugins/Loupe/js/require.config.json',
           '../mt-static/plugins/Loupe/js/router',
+          '../mt-static/plugins/Loupe/js/template',
           '../mt-static/plugins/Loupe/js/trans.js',
           '../mt-static/plugins/Loupe/js/vent.js',
           '../mt-static/plugins/Loupe/js/views',
@@ -221,7 +222,8 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/assets/icons/license.txt',
           '../mt-static/plugins/Loupe/assets/icons/Read Me.txt',
           '../mt-static/plugins/Loupe/assets/icons/MTIcon.json',
-          '../mt-static/plugins/Loupe/assets/icons/svg'
+          '../mt-static/plugins/Loupe/assets/icons/svg',
+          '../mt-static/plugins/Loupe/style_sample.html'
         ]
       },
       afterTest: ['template.js'],
