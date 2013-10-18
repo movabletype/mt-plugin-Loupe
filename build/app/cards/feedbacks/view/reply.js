@@ -30,7 +30,11 @@ define(['js/views/card/itemview',
         this.initial = true;
         this.loading = false;
         this.setTranslation();
-        commands.setHandler('card:feedbacks:reply:render', this.render);
+        commands.setHandler('card:feedbacks:reply:render', this.render, this);
+      },
+
+      onClose: function () {
+        commands.removeHandler('card:feedbacks:reply:render');
       },
 
       commentIsApproved: function () {

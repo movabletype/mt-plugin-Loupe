@@ -33,7 +33,7 @@ define(['js/views/card/itemview',
           }
         }, this));
 
-        commands.setHandler('card:stats:share:show', _.bind(function () {
+        commands.setHandler('card:stats:share:show', function () {
           var data = this.serializeData();
           commands.execute('share:show', {
             share: {
@@ -41,7 +41,11 @@ define(['js/views/card/itemview',
               tweetText: (data.title + ' ' + data.excerpt)
             }
           });
-        }, this))
+        }, this);
+      },
+
+      onClose: function () {
+        commands.removeHandler('card:stats:share:show');
       },
 
       fetch: function () {
@@ -103,7 +107,7 @@ define(['js/views/card/itemview',
           week: "This Week's",
           month: "This Month's",
           year: "This Year's"
-        }
+        };
 
         data.label = map[this.unit] + ' access';
         if (data.pageviews === undefined) {

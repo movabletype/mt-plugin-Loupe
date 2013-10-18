@@ -35,7 +35,7 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
             }
           }, this));
 
-          commands.setHandler('card:acception:share:show', _.bind(function () {
+          commands.setHandler('card:acception:share:show', function () {
             var data = this.serializeData();
             commands.execute('share:show', {
               share: {
@@ -43,10 +43,14 @@ define(['js/views/card/itemview', 'js/cache', 'js/device', 'js/commands', 'js/tr
                 tweetText: (data.title + ' ' + data.excerpt)
               }
             });
-          }, this));
+          }, this);
         } else {
           this.setTranslation();
         }
+      },
+
+      onClose: function () {
+        commands.removeHandler('card:acception:share:show');
       },
 
       fetch: function () {
