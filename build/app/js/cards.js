@@ -70,7 +70,7 @@ define(function () {
         }
 
         _.each(_cards, function (card) {
-          if (card.id && !card.deployed) {
+          if (card.id && !card.deployed && !card.dfd) {
             card.dfd = $.Deferred();
             _dfds.push(card.dfd);
             var len = card.routes ? card.routes.length : 0;
@@ -82,7 +82,6 @@ define(function () {
           dfd.resolve();
         } else {
           $.when.apply($, _dfds).done(function () {
-            _dfds = [];
             dfd.resolve();
           });
         }
