@@ -39,15 +39,15 @@ html(manifest=manifestFile)
 
     if dev
       script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', src!='#{libPath}/lib/require.js')
-      script(src!='#{libPath}/js/main.js')
       // card plugins
       each path in cards
         script(src!='#{libPath}/cards/#{path}/card.js')
+      script(src!='#{libPath}/js/main.js')
     else
       script(src!='#{libPath}/js/init.js')
-      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', src!='#{libPath}/js/basket.js')
       each path in cards
         script(src!='./cards/#{path}/card.js')
+      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', src!='#{libPath}/js/basket.js')
   body
     #container
       #menu
