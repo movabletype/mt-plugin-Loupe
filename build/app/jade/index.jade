@@ -44,9 +44,9 @@ html(manifest=manifestFile)
         script(src!='#{libPath}/cards/#{path}/card.js')
       script(src!='#{libPath}/js/main.js')
     else
-      script(src!='#{libPath}/js/init.js')
+      script#init-script(src!='#{libPath}/js/init.js', data-base!='#{libPath}')
       each path in cards
-        script(src!='./cards/#{path}/card.js')
+        script(src!='#{libPath}/cards/#{path}/card.js')
       script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', src!='#{libPath}/js/basket.js')
   body
     #container

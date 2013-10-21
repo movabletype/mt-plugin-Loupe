@@ -2,13 +2,7 @@
 
 (function (global) {
   var el = document.getElementById('main-script'),
-    libPath;
-
-  if (el.dataset) {
-    libPath = el.dataset.base;
-  } else {
-    libPath = el.getAttribute('data-base');
-  }
+    libPath = (el && el.dataset ? el.dataset.base : el.getAttribute('data-base')) || '.';
 
   global.buildTime = <!-- @echo buildTime -->;
 
