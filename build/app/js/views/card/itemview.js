@@ -56,14 +56,26 @@ define(['backbone.marionette', 'js/cache', 'js/commands', 'js/device', 'js/trans
       commands.execute('l10n', _.bind(function (l10n) {
         var name = 'card_' + this.card.id;
         this.l10n = l10n;
-        l10n.load('cards/' + this.card.id + '/l10n', name).done(_.bind(function () {
+
+        var finalize = _.bind(function (l10n, name) {
           this.trans = new Trans(l10n, name);
           if (callback) {
             callback();
           } else {
             this.render();
           }
-        }, this));
+        }, this);
+
+        var cardSetting = this.card.l10n,
+          l10nSupport = typeof cardSetting === 'undefined' || (cardSetting && _.isArray(cardSetting) && _.contains(cardSetting, l10n.userLang));
+
+        if (l10nSupport) {
+          l10n.load('cards/' + this.card.id + '/l10n', name).done(function () {
+            finalize(l10n, name);
+          });
+        } else {
+          finalize(l10n, name);
+        }
       }, this));
     },
     addTapClass: function (el, callback) {

@@ -17,7 +17,7 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
         if (card.dashboard) {
           var id = card.id,
             idAttr = 'card-' + id,
-            order = parseInt(card.order, 10) || null;
+            order = parseFloat(card.dashboard.order, 10) || null;
 
           card.$el = $('<section id="' + idAttr + '" class="card"></section>');
           card.$el.selector = '#' + idAttr;
@@ -29,9 +29,10 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
             var len = this.cards.length;
             for (var i = 0; i < len; i++) {
               var target = this.cards[i],
+                targetOrder = target.dashboard ? (parseFloat(target.dashboard.order, 10) || null) : null,
                 $targetEl = target.$el;
 
-              if (target.inserted && target.id !== card.id && (!target.order || target.order > order)) {
+              if (target.inserted && target.id !== card.id && (!targetOrder || targetOrder > order)) {
                 card.$el.insertBefore($targetEl);
                 card.inserted = true;
                 break;

@@ -1,8 +1,8 @@
 [{
   "name": "Stats",
   "id": "stats",
-  "order": 100,
   "dashboard": {
+    "order": 100,
     "view": "dashboard/dashboard"
   },
   "routes": [{
@@ -17,8 +17,8 @@
 }, {
   "name": "Acception",
   "id": "acception",
-  "order": 200,
   "dashboard": {
+    "order": 200,
     "view": "dashboard/dashboard"
   },
   "routes": [{
@@ -30,15 +30,15 @@
 }, {
   "name": "Media Upload",
   "id": "upload",
-  "order": 300,
   "dashboard": {
+    "order": 300,
     "view": "dashboard/dashboard"
   }
 }, {
   "name": "Feedbacks",
   "id": "feedbacks",
-  "order": 400,
   "dashboard": {
+    "order": 400,
     "view": "dashboard/dashboard"
   },
   "routes": [{
