@@ -343,4 +343,8 @@ describe("trans", function () {
       expect(translatedStr).toEqual(expectedStr);
     });
   });
+
+  afterEach(function () {
+    Backbone.history.navigate('');
+  })
 });

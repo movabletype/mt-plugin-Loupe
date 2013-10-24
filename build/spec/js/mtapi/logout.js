@@ -67,6 +67,7 @@ describe("mtapi", function () {
   });
 
   afterEach(function () {
+    Backbone.history.navigate('');
     window.Mock.alwaysFail = null;
   });
 });

@@ -484,4 +484,8 @@ describe("views", function () {
       });
     });
   });
+
+  afterEach(function () {
+  Backbone.history.navigate('');
+})
 });

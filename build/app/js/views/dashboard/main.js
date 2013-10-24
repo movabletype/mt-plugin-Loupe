@@ -27,8 +27,13 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
             card.inserted = true;
           } else {
             var len = this.cards.length;
+
+            var sortedCards = _.sortBy(this.cards, function (card) {
+              return card.dashboard ? (parseFloat(card.dashboard.order, 10) || 10e18) : 10e18;
+            });
+
             for (var i = 0; i < len; i++) {
-              var target = this.cards[i],
+              var target = sortedCards[i],
                 targetOrder = target.dashboard ? (parseFloat(target.dashboard.order, 10) || null) : null,
                 $targetEl = target.$el;
 
@@ -155,21 +160,25 @@ define(['backbone.marionette', 'js/commands', 'js/cards', 'js/trans', 'js/mtapi/
         this.cards = (this.error || !options.cards) ? [] : options.cards;
       },
 
+      setHandler: function () {
+        commands.setHandler('dashboard:insertCard', function (addedCards) {
+          addedCards = $.isArray(addedCards) ? addedCards : (addedCards ? [addedCards] : []);
+          _.each(addedCards, function (card) {
+            if (!_.find(this.cards, function (c) {
+              return c.id === card.id;
+            })) {
+              this.cards.push(card);
+              this.insertCard(card);
+            }
+          }, this);
+        }, this);
+      },
+
       onRender: function () {
         if (!this.buildOnlyOnce) {
           this.buildOnlyOnce = true;
           this.prepareCards(this.options);
-          commands.setHandler('dashboard:insertCard', function (addedCards) {
-            addedCards = $.isArray(addedCards) ? addedCards : (addedCards ? [addedCards] : []);
-            _.each(addedCards, function (card) {
-              if (!_.find(this.cards, function (c) {
-                return c.id === card.id;
-              })) {
-                this.cards.push(card);
-                this.insertCard(card);
-              }
-            }, this);
-          }, this);
+          this.setHandler();
         }
       }
     });

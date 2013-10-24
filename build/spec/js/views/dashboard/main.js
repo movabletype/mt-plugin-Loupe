@@ -27,7 +27,7 @@ describe("views", function () {
       return commands;
     });
 
-    reRequireModule(['js/router/controller', 'js/views/dashboard/main', 'js/views/card/itemview']);
+    reRequireModule(['js/router/controller', 'js/views/dashboard/layout', 'js/views/dashboard/main', 'js/views/card/itemview', 'js/app']);
   });
 
   describe("dashboard/main", function () {
@@ -221,7 +221,146 @@ describe("views", function () {
       runs(function () {
         expect(main.$el.find('.error-in-dashboard').length).toBeTruthy();
       })
-    })
+    });
+
+    it("order dashboard cards with order paramater", function () {
+      var cards = require('json!cards/cards.json');
+
+      delete cards[0].dashboard.order;
+      cards[1].dashboard.order = 100;
+      cards[2].dashboard.order = 300;
+      cards[3].dashboard.order = 200;
+
+      define('cards/dashboard_test/dashboard/dashboard', ['js/views/card/itemview'], function (ItemView) {
+        return ItemView.extend({
+          initialize: function (options) {
+            ItemView.prototype.initialize.apply(this, arguments);
+          },
+          template: '<span>TEST</span>'
+        });
+      });
+
+      var app, cards, flag, newCard;
+
+      reRequireModule(['js/commands', 'js/vent', 'js/cards', 'js/app', 'js/router/router', 'js/router/controller', 'js/views/dashboard/layout', 'js/views/dashboard/main'])
+
+      runs(function () {
+        app = require('js/app');
+        app.stop();
+      });
+
+      waitsFor(function () {
+        return !Backbone.History.started;
+      }, 'history stopped');
+
+      runs(function () {
+        app.start({
+          cards: cards
+        });
+      })
+
+      waitsFor(function () {
+        return (app.main.currentView && app.main.currentView.main && app.main.currentView.main.currentView);
+      }, 'history started');
+
+      runs(function () {
+        var cardsMethod = require('js/cards');
+        app.main.currentView.main.currentView.setHandler();
+        newCard = {
+          name: 'Dadhboard Test',
+          id: 'dashboard_test',
+          dashboard: {
+            order: 150,
+            view: 'dashboard/dashboard'
+          }
+        };
+        main = app.main.currentView.main.currentView;
+        cardsMethod.add(newCard);
+        cardsMethod.deploy();
+      });
+
+      waitsFor(function () {
+        return !!main.$el.find('#card-dashboard_test').html();
+      }, 'cards deployed');
+
+      runs(function () {
+        var $cards = main.$el.find('.card');
+        expect($($cards[0]).attr('id')).toEqual('card-' + cards[1].id);
+        expect($($cards[1]).attr('id')).toEqual('card-' + newCard.id);
+        expect($($cards[2]).attr('id')).toEqual('card-' + cards[3].id);
+        expect($($cards[3]).attr('id')).toEqual('card-' + cards[2].id);
+        expect($($cards[4]).attr('id')).toEqual('card-' + cards[0].id);
+      });
+    });
+
+    it("none order card should be ordered last", function () {
+      var cards = require('json!cards/cards.json');
+
+      cards[0].dashboard.order = 200;
+      cards[1].dashboard.order = 100;
+      delete cards[2].dashboard.order;
+      cards[3].dashboard.order = 300;
+
+      define('cards/dashboard_test/dashboard/dashboard', ['js/views/card/itemview'], function (ItemView) {
+        return ItemView.extend({
+          initialize: function (options) {
+            ItemView.prototype.initialize.apply(this, arguments);
+          },
+          template: '<span>TEST</span>'
+        });
+      });
+
+      var app, cards, flag, newCard;
+
+      reRequireModule(['js/commands', 'js/vent', 'js/cards', 'js/app', 'js/router/router', 'js/router/controller', 'js/views/dashboard/layout', 'js/views/dashboard/main'])
+
+      runs(function () {
+        app = require('js/app');
+        app.stop();
+      });
+
+      waitsFor(function () {
+        return !Backbone.History.started;
+      }, 'history stopped');
+
+      runs(function () {
+        app.start({
+          cards: cards
+        });
+      })
+
+      waitsFor(function () {
+        return (app.main.currentView && app.main.currentView.main && app.main.currentView.main.currentView);
+      }, 'history started');
+
+      runs(function () {
+        var cardsMethod = require('js/cards');
+        app.main.currentView.main.currentView.setHandler();
+        newCard = {
+          name: 'Dadhboard Test',
+          id: 'dashboard_test',
+          dashboard: {
+            view: 'dashboard/dashboard'
+          }
+        };
+        main = app.main.currentView.main.currentView;
+        cardsMethod.add(newCard);
+        cardsMethod.deploy();
+      });
+
+      waitsFor(function () {
+        return !!main.$el.find('#card-dashboard_test').html();
+      }, 'cards deployed');
+
+      runs(function () {
+        var $cards = main.$el.find('.card');
+        expect($($cards[0]).attr('id')).toEqual('card-' + cards[1].id);
+        expect($($cards[1]).attr('id')).toEqual('card-' + cards[0].id);
+        expect($($cards[2]).attr('id')).toEqual('card-' + cards[3].id);
+        expect($($cards[3]).attr('id')).toEqual('card-' + cards[2].id);
+        expect($($cards[4]).attr('id')).toEqual('card-' + newCard.id);
+      });
+    });
 
     afterEach(function () {
       main.$el.remove();

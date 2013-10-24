@@ -1100,6 +1100,7 @@ describe("router", function () {
   });
 
   afterEach(function () {
+    Backbone.history.navigate('');
     resetMock();
   });
 });

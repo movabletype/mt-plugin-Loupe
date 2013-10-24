@@ -211,6 +211,7 @@
     });
 
     afterEach(function () {
+      Backbone.history.navigate('');
       var app = require('js/app');
       app.stop();
     });

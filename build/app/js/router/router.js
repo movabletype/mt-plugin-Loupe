@@ -12,22 +12,30 @@ define(['backbone.marionette', 'js/commands'], function (Marionette, commands) {
     appRoutes: appRoutes,
     initialize: function (options) {
       this.options = options;
-
       this.reservedRoutes = _.keys(appRoutes);
-
-      commands.setHandler('router:addRoute', _.bind(function (card, route, callback) {
-        this.addRoute(card, route);
-        if (callback) {
-          callback();
+      this.setHandlers();
+    },
+    setHandlers: function () {
+      commands.setHandlers({
+        'router:addRoute': {
+          context: this,
+          callback: function (card, route, callback) {
+            this.addRoute(card, route);
+            if (callback) {
+              callback();
+            }
+          }
+        },
+        'router:navigate': {
+          context: this,
+          callback: function (dest) {
+            if (dest !== null && dest !== undefined) {
+              commands.execute('app:beforeTransition');
+              this.navigate(dest, true);
+            }
+          }
         }
-      }, this));
-
-      commands.setHandler('router:navigate', function (dest) {
-        if (dest !== null && dest !== undefined) {
-          commands.execute('app:beforeTransition');
-          this.navigate(dest, true);
-        }
-      }, this);
+      });
     },
     addRoute: function (card, route) {
       var routeName = route.route ? card.id + '/' + route.route : card.id;

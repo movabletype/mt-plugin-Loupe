@@ -184,6 +184,7 @@ describe("views", function () {
   });
 
   afterEach(function () {
+    Backbone.history.navigate('');
     resetMock();
     reRequireModule('js/commands');
   });

@@ -649,6 +649,7 @@ describe("views", function () {
   });
 
   afterEach(function () {
+    Backbone.history.navigate('');
     resetMock();
     reRequireModule(['js/commands', 'js/mtapi/blogs', 'js/router/controller', 'js/views/menu/blogs-list']);
   });

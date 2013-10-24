@@ -207,6 +207,7 @@ describe("views", function () {
     afterEach(function () {
       signin.$el.remove();
       resetMock();
+      Backbone.history.navigate('');
     });
   });
 
