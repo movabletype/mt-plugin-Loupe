@@ -759,6 +759,7 @@ describe("router", function () {
         expect(controller.signin).toHaveBeenCalled();
         expect(routerNavigate).not.toHaveBeenCalled();
         expect(movesignin).toHaveBeenCalled();
+        Backbone.history.navigate('');
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
       });
@@ -812,7 +813,17 @@ describe("router", function () {
         expect(cache.get('user', 'user')).toBeNull();
         expect(routerNavigate).toHaveBeenCalled();
         require.undef('js/commands');
-        requireModuleAndWait('js/commands');
+        requireModuleAndWait('js/commands', 'js/app');
+      });
+
+      runs(function () {
+        var app = require('js/app');
+        app.start({});
+        app.router.navigate('', true);
+      });
+
+      waitsFor(function () {
+        return !/signin$/.test(location.href);
       });
     });
 
@@ -840,6 +851,7 @@ describe("router", function () {
 
       runs(function () {
         expect(controller.authorizationCallback).toHaveBeenCalled();
+        Backbone.history.navigate('');
       });
     });
 
@@ -1093,6 +1105,7 @@ describe("router", function () {
       runs(function () {
         expect(commandExec).toHaveBeenCalled();
         expect(resp).toEqual('stats');
+        Backbone.history.navigate('');
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
       });

@@ -207,6 +207,7 @@
       runs(function () {
         expect(controller.signout).toHaveBeenCalled();
         expect(spy).not.toHaveBeenCalled();
+        Backbone.history.navigate('');
       });
     });
 

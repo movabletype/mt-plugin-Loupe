@@ -28,6 +28,16 @@ describe("views", function () {
     });
 
     reRequireModule(['js/router/controller', 'js/views/dashboard/layout', 'js/views/dashboard/main', 'js/views/card/itemview', 'js/app']);
+
+    runs(function () {
+      var app = require('js/app');
+      app.start({});
+      app.router.navigate('', true);
+    });
+
+    waitsFor(function () {
+      return !(/signin|signout$/).test(location.href);
+    });
   });
 
   describe("dashboard/main", function () {

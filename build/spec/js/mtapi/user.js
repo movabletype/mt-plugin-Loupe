@@ -172,6 +172,7 @@ describe("mtapi", function () {
   });
 
   afterEach(function () {
+    Backbone.history.navigate('');
     window.Mock.throwUserItem = null;
     window.Mock.throwPermissionItems = null;
     window.Mock.returnFailRequest = null;
