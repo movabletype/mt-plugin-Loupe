@@ -1,4 +1,44 @@
+/*
+
+<h1>Menu</h1>
+
+menu.css is the styles for menu block
+
+## Configurations
+
+You can change it by changing the following configurations.
+
+* Background Color ($menu-background-color) : <span style="color:#372e37">■</span> #372e37;
+* Header Color ($menu-header-color) : <span style="color:#625362">■</span> #625362;
+* Font Color ($menu-font-color): #ffffff;
+* Blog Item Selected Color ($menu-blog-item-selected-color): <span style="color:#ffb142">■</span> #ffb142;
+
+## Base Structure
+
+Menu block has two main area. One is header area with toggle button, another is blogs list block.
+
+```
+<div class="menu-main-container" style="bottom:0">
+  <div id="menu">
+    <div class="container" style="display: block;">
+        <aside id="menu-main">
+          <div>
+            <header id="menu-header">
+              <div id="menu-header-logo" class="icon-app_icon_outline"></div>
+              <div id="menu-header-arrow" class="icon-arrow-up rotate"></div>
+            </header>
+            <section id="menu-blogs-list" class="blogs-list">
+            </section>
+          </div>
+        </aside>
+    </div>
+  </div>
+```
+*/
+
 @import "_helpers";
+
+$header-height: normalize-size-based-on-font($header-height) * 1px;
 
 #menu .container {
   display: none;
@@ -10,114 +50,37 @@
   bottom: $header-height;
   overflow: hidden;
   z-index: 90;
-  .blogs-list {
-    @include position-zero;
-    overflow: auto;
-    top: 64px;
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    .loading {
-      background-color: #282828;
-      background-color: rgba(40, 40, 40, 0.9);
-      background-position: center 15px;
-      height: 78px;
-      position: static;
-    }
-    .histories {
-      position: relative;
-      .blog-item:last-child {
-        border-bottom: 4px solid #e0e0e0;
-      }
-    }
-    .blogs {
-      position: relative;
-    }
-  }
-  .display-name,
-  .blog-name {
-    display: block;
-    height: 50px;
-    padding: 15px 15px 15px 60px;
-  }
-  .userpic {
-    background-position: center center;
-    background-size: cover;
-    height: 44px;
-    overflow: hidden;
-    position: absolute;
-    width: 44px;
-    z-index: 1;
-    @include border-radius-with-pie(100px);
-    &.no-image {
-      color: #666;
-      font-size: 40px;
-      line-height: 50px;
-      text-align: center;
-    }
-  }
-  .user-info,
-  .blog-item {
-    border-bottom: 1px solid #665d66;
-    position: relative;
-    .circle {
-      float: left;
-    }
-    a {
-      border-bottom: 1px solid #4b434b;
-      color: #fff;
-      display: block;
-      padding: 13px 20px;
-      text-decoration: none;
-      &.tapped, &:active {
-        @include background-image(linear-gradient(rgba($white, 0.15), rgba($white, 0.05) 5%));
-      }
-    }
-    &.selected {
-      a {
-        color: #ffb142;
-      }
-      .circle {
-        border-color: #ffb142;
-        background-color: #ffb142;
-      }
-    }
-    &.error {
-      display: block;
-      padding: 13px;
-      text-align: center;
-    }
-  }
-  .blog-item-nav {
-    cursor: pointer;
-    height: 76px;
-    line-height: 76px;
-    padding: 0 10px;
-    &.blog-item-nav-prev {
-      float: left;
-    }
-    &.blog-item-nav-next {
-      float: right;
-    }
-    &:hover {
-      color: #ff6633;
-    }
-  }
-  .blog-item-nav-icon,
-  .blog-item-nav-label {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .blog-item-nav-icon {
-    font-size: 20px;
-    padding: 2px;
-  }
 }
 
+#menu-main {
+  color: $menu-font-color;
+  background-color: $menu-background-color;
+  display: block;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  width: $content-max-width;
+}
+
+/*
+# Header
+
+Header has two incredients. One is Loupe logo in the center, another is toggle button at the right side of header.
+
+```
+<aside id="menu-main">
+  <header id="menu-header">
+    <div id="menu-header-logo" class="icon-app_icon_outline"></div>
+    <div id="menu-header-arrow" class="icon-arrow-up rotate"></div>
+  </header>
+</aside>
+```
+
+*/
+
 #menu-header {
-  background-color: #625362;
+  background-color: $menu-header-color;
+  height: 64px;
   position: relative;
   padding: 10px 20px;
   cursor: pointer;
@@ -135,27 +98,274 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  border: 3px solid white;
-  @include border-radius(100px);
+  border: 3px solid $white;
+  @include border-radius(1000px);
   @include single-transition($property: transform);
   &.rotate {
     @include transform(rotate(180deg));
   }
 }
 
-#menu-main {
-  color: #fff;
-  background-color: #372e37;
-  display: block;
-  height: 100%;
-  margin: 0 auto;
+/*
+# Blog List
+
+Blog list has three main parts, histories (recently visited blogs), blog list (the other blogs) and navigation.
+
+History items and blog items are the same styling.
+
+```
+<div id="menu"><div class="container" style="display: block;"><div class="menu-main-container" style="bottom: 0;">
+<aside id="menu-main">
+  <section id="menu-blogs-list" class="blogs-list" style="top:0;">
+    <div>
+      <div class="histories">
+        <ul class="histories-list">
+          <li class="blog-item selected">
+            <a href="#">
+              <span class="circle blog-asset"><span class="circle-inner"></span></span>
+              <span class="blog-name">Blog</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="blogs">
+        <ul>
+          <li class="blog-item">
+            <a href="#">
+              <span class="circle blog-asset"><span class="circle-inner"></span></span>
+              <span class="blog-name">Blog</span>
+            </a>
+          </li>
+          <li class="user-info">
+            <a href="#">
+              <div class="circle userpic" style="background-image: url(sample.jpg);"></div>
+              <div class="display-name">Sign Out</div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="blog-item-nav-container"></div>
+    </div>
+  </section>
+</aside>
+</div></div></div>
+```
+*/
+
+.blogs-list {
+  @include position-zero;
+  overflow: auto;
+  top: 64px;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .loading {
+    background-color: #282828;
+    background-color: rgba(40, 40, 40, 0.9);
+    background-position: center 15px;
+    height: 78px;
+    position: static;
+  }
+  .histories,
+  .blogs {
+    position: relative;
+  }
+  .histories .blog-item:last-child {
+    border-bottom: 4px solid #e0e0e0;
+  }
+}
+
+/*
+# Blog Item
+
+```
+<div id="menu"><div class="container" style="display: block;"><div class="menu-main-container" style="bottom: 0;"><aside id="menu-main"><section id="menu-blogs-list" class="blogs-list" style="top:0;"><div><div class="blogs">
+
+<div class="blogs">
+  <ul>
+    <li class="blog-item">
+      <a href="#">
+        <span class="circle blog-asset"><span class="circle-inner"></span></span>
+        <span class="blog-name">Blog</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+</div></div></section></aside></div></div></div>
+```
+
+Selected blog item is added .selected class and looks like the following
+
+```
+<div id="menu"><div class="container" style="display: block;"><div class="menu-main-container" style="bottom: 0;"><aside id="menu-main"><section id="menu-blogs-list" class="blogs-list" style="top:0;"><div><div class="blogs">
+
+<div class="blogs">
+  <ul>
+    <li class="blog-item selected">
+      <a href="#">
+        <span class="circle blog-asset"><span class="circle-inner"></span></span>
+        <span class="blog-name">Blog</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+</div></div></section></aside></div></div></div>
+```
+
+
+*/
+
+.user-info,
+.blog-item {
+  border-bottom: 1px solid #665d66;
   position: relative;
-  width: $content-max-width;
+  .userpic,
+  .display-name,
+  .blog-asset,
+  .blog-name {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .userpic,
+  .blog-asset {
+    margin-right: 12px;
+  }
+  a {
+    border-bottom: 1px solid #4b434b;
+    color: $white;
+    display: block;
+    padding: 13px 20px;
+    text-decoration: none;
+    &.tapped, &:active {
+      @include background-image(linear-gradient(rgba($white, 0.15), rgba($white, 0.05) 5%));
+    }
+  }
+}
+
+.blog-item.selected {
+  a {
+    color: $menu-blog-item-selected-color;
+  }
+  .blog-asset {
+    border-color: $menu-blog-item-selected-color;
+    background-color: $menu-blog-item-selected-color;
+  }
+}
+
+.blog-item.error {
+  display: block;
+  padding: 13px;
+  text-align: center;
+}
+
+/*
+# User Pic
+
+.userpic class is expected to show the user picture inside circle
+
+```
+<div id="menu"><div class="container" style="display: block;"><div class="menu-main-container" style="bottom: 0;"><aside id="menu-main"><section id="menu-blogs-list" class="blogs-list" style="top:0;"><div><div class="blogs">
+<ul>
+<li class="user-info">
+  <a href="#">
+    <div class="circle userpic" style="background-image: url(sample.jpg);"></div>
+    <div class="display-name">Sign Out</div>
+  </a>
+</li>
+</ul>
+</div></div></section></aside></div></div></div>
+```
+
+when user has no own picture, shows default image (icon)
+
+```
+<div id="menu"><div class="container" style="display: block;"><div class="menu-main-container" style="bottom: 0;"><aside id="menu-main"><section id="menu-blogs-list" class="blogs-list" style="top:0;"><div><div class="blogs">
+<ul>
+<li class="user-info">
+  <a href="#">
+    <div class="userpic no-image icon-user"></div>
+    <div class="display-name">Sign Out</div>
+  </a>
+</li>
+</ul>
+</div></div></section></aside></div></div></div>
+```
+
+*/
+
+.userpic {
+  background-position: center center;
+  background-size: cover;
+  &.no-image {
+    color: #666;
+    font-size: 40px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    width: 44px;
+  }
+}
+
+/*
+# Blog Navigation
+
+When User has blogs over 25, navigation links is appeared at the bottom of blog list.
+
+```
+<div id="menu"><div class="container" style="display: block;"><div class="menu-main-container" style="bottom: 0;"><aside id="menu-main"><section id="menu-blogs-list" class="blogs-list" style="top:0;"><div><div class="blogs">
+
+<div class="blog-item-nav-container">
+  <div class="blog-item-nav blog-item-nav-prev">
+    <span class="blog-item-nav-icon icon-arrow-left"></span>
+    <span class="blog-item-nav-label">Previous</span>
+  </div>
+  <div class="blog-item-nav blog-item-nav-next">
+    <span class="blog-item-nav-label">Next</span>
+    <span class="blog-item-nav-icon icon-arrow"></span>
+  </div>
+</div>
+
+</div></div></section></aside></div></div></div>
+
+
+```
+
+*/
+
+.blog-item-nav {
+  cursor: pointer;
+  height: 76px;
+  line-height: 76px;
+  padding: 0 10px;
+  &.blog-item-nav-prev {
+    float: left;
+  }
+  &.blog-item-nav-next {
+    float: right;
+  }
+  &:hover {
+    color: #ff6633;
+  }
+}
+
+.blog-item-nav-icon,
+.blog-item-nav-label {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.blog-item-nav-icon {
+  font-size: 20px;
+  padding: 2px;
 }
 
 @media screen and (max-width: $content-max-width) {
   #menu-main {
     width: 100%;
-    min-width: 300px;
+    min-width: $content-min-width;
   }
 }

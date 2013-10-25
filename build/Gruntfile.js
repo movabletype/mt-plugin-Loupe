@@ -153,6 +153,7 @@ module.exports = function (grunt) {
     compass: {
       dev: {
         options: {
+          noLineComments: true,
           sassDir: 'app',
           cssDir: 'app/css',
           specify: ['app/sass/*.scss', 'app/sass/*.sass', 'app/cards/*/*.scss', 'app/cards/*/*.sass', 'app/cards/*/sass/*.scss', 'app/cards/*/sass/*.sass']
@@ -225,7 +226,13 @@ module.exports = function (grunt) {
         ]
       },
       afterTest: ['template.js'],
-      beforeCoverage: ['.grunt/grunt-contrib-jasmine', 'app/test/coverage']
+      beforeCoverage: ['.grunt/grunt-contrib-jasmine', 'app/test/coverage'],
+      styleguide: {
+        options: {
+          force: true
+        },
+        src: ['../styleguide/*.html', '../styleguide/assets']
+      }
     },
     copy: {
       prep: {
@@ -252,6 +259,14 @@ module.exports = function (grunt) {
           src: ['cards/**/*.css'],
           dest: 'app/css',
           filter: 'isFile'
+        }]
+      },
+      styleguide: {
+        files: [{
+          expand: true,
+          cwd: 'app/assets',
+          src: ['**'],
+          dest: '../styleguide/assets'
         }]
       }
     },
@@ -413,6 +428,13 @@ module.exports = function (grunt) {
             ];
           }
         }
+      },
+      styleguide: {
+        options: {
+          hostname: 'localhost',
+          port: 9004,
+          keepalive: true
+        }
       }
     },
     jasmine: {
@@ -529,6 +551,20 @@ module.exports = function (grunt) {
           '../mt-static/plugins/Loupe/js/l10n/ja.js': '../mt-static/plugins/Loupe/js/l10n/ja.js',
           '../mt-static/plugins/Loupe/js/l10n/nl.js': '../mt-static/plugins/Loupe/js/l10n/nl.js',
           '../mt-static/plugins/Loupe/js/l10n/en-us.js': '../mt-static/plugins/Loupe/js/l10n/en-us.js'
+        }
+      },
+      styleguide: {
+        options: {
+          replacements: [{
+            pattern: /..\/..\/app\/css\/sass\/fonts\/MTIcon/g,
+            replacement: 'assets/icons/fonts/MTIcon'
+          }, {
+            pattern: /..\/..\/app\/css\/sass\/..\/assets/g,
+            replacement: 'assets'
+          }],
+        },
+        files: {
+          '../styleguide/': ['../styleguide/*.html']
         }
       }
     },
@@ -813,7 +849,7 @@ module.exports = function (grunt) {
     'compass:dev',
     'requirejs:build',
     'clean:afterBuild',
-    'string-replace',
+    'string-replace:build',
     'preprocess:basket',
     'uglify:basket',
     'copy:beforeConcat',
@@ -857,6 +893,43 @@ module.exports = function (grunt) {
     'requirejs:test',
     'jasmine:test'
   ]);
+
+  if (grunt.file.exists('node_modules/grunt-styleguide')) {
+    // If you want to use grunt-styleguide task, you need to install grunt-styleguide manually
+    // [sudo] npm install grunt-styleguide (you might be needed to use sudo)
+
+    grunt.loadNpmTasks('grunt-styleguide');
+
+    grunt.config.data['styleguide'] = {
+      dist: {
+        options: {
+          name: 'Loupe Style Guide',
+          framework: {
+            name: 'styledocco'
+          },
+          template: {
+            include: ['app/assets/icons/style.css']
+          }
+        },
+        files: {
+          '../styleguide': ['app/css/sass/main.css', 'app/css/sass/card.css', 'app/css/sass/button.css', 'app/css/sass/header.css', 'app/css/sass/menu.css', 'app/css/sass/share.css']
+        }
+      }
+    }
+
+    grunt.registerTask('styledocco', [
+      'compass:dev',
+      'clean:styleguide',
+      'copy:styleguide',
+      'styleguide:dist',
+      'string-replace:styleguide'
+    ]);
+
+    grunt.registerTask('styledocco-callback', [
+      'styleguide:dist',
+      'string-replace:styleguide'
+    ]);
+  }
 
   grunt.registerTask('none', []);
 };

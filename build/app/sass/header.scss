@@ -1,84 +1,268 @@
+/*
+<h1>Header</h1>
+
+header.css is styles for header and header navigation.
+
+## Configurations
+
+You can change it by changing the following configurations.
+
+* Header Height ($header-height) : default is 60px;
+
+## Basic Structure
+
+**#header-main** block set width with $content-max-width, so header has same width of main content.
+
+```
+<header id="header">
+  <div>
+    <div id="header-main">
+      <nav>
+        <div class="header-button-container header-button-container-left">
+          <div class="header-button">
+            <div class="header-button-inner">
+              <a>Back</a>
+            </div>
+          </div>
+        </div>
+        <div class="header-title">
+          <div class="header-title-inner">My Card</div>
+        </div>
+        <div class="header-button-container header-button-container-right">
+          <div class="header-button">
+            <div class="header-button-inner">
+              <a>Button</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+```
+
+## Box Shadow effect
+
+When screen scrolls to bottom and has top scroll offset, .shadow class added and appeare box-shadow effect like the following
+
+```
+<div style="height:90px;">
+<header id="header" class="shadow">
+  <div>
+    <div id="header-main">
+      <nav>
+        <div class="header-title">
+          <div class="header-title-inner">My Card</div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+</div>
+```
+
+*/
+
 @import "_helpers";
+
+$header-height: normalize-size-based-on-font($header-height) * 1px;
+$header-inner-padding: normalize-size-based-on-font($header-inner-padding) * 1px;
 
 #header {
   background-color: $bg-color;
-  font-size: 37px;
-  font-size: 2.3125rem;
   height: $header-height;
   @include position-zero;
   z-index: 1000;
-  #header-main {
-    margin: 0 auto;
-    padding: 10px 0;
-    width: $content-max-width;
-  }
-  nav {
-    position: relative;
-  }
-  .header-title {
-    font-size: 18px;
-    line-height: 40px;
-    text-align: center;
-  }
-  .header-button {
-    background-color: #e0e0e0;
-    border: 1px solid #cccccc;
-    @include border-radius(4px);
-    font-size: 12px;
-    font-weight: bold;
-    height: 40px;
-    line-height: 38px;
-    min-width: 39px;
-    /* 50 - 7 - 4 */
-    min-width: 3.125rem;
-    text-align: center;
-    a {
-      width: 100%;
-    }
-  }
-  .header-button-container {
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    &.tapped {
-      .header-button {
-        background-color: #ccc;
-        &:before {
-          background-color: #ccc;
-        }
-      }
-    }
-  }
-  .header-button-container-left {
-    left: 0;
-    .header-button {
-      border-left: 0 none transparent;
-      margin-left: 14px;
-      padding: 0 7px 0 4px;
-      &:before {
-        background-color: #e0e0e0;
-        border: 1px solid #cccccc;
-        content: '\00a0';
-        display: block;
-        height: 26px;
-        margin-top: 5px;
-        margin-left: -16px;
-        position: absolute;
-        width: 26px;
-        z-index: -1;
-        @include transform(rotateY(42deg) rotate(45deg));
-      }
-    }
-  }
-  .header-button-container-right {
-    right: 0;
-  }
   @include transition-shadow-header;
   &.shadow {
     @include single-box-shadow(rgba(158, 158, 158, 0.2), 0, 4px, 4px);
     @include transition-shadow-header;
   }
 }
+
+#header-main {
+  margin: 0 auto;
+  padding: $header-inner-padding 0;
+  width: $content-max-width;
+  nav {
+    position: relative;
+  }
+}
+
+/*
+# Header Title
+
+```
+<div class="header-title">
+  <div class="header-title-inner">My Card</div>
+</div>
+```
+
+*/
+
+.header-title {
+  @include rem(font-size, 1.125rem);
+  line-height: $header-height - $header-inner-padding * 2;
+  text-align: center;
+}
+
+/*
+# Header Button Base Style
+
+```
+<div class="header-button-container">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a>Back</a>
+    </div>
+  </div>
+</div>
+```
+
+when button tapped
+```
+<div class="header-button-container tapped">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a>Back</a>
+    </div>
+  </div>
+</div>
+```
+
+*/
+
+.header-button-container {
+  cursor: pointer;
+  position: absolute;
+  top: ($header-height - $header-inner-padding * 2 - 40px) / 2;
+  &.tapped {
+    .header-button {
+      background-color: #ccc;
+      &:before {
+        background-color: #ccc;
+      }
+    }
+  }
+}
+
+.header-button {
+  background-color: #e0e0e0;
+  border: 1px solid #cccccc;
+  @include border-radius(4px);
+  font-size: 12px;
+  font-weight: bold;
+  height: 40px;
+  line-height: 38px;
+  min-width: 39px;
+  text-align: center;
+  a {
+    width: 100%;
+    display: block;
+    padding: 0 5px;
+  }
+}
+
+/*
+# Arrow Style (Left Side Button)
+
+If you want to apply arrow style to the left side button, use .header-button-container-left class
+
+```
+<div class="header-button-container header-button-container-left">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a>Back</a>
+    </div>
+  </div>
+</div>
+```
+
+when button tapped
+```
+<div class="header-button-container header-button-container-left tapped">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a>Back</a>
+    </div>
+  </div>
+</div>
+```
+*/
+
+.header-button-container-left {
+  left: 0;
+  .header-button {
+    border-left: 0 none transparent;
+    margin-left: 14px;
+    padding-left: 4px;
+    a {
+      padding-right: 7px;
+    }
+    &:before {
+      background-color: #e0e0e0;
+      border: 1px solid #cccccc;
+      content: '\00a0';
+      display: block;
+      height: 26px;
+      margin-top: 5px;
+      margin-left: -16px;
+      position: absolute;
+      width: 26px;
+      z-index: -1;
+      @include transform(rotateY(42deg) rotate(45deg));
+    }
+  }
+}
+
+/*
+# Right Side Button
+
+.header-button-container-right class set position to right
+
+```
+<div class="header-button-container header-button-container-right">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a>Button</a>
+    </div>
+  </div>
+</div>
+```
+*/
+
+.header-button-container-right {
+  right: 0;
+}
+
+/*
+# Share Button
+
+.share-button-container class (no style though) and #share-button are for styling share button
+
+```
+<div class="header-button-container share-button-container">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a id="share-button" class="icon-share"></a>
+    </div>
+  </div>
+</div>
+```
+
+when share button tapped
+```
+<div class="header-button-container share-button-container">
+  <div class="header-button">
+    <div class="header-button-inner">
+      <a id="share-button" class="icon-share tapped"></a>
+    </div>
+  </div>
+</div>
+```
+
+
+*/
 
 #share-button {
   display: block;
@@ -94,14 +278,12 @@
 }
 
 @media screen and (max-width: $content-max-width) {
-  #header {
-    #header-main {
-      width: 100%;
-      min-width: 320px;
-    }
-    .header-button-container {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
+  #header #header-main {
+    width: 100%;
+    min-width: $content-min-width;
+  }
+  .header-button-container {
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }

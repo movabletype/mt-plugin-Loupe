@@ -1,3 +1,75 @@
+/*
+<h1> Main</h1>
+
+main.css provides base structure and common interfaces around Loupe.
+
+## Box Model
+
+Loupe set 'border-box' box model in universal selector. So, if you want to use the other box model (like content-box), you need to set style explicitly.
+
+## Configuration
+Loupe set the basic Styles in body element, you can change it by changing the following configurations.
+
+* Font Size (**$font-size**) : 100% (equal to 16px in most browsers);
+* Font Color (**$font-color**) : <span style="color:#444444">■</span> #444444;
+* Background Color (**$bg-color**) : <span style="color:#f6f5f4">■</span> #f6f5f4
+
+rem value is assigned according to the [Modulear Scale](http://modularscale.com/scale/?px1=16&px2=450&ra1=1.5&ra2=0) calicuration
+More deitails, check _helpers.scss.
+
+## Base Structure
+
+Loupe has two main area, #menu and #app.
+
+* **#menu** element contains menus for common operaiton in loupe, selecting blog, singout and so on.
+* **#app** element has two main parts, #header and #main
+
+
+* **#header** usually has general information about screen and global navigation.
+* **#main** usually has main contents around Card which is main feature in Loupe.<br/>#main has max-width 450px as a default. You can change it with **$content-max-width** paramater.<br/>When window width is smaller than **$content-max-width**, use **$content-min-width**(default is 320px) instead.
+
+```
+<body>
+<div style="background-color:#f6f5f4; height: 450px; position:relative">
+  <div id="container">
+    <div id="menu"></div>
+    <div id="app">
+      <div class="container">
+        <header id="header">
+          <div>
+            <div id="header-main">
+              <nav>
+                <div class="header-button-container header-button-container-left">
+                  <div class="header-button"><div class="header-button-inner">
+                    <a>Back</a>
+                  </div></div>
+                </div>
+                <div class="header-title"><div class="header-title-inner">My Card</div></div>
+              </nav>
+            </div>
+          </div>
+        </header>
+        <div class="main-container">
+          <main id="main" class="main">
+            <div>
+              <section id="card-foobar" class="card">
+                <div>
+                  <header><h1>My Card</h1></header>
+                  <div class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+```
+
+*/
+
 @import "_helpers";
 
 * {
@@ -7,11 +79,14 @@
   outline: none;
 }
 
+html {
+  font-size: $font-size;
+}
+
 body {
   background-color: $bg-color;
   color: $font-color;
-  font-family: 'Helvetica Neue',sans-serif;
-  font-size: $font-size;
+  font-family: $font-family;
   margin: 0;
   padding: 0;
   @include experimental(text-size-adjust, 100%, $moz: true, $webkit: true, $ms: true, $o: false);
@@ -22,8 +97,7 @@ body {
 
 textarea,
 input {
-  font-size: 16px;
-  font-size: 1rem;
+  @include rem(font-size, 1rem);
   @include user-select(text);
 }
 
@@ -53,13 +127,12 @@ input {
 }
 
 @media screen and (max-width: $content-max-width) {
-  #main {
+  .main {
     width: 100%;
-    min-width: 320px;
+    min-width: $content-min-width;
   }
 }
 
-/* ## On move */
 .move {
   #header {
     @include transition-header;
@@ -75,7 +148,28 @@ input {
   }
 }
 
-/* ## Loading */
+/*
+# Loading
+
+.loading class shows loading image on background.
+
+```
+<div class="loading"></div>
+```
+
+.loading class is positioned absolutely, so if you want to show loading image in restricted area, set position:relative to parent block.
+
+```
+<div style="background-color: #ccc">
+  <div style="position:relative; height:100px; padding: 10px;">
+    <div class="loading"></div>
+    <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+  </div>
+  <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+</div>
+```
+*/
+
 .loading,
 .content-loading {
   background-color: $card-background-color;
@@ -94,7 +188,45 @@ input {
   z-index: 2000;
 }
 
-/* ## Loupe Circle */
+/*
+# Loupe Circle
+
+loupe circle is the circle like loupe with CSS
+
+```
+<div style="background-color:#f6f5f4; padding: 10px">
+<span class="circle">
+  <span class="circle-inner"></span>
+</span>
+</div>
+```
+
+You can customize circle based on loupe circle as follows.
+
+**Note**: loupe circle uses border-radius property which is not supported in IE8
+
+```
+<style>
+  .my-loupe .circle {
+    background: url(sample.jpg) center center / cover;
+    border: 20px solid #cceaff;
+    width: 200px;
+    height: 200px
+  }
+  .my-loupe .circle-inner {
+    background: transparent;
+    border: 0;
+  }
+</style>
+<div class="my-loupe">
+<span class="circle">
+  <span class="circle-inner" style="background: transparent; border: 0;">
+  </span>
+</span>
+</div>
+```
+*/
+
 .circle {
   background-color: $white;
   border: 6px solid $white;
@@ -102,7 +234,7 @@ input {
   height: 44px;
   overflow: hidden;
   width: 44px;
-  @include border-radius(100px);
+  @include border-radius(1000px);
 }
 
 .circle-inner {
@@ -113,41 +245,119 @@ input {
   display: block;
   height: 100%;
   width: 100%;
-  @include border-radius(100px);
+  @include border-radius(1000px);
 }
 
-/* ## Message */
+/*
+# Message
+
+If you want to some message in the card or anywhere, you can use .message class as follows.
+
+```
+<div style="background-color:#f3f3f5; padding: 10px">
+<div class="message">
+  <div class="message-inner">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </div>
+</div>
+</div>
+```
+*/
+
 .message {
   border: 1px solid #979797;
-  box-shadow: 0px 1px 0px 0px white, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  @include box-shadow($white 0 1px 0 0, rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset);
   color: #666;
   display: block;
-  font-size: 16px;
-  font-size: 1rem;
+  @include rem(font-size, 1rem);
   line-height: 1.5;
   text-align: center;
   @include border-radius($radius);
   .message-inner {
-    background: #dcdcdc;
-    background: rgba(127, 127, 127, 0.2);
+    background-color: lighten(rgb(127, 127, 127), 36.5%);
+    background-color: rgba(127, 127, 127, 0.2);
     display: block;
-    padding: 16px;
-    padding: 1rem;
+    @include rem(padding, 1rem);
     word-break: break-all;
   }
 }
 
-/* ## OverLay */
+/*
+
+# OverLay
+
+If you want to cover some block to prevent from user operation, you can use .overlay class as follows.
+
+```
+<div style="position:relative">
+  <div class="overlay">
+    <div class="overlay-inner">
+      <div class="overlay-content">
+        <div class="overlay-content-inner">
+          This is OverLay Message.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+</div>
+```
+
+You can also use .message class in overlay block
+
+```
+<div style="position:relative">
+  <div class="overlay">
+    <div class="overlay-inner">
+      <div class="overlay-content message">
+        <div class="overlay-content-inner message-inner">
+          This is OverLay Message.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+</div>
+```
+
+If you want to add a button in overlay block, .with-button class helps to control .overlay-content heigth
+
+```
+<div style="position:relative; height: 300px;">
+  <div class="overlay with-button">
+    <div class="overlay-inner">
+      <div class="overlay-content message">
+        <div class="overlay-content-inner message-inner">
+          This is OverLay Message.
+        </div>
+      </div>
+      <div class="button-container">
+        <div class="button">Click Me</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+</div>
+```
+*/
 .overlay {
+  background-color: darken($card-background-color, 2%);
   background-color: rgba($card-background-color, 0.95);
   @include position-zero;
   z-index: 200;
-  padding: 16px;
-  padding: 1rem;
+  @include rem(padding, 1rem);
   .overlay-inner {
     height: 100%;
   }
-  /* often used with .message */
   .overlay-content {
     display: table;
     height: 100%;

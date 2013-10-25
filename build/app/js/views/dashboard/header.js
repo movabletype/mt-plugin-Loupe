@@ -52,9 +52,11 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'hbs!js/views/dashboa
     },
 
     onRender: function () {
-      setTimeout(_.bind(function () {
-        this.adjustHeader();
-      }, this), 0);
+      if (device.isIE && device.version <= 8) {
+        setTimeout(_.bind(function () {
+          this.adjustHeader();
+        }, this), 0);
+      }
 
       commands.setHandler('dashboard:toggle', _.bind(this.handleSlide, this));
       $(window).on('orientationchange debouncedresize', _.bind(this.adjustHeader, this));
