@@ -297,6 +297,38 @@ describe("stats", function () {
         expect(share.tweetText).toEqual(item.title + ' ' + item.excerpt);
       });
     });
+
+    it('remove command handler on close', function () {
+      var commands = require('js/commands');
+      var routes = [initData.blogId, '1', 'day'];
+      var data = _.extend({}, initData, {
+        routes: routes
+      });
+      var flag;
+
+      Post = require('cards/stats/view/post');
+      post = new Post(data);
+      post.on('item:closed', function () {
+        flag = true;
+      })
+
+      waitsFor(function () {
+        return postSpy.onRender.callCount === 2;
+      }, 'render post', 3000);
+
+      runs(function () {
+        expect(commands._wreqrHandlers['card:stats:share:show']).toBeDefined();
+        post.close();
+      });
+
+      waitsFor(function () {
+        return flag;
+      });
+
+      runs(function () {
+        expect(commands._wreqrHandlers['card:stats:share:show']).toBeUndefined();
+      })
+    })
   });
 
   afterEach(function () {

@@ -492,6 +492,38 @@ describe("acception", function () {
         expect(view.collection).toBeUndefined();
       });
     });
+
+    it("remove command handler on close", function () {
+      var commands = require('js/commands');
+
+      var routes = [1, 123],
+        flag;
+
+      View = require('cards/acception/view/view');
+      view = new View(_.extend({}, initData, {
+        routes: routes
+      }));
+      view.on('item:closed', function () {
+        flag = true;
+      })
+
+      waitsFor(function () {
+        return renderSpy.callCount === 2;
+      }, 'render', 3000);
+
+      runs(function () {
+        expect(commands._wreqrHandlers['card:acception:share:show']).toBeDefined();
+        view.close();
+      });
+
+      waitsFor(function () {
+        return flag;
+      });
+
+      runs(function () {
+        expect(commands._wreqrHandlers['card:acception:share:show']).toBeUndefined();
+      });
+    });
   });
 
   afterEach(function () {

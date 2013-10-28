@@ -60,7 +60,7 @@ describe("feedbacks", function () {
 
       var viewOrig;
       runs(function () {
-        reRequireModule(['js/views/card/itemview', 'js/views/card/composite', 'cards/feedbacks/dashboard/dashboard', 'cards/feedbacks/view/layout', 'cards/feedbacks/models/comments_collection']);
+        reRequireModule(['js/views/card/itemview', 'js/views/card/composite', 'cards/feedbacks/dashboard/dashboard', 'cards/feedbacks/view/layout', 'cards/feedbacks/view/reply', 'cards/feedbacks/models/comments_collection']);
       });
 
       runs(function () {
@@ -834,7 +834,7 @@ describe("feedbacks", function () {
         var reply = new Reply(data);
 
         waitsFor(function () {
-          return replyRenderSpy.callCount === 2
+          return !!replyRenderSpy.callCount
         }, 'rendering', 3000);
 
         var count;
@@ -943,7 +943,7 @@ describe("feedbacks", function () {
         var reply = new Reply(data);
 
         waitsFor(function () {
-          return replyRenderSpy.callCount > 2
+          return !!replyRenderSpy.callCount
         }, 'rendering', 3000);
 
         var count;
@@ -995,6 +995,33 @@ describe("feedbacks", function () {
           expect($textarea.val()).toEqual(body);
           var newComment = reply.collection.get(window.Mock.replyCommentId)
           expect(newComment).toBeFalsy();
+        });
+      });
+
+      it('remove command handler on close', function () {
+        var Reply = require('cards/feedbacks/view/reply');
+        var reply = new Reply(data);
+        var commands = require('js/commands');
+        var flag;
+        reply.on('item:closed', function () {
+          flag = true;
+        });
+
+        runs(function () {
+          console.log(commands);
+          expect(commands._wreqrHandlers['card:feedbacks:reply:render']).toBeDefined();
+        })
+
+        runs(function () {
+          reply.close();
+        });
+
+        waitsFor(function () {
+          return flag;
+        });
+
+        runs(function () {
+          expect(commands._wreqrHandlers['card:feedbacks:reply:render']).toBeUndefined();
         });
       });
     });

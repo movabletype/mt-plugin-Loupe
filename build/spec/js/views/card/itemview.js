@@ -268,6 +268,136 @@ describe("views", function () {
       });
     });
 
+    it("setTranslation without l10n.load", function () {
+      var flag, actualPath;
+
+      var commandsOrig = require('js/commands');
+      var command = _.clone(commandsOrig);
+
+      command.execute = function (co, data) {
+        if (co === 'l10n') {
+          controller.l10n.waitLoadCommon(data);
+
+        } else {
+          commandsOrig.execute.call(commandsOrig, co, data);
+        }
+      };
+
+      undefRequireModule('js/commands');
+      define('js/commands', [], function () {
+        return command;
+      });
+
+      reRequireModule('js/views/card/itemview');
+
+      var flag0;
+      runs(function () {
+        ItemView = require('js/views/card/itemview');
+        controller.auth(function (data) {
+          ItemView = require('js/views/card/itemview');
+          cards[0].l10n = false;
+          data = _.extend({}, data, {
+            card: cards[0]
+          });
+          itemView = new ItemView(data);
+          flag0 = true;
+        });
+      });
+
+      waitsFor(function () {
+        return flag0;
+      }, 'require itemview', 3000);
+
+      var callback;
+      runs(function () {
+        var origFunc = controller.l10n.load;
+        spyOn(controller.l10n, 'load');
+        spyOn(itemView, 'render');
+        callback = jasmine.createSpy('callback');
+        itemView.setTranslation(callback);
+      });
+
+      waitsFor(function () {
+        return !!callback.callCount;
+      }, 'load l10n common', 3000);
+
+      runs(function () {
+        expect(itemView.trans).toBeDefined();
+        var Trans = require('js/trans');
+        expect(itemView.trans instanceof Trans).toBe(true);
+        expect(itemView.render).not.toHaveBeenCalled();
+        expect(callback).toHaveBeenCalled();
+        expect(controller.l10n.load).not.toHaveBeenCalled();
+        require.undef('js/commands');
+        requireModuleAndWait('js/commands');
+      });
+    });
+
+    it("when no support for userLanguage,run setTranslation without l10n.load", function () {
+      var flag, actualPath;
+
+      var commandsOrig = require('js/commands');
+      var command = _.clone(commandsOrig);
+
+      command.execute = function (co, data) {
+        if (co === 'l10n') {
+          controller.l10n.waitLoadCommon(data);
+
+        } else {
+          commandsOrig.execute.call(commandsOrig, co, data);
+        }
+      };
+
+      undefRequireModule('js/commands');
+      define('js/commands', [], function () {
+        return command;
+      });
+
+      reRequireModule('js/views/card/itemview');
+
+      var flag0;
+      runs(function () {
+        ItemView = require('js/views/card/itemview');
+        controller.auth(function (data) {
+          ItemView = require('js/views/card/itemview');
+          cards[0].l10n = ['es'];
+          data = _.extend({}, data, {
+            card: cards[0]
+          });
+          itemView = new ItemView(data);
+          flag0 = true;
+        });
+      });
+
+      waitsFor(function () {
+        return flag0;
+      }, 'require itemview', 3000);
+
+      var callback;
+      runs(function () {
+        var origFunc = controller.l10n.load;
+        spyOn(controller.l10n, 'load');
+        spyOn(itemView, 'render');
+        callback = jasmine.createSpy('callback');
+        itemView.setTranslation(callback);
+      });
+
+      waitsFor(function () {
+        return !!callback.callCount;
+      }, 'load l10n common', 3000);
+
+      runs(function () {
+        expect(itemView.trans).toBeDefined();
+        var Trans = require('js/trans');
+        expect(itemView.trans instanceof Trans).toBe(true);
+        expect(itemView.render).not.toHaveBeenCalled();
+        expect(callback).toHaveBeenCalled();
+        expect(controller.l10n.load).not.toHaveBeenCalled();
+        require.undef('js/commands');
+        requireModuleAndWait('js/commands');
+      });
+    });
+
     it("addTapClass", function () {
       var $el = $('<div id="addtapclass"></div>').appendTo($('#app'));
       var flag, hasClass;
@@ -486,6 +616,6 @@ describe("views", function () {
   });
 
   afterEach(function () {
-  Backbone.history.navigate('');
-})
+    Backbone.history.navigate('');
+  })
 });

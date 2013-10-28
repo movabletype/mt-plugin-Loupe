@@ -93,12 +93,13 @@ describe("views", function () {
       waitsFor(function () {
         return flag;
       }, 'controller authentication', 3000);
+
+      runs(function () {
+        $('#dashboard').remove();
+      });
     });
 
     it("share:show", function () {
-      $('#dashboard').remove();
-      layoutView.$el.appendTo($('#app'));
-
       layoutView.setShareHandler();
       var options = {
         url: 'http://memolog.org/',
@@ -113,7 +114,7 @@ describe("views", function () {
       }, 'share:show command executed', 3000);
 
       runs(function () {
-        expect($('#share').length).not.toEqual(0);
+        expect(layoutView.$el.find('#share').html()).toBeTruthy();
         expect(layoutView.share).toBeDefined();
         expect(shareInitializeSpy).toHaveBeenCalled();
         expect(shareInitializeSpy.mostRecentCall.args[0]).toEqual(options);
@@ -122,9 +123,6 @@ describe("views", function () {
     });
 
     it("share:close", function () {
-      $('#dashboard').remove();
-      layoutView.$el.appendTo($('#app'));
-
       layoutView.setShareHandler();
       var commands = require('js/commands');
       commands.execute('share:show');
@@ -143,7 +141,7 @@ describe("views", function () {
       }, 'share:close command executed', 3000);
 
       runs(function () {
-        expect($('#share').length).toEqual(0);
+        expect(layoutView.$el.find('#share').html()).toBeFalsy();
         expect(layoutView.share).toBeDefined();
         expect(layoutView.share.close).toHaveBeenCalled();
         layoutView.$el.remove();
@@ -151,7 +149,6 @@ describe("views", function () {
     });
 
     it("onShow", function () {
-      $('#dashboard').remove();
       var $header = $('<div id="header"></div>').appendTo('#app');
       var $mainC = $('<div class="main-container" style="height:100px; overflow:auto;"><div style="height:1000px"></div></div>').appendTo('#app');
       layoutView.$el.appendTo($('#app'));
@@ -314,6 +311,34 @@ describe("views", function () {
 
       afterEach(function () {
         layoutView.$el.remove();
+      });
+    });
+
+    it("remove command handlers on close", function () {
+      layoutView.setShareHandler();
+      var options = {
+        url: 'http://memolog.org/',
+        tweetText: 'foobar',
+        tweetUrl: 'http://memolog.org/web/'
+      };
+
+      var flag;
+      layoutView.on('item:closed', function () {
+        flag = true;
+      });
+
+      var commands = require('js/commands');
+      expect(commands._wreqrHandlers['share:show']).toBeDefined();
+      expect(commands._wreqrHandlers['share:close']).toBeDefined();
+      layoutView.close();
+
+      waitsFor(function () {
+        return flag;
+      });
+
+      runs(function () {
+        expect(commands._wreqrHandlers['share:show']).toBeUndefined();
+        expect(commands._wreqrHandlers['share:close']).toBeUndefined();
       });
     });
   });

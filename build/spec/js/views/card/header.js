@@ -4,6 +4,24 @@ describe("views", function () {
   var headerRenderFlag;
   var controller;
   var commandSpy;
+  var Controller, ItemView, itemView;
+  var cards = [{
+    "name": "ItemView",
+    "id": "itemview",
+    "dashboard": {
+      "view": "dashboard/dashboard"
+    },
+    "routes": [{
+      "id": "view",
+      "view": "view/layout"
+    }, {
+      "id": "post",
+      "route": ":blog_id/:id/:unit",
+      "view": "view/post",
+      "header": "view/post_header"
+    }]
+  }];
+  var flag, initData;
 
   beforeEach(function () {
     var commandsOrig = require('js/commands');
@@ -26,46 +44,36 @@ describe("views", function () {
       return command;
     });
 
-    reRequireModule(['js/views/card/itemview', 'js/views/card/header', 'js/router/controller']);
-  });
+    reRequireModule(['js/router/controller']);
 
+    runs(function () {
+      reRequireModule(['js/views/card/itemview']);
+      reRequireModule(['js/views/card/header']);
+    })
 
-  describe("card/header", function () {
-    var Controller, ItemView, itemView;
-    var cards = [{
-      "name": "ItemView",
-      "id": "itemview",
-      "dashboard": {
-        "view": "dashboard/dashboard"
-      },
-      "routes": [{
-        "id": "view",
-        "view": "view/layout"
-      }, {
-        "id": "post",
-        "route": ":blog_id/:id/:unit",
-        "view": "view/post",
-        "header": "view/post_header"
-      }]
-    }];
-
-    var flag, initData;
-    Controller = require('js/router/controller');
-    controller = new Controller({
-      cards: cards
-    });
-    controller.auth(function (data) {
-      ItemView = require('js/views/card/itemview');
-      initData = _.extend({}, data, {
-        card: cards[0]
+    runs(function () {
+      Controller = require('js/router/controller');
+      controller = new Controller({
+        cards: cards
       });
-      itemView = new ItemView(data);
-      flag = true;
-    });
+      controller.auth(function (data) {
+        ItemView = require('js/views/card/itemview');
+        initData = _.extend({}, data, {
+          card: cards[0]
+        });
+        itemView = new ItemView(data);
+        flag = true;
+      });
+    })
 
     waitsFor(function () {
       return flag;
     }, 'controller authentication', 3000);
+  });
+
+
+  describe("card/header", function () {
+
 
     beforeEach(function () {
       headerRenderFlag = null;
@@ -80,13 +88,13 @@ describe("views", function () {
         foo: 'bar'
       });
       waitsFor(function () {
-        return headerRenderFlag
+        return headerRenderFlag;
       }, 'command recieving', 3000);
       runs(function () {
         expect(header.object).toBeDefined();
-        expect(header.object.foo).toEqual('bar')
+        expect(header.object.foo).toEqual('bar');
         expect(header.render).toHaveBeenCalled();
-      })
+      });
     });
 
     it("handle back button", function () {
@@ -104,7 +112,13 @@ describe("views", function () {
         }, 500);
       });
 
-      header.ui.backDashboardButton.trigger('tap');
+      waitsFor(function () {
+        return header.ui.backDashboardButton && header.ui.backDashboardButton.trigger;
+      });
+
+      runs(function () {
+        header.ui.backDashboardButton.trigger('tap');
+      })
 
       waitsFor(function () {
         return flag;
@@ -117,7 +131,7 @@ describe("views", function () {
         expect(args[0]).toEqual('router:navigate');
         expect(args[1]).toEqual('');
         header.$el.remove();
-      })
+      });
     });
 
     it("handle share button", function () {
@@ -126,11 +140,11 @@ describe("views", function () {
         serializeData: function () {
           var data = Header.prototype.serializeData.apply(this, arguments);
           data.shareEnabled = true;
-          return data
+          return data;
         }
       }))(initData);
 
-      var flag, flag0;
+      var flag;
       header.$el.appendTo($('#main'));
 
       var origFunc = header.addTapClass;
@@ -141,7 +155,13 @@ describe("views", function () {
         }, 500);
       });
 
-      header.ui.shareButton.trigger('tap');
+      waitsFor(function () {
+        return header.ui.backDashboardButton && header.ui.backDashboardButton.trigger;
+      });
+
+      runs(function () {
+        header.ui.shareButton.trigger('tap');
+      })
 
       waitsFor(function () {
         return flag;
@@ -152,12 +172,34 @@ describe("views", function () {
         expect(args[0]).toEqual('card:itemview:share:show');
         expect(args[1]).toEqual('');
         header.$el.remove();
-      })
-    })
+      });
+    });
+
+    it("remove command handler on close", function () {
+      var Header = require('js/views/card/header');
+      var header = new Header(initData);
+      var commands = require('js/commands');
+      var flag;
+
+      header.on('item:closed', function () {
+        flag = true;
+      });
+
+      expect(commands._wreqrHandlers['header:render']).toBeDefined();
+      header.close();
+
+      waitsFor(function () {
+        return flag;
+      });
+
+      runs(function () {
+        expect(commands._wreqrHandlers['header:render']).toBeUndefined();
+      });
+    });
   });
 
   afterEach(function () {
     require.undef('js/commands');
     requireModuleAndWait('js/commands');
-  })
+  });
 });
