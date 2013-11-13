@@ -836,6 +836,12 @@ module.exports = function (grunt) {
           pathToPIE: '../../plugins/loupe/ie/PIE/PIE.htc'
         }
       }
+    },
+    rename: {
+      build: {
+        src: '../mt-static/plugins/Loupe/assets/font/League-Gothic-fontfacekit/SIL OFL Font License League Gothic.txt',
+        dest: '../mt-static/plugins/Loupe/assets/font/League-Gothic-fontfacekit/SIL-OFL-Font-License-League-Gothic.txt'
+      }
     }
   });
 
@@ -856,6 +862,7 @@ module.exports = function (grunt) {
     'cssmin:build',
     'copy:build',
     'jade:build',
+    'rename:build',
     'copy:beforeConcat',
     'concat:dev',
     'jade:dev',
