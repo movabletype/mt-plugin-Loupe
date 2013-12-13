@@ -3,7 +3,7 @@ describe("mtapi", function () {
 
   beforeEach(function () {
     var flag;
-    require(['js/mtapi/user'], function () {
+    require(['js/mtapi/user', 'js/cache'], function () {
       flag = true;
     });
     waitsFor(function () {
@@ -37,15 +37,19 @@ describe("mtapi", function () {
           "id": "1"
         }
       }];
+
+      require('js/cache').clearAll();
     });
 
     it("get user", function () {
+      var cache = require('js/cache');
       var getUser = require('js/mtapi/user');
       var dfd = getUser();
-      var user, flag;
+      var user, flag, permCollection;
       runs(function () {
         dfd.done(function (resp) {
           user = resp;
+          permCollection = cache.get('user', 'perms');
           flag = true;
         });
       });
@@ -68,6 +72,9 @@ describe("mtapi", function () {
           });
           expect(find).not.toBeNull();
         });
+
+        expect(permCollection).toBeDefined();
+        expect(permCollection.totalResults).toEqual(window.Mock.throwPermissionItems.length);
       });
     });
 
@@ -77,18 +84,21 @@ describe("mtapi", function () {
       var mtapi = require('js/mtapi');
       spyOn(mtapi.api, 'listPermissionsForUser').andCallThrough();
 
+      var cache = require('js/cache');
       var getUser = require('js/mtapi/user');
       var dfd = getUser();
       spyOn(dfd, 'fail').andCallThrough();
 
-      var user, flag;
+      var user, flag, permCollection;
       runs(function () {
         dfd.done(function (resp) {
           user = resp;
+          permCollection = cache.get('user', 'perms');
           flag = true;
         });
         dfd.fail(function (resp) {
           user = resp;
+          permCollection = cache.get('user', 'perms');
           flag = true;
         })
       });
@@ -104,6 +114,8 @@ describe("mtapi", function () {
         expect(user.error.message).toEqual(window.Mock.returnFailRequest);
         expect(user.id).not.toBeDefined();
         expect(user.permissions).not.toBeDefined();
+
+        expect(permCollection).toBeNull();
       });
     });
 
@@ -115,12 +127,14 @@ describe("mtapi", function () {
         }
       }];
 
+      var cache = require('js/cache');
       var getUser = require('js/mtapi/user');
       var dfd = getUser();
-      var user, flag;
+      var user, flag, permCollection;
       runs(function () {
         dfd.done(function (resp) {
           user = resp;
+          permCollection = cache.get('user', 'perms');
           flag = true;
         });
       });
@@ -135,24 +149,30 @@ describe("mtapi", function () {
         expect(user.language).toEqual(window.Mock.throwUserItem.language);
         expect(user.displayName).toEqual(window.Mock.throwUserItem.displayName);
         expect(user.permissions).toBeNull();
+
+        expect(permCollection).toBeDefined();
+        expect(permCollection.totalResults).toEqual(window.Mock.throwPermissionItems.length);
       });
     });
 
     it("when permission request failed, get user request should be failed", function () {
       window.Mock.failPermission = 'Failed to get permissions';
 
+      var cache = require('js/cache');
       var getUser = require('js/mtapi/user');
       var dfd = getUser();
       spyOn(dfd, 'fail').andCallThrough();
 
-      var user, flag;
+      var user, flag, permCollection;
       runs(function () {
         dfd.done(function (resp) {
           user = resp;
+          permCollection = cache.get('user', 'perms');
           flag = true;
         });
         dfd.fail(function (resp) {
           user = resp;
+          permCollection = cache.get('user', 'perms');
           flag = true;
         })
       });
@@ -167,6 +187,8 @@ describe("mtapi", function () {
         expect(user.error.message).toEqual(window.Mock.failPermission)
         expect(user.id).not.toBeDefined();
         expect(user.permissions).not.toBeDefined();
+
+        expect(permCollection).toBeNull();
       });
     });
   });
