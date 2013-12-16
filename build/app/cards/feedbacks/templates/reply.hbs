@@ -1,5 +1,6 @@
 {{#if entryIsPublished}}
 {{#if commentIsApproved}}
+{{#if commentApprovePerm}}
   {{>js_views_card_partials_loading}}
   {{#if initial}}
   <div id="reply-container">
@@ -49,5 +50,6 @@
   </div>
   {{/if}}
   {{/if}}
+{{/if}}
 {{/if}}
 {{/if}}

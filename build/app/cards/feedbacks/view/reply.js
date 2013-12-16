@@ -44,8 +44,24 @@ define(['js/views/card/itemview',
         return entry.status === 'Publish';
       },
 
+      commentApprovePerm: function () {
+        var entry = this.entryModel.toJSON(),
+          ret = false;
+
+        if (entry.status === 'Publish') {
+          if (this.userIsSystemAdmin() || (this.userHasPermission('manage_feedback') || this.userHasPermission('edit_all_posts'))) {
+            ret = true;
+          } else {
+            if ((entry.author && entry.author.displayName === this.user.name) && this.userHasPermission('publish_post')) {
+              ret = true;
+            }
+          }
+        }
+        return ret;
+      },
+
       onRender: function () {
-        if (this.entryIsPublished() && this.commentIsApproved()) {
+        if (this.entryIsPublished() && this.commentIsApproved() && this.commentApprovePerm()) {
           this.ui.replyButton.hammer(this.hammerOpts).on('tap', _.bind(function (e) {
             this.addTapClass(e.currentTarget, _.bind(function () {
               this.initial = false;
@@ -104,6 +120,7 @@ define(['js/views/card/itemview',
         data = _.extend(data, this.model.toJSON());
         data.commentIsApproved = this.commentIsApproved();
         data.entryIsPublished = this.entryIsPublished();
+        data.commentApprovePerm = this.commentApprovePerm();
         data.error = this.error;
         data.initial = this.initial;
         data.form = this.form;
