@@ -23,13 +23,12 @@ define(['js/views/card/itemview',
           this.entryModel = options.entryModel;
 
           this.commentApprovePerm = false;
-
           var entry = this.entryModel.toJSON();
           if (entry.status === 'Publish') {
             if (this.userIsSystemAdmin() || (this.userHasPermission('manage_feedback') || this.userHasPermission('edit_all_posts'))) {
               this.commentApprovePerm = true;
             } else {
-              if ((entry.author && entry.author.displayName === this.user.displayName) && this.userHasPermission('publish_post')) {
+              if ((entry.author && entry.author.id === this.user.id) && this.userHasPermission('publish_post')) {
                 this.commentApprovePerm = true;
               }
             }
