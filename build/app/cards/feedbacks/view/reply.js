@@ -52,7 +52,7 @@ define(['js/views/card/itemview',
           if (this.userIsSystemAdmin() || (this.userHasPermission('manage_feedback') || this.userHasPermission('edit_all_posts'))) {
             ret = true;
           } else {
-            if ((entry.author && entry.author.displayName === this.user.name) && this.userHasPermission('publish_post')) {
+            if ((entry.author && entry.author.displayName === this.user.displayName) && this.userHasPermission('publish_post')) {
               ret = true;
             }
           }
