@@ -1,6 +1,6 @@
-define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/views/signin/templates/signin'],
+define(['backbone.marionette', 'js/l10n', 'js/device', 'js/commands', 'js/mtapi', 'js/trans', 'hbs!js/views/signin/templates/signin'],
 
-  function (Marionette, device, commands, mtapi, template) {
+  function (Marionette, L10N, device, commands, mtapi, Trans, template) {
     "use strict";
 
     return Marionette.ItemView.extend({
@@ -16,6 +16,12 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
         options = options || {};
         this.username = options.username;
         this.password = options.password;
+
+        var l10n = new L10N();
+        l10n.waitLoadCommon(_.bind(function () {
+          this.trans = new Trans(l10n);
+          this.render();
+        }, this));
 
         commands.setHandler('signin:error', _.bind(function (error) {
           commands.execute('app:afterTransition');
@@ -80,9 +86,12 @@ define(['backbone.marionette', 'js/device', 'js/commands', 'js/mtapi', 'hbs!js/v
 
       serializeData: function () {
         var data = {};
-        data.username = this.username;
-        data.password = this.password;
-        data.signinError = this.signinError;
+        if (this.trans) {
+          data.username = this.username;
+          data.password = this.password;
+          data.signinError = this.signinError;
+          data.trans = this.trans;
+        }
         return data;
       }
     });

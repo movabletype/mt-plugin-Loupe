@@ -47,5 +47,9 @@
   "welcome to Loupe! - this card lists the new comments": "bienvenido a Loupe! - esta tarjeta lista los nuevos comentarios",
   "welcome to Loupe! - this card lists the posts waiting for acception": "bienvenido a Loupe! - esta tarjeta lista las entradas pendientes de aprobación",
   "You have no available item in this card": "Es tarjeta no tiene elementos disponibles",
-  "You have no blog to show in Loupe": "No tiene blogs disponibles en Loupe"
+  "You have no blog to show in Loupe": "No tiene blogs disponibles en Loupe",
+  "Password": "Contraseña",
+  "Sign In": "Registrarse",
+  "Sign Out": "Salir",
+  "Username": "Nombre de usuario"
 }
