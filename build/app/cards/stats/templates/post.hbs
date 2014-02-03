@@ -3,13 +3,16 @@
   {{>js_views_card_partials_loading}}
   {{>js_views_card_partials_fetchError}}
   {{#if id}}
-    {{#ifIs status eq="Publish"}}
       <div class="pageviews">
         <span class="label"><span class="label-inner">{{#trans trans}}{{{label}}}{{/trans}}</span></span>
         <span class="pageview">{{pageviews}}</span>
       </div>
+      {{#ifIs status ne="Publish"}}
+      <div class="post-status">
+        <span>{{status}}</span>
+      </div>
+      {{/ifIs}}
       {{>js_views_card_partials_entryItemsList}}
-    {{/ifIs}}
   {{/if}}
   </div>
 </section>
