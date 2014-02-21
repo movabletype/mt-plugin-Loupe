@@ -3,7 +3,7 @@ define(function () {
 
   var L10N = function (userLang) {
     this.libPath = $('#main-script').data('base') || '.';
-    this.userLang = userLang || $('#main-script').data('default-language') || 'en-us';
+    this.userLang = userLang || 'en-us';
     this.lexicon = {};
     this.loadCommon();
   };

@@ -1,12 +1,12 @@
 !!! 5
 //if lt IE 8
-  <html>
+  html
 //if IE 8
-  <html class="ie8">
-//[if gt IE 8] <!
+  html(class="ie8")
+// [if gt IE 8] <!
 html(manifest=manifestFile)
-  // <![endif]
-  head
+    // <![endif]
+    head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes')
     meta(name='format-detection', content='telephone=no,email=no,address=no')
@@ -38,9 +38,9 @@ html(manifest=manifestFile)
       script(src!='#{libPath}/ie/PIE/PIE_IE678.js')
 
     if dev
-      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-default-language!='#{mtDefaultLanguage}', data-base!='#{libPath}', data-main!='#{libPath}/js/main', src!='#{libPath}/lib/require.js')
+      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', data-main!='#{libPath}/js/main', src!='#{libPath}/lib/require.js')
     else
-      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-default-language!='#{mtDefaultLanguage}', data-base!='#{libPath}', src!='#{libPath}/js/basket.js')
+      script#main-script(data-mtapi!='#{mtApiCGIPath}', data-base!='#{libPath}', src!='#{libPath}/js/basket.js')
   body
     #container
       #menu
