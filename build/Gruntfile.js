@@ -583,6 +583,7 @@ module.exports = function (grunt) {
             dev: true,
             mtApiCGIPath: settings.mtApiCGIPath,
             mtApiPath: settings.mtApiPath,
+            mtDefaultLanguage: settings.mtDefaultLanguage,
             libPath: '.',
             manifestFile: null,
             csses: csses
@@ -599,6 +600,7 @@ module.exports = function (grunt) {
             dev: false,
             mtApiCGIPath: '<mt:var name="api_cgi_path">',
             mtApiPath: '<mt:var name="api_path">',
+            mtDefaultLanguage: '<mt:DefaultLanguage>',
             libPath: '<mt:var name="lib_path">',
             manifestFile: null
           }
