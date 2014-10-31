@@ -208,7 +208,7 @@ describe("views", function () {
     it("show nothing with error", function () {
       var data = _.clone(initData);
       data.blog = {
-        error: 'some error occured'
+        error: 'some error occurred'
       };
       main = new Main(data);
       spyOn(main, 'render').andCallThrough();
