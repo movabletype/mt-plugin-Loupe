@@ -869,7 +869,7 @@ describe("router", function () {
         expect(sessionStorage.getItem('authRetry')).toBeNull();
         expect(appError).toHaveBeenCalled();
         expect(resp).toBeDefined();
-        expect(resp.blog.error.message).toEqual('authorizationRequired error occured over time for some reason');
+        expect(resp.blog.error.message).toEqual('authorizationRequired error occurred over time for some reason');
         require.undef('js/commands');
         requireModuleAndWait('js/commands');
       });

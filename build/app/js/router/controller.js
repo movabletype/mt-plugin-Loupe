@@ -219,7 +219,7 @@ define(['backbone.marionette', 'js/l10n', 'js/cache', 'js/mtapi', 'js/commands',
             if (DEBUG) {
               console.log('user retries signin for ' + authRetry + ' times, so giving up signin');
             }
-            var message = 'authorizationRequired error occured over time for some reason';
+            var message = 'authorizationRequired error occurred over time for some reason';
             window.sessionStorage.removeItem('authRetry');
             commands.execute('app:error', {
               blog: {

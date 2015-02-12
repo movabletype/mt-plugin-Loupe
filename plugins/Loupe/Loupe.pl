@@ -11,7 +11,7 @@ use base qw( MT::Plugin );
 
 use Loupe::Const;
 
-our $VERSION = '1.02';
+our $VERSION = '1.1';
 
 my $plugin = MT::Plugin::Loupe->new(
     {   id   => 'Loupe',
