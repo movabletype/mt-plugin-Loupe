@@ -1,0 +1,23 @@
+machine:
+  services:
+    - docker
+
+checkout:
+  post:
+    - echo $CIRCLE_BRANCH
+    - git clone --depth=1 --branch=$CIRCLE_BRANCH https://github.com/movabletype/movabletype.git
+    - cp -r movabletype/* ./
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+
+  override:
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - docker build -t mt .
+    - mkdir -p ~/docker; docker save mt > ~/docker/image.tar
+
+test:
+  override:
+    - cp ./t/mysql-test.cfg ./mt-config.cgi
+    - docker run -v $PWD:/var/www/mt -w /var/www/mt mt bash -c "service mysqld start & sleep 10 && service memcached start & sleep 10 && prove ./plugins/Loupe/t"
