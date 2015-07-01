@@ -17,6 +17,9 @@ use MT::Test::Permission;
 use Test::More;
 
 # Prepare for tests
+my $mt = MT->instance;
+$mt->config->MailTransfer('debug');
+
 my $admin = MT::Author->load(1);
 $admin->email('miuchi+admin@sixapart.com');
 $admin->save or die $admin->errstr;
@@ -104,9 +107,12 @@ my ( $app, $out );
     my $mock_loupe = Test::MockModule->new('Loupe');
     $mock_loupe->mock( 'is_enabled', sub {1} );
 
+    $app->config->MailTransfer('debug');
+
+    my ( %headers, $mail_body );
     my $mock_mail = Test::MockModule->new('MT::Mail');
-    $mock_mail->mock( '_send_mt_sendmail',
-        sub { shift->_send_mt_debug(@_) } );
+    $mock_mail->mock( '_send_mt_debug',
+        sub { %headers = %{ $_[1] }; $mail_body = $_[2] } );
 
     my @suite = (
         { user => $admin,    post => 0, ok => 0 },
@@ -119,16 +125,6 @@ my ( $app, $out );
 
         note( 'user: ' . $test->{user}->name );
 
-        my ( $save_stderr, $read, $write );
-        my %headers;
-        my $mail_body;
-
-        if ( $test->{ok} ) {
-            $save_stderr = \*STDERR;
-            pipe $read, $write;
-            *STDERR = $write;
-        }
-
         $app = _run_app(
             'MT::App::CMS',
             {   __test_user => $test->{user},
@@ -137,20 +133,6 @@ my ( $app, $out );
                 ids    => $test->{user}->id,
             },
         );
-
-        if ( $test->{ok} ) {
-            close $write;
-
-            while ( ( my $line = <$read> ) ne "\n" ) {
-                chomp $line;
-                my ( $key, $value ) = split /: /, $line, 2;
-                $headers{$key} = $value;
-            }
-            $mail_body = join '', <$read>;
-
-            close $read;
-            *STDERR = $save_stderr;
-        }
 
         $out = delete $app->{__test_output};
 
