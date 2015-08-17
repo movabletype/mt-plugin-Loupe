@@ -7,6 +7,7 @@ checkout:
     - echo $CIRCLE_BRANCH
     - git clone --depth=1 --branch=$CIRCLE_BRANCH https://github.com/movabletype/movabletype.git
     - cp -r movabletype/* ./
+    - t/git-mtime t/cpanfile t/ldif/cn=config.ldif t/ldif/domain1_example_jp.ldif t/ldif/domain2_example_jp.ldif t/ldif/example_com.ldif t/ldif/example_jp.ldif
 
 dependencies:
   cache_directories:
